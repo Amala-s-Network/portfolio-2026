@@ -1,0 +1,109 @@
+/*
+ * Design tokens. Every value here is taken verbatim from README "Design Tokens" —
+ * these were tuned over many rounds, so do not round them.
+ */
+
+:root {
+  /* ---- colour ---- */
+  --ink: #14120f;
+  --paper: #ffffff;
+  --body: #3d3d3d;
+  --muted: #6a6a6a;
+  --muted-light: #8a8a8a;
+  --muted-lighter: #9a9a9a;
+  --accent: #35d07a; /* the green diamond only — never a fill or a text colour */
+
+  --hairline: #e0e0e0;
+  --hairline-alt: #e6e6e6;
+  --hairline-light: #e2e2e2;
+  --hairline-mid: #cfcfcf;
+  --hairline-mid-2: #d7d7d7;
+  --hairline-mid-3: #dcdcdc;
+
+  --on-dark: #ffffff;
+  --on-dark-72: rgba(255, 255, 255, 0.72);
+  --on-dark-50: rgba(255, 255, 255, 0.5);
+  --on-dark-rule: rgba(255, 255, 255, 0.16);
+  --on-dark-rule-2: rgba(255, 255, 255, 0.18);
+
+  /* ---- layout ---- */
+  --gutter: 48px;
+
+  /* Published by <Nav> at runtime so the hero can offset by it (README §1). */
+  --navH: 90px;
+
+  /* ---- nav inversion (README §1) — set on the nav element from JS ---- */
+  --navBg: var(--paper);
+  --navFg: var(--ink);
+  --navMuted: var(--muted-light);
+  --navTrack: rgba(20, 18, 15, 0.13);
+
+  /* ---- shadows (README "Radius & shadow") ---- */
+  --shadow-button: 0 22px 40px -20px rgba(20, 18, 15, 0.45);
+  --shadow-button-sm: 0 12px 26px -14px rgba(20, 18, 15, 0.4);
+  --shadow-button-outline: 0 18px 34px -20px rgba(20, 18, 15, 0.3);
+  --shadow-card: 0 30px 56px -26px rgba(20, 18, 15, 0.4);
+  --shadow-panel: 0 -34px 70px -24px rgba(20, 18, 15, 0.55);
+  --shadow-modal: 0 40px 90px -40px rgba(20, 18, 15, 0.6);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--body);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  /* Radius is 0 on every surface except circles (README). */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-playfair), Georgia, serif;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/*
+ * README "Interactions & Behavior" step 9 in CLAUDE.md: the prototype ignores
+ * prefers-reduced-motion. Freeze the ambient loops for users who ask for it.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

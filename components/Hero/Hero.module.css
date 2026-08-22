@@ -1,0 +1,322 @@
+/* README §2 "Hero". Every measurement is from the README's header stack. */
+
+/*
+ * Revised 2026-08-22 to João's brief: the marquee band is the lower bound, and everything above
+ * it is centred in the space the nav leaves behind.
+ *
+ * `--bandH` is the animated divider (1px) plus the marquee (22px pad + 16px text + 22px pad +
+ * 1px rule = 60px). Subtracting it from 100vh makes hero + divider + marquee fill exactly one
+ * viewport, so the band always lands on the fold instead of being chased by a fixed px budget.
+ */
+.hero {
+  --bandH: 61px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* the centring João asked for */
+  text-align: center;
+
+  /*
+   * `min()` caps how far the hero will stretch. Left uncapped it fills the viewport, which on a
+   * 1080-tall screen threw 226px of air above and below a 487px block — far too much. The 800px
+   * ceiling holds the breathing room near the 1366 figure at every size.
+   *
+   * The trade-off, deliberately taken: above roughly 860px of viewport the band no longer lands
+   * on the fold — it sits higher, with the next section following. Below that the first branch
+   * wins and the band is pinned to the fold exactly as before.
+   */
+  min-height: min(calc(100vh - var(--bandH)), 800px);
+
+  /* Clear the fixed nav, then 48px of breathing room before the content starts. */
+  padding-top: calc(var(--navH) + 48px);
+  padding-bottom: 48px;
+  padding-left: var(--gutter);
+  padding-right: var(--gutter);
+}
+
+/*
+ * Header stack, revised 2026-08-22 against João's reference layout. The README's original was
+ *   20px pad → avatar 68px → 16px → kicker → 22px → H1 → 30px → divider 260×1px → 24px →
+ *   paragraph → 30px → CTA → 28px pad
+ * Changes: the avatar drops to 56px and the 260×1px divider between H1 and paragraph is gone.
+ * The stack's own padding is now zero — the hero owns the breathing room (48px top and bottom)
+ * so that centring stays symmetrical instead of being skewed by padding on the inner block.
+ */
+.stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ---- avatar ---- */
+
+.avatarWrap {
+  perspective: 620px;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(20, 18, 15, 0.14);
+  display: block;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Hover AND click both run coinFlip (README §2). */
+.avatarWrap:hover .avatar {
+  animation: coinFlip 1.15s cubic-bezier(0.42, 0.02, 0.38, 1);
+}
+
+@keyframes coinFlip {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+/* ---- kicker ---- */
+
+.kicker {
+  margin-top: 16px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13.5px;
+  font-weight: 400;
+  letter-spacing: 0.13em;
+  color: var(--muted-light);
+  text-transform: none;
+}
+
+/* 11×11px green square running diamondBeat (README §2). */
+.diamond {
+  width: 11px;
+  height: 11px;
+  background: var(--accent);
+  flex: none;
+  animation: diamondBeat 5.5s ease-in-out infinite;
+}
+
+@keyframes diamondBeat {
+  0%,
+  100% {
+    transform: rotate(45deg) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: rotate(45deg) scale(0.68);
+    opacity: 0.5;
+  }
+}
+
+/* ---- H1 ---- */
+
+/*
+ * The sphere position, registered via @property so it can actually interpolate. Plain custom
+ * properties are strings to the animation engine and jump instead of easing; typing them as
+ * <length> is what buys the 0.32s trail the README asks for.
+ */
+@property --mx {
+  syntax: '<length>';
+  initial-value: -9999px;
+  inherits: true;
+}
+@property --my {
+  syntax: '<length>';
+  initial-value: -9999px;
+  inherits: true;
+}
+
+/*
+ * SPHERE HOVER — README §2, rebuilt at João's request (2026-08-22).
+ *
+ * The README composes this from a #fff circle under `mix-blend-mode: difference`, inside a
+ * wrapper carrying `isolation: isolate` and `background: #fff`. That white ground is what
+ * produces the artefact: a blend can only difference against pixels its stacking context
+ * actually paints, so the circle dies at the wrapper's edges and a hard rectangle appears
+ * around the headline — the "box limitante".
+ *
+ * Rebuilt as two real layers instead of a blend, keeping the intended look exactly:
+ *   1. `.sphereDisc`  — a free-floating #14120F circle. Nothing clips it, so it can spill past
+ *                       the headline without ever drawing an edge.
+ *   2. `.titleSphere` — a duplicate of the headline in #fff, masked to the same circle, so the
+ *                       letters inside the disc read as knocked out of it.
+ *
+ * Same result the difference blend was reaching for — dark sphere, white letters — with no
+ * rectangle, because there is no ground being differenced.
+ *
+ * --mx/--my live here and inherit down, so the disc and the mask read one shared position and
+ * can never drift apart.
+ */
+.titleWrap {
+  margin-top: 22px;
+  position: relative;
+  /* Hug the text so the hover region is the headline, not the full column width. */
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+
+  /*
+   * README §2: custom 30×30 cursor — a rounded square rotated 45° (diamond), white at 35% with
+   * a 1.4px #14120F stroke, plus a solid #14120F 5×5 core, hotspot 15,15.
+   */
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Crect x='7.5' y='7.5' width='15' height='15' rx='2' transform='rotate(45 15 15)' fill='%23ffffff' fill-opacity='0.35' stroke='%2314120F' stroke-width='1.4'/%3E%3Crect x='12.5' y='12.5' width='5' height='5' fill='%2314120F'/%3E%3C/svg%3E")
+      15 15,
+    crosshair;
+
+  /* The sway lives here so every layer moves as one and stays in register. */
+  animation: titleSway 13s ease-in-out 4.6s infinite;
+
+  /* The 0.32s trail from README §2 — the sphere lags the pointer slightly. */
+  transition: --mx 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+    --my 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---- 1. the disc ---- */
+
+.sphereDisc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 236px;
+  height: 236px;
+  /* README §2: margin -118px centres the 236px circle on the pointer. */
+  margin: -118px 0 0 -118px;
+  border-radius: 50%;
+  background: var(--ink);
+  transform: translate(var(--mx), var(--my));
+  pointer-events: none;
+
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+/* ---- 2. the knocked-out letters ---- */
+
+.titleSphere {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  color: var(--paper);
+
+  /* Masked to the same circle, so white letters exist only inside the disc. */
+  -webkit-mask-image: radial-gradient(
+    circle 118px at var(--mx) var(--my),
+    #000 99%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(circle 118px at var(--mx) var(--my), #000 99%, transparent 100%);
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+
+  opacity: 0;
+  /*
+   * README §2 is emphatic: set opacity synchronously in the enter handler, never behind a lone
+   * requestAnimationFrame.
+   */
+  transition: opacity 0.8s ease;
+}
+
+.sphereOn .sphereDisc,
+.sphereOn .titleSphere {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .titleWrap {
+    animation: none;
+  }
+  .titleSphere,
+  .sphereDisc {
+    display: none;
+  }
+}
+
+/*
+ * DELIBERATE DEVIATION FROM THE README — approved by João 2026-08-22.
+ *
+ * The README specifies 96px "fixed" and separately budgets the first screen (nav + hero +
+ * divider + marquee) under ~760px for 1366×768. Those two numbers cannot both hold: built to
+ * spec the first screen measures 807.1px, over budget by 47.1px.
+ *
+ * 96px → 80px saves exactly 47.0px (80 × 0.98 × 3 lines = 235.2 vs 282.2) and brings the first
+ * screen to ~760px. João chose this over compressing the spacing, because it keeps a single
+ * consistent H1 across every breakpoint rather than a viewport-conditional one.
+ *
+ * Do NOT "restore" this to 96px on the strength of the README alone — it reopens the overflow.
+ */
+/*
+ * Shared by the base headline and its masked duplicate. The two must be metrically identical or
+ * the mask drifts out of register with the glyphs it is supposed to be painting.
+ */
+/*
+ * H1 SIZE — fluid, and it has to be. Measured 2026-08-22:
+ *
+ * "Design com foco em experiência," needs 1366.4px at 96px. Available width is clientWidth minus
+ * the two 48px gutters: 1255px at 1366, 1344px at 1440, 1824px at 1920. So a fixed 96px wraps the
+ * first line at BOTH 1366 and 1440 — turning the two-line headline into three and pushing the
+ * first screen 50px past the fold. Only 1920 has room for it.
+ *
+ * clamp() gives João the full 96px wherever it fits and steps down only where it would break:
+ *   1366 → 87.4px   1440 → 92.2px   1920 → 96px (clamped)
+ * Re-measure `trueWidthNoWrap` of the first line against `clientWidth - 96` if the copy changes.
+ */
+.title,
+.titleSphere {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(80px, 6.4vw, 96px);
+  font-weight: 700;
+  line-height: 0.98;
+  letter-spacing: -0.028em;
+  margin: 0;
+}
+
+.title {
+  color: var(--ink);
+}
+
+@keyframes titleSway {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  33% {
+    transform: translate3d(-5px, -11px, 0);
+  }
+  66% {
+    transform: translate3d(4px, 8px, 0);
+  }
+}
+
+/* ---- paragraph ---- */
+
+/*
+ * The README puts a 260×1px #d7d7d7 rule between the H1 and this paragraph. Removed 2026-08-22
+ * per João's reference layout — the two-line headline reads better with open space under it.
+ * Its 30px margin went with it. Restore both together if the rule ever comes back.
+ */
+.paragraph {
+  margin-top: 30px;
+  font-size: 18px;
+  font-weight: 300;
+  line-height: 1.48;
+  color: var(--body);
+}
+
+/* ---- CTA ---- */
+
+.cta {
+  margin-top: 30px;
+}

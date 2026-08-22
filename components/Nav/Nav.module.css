@@ -1,0 +1,106 @@
+/* README §1 "Nav (fixed, all screens)" */
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+
+  display: flex;
+  align-items: center;
+  gap: 26px;
+
+  /* Padding 20px 28px 20px 48px (README §1). */
+  padding: 20px 28px 20px 48px;
+
+  background: var(--navBg);
+  color: var(--navFg);
+
+  /* README §1: no border — the progress bar is the border. */
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ---- wordmark + caret ---- */
+
+.wordmark {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1;
+  color: var(--navFg);
+}
+
+/* 8×8px, two 1.5px borders, rotated 45° (README §1). */
+.caret {
+  width: 8px;
+  height: 8px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg) translateY(-2px);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.caretOpen {
+  transform: rotate(-135deg) translateY(-2px);
+}
+
+/* ---- language pair ---- */
+
+.langs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--navMuted);
+}
+
+/*
+ * README "Language toggle": both weights are equal; the active one is underlined and the
+ * inactive sits at 48% opacity — deliberately reading as an option, not a call to action.
+ */
+.lang {
+  opacity: 0.48;
+  transition: opacity 0.3s ease;
+}
+
+.langActive {
+  opacity: 1;
+  color: var(--navFg);
+  border-bottom: 1px solid currentColor;
+}
+
+.langSep {
+  opacity: 0.48;
+}
+
+/* ---- CTA ---- */
+
+.cta {
+  margin-left: auto;
+}
+
+/* ---- scroll progress bar (README §1: it IS the nav border) ---- */
+
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--navTrack);
+  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bar {
+  height: 100%;
+  background: var(--navFg);
+  transform-origin: left;
+  transition: transform 0.18s linear, background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}

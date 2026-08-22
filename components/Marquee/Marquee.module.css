@@ -1,0 +1,41 @@
+/* README §4 "Marquee". */
+
+.marquee {
+  padding: 22px 0;
+  overflow: hidden;
+  border-bottom: 1px solid var(--hairline-mid-3);
+}
+
+/*
+ * Two identical spans side by side; the parent translates 0 → -50%. The duplicate is what
+ * makes the loop seamless (README §4).
+ */
+.track {
+  display: flex;
+  width: max-content;
+  animation: marquee 46s linear infinite;
+}
+
+.span {
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  color: #4a4a4a;
+  white-space: nowrap;
+  padding-right: 0;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

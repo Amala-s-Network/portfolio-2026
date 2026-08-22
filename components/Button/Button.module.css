@@ -1,0 +1,143 @@
+/*
+ * README "Button interaction (used on every button)".
+ * Four layers: float, inversion, reflection sweep, arrow drift.
+ */
+
+.button {
+  --ax: 0px; /* arrow drift, horizontal */
+  --ay: 0px; /* arrow drift, vertical */
+
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1;
+
+  padding: 16px 26px;
+  border: 1px solid transparent;
+  border-radius: 0; /* radius is 0 on every surface except circles */
+
+  cursor: pointer;
+
+  /* The reflection sweep needs both of these to stay contained (README step 3). */
+  overflow: hidden;
+  isolation: isolate;
+
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* ---- 3. Reflection ---- */
+
+.button::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    105deg,
+    transparent 34%,
+    rgba(128, 128, 128, 0.85) 50%,
+    transparent 66%
+  );
+  mix-blend-mode: difference;
+  transform: translateX(-140%);
+  pointer-events: none;
+}
+
+.button:hover::before,
+.button:focus-visible::before {
+  transform: translateX(140%);
+  transition: transform 0.95s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Label and arrow must sit above the sweep (README step 3). */
+.label,
+.arrow {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- 4. Arrow drift ---- */
+
+.arrow {
+  transform: translate(var(--ax), var(--ay));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.button:hover .arrow,
+.button:focus-visible .arrow {
+  --ax: 5px;
+}
+
+/* Vertical arrows (↓ on the CV button, ⇡ on back-to-top) drift on --ay instead. */
+.down:hover .arrow,
+.down:focus-visible .arrow {
+  --ax: 0px;
+  --ay: 5px;
+}
+
+.up:hover .arrow,
+.up:focus-visible .arrow {
+  --ax: 0px;
+  --ay: -4px;
+}
+
+/* ---- variants ---- */
+
+/* Filled: ink ground, flips to paper on hover (README step 2). */
+.filled {
+  background: var(--btnBg, var(--ink));
+  color: var(--btnFg, var(--paper));
+  border-color: var(--btnBd, var(--ink));
+}
+
+.filled:hover,
+.filled:focus-visible {
+  background: var(--btnBgH, var(--paper));
+  color: var(--btnFgH, var(--ink));
+  border-color: var(--btnBdH, var(--ink));
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-button);
+}
+
+/* Outline: darkens its border on hover (README step 2). */
+.outline {
+  background: transparent;
+  color: var(--ink);
+  border-color: var(--hairline-mid);
+}
+
+.outline:hover,
+.outline:focus-visible {
+  border-color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-button-outline);
+}
+
+/* Small buttons carry the smaller shadow. */
+.small {
+  font-size: 14px;
+  padding: 12px 18px;
+}
+
+.small:hover,
+.small:focus-visible {
+  box-shadow: var(--shadow-button-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover,
+  .button:focus-visible {
+    transform: none;
+  }
+  .button::before {
+    display: none;
+  }
+}
