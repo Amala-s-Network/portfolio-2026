@@ -1,33 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Nav } from '@/components/Nav/Nav';
 import { Hero } from '@/components/Hero/Hero';
 import { Divider } from '@/components/Divider/Divider';
 import { Marquee } from '@/components/Marquee/Marquee';
 import { CasePanel } from '@/components/CasePanel/CasePanel';
+import { About } from '@/components/About/About';
+import { Metrics } from '@/components/Metrics/Metrics';
+import { History } from '@/components/History/History';
+import { Footer } from '@/components/Footer/Footer';
 import { cases } from '@/content/copy';
 
 /**
- * The one-pager. Sections land in the order given by CLAUDE.md:
+ * The one-pager. Section order from CLAUDE.md:
  *   Hero → Divider → Marquee → Cases → Carousel → About → Metrics → History → Footer
  *
- * Built so far: steps 1 and 3 (nav, hero without the sphere, divider, marquee). The divider and
- * marquee are here early because the 1366×768 budget is measured across all four.
+ * Still to come: the carousel (step 6), the menu overlay and contact modal (step 7), the intro
+ * overlay (step 3), and the back-to-top button.
  */
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [contactOpen, setContactOpen] = useState(false);
+  const [, setContactOpen] = useState(false);
+  const [, setFooterUp] = useState(false);
+
+  const openContact = useCallback(() => setContactOpen(true), []);
+  const handleFooterRise = useCallback((up: boolean) => setFooterUp(up), []);
 
   return (
     <>
       <Nav
         menuOpen={menuOpen}
         onToggleMenu={() => setMenuOpen((v) => !v)}
-        onContact={() => setContactOpen(true)}
+        onContact={openContact}
       />
       <main>
-        <Hero onContact={() => setContactOpen(true)} />
+        <Hero onContact={openContact} />
         <Divider />
         <Marquee />
 
@@ -35,6 +43,11 @@ export default function Page() {
         {cases.map((c, i) => (
           <CasePanel key={c.slug} data={c} index={i} />
         ))}
+
+        <About />
+        <Metrics />
+        <History />
+        <Footer onContact={openContact} onRiseChange={handleFooterRise} />
       </main>
     </>
   );

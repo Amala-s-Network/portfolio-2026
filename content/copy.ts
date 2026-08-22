@@ -13,6 +13,18 @@
 export type Lang = 'pt' | 'en';
 export type T = Record<Lang, string>;
 
+/** Shared destinations, so a URL is never written twice. */
+export const links = {
+  linkedin: 'https://www.linkedin.com/in/joaovmelo',
+  behance: 'https://www.behance.net/joaovmelo',
+  dribbble: 'https://dribbble.com/joaomeloux',
+  steam: 'https://steamcommunity.com/id/hiyute/',
+  email: 'joaovitormelo3105@gmail.com',
+  phone: '+55 34 99637-5495',
+  whatsapp: 'https://wa.me/5534996375495',
+  cv: 'https://drive.google.com/file/d/18qRteB14vsWrBLrgc3R2b17SUTsGGNaX/view',
+} as const;
+
 /* ---------------------------------------------------------------- nav */
 
 export const nav = {
@@ -421,17 +433,16 @@ export const contact = {
   } satisfies T,
 
   channels: {
-    email: { label: 'E-MAIL', value: 'joaovitormelo3105@gmail.com', href: 'mailto:joaovitormelo3105@gmail.com' },
-    whatsapp: { label: 'WHATSAPP', value: '+55 34 99637-5495', href: 'https://wa.me/5534996375495' },
-    linkedin: { label: 'LINKEDIN', value: '/in/joaovmelo', href: 'https://www.linkedin.com/in/joaovmelo' },
+    email: { label: 'E-MAIL', value: links.email, href: `mailto:${links.email}` },
+    whatsapp: { label: 'WHATSAPP', value: links.phone, href: links.whatsapp },
+    linkedin: { label: 'LINKEDIN', value: '/in/joaovmelo', href: links.linkedin },
   },
 
   social: [
-    { name: 'Behance', href: 'https://www.behance.net/joaovmelo' },
-    { name: 'Dribbble', href: 'https://dribbble.com/joaomeloux' },
-    { name: 'Steam', href: 'https://steamcommunity.com/id/hiyute/' },
-    /** TODO: the Google Drive URL for the CV — still the only missing link. */
-    { name: 'Currículo 2026', href: '#' },
+    { name: 'Behance', href: links.behance },
+    { name: 'Dribbble', href: links.dribbble },
+    { name: 'Steam', href: links.steam },
+    { name: 'Currículo 2026', href: links.cv },
   ],
 
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,

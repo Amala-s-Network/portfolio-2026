@@ -1,0 +1,203 @@
+/* README §9 "Contato / footer" */
+
+.section {
+  height: 150vh;
+  position: relative;
+  background: var(--paper);
+}
+
+/*
+ * z-index 70 puts this ABOVE the nav (50), which is the point: the panel swallows the nav as it
+ * rises rather than sliding under it.
+ */
+.stage {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  perspective: 1500px;
+  perspective-origin: 50% 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.stageLive {
+  pointer-events: auto;
+}
+
+.panel {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  transform: translateY(100%);
+
+  background: var(--ink);
+  color: var(--on-dark);
+  box-shadow: var(--shadow-panel);
+
+  display: flex;
+  flex-direction: column;
+  padding: 44px 48px;
+  overflow: hidden;
+}
+
+/* ---- folio ---- */
+
+.folio {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--on-dark-rule);
+  font-size: 13px;
+  color: var(--on-dark-50);
+}
+
+/* ---- body ---- */
+
+.body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 64px;
+  padding-top: 52px;
+  flex: 1;
+  min-height: 0;
+}
+
+.heading {
+  font-size: clamp(52px, 5.4vw, 82px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.blurb {
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--on-dark-72);
+  max-width: 460px;
+  margin-top: 26px;
+}
+
+/* Right column sits at the bottom of its cell (README §9). */
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 34px;
+}
+
+/* ---- channel rows ---- */
+
+.channels {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 20px;
+  padding: 16px 0;
+  border-bottom: 1px solid var(--on-dark-rule-2);
+  transition: color 0.35s ease;
+}
+
+.channel:hover {
+  color: var(--on-dark);
+}
+
+.channelLabel {
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--on-dark-50);
+}
+
+.channelValue {
+  font-size: 17px;
+}
+
+/* ---- social row ---- */
+
+.social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  font-size: 20px;
+}
+
+.social a {
+  transition: opacity 0.3s ease;
+  opacity: 0.72;
+}
+
+.social a:hover,
+.social a:focus-visible {
+  opacity: 1;
+}
+
+/* The footer CTA is white-filled, so it inverts the other way from the ones on paper. */
+.cta {
+  align-self: flex-start;
+  --btnBg: var(--paper);
+  --btnFg: var(--ink);
+  --btnBd: var(--paper);
+  --btnBgH: transparent;
+  --btnFgH: var(--paper);
+  --btnBdH: var(--paper);
+}
+
+/* ---- bottom bar ---- */
+
+.bottom {
+  margin-top: auto;
+  padding-top: 22px;
+  border-top: 1px solid var(--on-dark-rule);
+
+  display: flex;
+  align-items: center;
+  gap: 26px;
+  font-size: 13px;
+  color: var(--on-dark-50);
+}
+
+.wordmark {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--on-dark);
+}
+
+.copyright {
+  margin-left: auto;
+}
+
+.toTop {
+  --ay: 0px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+.toTop:hover {
+  color: var(--on-dark);
+}
+
+.toTopArrow {
+  transform: translateY(var(--ay));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.toTop:hover .toTopArrow {
+  --ay: -4px;
+}
+
+@media (max-width: 1000px) {
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+}

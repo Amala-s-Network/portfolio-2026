@@ -1,0 +1,63 @@
+/* README overview item 8: "Minha história no design" — company list, two columns. */
+
+.section {
+  background: var(--paper);
+  padding: 118px 48px 120px;
+  position: relative;
+  z-index: 1;
+}
+
+.heading {
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.026em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.intro {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--body);
+  max-width: 720px;
+  margin-top: 22px;
+}
+
+.list {
+  margin-top: 76px;
+  border-top: 1px solid var(--hairline);
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+  gap: 72px;
+  align-items: baseline;
+
+  padding: 30px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.name {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 0;
+}
+
+.description {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--body);
+}
+
+@media (max-width: 900px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+  }
+}

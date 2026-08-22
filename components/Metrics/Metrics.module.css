@@ -1,0 +1,112 @@
+/* README §8 "Resultados em destaque" */
+
+.section {
+  background: var(--ink);
+  color: var(--on-dark);
+  padding: 118px 48px 104px;
+  position: relative;
+  z-index: 1;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--on-dark-72);
+}
+
+.diamond {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.subhead {
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1.5;
+  max-width: 720px;
+  margin-top: 22px;
+  color: var(--on-dark-72);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: 34px;
+  margin-top: 76px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+/*
+ * Each cell is its own grid so the four numbers share a baseline: the label row is given a
+ * min-height, which absorbs a label that wraps instead of pushing its number down.
+ */
+.cell {
+  --digit: 0px;
+
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  padding: 34px 0 0;
+}
+
+.label {
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--on-dark-50);
+  min-height: 2.9em;
+}
+
+.value {
+  font-size: clamp(40px, 4.4vw, 66px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  transform: translateY(var(--digit));
+}
+
+.note {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--on-dark-72);
+  margin-top: 18px;
+  padding-right: 20px;
+}
+
+/* Hover on a cell hops its number (README §8). */
+.cell:hover .value {
+  animation: digitHop 0.95s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes digitHop {
+  0% {
+    transform: translateY(0);
+  }
+  45% {
+    transform: translateY(-7px);
+  }
+  75% {
+    transform: translateY(1px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cell:hover .value {
+    animation: none;
+  }
+}
+
+@media (max-width: 1100px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    row-gap: 20px;
+  }
+}
