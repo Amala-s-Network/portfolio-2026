@@ -201,6 +201,14 @@ export const projects: Project[] = [
   },
 ];
 
+export const caseLabels = {
+  /** The label that rises into place on panel hover (README §5). */
+  hover: {
+    pt: 'CLIQUE AQUI PARA VER O CASE COMPLETO',
+    en: 'CLICK HERE TO SEE THE FULL CASE',
+  } satisfies T,
+};
+
 export const carousel = {
   heading: { pt: 'Outros projetos selecionados', en: 'Other selected projects' } satisfies T,
   viewAll: { pt: 'ver todos os projetos', en: 'view all projects' } satisfies T,

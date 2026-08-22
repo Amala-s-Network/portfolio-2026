@@ -5,6 +5,8 @@ import { Nav } from '@/components/Nav/Nav';
 import { Hero } from '@/components/Hero/Hero';
 import { Divider } from '@/components/Divider/Divider';
 import { Marquee } from '@/components/Marquee/Marquee';
+import { CasePanel } from '@/components/CasePanel/CasePanel';
+import { cases } from '@/content/copy';
 
 /**
  * The one-pager. Sections land in the order given by CLAUDE.md:
@@ -28,6 +30,11 @@ export default function Page() {
         <Hero onContact={() => setContactOpen(true)} />
         <Divider />
         <Marquee />
+
+        {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
+        {cases.map((c, i) => (
+          <CasePanel key={c.slug} data={c} index={i} />
+        ))}
       </main>
     </>
   );

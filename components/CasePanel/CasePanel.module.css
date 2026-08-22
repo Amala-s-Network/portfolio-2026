@@ -1,0 +1,177 @@
+/* README §5 "Cases 01–04 (the page-turn)" */
+
+.section {
+  height: 130vh;
+  background: var(--paper);
+  position: relative;
+}
+
+/*
+ * The stage is fixed so the panel stays put while the section scrolls past it — that difference
+ * between a fixed panel and a moving section is what produces the turn.
+ */
+.stage {
+  position: fixed;
+  inset: 0;
+  perspective: 1500px;
+  perspective-origin: 50% 100%;
+  overflow: hidden;
+}
+
+/*
+ * Once the section has fully passed, the stage must stop intercepting clicks — otherwise four
+ * invisible full-screen layers sit on top of everything below them.
+ */
+.stageHidden {
+  visibility: hidden;
+}
+
+.panel {
+  --veil: 0;
+  --ctaOp: 0;
+  --ctaY: 10px;
+
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 100%;
+  /* Starting pose; the scroll handler takes over from the first frame. */
+  transform: translateY(100%);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  /* README §5: padding 116px 56px 64px. */
+  padding: 116px 56px 64px;
+
+  overflow: hidden;
+  color: var(--on-dark);
+  box-shadow: var(--shadow-panel);
+}
+
+/* ---- photo + scrim ---- */
+
+.photoFrame {
+  position: absolute;
+  /* inset: -8% 0 gives the parallax headroom so no edge shows as the photo drifts. */
+  inset: -8% 0;
+  overflow: hidden;
+}
+
+.photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 18, 15, 0.62) 0%,
+    rgba(20, 18, 15, 0.18) 34%,
+    rgba(20, 18, 15, 0.2) 62%,
+    rgba(20, 18, 15, 0.66) 100%
+  );
+  pointer-events: none;
+}
+
+/* The hover veil, driven by --veil (README §5). */
+.veil {
+  position: absolute;
+  inset: 0;
+  background: var(--ink);
+  opacity: var(--veil);
+  transition: opacity 0.6s ease;
+  pointer-events: none;
+}
+
+/* ---- content ---- */
+
+.head,
+.foot {
+  position: relative;
+  z-index: 2;
+}
+
+.title {
+  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+
+.company {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 10px;
+  color: var(--on-dark-72);
+}
+
+.foot {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.hoverLabel {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  font-size: 13px;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+
+  opacity: var(--ctaOp);
+  transform: translateY(var(--ctaY));
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The green diamond, rotated — the one place the accent colour is allowed. */
+.diamond {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.description {
+  font-size: 25px;
+  font-weight: 400;
+  line-height: 1.42;
+  max-width: 780px;
+  margin: 0;
+}
+
+/* ---- click target ---- */
+
+/* README §5: an absolute anchor covers the panel. */
+.anchor {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+}
+
+.anchor:hover ~ .veil,
+.anchor:focus-visible ~ .veil {
+  opacity: 0.18;
+}
+
+.panel:hover,
+.panel:focus-within {
+  --veil: 0.18;
+  --ctaOp: 1;
+  --ctaY: 0px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hoverLabel {
+    transition: none;
+  }
+}
