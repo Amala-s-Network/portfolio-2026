@@ -27,8 +27,13 @@
 
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center; /* the centring João asked for */
+  /*
+   * align-items is flex-start, not center: this is a column of a newspaper, and a column has one
+   * margin that every element hangs off. justify-content stays centred — that is vertical, and
+   * it is what holds the block in the space the nav leaves behind.
+   */
+  align-items: flex-start;
+  justify-content: center;
   /*
    * Left, not centred. Centring was what made the headline's second line hang in the middle of
    * the page and the deck's columns read as two captions rather than two columns — a newspaper
@@ -473,9 +478,12 @@
     width: 100%;
   }
 
-  /* The approved mobile layout is centred; only the desktop hero turns editorial. */
+  /*
+   * Left-aligned here too. The earlier version kept the phone centred because that was the
+   * approved layout, but centring is what stopped it reading as a column — a newspaper column is
+   * defined by its left edge, and on a 312px measure that edge is the only structure available.
+   */
   .hero {
-    text-align: center;
     /* The band is a real element again below 768px, so its height comes back. */
     --bandH: 34px;
     overflow: visible;
@@ -487,11 +495,6 @@
    * above the avatar. The reorder is done on the strip itself in Marquee.module.css — putting
    * order: 1 on the stack, as this first did, moves the wrong element and leaves the strip on top.
    */
-
-  .titleWrap {
-    margin-left: auto;
-    margin-right: auto;
-  }
 
   .avatarWrap {
     perspective: 480px;
