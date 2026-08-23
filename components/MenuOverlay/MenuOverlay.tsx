@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
@@ -34,7 +35,12 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
   const home = pathname === '/';
   const sections = [
     { href: home ? '#' : '/', label: copy.links[0] },
-    { href: home ? '#projetos' : '/#projetos', label: copy.links[1] },
+    /*
+     * "Projetos" is a PAGE now, not the carousel section on the home route. It used to jump to
+     * #projetos, which put the reader beside six cards and a button to the very index they had
+     * just asked for. It goes straight there.
+     */
+    { href: '/projetos', label: copy.links[1] },
     { href: home ? '#sobre' : '/#sobre', label: copy.links[2] },
   ];
 
@@ -70,8 +76,11 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
         <nav>
           <p className={styles.colHeading}>{t(copy.headings.menu)}</p>
           <div className={styles.links}>
-            {sections.map((s) => (
-              <a
+            {sections.map((s) => {
+              /* Same reason as ButtonLink: a route change must not reload the document. */
+              const Tag = s.href.startsWith('/') ? Link : 'a';
+              return (
+              <Tag
                 key={s.href}
                 className={styles.mainLink}
                 href={s.href}
@@ -90,8 +99,9 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
                 }}
               >
                 {t(s.label)}
-              </a>
-            ))}
+              </Tag>
+              );
+            })}
             {/* Closes the menu and opens the modal, rather than navigating. */}
             <button
               type="button"

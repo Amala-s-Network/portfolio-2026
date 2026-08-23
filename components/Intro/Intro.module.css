@@ -14,6 +14,31 @@
   transition: opacity 0.9s var(--ease);
 }
 
+/*
+ * The vignette carries its own grain. The page-wide layers sit at z-index 60 and this overlay is
+ * at 200, so they are underneath it — the one screen where the texture would be most obvious was
+ * the one screen that had none.
+ *
+ * screen only, and at the dark strength: this surface is --ink from edge to edge, and multiply
+ * on it would do nothing at all.
+ */
+.overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-tile);
+  background-size: var(--grain-size) var(--grain-size);
+  opacity: var(--grain-opacity-dark);
+  mix-blend-mode: screen;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay::after {
+    display: none;
+  }
+}
+
 .fading {
   opacity: 0;
 }

@@ -28,7 +28,10 @@
    * --grain-size is the tile. Smaller grain reads as film, larger as coarse stock.
    */
   --grain-opacity: 0.22;
+  /* The dark surfaces take less: screen on near-black lifts hard, so the same number shouts. */
+  --grain-opacity-dark: 0.13;
   --grain-size: 180px;
+  --grain-tile: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   --body: #3d3d3d;
   --muted: #6a6a6a;
   /*
@@ -371,35 +374,37 @@ html {
  * modal are surfaces of their own, and graining them as well would flatten the separation the
  * dark panels are doing.
  */
-body::after {
+body::after,
+body::before {
   content: '';
   position: fixed;
   inset: 0;
   z-index: 60;
   pointer-events: none;
-  opacity: var(--grain-opacity);
-
-  /*
-   * The tile is DESATURATED and its alpha flattened before it is used.
-   *
-   * Raw feTurbulence writes noise into all four channels, so the tile comes out as faint
-   * multicoloured static that is also mostly transparent. feColorMatrix type="saturate" 0
-   * collapses it to grey WITHOUT discarding it, and feFuncA forces alpha to 1 so the strength is
-   * governed by --grain-opacity alone rather than by two transparencies multiplying each other.
-   *
-   * The saturate matrix matters and is not interchangeable with a hand-written one. This first
-   * used type="matrix" with values="0 0 0 0 0.5 …", whose fifth column is a CONSTANT: it sets
-   * every channel to 0.5 regardless of input, throwing the turbulence away entirely and leaving
-   * a flat grey card. Rendered to a canvas the tile measured a standard deviation of 0.00 across
-   * all 32,400 pixels — the page was being veiled, not grained. With saturate it measures 14.96
-   * over a 119-233 range, which is what actual grain looks like.
-   *
-   * mix-blend-mode: multiply keeps it as tooth in the paper: it darkens where the grain is dark
-   * and leaves the light areas alone, instead of laying a grey veil over the whole page.
-   */
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: var(--grain-tile);
   background-size: var(--grain-size) var(--grain-size);
+}
+
+/*
+ * TWO layers, because one blend mode cannot serve both surfaces.
+ *
+ * multiply on the paper (luminance 0.957) darkens by the noise and reads clearly. The same
+ * multiply on #14120f (0.07) returns almost the same black — 0.07 x noise is a change of about
+ * two hundredths, which is nothing. That is why the dark bands had no texture.
+ *
+ * screen is the mirror of that: on near-black it lifts by 0.93 x noise and reads strongly, while
+ * on the paper it can only move the remaining 0.043 and is almost invisible. So the two layers
+ * stack over the whole page and each one does its work where the other cannot, with no need to
+ * know which section is underneath.
+ */
+body::after {
+  opacity: var(--grain-opacity);
   mix-blend-mode: multiply;
+}
+
+body::before {
+  opacity: var(--grain-opacity-dark);
+  mix-blend-mode: screen;
 }
 
 /*
@@ -408,7 +413,8 @@ body::after {
  * some readers.
  */
 @media (prefers-reduced-motion: reduce) {
-  body::after {
+  body::after,
+  body::before {
     display: none;
   }
 }
