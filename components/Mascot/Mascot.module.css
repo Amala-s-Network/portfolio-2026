@@ -1,0 +1,157 @@
+/*
+ * The easter-egg character, living beside the portrait in "Sobre mim".
+ *
+ * He no longer walks the marquee — João moved him here on 2026-08-23, so the reveal is tied to
+ * hovering the portrait: the reader is already looking at João when the offer to know more
+ * appears. That is why there is no walk cycle any more, only the idle bob and the wave.
+ *
+ * Visibility is driven entirely by the parent's `:hover` via `--mascotShow`, set in About's CSS,
+ * so this component holds no state of its own.
+ */
+
+.mascot {
+  position: absolute;
+  left: -104px;
+  bottom: 0;
+  z-index: 2;
+  width: 96px;
+  height: 120px;
+  pointer-events: none;
+
+  opacity: var(--mascotShow, 0);
+  transform: translateY(calc((1 - var(--mascotShow, 0)) * 14px));
+  transition: opacity 0.5s var(--ease),
+    transform 0.55s var(--ease);
+}
+
+/* ---- figure ---- */
+
+.figure {
+  display: block;
+  animation: mascotBob 0.42s steps(2, end) infinite;
+  animation-play-state: var(--mascotPlay, paused);
+}
+
+.svg {
+  display: block;
+  /* Without this the browser antialiases every rect edge and the pixel-art read is lost. */
+  shape-rendering: crispEdges;
+  overflow: visible;
+}
+
+.legA {
+  animation: legA 0.42s steps(2, end) infinite;
+  animation-play-state: var(--mascotPlay, paused);
+}
+
+.legB {
+  animation: legB 0.42s steps(2, end) infinite;
+  animation-play-state: var(--mascotPlay, paused);
+}
+
+.arm {
+  animation: armWave 0.7s ease-in-out infinite;
+  animation-play-state: var(--mascotPlay, paused);
+  transform-origin: 104px 92px;
+}
+
+/* ---- speech bubble ---- */
+
+.bubble {
+  position: absolute;
+  left: 50%;
+  bottom: 128px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+.bubbleBody {
+  display: block;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  padding: 9px 13px;
+  /* No radius — a hard rectangle, like every other surface in this design. */
+}
+
+.bubbleTail {
+  position: absolute;
+  left: 50%;
+  bottom: -5px;
+  width: 10px;
+  height: 10px;
+  margin-left: -5px;
+  background: var(--ink);
+  transform: rotate(45deg);
+}
+
+/* ---- motion ---- */
+
+/* Stepped timing is what makes this read as pixel animation rather than a sliding image. */
+@keyframes mascotBob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes legA {
+  0%,
+  49% {
+    transform: translateY(0);
+  }
+  50%,
+  100% {
+    transform: translateY(-3px);
+  }
+}
+
+@keyframes legB {
+  0%,
+  49% {
+    transform: translateY(-3px);
+  }
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+}
+
+@keyframes armWave {
+  0%,
+  100% {
+    transform: rotate(-6deg);
+  }
+  50% {
+    transform: rotate(28deg);
+  }
+}
+
+/*
+ * Reduced motion: he still appears, because he carries the only route into the secret area —
+ * hiding him would remove a navigation affordance, not just an ornament. Only the idle
+ * animation stops.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .mascot {
+    transition: opacity 0.2s linear;
+    transform: none;
+  }
+  .figure,
+  .legA,
+  .legB,
+  .arm {
+    animation: none;
+  }
+}
+
+/* Narrow screens have no hover and no room to the left of the portrait. */
+@media (max-width: 1100px) {
+  .mascot {
+    display: none;
+  }
+}

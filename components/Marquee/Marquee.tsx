@@ -6,7 +6,7 @@ import styles from './Marquee.module.css';
 
 export function Marquee() {
   const { t } = useLanguage();
-  const text = `${t(copy)}  `;
+  const text = `${t(copy)}  `;
 
   return (
     <div className={styles.marquee} aria-hidden="true">

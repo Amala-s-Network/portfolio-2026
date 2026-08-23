@@ -81,6 +81,19 @@ export const hero = {
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
 };
 
+/* ------------------------------------------------------------- mascot */
+
+export const mascot = {
+  bubble: {
+    pt: 'ACESSAR ÁREA SECRETA',
+    en: 'ENTER THE SECRET AREA',
+  } satisfies T,
+  label: {
+    pt: 'Acessar área secreta',
+    en: 'Enter the secret area',
+  } satisfies T,
+};
+
 /* ------------------------------------------------------------ marquee */
 
 export const marquee = {
