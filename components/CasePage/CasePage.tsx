@@ -6,11 +6,17 @@ import { cases, caseDetails, type T } from '@/content/copy';
 import styles from './CasePage.module.css';
 
 /**
- * A visible stand-in for a field João has not written yet. Loud on purpose — the 60s layer is
- * what carries the judgement, and a case page missing its conflict is not finished, however
- * complete the rest looks.
+ * Authoring scaffolding: these prompts exist to tell João which fields still need writing.
+ *
+ * DEV ONLY. The site is public and indexable, so a visitor must never land on a page telling
+ * them what the author has not written yet — that reads as an abandoned draft, which is worse
+ * than a shorter page. In production the prompt renders nothing, and any block that would be
+ * entirely empty is dropped instead (see `hasAny` below).
  */
+const SHOW_PROMPTS = process.env.NODE_ENV !== 'production';
+
 function Missing({ what, ask, dark }: { what: string; ask: string; dark?: boolean }) {
+  if (!SHOW_PROMPTS) return null;
   return (
     <div className={styles.todo} style={dark ? { color: 'var(--on-dark)' } : undefined}>
       <span className={styles.todoTitle}>Falta escrever — {what}</span>
@@ -26,6 +32,14 @@ export function CasePage({ slug }: { slug: string }) {
   if (!summary || !data) return null;
 
   const line = (v: T | null) => (v ? t(v) : null);
+
+  /*
+   * In production a section with nothing written is dropped rather than rendered empty. The
+   * 60s layer only appears once at least one of its three fields exists; the evidence numbers
+   * are real either way, so they move up into the 6min layer if the argument is not written yet.
+   */
+  const hasArgument = Boolean(data.conflict || data.tradeoff || data.decision);
+  const showArgument = SHOW_PROMPTS || hasArgument;
 
   return (
     <article className={styles.page}>
@@ -53,10 +67,10 @@ export function CasePage({ slug }: { slug: string }) {
       <section className={styles.sixty}>
         <span className={styles.layerMark}>
           <span className={styles.diamond} aria-hidden="true" />
-          60 SEGUNDOS — CONFLITO, DECISÃO, EVIDÊNCIA
+          {showArgument ? '60 SEGUNDOS — CONFLITO, DECISÃO, EVIDÊNCIA' : 'RESULTADOS'}
         </span>
 
-        <div className={styles.argument}>
+        <div className={styles.argument} hidden={!showArgument}>
           <div>
             <p className={styles.argumentHead}>O CONFLITO</p>
             {line(data.conflict) ? (
@@ -115,19 +129,21 @@ export function CasePage({ slug }: { slug: string }) {
           6 MINUTOS — DETALHE E O QUE MUDOU O JOGO
         </span>
 
-        <div className={styles.detailGrid}>
-          <p className={styles.detailTitle}>O principal desafio</p>
-          <div>
-            {line(data.challenge) ? (
-              <p className={styles.detailBody}>{line(data.challenge)}</p>
-            ) : (
-              <Missing
-                what="o principal desafio"
-                ask="Qual foi a coisa mais difícil deste trabalho? Não o objetivo — o obstáculo. Restrição técnica, política interna, prazo, dado que não existia."
-              />
-            )}
+        {(SHOW_PROMPTS || data.challenge) && (
+          <div className={styles.detailGrid}>
+            <p className={styles.detailTitle}>O principal desafio</p>
+            <div>
+              {line(data.challenge) ? (
+                <p className={styles.detailBody}>{line(data.challenge)}</p>
+              ) : (
+                <Missing
+                  what="o principal desafio"
+                  ask="Qual foi a coisa mais difícil deste trabalho? Não o objetivo — o obstáculo. Restrição técnica, política interna, prazo, dado que não existia."
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         {data.detail.map((d, i) => (
           <div key={i} className={styles.detailGrid}>
@@ -145,19 +161,21 @@ export function CasePage({ slug }: { slug: string }) {
           </ul>
         </div>
 
-        <div className={styles.detailGrid}>
-          <p className={styles.detailTitle}>O que mudou o jogo</p>
-          <div>
-            {line(data.gameChanger) ? (
-              <p className={styles.detailBody}>{line(data.gameChanger)}</p>
-            ) : (
-              <Missing
-                what="o que mudou o jogo"
-                ask="O que este trabalho destravou além da métrica? Mudou como o time opera, virou padrão para outras jornadas, abriu um mercado?"
-              />
-            )}
+        {(SHOW_PROMPTS || data.gameChanger) && (
+          <div className={styles.detailGrid}>
+            <p className={styles.detailTitle}>O que mudou o jogo</p>
+            <div>
+              {line(data.gameChanger) ? (
+                <p className={styles.detailBody}>{line(data.gameChanger)}</p>
+              ) : (
+                <Missing
+                  what="o que mudou o jogo"
+                  ask="O que este trabalho destravou além da métrica? Mudou como o time opera, virou padrão para outras jornadas, abriu um mercado?"
+                />
+              )}
+            </div>
           </div>
-        </div>
+        )}
 
         <div className={styles.gallery}>
           {data.gallery.map((g, i) => (
