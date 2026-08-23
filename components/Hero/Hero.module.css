@@ -388,7 +388,7 @@
     min-height: calc(100vh - var(--bandH) - var(--bandLift));
     min-height: calc(100svh - var(--bandH) - var(--bandLift));
     justify-content: flex-start;
-    padding-top: calc(var(--navH) + 20px);
+    padding-top: calc(var(--navH) + 24px);
     padding-bottom: 0;
   }
 
@@ -468,7 +468,7 @@
 
   /* 16px from the headline, per João's spacing. */
   .paragraph {
-    margin-top: 16px;
+    margin-top: 24px;
     font-size: 13.5px;
     line-height: 1.45;
     text-wrap: pretty;
@@ -476,7 +476,7 @@
 
   /* 24px from the paragraph, per João's spacing. */
   .cta {
-    margin-top: 24px;
+    margin-top: 32px;
   }
 }
 

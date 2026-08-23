@@ -13,7 +13,7 @@ import styles from './BackToTop.module.css';
  * behind its own centre" — it hit-tests the element under its own midpoint — so it is always the
  * inverse of its actual backdrop rather than of whatever the nav happens to be doing far above it.
  */
-export function BackToTop({ suppressed }: { suppressed: boolean }) {
+export function BackToTop({ suppressed = false }: { suppressed?: boolean }) {
   const { lang, t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
   const [visible, setVisible] = useState(false);

@@ -16,11 +16,11 @@ import styles from './Hero.module.css';
  * on desktop too keeps one behaviour rather than two — hovering or tapping still restarts it
  * immediately.
  *
- * Named rather than inlined because 1500ms against a 1150ms animation means the avatar is
- * turning almost continuously. That is what was asked for, but it also sits close to where WCAG
- * 2.2.2 would want a way to stop it. Raising this number is the only edit needed.
+ * 3000ms against a 1150ms animation leaves the avatar still for most of a cycle, which reads as
+ * a deliberate glance rather than a spinning ornament — and puts real distance between it and
+ * WCAG 2.2.2, which is uneasy about motion that never pauses.
  */
-const FLIP_EVERY = 1500;
+const FLIP_EVERY = 3000;
 
 /**
  * README "Entrance cascade": kicker → H1 → paragraph → CTA, 260ms apart, starting when the intro

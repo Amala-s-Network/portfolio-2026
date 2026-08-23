@@ -867,6 +867,13 @@ export const contact = {
 
 /* ------------------------------------------------------------ overlays */
 
+/* ------------------------------------------------------------ case page */
+
+export const casePage = {
+  back: { pt: 'Voltar', en: 'Back' } satisfies T,
+  backLong: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
+};
+
 export const menu = {
   headings: {
     menu: { pt: 'MENU', en: 'MENU' } satisfies T,

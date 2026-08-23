@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Nav } from '@/components/Nav/Nav';
+import { CaseShell } from '@/components/CaseShell/CaseShell';
 import { CasePage } from '@/components/CasePage/CasePage';
 import { cases, caseDetails } from '@/content/copy';
 
@@ -33,11 +33,8 @@ export default async function Page({ params }: Params) {
   if (!caseDetails[slug]) notFound();
 
   return (
-    <>
-      <Nav />
-      <main>
-        <CasePage slug={slug} />
-      </main>
-    </>
+    <CaseShell>
+      <CasePage slug={slug} />
+    </CaseShell>
   );
 }

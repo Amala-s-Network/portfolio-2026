@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import { usePathname } from 'next/navigation';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
 import { menu as copy, hero, nav as navCopy, links } from '@/content/copy';
@@ -16,14 +17,25 @@ type MenuOverlayProps = {
 export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
   const { lang, setLang, t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   // Focus trap, Escape, focus return, and the body scroll lock (README "Overlays").
   useOverlay(ref, open, onClose, { lockScroll: true });
 
+  /*
+   * The section anchors only exist on the one-pager. Opened from a case page the menu looked
+   * perfectly alive and every link was a no-op, because `#projetos` matched nothing in the
+   * document — so off the home route they are prefixed to navigate home first.
+   *
+   * The plain hash form is kept ON the home route deliberately: `/#projetos` there would be a
+   * full document navigation, throwing away the intro state and the scroll position to land in
+   * the same place a hash jump reaches instantly.
+   */
+  const home = pathname === '/';
   const sections = [
-    { href: '#', label: copy.links[0] },
-    { href: '#projetos', label: copy.links[1] },
-    { href: '#sobre', label: copy.links[2] },
+    { href: home ? '#' : '/', label: copy.links[0] },
+    { href: home ? '#projetos' : '/#projetos', label: copy.links[1] },
+    { href: home ? '#sobre' : '/#sobre', label: copy.links[2] },
   ];
 
   return (

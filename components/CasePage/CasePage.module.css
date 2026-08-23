@@ -19,6 +19,45 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  position: relative;
+}
+
+/*
+ * Taken out of flow on purpose. The 6s block is a centred flex column and the whole point of it
+ * is that the title, the context line and the impact number sit balanced in the fold — putting
+ * the back link in that column would either shove them off centre or, with an auto margin, push
+ * them to the bottom of the screen. Absolute keeps the composition and drops the link into the
+ * padding that already exists above it.
+ */
+.backTop {
+  position: absolute;
+  top: calc(var(--navH) + 26px);
+  left: var(--gutter);
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+  color: var(--muted-light);
+  --ax: 0px;
+  transition: color 0.45s var(--ease);
+}
+
+.backTop:hover,
+.backTop:focus-visible {
+  color: var(--ink);
+  --ax: -5px;
+}
+
+.backArrow {
+  transform: translateX(var(--ax));
+  transition: transform 0.45s var(--ease);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backArrow {
+    transition: none;
+  }
 }
 
 .folio {
@@ -79,12 +118,14 @@
 }
 
 .impactLabel {
+  display: block;
   font-size: 11.5px;
   letter-spacing: 0.14em;
   color: var(--muted-light);
 }
 
 .impactNote {
+  display: block;
   font-size: 15px;
   line-height: var(--lh-body);
   color: var(--body);
@@ -331,9 +372,25 @@
 
 /* Mobile: single column throughout, and the 6s block stops reserving a full viewport. */
 @media (max-width: 768px) {
+  /*
+   * Back in the flow on mobile.
+   *
+   * Absolute positioning exists on desktop to protect the centred fold; here the block no longer
+   * reserves a viewport (min-height: 0) so there is no composition to protect — and the link was
+   * landing in the same 18px the folio starts on, printing "Voltar" straight through "Itaú
+   * Unibanco · via NTT DATA". In flow it simply cannot collide with what follows it.
+   */
+  .backTop {
+    position: static;
+    font-size: 13px;
+    /* WCAG 2.5.5: the text row alone is ~18px, so the target is padded out to 44px. */
+    padding: 13px 0;
+    margin: -13px 0 22px;
+  }
+
   .six {
     min-height: 0;
-    padding: calc(var(--navH) + 32px) var(--gutter) 40px;
+    padding: calc(var(--navH) + 24px) var(--gutter) 40px;
   }
   .title {
     font-size: 32px;

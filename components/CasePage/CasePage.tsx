@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useLanguage } from '@/lib/language';
-import { cases, caseDetails, type T } from '@/content/copy';
+import { cases, caseDetails, casePage as copy, type T } from '@/content/copy';
 import styles from './CasePage.module.css';
 
 /**
@@ -45,6 +45,20 @@ export function CasePage({ slug }: { slug: string }) {
     <article className={styles.page}>
       {/* ------------------------------------------------ 6 seconds */}
       <header className={styles.six}>
+        {/*
+         * The way out, at the top.
+         *
+         * There was already a "Voltar para o início" in the page footer, but a case page is long
+         * and that link is only reachable by reading to the end of it — which is exactly the
+         * thing a reader who wants to leave has decided not to do. The nav's wordmark opens the
+         * menu rather than going home, so without this the only escape was the browser's own
+         * back button.
+         */}
+        <Link className={styles.backTop} href="/">
+          <span className={styles.backArrow} aria-hidden="true">⇠</span>
+          {t(copy.back)}
+        </Link>
+
         <div className={styles.folio}>
           <span>{t(summary.company)}</span>
           <span>{t(data.role)}</span>
@@ -196,7 +210,7 @@ export function CasePage({ slug }: { slug: string }) {
       <footer className={styles.pageFoot}>
         <Link className={styles.backLink} href="/">
           <span aria-hidden="true">⇠</span>
-          Voltar para o início
+          {t(copy.backLong)}
         </Link>
       </footer>
     </article>
