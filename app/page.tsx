@@ -13,6 +13,7 @@ import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Intro } from '@/components/Intro/Intro';
+import { PageFold } from '@/components/PageFold/PageFold';
 import { cases } from '@/content/copy';
 
 /**
@@ -74,6 +75,13 @@ export default function Page() {
         <History />
         <Footer onContact={openContact} onRiseChange={handleFooterRise} />
       </main>
+
+      {/*
+        * The dog-ear. It belongs to the first screen rather than to any section, so it is a
+        * sibling of <main> — fixed to the viewport corner, fading out as the first case takes
+        * the screen.
+        */}
+      <PageFold />
 
       {/* Suppressed while the footer is up, per README. */}
       <BackToTop suppressed={footerUp} />

@@ -1,0 +1,145 @@
+/*
+ * The dog-ear.
+ *
+ * The geometry is one square in the bottom-right corner, cut in two by the fold line running
+ * from its bottom-left to its top-right:
+ *
+ *   · the BOTTOM-RIGHT triangle is the hole the lifted corner leaves, showing the page under
+ *   · the TOP-LEFT triangle is that same corner flipped over the line — the back of the sheet
+ *
+ * Drawing both is what makes it read as folded paper. Drawing only the hole reads as a corner
+ * someone cut off with scissors.
+ */
+
+.fold {
+  --foldSize: 58px;
+
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  width: var(--foldSize);
+  height: var(--foldSize);
+
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+
+  /* Under the nav (50) and the grain (60), over the page. */
+  z-index: 40;
+
+  transition: width 0.5s var(--ease), height 0.5s var(--ease), opacity 0.4s var(--ease);
+}
+
+/* ---- the page underneath, seen through the lifted corner ---- */
+
+.hole {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  background: var(--ink);
+}
+
+/* ---- the back of the sheet ---- */
+
+.flap {
+  position: absolute;
+  inset: 0;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+
+  /*
+   * Light along the fold line, darkening towards the tip. Paper lifted off a surface catches
+   * light on the crease and falls into shade where it curls away — the gradient is doing that
+   * and nothing else, which is why it runs on the same 135deg axis as the fold.
+   */
+  background: linear-gradient(
+    135deg,
+    #ffffff 0%,
+    var(--paper) 38%,
+    #e4e0d6 78%,
+    #d3cec2 100%
+  );
+
+  /* The crease itself: a hard edge where the sheet doubles over. */
+  box-shadow: -1px -1px 0 rgba(20, 18, 15, 0.1), -8px -8px 18px rgba(20, 18, 15, 0.12);
+}
+
+/* ---- the label ---- */
+
+/*
+ * Sits to the LEFT of the corner, on the paper, not on the fold. Set over the gradient it would
+ * be unreadable at both ends of it — and the corner is small at rest, so there is nowhere on it
+ * for the words to go.
+ */
+.label {
+  position: absolute;
+  right: calc(var(--foldSize) + 4px);
+  bottom: 16px;
+  white-space: nowrap;
+
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: var(--ink);
+
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+  pointer-events: none;
+}
+
+.fold:hover .label,
+.fold:focus-visible .label {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Hovering lifts the corner further — the same gesture as pinching a page to see what is under. */
+.fold:hover,
+.fold:focus-visible {
+  --foldSize: 190px;
+}
+
+.fold:active {
+  --foldSize: 176px;
+}
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * Smaller, and the label goes. At 360px a 190px corner covers a quarter of the screen, and the
+ * hover that would reveal the words does not exist on a phone — leaving a permanently visible
+ * label would put text over the deck it sits above.
+ */
+@media (max-width: 768px) {
+  .fold {
+    --foldSize: 44px;
+  }
+
+  .fold:hover,
+  .fold:focus-visible {
+    --foldSize: 44px;
+  }
+
+  .label {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fold,
+  .label {
+    transition: none;
+  }
+
+  /* No peel and no lift: the corner stays exactly as drawn. */
+  .fold:hover,
+  .fold:focus-visible,
+  .fold:active {
+    --foldSize: 58px;
+  }
+
+  .label {
+    opacity: 1;
+    transform: none;
+  }
+}

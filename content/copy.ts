@@ -107,6 +107,24 @@ export const hero = {
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
 };
 
+/* --------------------------------------------------------- page fold */
+
+export const pageFold = {
+  /*
+   * The visible label and the accessible name are the SAME string, deliberately.
+   *
+   * "Vire a página" is the better line — it is what the dog-ear is drawn as, and it belongs to
+   * the newspaper this whole page is built on. It is not used, because a control has one job
+   * before it has a voice: someone arriving on a portfolio needs to know that corner leads to
+   * the work, and the fold itself already carries the metaphor without the words repeating it.
+   *
+   * WCAG 2.5.3 also wants the accessible name to contain the visible text, so splitting them —
+   * "Vire a página" on screen, "Ir para os cases" to a screen reader — would break voice control
+   * for anyone saying what they can see.
+   */
+  label: { pt: 'Ler os cases', en: 'Read the cases' } satisfies T,
+};
+
 /* ------------------------------------------------------------- mascot */
 
 export const mascot = {

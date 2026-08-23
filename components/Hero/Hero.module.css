@@ -42,17 +42,16 @@
   text-align: left;
 
   /*
-   * `min()` caps how far the hero will stretch. Left uncapped it fills the viewport, which on a
-   * 1080-tall screen threw 226px of air above and below a 487px block — far too much. The 800px
-   * ceiling holds the breathing room near the 1366 figure at every size.
+   * FULL viewport, at every breakpoint — the 800px ceiling is gone at João's instruction.
    *
-   * The trade-off, deliberately taken: above roughly 860px of viewport the band no longer lands
-   * on the fold — it sits higher, with the next section following. Below that the first branch
-   * wins and the band is pinned to the fold exactly as before.
+   * That cap existed because a hero left to fill 1080px threw 226px of empty air above and below
+   * the content. What changed is that the empty space now has a job: the dog-ear lives in the
+   * bottom-right of it, and a corner that does not reach the corner of the screen is not a
+   * folded page. The paper has to run edge to edge for the fold to mean anything.
    */
-  min-height: min(calc(100vh - var(--bandH)), 800px);
-  /* svh = viewport with the iOS URL bar showing, so the band is never pushed under it. */
-  min-height: min(calc(100svh - var(--bandH)), 800px);
+  min-height: calc(100vh - var(--bandH));
+  /* svh = viewport with the iOS URL bar showing, so nothing hides under browser chrome. */
+  min-height: calc(100svh - var(--bandH));
 
   /* Clear the fixed nav, then 48px of breathing room before the content starts. */
   padding-top: calc(var(--navH) + 48px);
