@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useRef, useState } from 'react';
-import { Copy, Check } from 'lucide-react';
+import { CopyIcon, CheckIcon } from './CopyIcon';
 import { ButtonLink } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
@@ -99,9 +99,9 @@ export function About() {
 
         <button type="button" className={styles.copyEmail} onClick={copyEmail}>
           {copied ? (
-            <Check size={17} className={styles.copyIcon} aria-hidden="true" />
+            <CheckIcon size={17} className={styles.copyIcon} />
           ) : (
-            <Copy size={17} className={styles.copyIcon} aria-hidden="true" />
+            <CopyIcon size={17} className={styles.copyIcon} />
           )}
           {copied ? t(copy.copyEmail) : links.email}
         </button>

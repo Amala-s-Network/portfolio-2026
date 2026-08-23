@@ -136,12 +136,17 @@
 
 /* ---- columns ---- */
 
+/*
+ * Sits at the top and centred as a group, rather than pushed to the bottom of the overlay.
+ * `margin-bottom: auto` is what holds it up top — the kicker still anchors to the very bottom.
+ */
 .columns {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
-  gap: 64px;
-  margin-top: auto;
-  padding-bottom: 40px;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  justify-content: center;
+  gap: 96px;
+  margin-top: 72px;
+  margin-bottom: auto;
   position: relative;
   z-index: 1;
 }
@@ -160,10 +165,10 @@
   align-items: flex-start;
 }
 
-/* Main nav links: 34px Playfair, sliding 6px right on hover. */
+/* Main nav links: 20px, sliding 6px right on hover. */
 .mainLink {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: 34px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--on-dark);
