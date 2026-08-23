@@ -218,9 +218,14 @@
 
 /* Mobile: the card meets the gutter, and each channel row clears the tap minimum. */
 @media (max-width: 768px) {
+  /*
+   * Centred, not bottom-aligned. The sheet-from-the-bottom pattern is the mobile convention and
+   * is what was here, but this modal is three short links rather than a scrollable sheet — pinned
+   * to the bottom it read as cut off, and it disagreed with the desktop treatment for no reason.
+   */
   .root {
     padding: var(--gutter) 16px;
-    align-items: flex-end;
+    align-items: center;
   }
   .card {
     padding: 28px 24px 24px;

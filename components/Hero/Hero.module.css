@@ -412,7 +412,7 @@
    * green dot floating above the kicker.
    */
   .kicker {
-    margin-top: 16px;
+    margin-top: 20px;
     font-size: 10px;
     letter-spacing: 0.1em;
     display: block;
@@ -434,16 +434,20 @@
   }
 
   .titleWrap {
-    margin-top: 14px;
+    margin-top: 26px;
     /* Full width on mobile: fit-content would leave the headline off-centre once it wraps. */
     width: 100%;
   }
 
+  /*
+   * Up from 30px. The hero had 216px of unused height below the content, so the headline can
+   * carry the screen the way it does on desktop instead of sitting politely in the middle of it.
+   */
   .title,
   .titleSphere {
-    font-size: 30px;
-    line-height: 1.05;
-    letter-spacing: -0.022em;
+    font-size: 38px;
+    line-height: 1.04;
+    letter-spacing: -0.025em;
     text-wrap: balance;
   }
 
