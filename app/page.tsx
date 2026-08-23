@@ -14,6 +14,7 @@ import { Footer } from '@/components/Footer/Footer';
 import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
+import { Intro } from '@/components/Intro/Intro';
 import { cases } from '@/content/copy';
 
 /**
@@ -26,7 +27,9 @@ export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
   const [footerUp, setFooterUp] = useState(false);
+  const [introDone, setIntroDone] = useState(false);
 
+  const handleIntroDone = useCallback(() => setIntroDone(true), []);
   const openContact = useCallback(() => setContactOpen(true), []);
   const closeContact = useCallback(() => setContactOpen(false), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
@@ -34,6 +37,8 @@ export default function Page() {
 
   return (
     <>
+      <Intro onDone={handleIntroDone} />
+
       <Nav
         menuOpen={menuOpen}
         onToggleMenu={() => setMenuOpen((v) => !v)}
@@ -41,7 +46,7 @@ export default function Page() {
       />
 
       <main>
-        <Hero onContact={openContact} />
+        <Hero onContact={openContact} started={introDone} />
         <Divider />
         <Marquee />
 

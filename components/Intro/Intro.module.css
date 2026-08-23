@@ -1,0 +1,100 @@
+/* README "Intro (page load)" */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: var(--ink);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 1;
+  transition: opacity 0.9s ease;
+}
+
+.fading {
+  opacity: 0;
+}
+
+.gone {
+  display: none;
+}
+
+/* ---- wordmark ---- */
+
+.wordmark {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 44px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--paper);
+  white-space: nowrap;
+  display: flex;
+}
+
+/*
+ * README: ten individual spans, each hopping with a 0.07s stagger — the "three dots loading"
+ * rhythm applied to letters. The per-letter delay is set inline from the index.
+ */
+.letter {
+  display: inline-block;
+  animation: letterHop 1.5s cubic-bezier(0.4, 0, 0.3, 1) infinite;
+  animation-delay: var(--hop);
+}
+
+@keyframes letterHop {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+/* ---- the circle wipe ---- */
+
+/*
+ * A white disc grows from the centre carrying the same wordmark in ink, so the letters read as
+ * continuous through the colour change rather than as a second element appearing.
+ */
+.wipe {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  clip-path: circle(0% at 50% 50%);
+}
+
+.wiping {
+  clip-path: circle(150% at 50% 50%);
+  transition: clip-path 1.5s cubic-bezier(0.62, 0, 0.32, 1);
+}
+
+.wipe .wordmark {
+  color: var(--ink);
+}
+
+/*
+ * CLAUDE.md step 9: drop the intro to a plain fade under reduced motion.
+ *
+ * The dismissal is driven by JS timers and React state, never by animationend — a listener that
+ * never fires because the animation was disabled would leave this overlay covering the entire
+ * site permanently.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .letter {
+    animation: none;
+  }
+  .wipe,
+  .wiping {
+    clip-path: none;
+    transition: none;
+  }
+}

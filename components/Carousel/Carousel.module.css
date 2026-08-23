@@ -161,6 +161,20 @@
   margin-left: auto;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+  }
+  .arrow:hover:not(:disabled),
+  .arrow:focus-visible:not(:disabled) {
+    transform: none;
+  }
+  .rail {
+    scroll-behavior: auto;
+  }
+}
+
 @media (max-width: 900px) {
   .card {
     width: calc((100% - 30px) / 2);

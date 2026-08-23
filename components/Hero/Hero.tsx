@@ -3,12 +3,18 @@
 import Image from 'next/image';
 import { useRef } from 'react';
 import { Button } from '@/components/Button/Button';
+import { Reveal } from '@/components/Reveal/Reveal';
 import { useLanguage } from '@/lib/language';
 import { hero as copy } from '@/content/copy';
 import avatar from '@/public/avatar.png';
 import styles from './Hero.module.css';
 
-export function Hero({ onContact }: { onContact?: () => void }) {
+/**
+ * README "Entrance cascade": kicker → H1 → paragraph → CTA, 260ms apart, starting when the intro
+ * releases scroll. (The 260×1px divider that used to sit between H1 and paragraph was removed at
+ * João's request, so it is no longer a step.)
+ */
+export function Hero({ onContact, started = true }: { onContact?: () => void; started?: boolean }) {
   const { lang, t } = useLanguage();
   const avatarRef = useRef<HTMLDivElement>(null);
   const titleWrapRef = useRef<HTMLDivElement>(null);
@@ -80,11 +86,12 @@ export function Hero({ onContact }: { onContact?: () => void }) {
           </div>
         </div>
 
-        <p className={styles.kicker}>
+        <Reveal on={started} order={0} as="p" className={styles.kicker}>
           <span className={styles.diamond} aria-hidden="true" />
           {t(copy.kicker)}
-        </p>
+        </Reveal>
 
+        <Reveal on={started} order={1}>
         <div
           ref={titleWrapRef}
           className={styles.titleWrap}
@@ -107,18 +114,21 @@ export function Hero({ onContact }: { onContact?: () => void }) {
             {lines}
           </div>
         </div>
+        </Reveal>
 
-        <p className={styles.paragraph}>
+        <Reveal on={started} order={2} as="p" className={styles.paragraph}>
           {copy.paragraph[lang].map((line, i) => (
             <span key={i} style={{ display: 'block' }}>
               {line}
             </span>
           ))}
-        </p>
+        </Reveal>
 
-        <Button className={styles.cta} onClick={onContact}>
-          {t(copy.cta)}
-        </Button>
+        <Reveal on={started} order={3}>
+          <Button className={styles.cta} onClick={onContact}>
+            {t(copy.cta)}
+          </Button>
+        </Reveal>
       </div>
     </header>
   );
