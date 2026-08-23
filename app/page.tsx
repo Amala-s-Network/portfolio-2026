@@ -6,6 +6,7 @@ import { Hero } from '@/components/Hero/Hero';
 import { Divider } from '@/components/Divider/Divider';
 import { Marquee } from '@/components/Marquee/Marquee';
 import { CasePanel } from '@/components/CasePanel/CasePanel';
+import { Carousel } from '@/components/Carousel/Carousel';
 import { About } from '@/components/About/About';
 import { Metrics } from '@/components/Metrics/Metrics';
 import { History } from '@/components/History/History';
@@ -44,6 +45,7 @@ export default function Page() {
           <CasePanel key={c.slug} data={c} index={i} />
         ))}
 
+        <Carousel />
         <About />
         <Metrics />
         <History />
