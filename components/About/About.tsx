@@ -8,7 +8,8 @@ import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useParallax } from '@/hooks/useParallax';
 import { useLanguage } from '@/lib/language';
-import { about as copy, links } from '@/content/copy';
+import { StoryModal } from '@/components/StoryModal/StoryModal';
+import { about as copy, story as storyCopy, links } from '@/content/copy';
 import portrait from '@/public/retrato.webp';
 import styles from './About.module.css';
 
@@ -18,6 +19,7 @@ export function About() {
   const portraitImgRef = useRef<HTMLImageElement>(null);
   const revealed = useReveal(sectionRef);
   const [copied, setCopied] = useState(false);
+  const [storyOpen, setStoryOpen] = useState(false);
   const resetRef = useRef<number | undefined>(undefined);
 
   // README "Parallax": the portrait carries 46px.
@@ -59,18 +61,18 @@ export function About() {
 
         <Reveal on={revealed} order={3} scaled className={styles.portraitCol}>
           {/*
-           * The mascot used to stand to the left of this photo and appear on hover, offering a
-           * way into a secret area. He is switched off, not deleted: the page he pointed at was
-           * never built, so the reveal was an invitation to a dead link — and João intends to
-           * build that area properly later. The <Mascot /> component and its copy stay in the
-           * repo for that. What is left here is the portrait's own lift on hover.
-           */}
+            * The portrait is the door into the story.
+            *
+            * It used to be a link to LinkedIn, which is a fair thing for a photograph to do and
+            * a waste of the only picture of him on the page. Hovering now drains the colour,
+            * drops a veil over it and raises the question; clicking opens the story. LinkedIn is
+            * one row down in the metadata and loses nothing by not being here.
+            */}
           <span className={styles.portraitStage}>
-            <a
+            <button
+              type="button"
               className={styles.portraitLink}
-              href={links.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
+              onClick={() => setStoryOpen(true)}
             >
               <Image
                 ref={portraitImgRef}
@@ -79,7 +81,18 @@ export function About() {
                 width={470}
                 height={470}
               />
-            </a>
+
+              {/* Painted over the photo on hover: veil, then grain, then the words. */}
+              <span className={styles.veil} aria-hidden="true" />
+              <span className={styles.portraitGrain} aria-hidden="true" />
+              <span className={styles.portraitLabel}>
+                {storyCopy.open[lang].map((line, i) => (
+                  <span key={i} className={i === 0 ? styles.labelQuestion : styles.labelAction}>
+                    {line}
+                  </span>
+                ))}
+              </span>
+            </button>
           </span>
 
           <span className={styles.caption}>
@@ -122,6 +135,8 @@ export function About() {
           {copied ? t(copy.copyEmail) : links.email}
         </button>
       </Reveal>
+
+      <StoryModal open={storyOpen} onClose={() => setStoryOpen(false)} />
     </section>
   );
 }

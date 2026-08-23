@@ -1,0 +1,255 @@
+/*
+ * The story, as a newspaper that turns sideways.
+ *
+ * Everything else on this site scrolls. This does not, and that is the whole reason it is a
+ * modal: it is a different object — held rather than travelled through — and turning it
+ * horizontally says so before a word is read.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 320;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+
+  background: rgba(20, 18, 15, 0.86);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s var(--ease), visibility 0s linear 0.5s;
+}
+
+.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s var(--ease), visibility 0s;
+}
+
+/* ---- the card ---- */
+
+.stage {
+  position: relative;
+  width: min(560px, 100%);
+  /*
+   * PORTRAIT, and capped by the viewport's height rather than only by its width. A card that is
+   * taller than the window turns its own content into a scrolling column, which is the one thing
+   * this object is not supposed to do.
+   */
+  height: min(760px, calc(100vh - 80px));
+
+  background: var(--paper);
+  box-shadow: 0 40px 90px rgba(0, 0, 0, 0.45);
+
+  transform: translateY(18px) scale(0.98);
+  transition: transform 0.6s var(--ease);
+}
+
+.open .stage {
+  transform: none;
+}
+
+.close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 2;
+
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  background: none;
+  color: var(--muted-light);
+  font-size: 15px;
+  cursor: pointer;
+  transition: color 0.35s var(--ease);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--ink);
+}
+
+/* ---- the pages ---- */
+
+.viewport {
+  height: 100%;
+  overflow: hidden;
+  /* The pages rotate slightly as they pass; perspective is what keeps that from looking flat. */
+  perspective: 1600px;
+}
+
+.track {
+  display: flex;
+  height: 100%;
+  transform: translateX(calc(var(--page) * -100%));
+  transition: transform 0.7s var(--ease-inout);
+}
+
+.page {
+  flex: 0 0 100%;
+  height: 100%;
+  padding: 52px 44px 40px;
+  display: flex;
+  flex-direction: column;
+
+  /*
+   * Each page scrolls internally only if it has to. The card is sized so it should not, but copy
+   * is going to be edited and a paragraph that grows must not be silently cut off.
+   */
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+
+.page::-webkit-scrollbar {
+  display: none;
+}
+
+.folio {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.title {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-top: 26px;
+}
+
+.lead {
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.45;
+  color: var(--ink);
+  margin-top: 16px;
+}
+
+.body {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.body p {
+  font-size: 14.5px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body);
+}
+
+/* Pushed to the foot of the page — a caption, the way a photo credit sits under a picture. */
+.aside {
+  margin-top: auto;
+  padding-top: 22px;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted-light);
+  border-top: 1px solid var(--hairline);
+}
+
+/* ---- pager ---- */
+
+.pager {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -56px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+}
+
+.pageButton {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid var(--on-dark-rule-2);
+  background: transparent;
+  color: var(--on-dark);
+  font-size: 15px;
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease), opacity 0.3s var(--ease);
+}
+
+.pageButton:hover:not(:disabled),
+.pageButton:focus-visible:not(:disabled) {
+  border-color: var(--on-dark);
+}
+
+.pageButton:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.count {
+  font-size: 13px;
+  color: var(--on-dark-72);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- mobile ---- */
+
+@media (max-width: 768px) {
+  .root {
+    padding: 20px 16px 76px;
+  }
+
+  .stage {
+    width: 100%;
+    height: min(680px, calc(100vh - 96px));
+  }
+
+  .page {
+    padding: 44px 24px 32px;
+  }
+
+  .title {
+    font-size: 24px;
+    margin-top: 20px;
+  }
+
+  .lead {
+    font-size: 15px;
+  }
+
+  .body p {
+    font-size: 14px;
+  }
+
+  .pager {
+    bottom: -50px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .stage,
+  .track {
+    transition: opacity 0.2s linear;
+  }
+
+  .stage {
+    transform: none;
+  }
+}

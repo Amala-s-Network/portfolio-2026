@@ -1,7 +1,19 @@
 /* README §5 "Cases 01–04 (the page-turn)" */
 
+/*
+ * 100vh, down from the README's 130vh — a deliberate deviation, at João's request.
+ *
+ * The reveal completes over 58% of a screen, so at 130vh each panel finished arriving and then
+ * sat perfectly still for the remaining 72vh before the next one began. That dead stretch is
+ * what made moving between cases feel long: most of the scrolling was spent on nothing
+ * happening. At 100vh a case costs one screen of scroll — moderate travel, then the panel pulls
+ * the screen and holds it, which is what João asked for.
+ *
+ * The 0.58 reveal window itself is untouched: it is the shape of the turn, and shortening it
+ * would make the page snap rather than turn.
+ */
 .section {
-  height: 130vh;
+  height: 100vh;
   background: var(--paper);
   position: relative;
 }

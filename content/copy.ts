@@ -120,6 +120,84 @@ export const hero = {
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
 };
 
+/* ------------------------------------------------------------- story */
+
+/**
+ * The story behind the portrait.
+ *
+ * ⚠️ DRAFT. João asked for a starting point to edit, not finished copy. The FACTS are his and
+ * come from the editorial spread he sent — Araxá, the age, nine years, taking machines apart as
+ * a child, being the family's tech support, the branding courses with Marcelo Kimura and Lucas
+ * Rosa. The voice is my proposal and is the part to argue with.
+ *
+ * It is informal on purpose. The rest of this site is a case for hiring him; this is the one
+ * place that is allowed to just be him, which is why the games page is not bent back round into
+ * a professional point at the end. "Games taught me systems design" would be the safe move and
+ * the wrong one — the reader can draw that line themselves, and the page is more convincing for
+ * not drawing it for them.
+ */
+export const story = {
+  open: {
+    pt: ['Quem sou eu, de verdade?', 'Clique aqui'],
+    en: ['Who am I, really?', 'Click here'],
+  } satisfies Record<Lang, string[]>,
+
+  close: { pt: 'Fechar', en: 'Close' } satisfies T,
+  next: { pt: 'Próxima página', en: 'Next page' } satisfies T,
+  previous: { pt: 'Página anterior', en: 'Previous page' } satisfies T,
+
+  pages: {
+    pt: [
+      {
+        folio: 'Página 01 — Origem',
+        title: 'Quem sou eu? Depende do último filme que assisti.',
+        lead: 'Obviamente é piada. Ou talvez nem tanto.',
+        body: [
+          'Sou o João, tenho 26 anos e nasci em Araxá, no interior de Minas. Trabalho com design há nove anos e sou apaixonado por arte — no digital e no editorial, o que provavelmente já ficou evidente por tudo isso aqui parecer um jornal.',
+          'Sou autodidata. Desde criança desmontava video-games e computadores para ver o que tinha dentro, e virei a referência de tecnologia da família inteira — hardware, software, tanto faz. Crescer nos anos 2000 no interior, gostando de tecnologia, foi um exercício de aprender sozinho quase tudo que eu sei.',
+          'Minha primeira especialização foi em branding, com cursos de gente como Marcelo Kimura e Lucas Rosa. Foi ali que eu entendi que design não é sobre deixar bonito — é sobre decidir. O resto do caminho, do banking ao varejo, foi aprender a decidir com gente olhando e dinheiro em jogo.',
+        ],
+        aside: 'Essa foto foi tirada uma porção de vezes. Sou péssimo tirando fotos, e essa é uma curiosidade bem evidente.',
+      },
+      {
+        folio: 'Página 02 — Obsessões',
+        title: 'Jogo desde antes de saber que aquilo era design.',
+        lead: 'Metal Gear e NieR não são hobby. São repertório.',
+        body: [
+          'Metal Gear me ensinou que um sistema pode ter opinião. Kojima nunca separou a mecânica do que ele queria dizer: o jogo te faz sentir a coisa em vez de te contar sobre ela. Quando eu penso em uma jornada, é isso que eu persigo — que a forma diga a mesma coisa que o texto.',
+          'NieR: Automata fez o oposto e me marcou igual. Ele usa a própria estrutura do jogo como argumento, e pede que você jogue de novo sabendo o que sabe agora. É a coisa mais próxima de pesquisa qualitativa que eu já vi virar entretenimento.',
+          'Não vou fingir que isso é metodologia. Eu jogo porque gosto, e desmonto o que jogo pelo mesmo motivo que desmontava o video-game do meu quarto: para ver como foi feito. Que isso volte para o trabalho é consequência, não plano.',
+        ],
+        aside: 'Franquias que eu revisito sempre: Metal Gear, NieR, Persona, Silent Hill, Dark Souls.',
+      },
+    ],
+    en: [
+      {
+        folio: 'Page 01 — Origin',
+        title: 'Who am I? Depends on the last film I watched.',
+        lead: 'Obviously a joke. Or maybe not entirely.',
+        body: [
+          'I’m João, 26, born in Araxá in the Brazilian countryside. I have worked in design for nine years and I love art — digital and editorial, which has probably become obvious given that all of this looks like a newspaper.',
+          'I’m self-taught. As a child I took video games and computers apart to see what was inside, and became the entire family’s technology department — hardware, software, either way. Growing up in the 2000s, in a small town, liking technology, meant learning almost everything I know on my own.',
+          'My first specialisation was branding, through courses with people like Marcelo Kimura and Lucas Rosa. That is where I understood design is not about making things pretty — it is about deciding. The rest of it, from banking to retail, was learning to decide with people watching and money on the table.',
+        ],
+        aside: 'This photo was taken a great many times. I am terrible at having my picture taken, and it shows.',
+      },
+      {
+        folio: 'Page 02 — Obsessions',
+        title: 'I was playing long before I knew any of it was design.',
+        lead: 'Metal Gear and NieR are not a hobby. They are repertoire.',
+        body: [
+          'Metal Gear taught me that a system can hold an opinion. Kojima never separated the mechanics from what he wanted to say: the game makes you feel the thing rather than telling you about it. When I think about a journey, that is what I am chasing — the form saying the same thing as the words.',
+          'NieR: Automata did the opposite and marked me just as much. It uses the structure of the game itself as the argument, and asks you to play again knowing what you now know. It is the closest thing to qualitative research I have seen become entertainment.',
+          'I won’t pretend this is methodology. I play because I enjoy it, and I take apart what I play for the same reason I took apart the console in my bedroom: to see how it was made. That it comes back into the work is a consequence, not a plan.',
+        ],
+        aside: 'Franchises I keep going back to: Metal Gear, NieR, Persona, Silent Hill, Dark Souls.',
+      },
+    ],
+  },
+};
+
 /* --------------------------------------------------------- page fold */
 
 export const pageFold = {

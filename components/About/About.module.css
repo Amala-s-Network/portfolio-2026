@@ -74,13 +74,141 @@
 }
 
 .portraitLink {
+  position: relative;
   display: block;
   width: 100%;
   max-width: 470px;
   aspect-ratio: 1 / 1;
   overflow: hidden;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
   transition: transform 0.6s var(--ease),
     box-shadow 0.6s var(--ease);
+}
+
+/*
+ * The photograph desaturates under the cursor. Not a filter for its own sake: the veil and the
+ * heavy grain that come with it are a black-and-white treatment, and leaving the skin tones in
+ * underneath would make the grain read as a fault in the image rather than as a surface over it.
+ */
+.portraitLink img {
+  transition: filter 0.6s var(--ease);
+}
+
+.portraitLink:hover img,
+.portraitLink:focus-visible img {
+  filter: grayscale(1) contrast(1.06);
+}
+
+/* ---- the veil ---- */
+
+.veil {
+  position: absolute;
+  inset: 0;
+  background: rgba(12, 11, 9, 0.62);
+  opacity: 0;
+  transition: opacity 0.55s var(--ease);
+  pointer-events: none;
+}
+
+/* ---- the grain, much heavier than the page's ---- */
+
+/*
+ * 0.5 against the 0.22 the page carries. This is the one surface where the texture is doing
+ * something rather than sitting there: it is what makes the photograph read as printed on the
+ * paper the site is set on, at the exact moment it is being offered as a door.
+ */
+.portraitGrain {
+  position: absolute;
+  inset: 0;
+  background-image: var(--grain-tile);
+  background-size: 120px 120px;
+  mix-blend-mode: overlay;
+  opacity: 0;
+  transition: opacity 0.55s var(--ease);
+  pointer-events: none;
+}
+
+.portraitLink:hover .veil,
+.portraitLink:focus-visible .veil {
+  opacity: 1;
+}
+
+.portraitLink:hover .portraitGrain,
+.portraitLink:focus-visible .portraitGrain {
+  opacity: 0.5;
+}
+
+/* ---- the invitation ---- */
+
+.portraitLabel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 32px;
+
+  color: var(--on-dark);
+  text-align: center;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s var(--ease), transform 0.6s var(--ease);
+  pointer-events: none;
+}
+
+.portraitLink:hover .portraitLabel,
+.portraitLink:focus-visible .portraitLabel {
+  opacity: 1;
+  transform: none;
+}
+
+.labelQuestion {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.labelAction {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 27px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+/*
+ * Touch has no hover, so the whole reveal would never fire — and a photograph that opens
+ * something with no sign that it does is a trap. Below 768px the treatment is simply on.
+ */
+@media (pointer: coarse) {
+  .portraitLink img {
+    filter: grayscale(1) contrast(1.06);
+  }
+  .veil {
+    opacity: 1;
+  }
+  .portraitGrain {
+    opacity: 0.5;
+  }
+  .portraitLabel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil,
+  .portraitGrain,
+  .portraitLabel,
+  .portraitLink img {
+    transition: none;
+  }
 }
 
 .portraitLink:hover,

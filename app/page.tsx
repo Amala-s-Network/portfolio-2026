@@ -84,6 +84,22 @@ export default function Page() {
    * reader never gets that far — the menu and the modal lock it themselves and must be able to
    * give it back.
    */
+  /*
+   * A reload starts at the top, always.
+   *
+   * Browsers restore the previous scroll position by default, which is usually a kindness and
+   * here is a trap: the first screen is HELD, and restoring someone to the middle of the case
+   * sequence hands them a page that is locked, un-turned, and scrolled past the thing that
+   * unlocks it. Manual restoration plus an explicit jump means every load begins where the
+   * mechanism expects to begin.
+   */
+  useEffect(() => {
+    if ('scrollRestoration' in window.history) {
+      window.history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     if (phase !== 'held') return;
     document.documentElement.classList.add('isHeld');
