@@ -6,8 +6,14 @@ import { contact } from '@/content/copy';
 import styles from './BackToTop.module.css';
 
 /**
- * README "Back-to-top button": hidden until the first case panel covers the screen, hidden again
- * while the footer is up.
+ * README "Back-to-top button": hidden until the reader is past the cases, hidden again while the
+ * footer is up.
+ *
+ * It used to appear as soon as the first case covered the screen, and that was wrong for what
+ * the cases became. Those four panels are a sequence the reader is meant to move THROUGH — a
+ * button offering to abandon it, floating over every one of them, argues against the page it is
+ * sitting on. It waits for "Outros projetos" now, which is the first point where the reader has
+ * finished something rather than being in the middle of it.
  *
  * The colour is NOT taken from the nav. The README is specific that the button "samples what is
  * behind its own centre" — it hit-tests the element under its own midpoint — so it is always the
@@ -33,8 +39,13 @@ export function BackToTop({ suppressed = false }: { suppressed?: boolean }) {
     };
 
     const check = () => {
-      const firstCase = document.querySelector('main > section');
-      const shown = firstCase ? firstCase.getBoundingClientRect().top <= 0 : false;
+      /*
+       * Anchored to the projects section by id rather than by position in the DOM: the sections
+       * around it have been reordered more than once, and an nth-child would have gone quietly
+       * wrong the next time.
+       */
+      const projects = document.querySelector('#projetos');
+      const shown = projects ? projects.getBoundingClientRect().top <= window.innerHeight * 0.5 : false;
       setVisible(shown && !suppressed);
       if (!shown) return;
 

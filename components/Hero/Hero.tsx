@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useRef } from 'react';
+import { useEffect, useLayoutEffect, useRef } from 'react';
 import { Button } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { Marquee } from '@/components/Marquee/Marquee';
@@ -124,8 +124,16 @@ export function Hero({
    * mouseenter on the element itself is exactly the semantic wanted: fires once on entry, does
    * not repeat for children.
    */
-  /* Phase 'live': the sheet's position is a function of how far the page has been scrolled. */
-  useEffect(() => {
+  /*
+   * Phase 'live': the sheet's position is a function of how far the page has been scrolled.
+   *
+   * useLayoutEffect, not useEffect, and this is the whole reason the handover looked broken. On
+   * the frame where the phase changes React removes the .turned class, and a plain effect runs
+   * AFTER paint — so the browser drew one frame with the sheet flat back down over the case
+   * before the transform was reapplied. One frame of the page slamming shut and reopening is
+   * exactly the flicker that read as "bugado ao passar de página".
+   */
+  useLayoutEffect(() => {
     const hero = heroRef.current;
     if (!hero) return;
 

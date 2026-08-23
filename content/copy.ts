@@ -193,6 +193,13 @@ export const cases: Case[] = [
   {
     slug: 'itau-cartoes-pj',
     categories: ['produtos'],
+    /*
+     * PLACEHOLDER, for the turn test only. This is a stock forest, not João's work — it is here
+     * so the sheet lifts to reveal the same picture the fold has been showing all along, which
+     * is the behaviour being tested. It must be replaced with the real case photography before
+     * launch (README "Open items" #1).
+     */
+    photo: '/cases/floresta.webp',
     title: {
       pt: 'Contestação de despesas em cartões PJ',
       en: 'Expense disputes for business cards',
@@ -202,7 +209,6 @@ export const cases: Case[] = [
       pt: 'Redesenhei as jornadas resolutivas e de segurança de um novo produto lançado com a VISA. A contestação de despesas saiu do telefone para o app — e o volume de ligações na Central caiu 21%.',
       en: 'Redesigned the resolution and security journeys of a new product launched with VISA. Expense disputes moved from the call centre into the app — cutting call volume by 21%.',
     },
-    photo: null,
   },
   {
     slug: 'reserva-ink-aparencia-de-loja',

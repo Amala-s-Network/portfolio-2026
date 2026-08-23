@@ -33,6 +33,16 @@
   background: none;
   cursor: pointer;
 
+  /*
+   * The BOX takes no clicks; the two clipped triangles inside it do.
+   *
+   * At 210px the button's square reached up over the deck and sat on top of "Entrar em contato",
+   * stealing its clicks — the visible paper never touched the button, but a transparent corner
+   * of the square did. Hit-testing respects clip-path, so handing the events to the children
+   * means only the shape actually drawn is clickable.
+   */
+  pointer-events: none;
+
   /* Under the nav (50) and the grain (60), over the page. */
   z-index: 40;
 
@@ -55,6 +65,8 @@
   position: absolute;
   inset: 0;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  pointer-events: auto;
+  cursor: pointer;
   background-color: var(--ink);
   background-image: image-set(
     url('/cases/floresta.webp') type('image/webp'),
@@ -71,6 +83,8 @@
   position: absolute;
   inset: 0;
   clip-path: polygon(0 0, 100% 0, 0 100%);
+  pointer-events: auto;
+  cursor: pointer;
 
   /*
    * Light along the fold line, darkening towards the tip. Paper lifted off a surface catches

@@ -19,7 +19,7 @@ const PEELED = 300;
 const LIFT = 34;
 
 /** Resting size while the page is held still and the corner is the only way forward. */
-const HELD = 210;
+const HELD = 190;
 
 /**
  * The dog-ear in the bottom-right corner of the first screen.
@@ -59,7 +59,7 @@ export function PageFold({
         el.style.setProperty('--foldSize', `${HELD}px`);
         el.style.setProperty('--lift', reduced ? '0deg' : `${LIFT * 0.55}deg`);
         el.style.opacity = '1';
-        el.style.pointerEvents = 'auto';
+        el.style.visibility = '';
         return;
       }
 
@@ -88,7 +88,8 @@ export function PageFold({
        */
       const fade = p > 0.66 ? Math.max(0, 1 - (p - 0.66) / 0.34) : 1;
       el.style.opacity = String(fade);
-      el.style.pointerEvents = fade < 0.1 ? 'none' : 'auto';
+      /* visibility, not pointer-events: the box already takes none — see the CSS. */
+      el.style.visibility = fade < 0.05 ? 'hidden' : '';
     };
 
     apply();
