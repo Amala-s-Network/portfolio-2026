@@ -6,8 +6,10 @@
  * both are showing the same picture in the same place, so the corner is a hole in the paper
  * rather than a thumbnail that happens to look similar.
  *
- * The real photograph sits on top of the generated placeholder in the stack; if it is not on
- * disk the browser skips that layer and paints the one below.
+ * image-set lets the browser pick the format: WebP where it is supported, JPEG where it is not.
+ * The source was 5184x3456 and 8.18 MB — resized to 2560 wide it is 479 KB as WebP, which is a
+ * 94% cut for an image nobody will inspect at full resolution. 2560 covers a 1920 screen with
+ * room for a denser display without shipping five thousand pixels of width to do it.
  */
 .underlay {
   position: fixed;
@@ -16,7 +18,10 @@
   pointer-events: none;
 
   background-color: var(--ink);
-  background-image: url('/cases/floresta.jpg'), url('/placeholders/cases/itau-cartoes-pj.svg');
-  background-size: cover, cover;
-  background-position: center, center;
+  background-image: image-set(
+    url('/cases/floresta.webp') type('image/webp'),
+    url('/cases/floresta.jpg') type('image/jpeg')
+  );
+  background-size: cover;
+  background-position: center;
 }

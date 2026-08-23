@@ -44,9 +44,7 @@
 /*
  * The photograph of the case, seen through the lifted corner.
  *
- * Two background images, and the order matters: the real photograph sits on top, the generated
- * placeholder underneath. If the photograph is not on disk the browser simply skips that layer
- * and paints the one below — so the corner is never an empty hole while the artwork is pending.
+ * image-set picks the format; the file is the same one the underlay paints, which is the point.
  *
  * background-attachment: fixed pins the image to the viewport rather than to this 210px box, so
  * what shows through is the part of the picture that is actually behind the corner — the same
@@ -58,10 +56,13 @@
   inset: 0;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
   background-color: var(--ink);
-  background-image: url('/cases/floresta.jpg'), url('/placeholders/cases/itau-cartoes-pj.svg');
-  background-size: cover, cover;
-  background-position: center, center;
-  background-attachment: fixed, fixed;
+  background-image: image-set(
+    url('/cases/floresta.webp') type('image/webp'),
+    url('/cases/floresta.jpg') type('image/jpeg')
+  );
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
 }
 
 /* ---- the back of the sheet ---- */

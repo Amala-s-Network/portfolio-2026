@@ -42,34 +42,36 @@ export default function Page() {
    * Scroll returns the moment the sheet is gone, and cases 01-04 keep the scroll-driven turn
    * they have always had.
    */
-  const [turned, setTurned] = useState(false);
-
-  /*
-   * Whether the corner has EVER been pulled, which is a different question from whether the
-   * sheet is currently up.
+  /**
+   * 'held'    — the first screen is locked and the corner is the only way forward
+   * 'turning' — the single animated lift, playing now
+   * 'live'    — the sheet follows the scroll offset from here on
    *
-   * The page is held once, not every time. Without this the sheet would come back down when the
-   * reader scrolled to the top and immediately lock them in again — a trap rather than a page.
+   * Three states rather than a boolean, because "has the corner ever been pulled" and "where is
+   * the sheet right now" are different questions. Collapsing them meant the page re-locked when
+   * the reader scrolled back to the top, which is a trap rather than a page.
    */
-  const [everTurned, setEverTurned] = useState(false);
+  const [phase, setPhase] = useState<'held' | 'turning' | 'live'>('held');
 
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
 
   /* The sheet lifts, and only once it is clear does the document become scrollable again. */
   const turnPage = useCallback(() => {
-    setTurned(true);
-    setEverTurned(true);
+    setPhase('turning');
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     window.setTimeout(
       () => {
         /*
-         * Jump rather than travel. The reader has already watched the transition they asked
-         * for — a second animated scroll on top of it would be the same journey twice.
+         * The jump and the handover happen together, and the order is what makes the seam
+         * invisible: at scrollY === heroHeight the scroll-driven transform resolves to exactly
+         * the position the CSS transition just finished in, so the sheet does not move when
+         * control changes hands.
          */
         const hero = document.querySelector('header');
-        window.scrollTo(0, hero ? hero.getBoundingClientRect().height : window.innerHeight);
+        window.scrollTo(0, hero ? hero.offsetHeight : window.innerHeight);
+        setPhase('live');
       },
-      reduced ? 300 : 1150
+      reduced ? 260 : 1500
     );
   }, []);
   const openContact = useCallback(() => setContactOpen(true), []);
@@ -83,27 +85,12 @@ export default function Page() {
    * give it back.
    */
   useEffect(() => {
-    if (everTurned) return;
+    if (phase !== 'held') return;
     document.documentElement.classList.add('isHeld');
     return () => {
       document.documentElement.classList.remove('isHeld');
     };
-  }, [everTurned]);
-
-  /*
-   * Once the page has been turned, the sheet follows the scroll position: away while the reader
-   * is among the cases, back down when they return to the top.
-   *
-   * It has to come back. The hero keeps its box in the flow after it lifts — only its paint
-   * moves — so without this, scrolling to the top landed on a screen with nothing on it but the
-   * photograph, and the site appeared to have lost its own first page.
-   */
-  useEffect(() => {
-    if (!everTurned) return;
-    const onScroll = () => setTurned(window.scrollY > 40);
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [everTurned]);
+  }, [phase]);
 
   return (
     <>
@@ -139,7 +126,7 @@ export default function Page() {
           * positioned absolutely against it. The animated Divider that used to sit above it is
           * gone at João's instruction.
           */}
-        <Hero onContact={openContact} started={introDone} turned={turned} />
+        <Hero onContact={openContact} started={introDone} phase={phase} />
 
         {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
         {cases.map((c, i) => (
@@ -158,7 +145,7 @@ export default function Page() {
         * sibling of <main> — fixed to the viewport corner, fading out as the first case takes
         * the screen.
         */}
-      <PageFold held={!everTurned} onEnter={turnPage} />
+      <PageFold held={phase === 'held'} onEnter={turnPage} />
 
       {/* Suppressed while the footer is up, per README. */}
       <BackToTop suppressed={footerUp} />

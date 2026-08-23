@@ -84,13 +84,28 @@
    * bottom is the last part to clear the screen.
    */
   transform-origin: 50% 0%;
-  transition: transform 1.15s var(--ease-curtain), opacity 0.9s var(--ease);
+  /*
+   * 1.5s on a long ease-out. The first version ran 1.15s on --ease-curtain, which has
+   * acceleration at both ends — right for a curtain being drawn, wrong for paper, which leaves
+   * quickly and settles slowly. This curve puts almost all of its speed at the start, so the
+   * sheet is pulled away rather than swept.
+   */
+  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   will-change: transform;
 }
 
 .turned {
   transform: translateY(-102%) rotateX(9deg) scale(0.96);
   pointer-events: none;
+}
+
+/*
+ * Scroll-driven: NO transition. The transform is rewritten on every scroll event, and a
+ * transition on top of that fights each new value with the tail of the last one — the sheet
+ * lags the scrollbar and feels like it is on elastic. The scroll position is the animation.
+ */
+.live {
+  transition: none;
 }
 
 @media (prefers-reduced-motion: reduce) {

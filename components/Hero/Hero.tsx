@@ -31,14 +31,28 @@ const FLIP_EVERY = 3000;
 export function Hero({
   onContact,
   started = true,
-  /** True once the reader has pulled the corner: the sheet lifts away and stays gone. */
-  turned = false,
+  /**
+   * Where the sheet is in its life:
+   *
+   *   'held'    — flat on the page, waiting for the corner to be pulled
+   *   'turning' — the one animated lift, played once, driven by a CSS transition
+   *   'live'    — position comes from the scroll offset, continuously
+   *
+   * The third phase is the one that matters and the one that was missing. A boolean meant the
+   * sheet was either down or gone, so scrolling back up from the cases spent almost a full
+   * screen with the sheet still away and nothing on screen but the photograph, then snapped it
+   * back at the last moment. Tied to the offset instead, the paper comes down at exactly the
+   * rate the reader scrolls up — which is the same relationship the case panels have always had
+   * with the scrollbar.
+   */
+  phase = 'live',
 }: {
   onContact?: () => void;
   started?: boolean;
-  turned?: boolean;
+  phase?: 'held' | 'turning' | 'live';
 }) {
   const { lang, t } = useLanguage();
+  const heroRef = useRef<HTMLElement>(null);
   const avatarRef = useRef<HTMLDivElement>(null);
   const titleWrapRef = useRef<HTMLDivElement>(null);
   const sphereRef = useRef<HTMLDivElement>(null);
@@ -110,6 +124,37 @@ export function Hero({
    * mouseenter on the element itself is exactly the semantic wanted: fires once on entry, does
    * not repeat for children.
    */
+  /* Phase 'live': the sheet's position is a function of how far the page has been scrolled. */
+  useEffect(() => {
+    const hero = heroRef.current;
+    if (!hero) return;
+
+    if (phase !== 'live') {
+      hero.style.transform = '';
+      return;
+    }
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const apply = () => {
+      const height = hero.offsetHeight || window.innerHeight;
+      const p = Math.min(1, Math.max(0, window.scrollY / height));
+      /* easeInOutQuad, the same curve the case panels turn on (README §5). */
+      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      hero.style.transform = `translateY(${eased * -102}%) rotateX(${eased * 9}deg) scale(${
+        1 - eased * 0.04
+      })`;
+    };
+
+    apply();
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply);
+    return () => {
+      window.removeEventListener('scroll', apply);
+      window.removeEventListener('resize', apply);
+    };
+  }, [phase]);
+
   useEffect(() => {
     const el = avatarRef.current;
     if (!el) return;
@@ -129,7 +174,12 @@ export function Hero({
   }, []);
 
   return (
-    <header className={`${styles.hero} ${turned ? styles.turned : ''}`}>
+    <header
+      ref={heroRef}
+      className={`${styles.hero} ${phase === 'turning' ? styles.turned : ''} ${
+        phase === 'live' ? styles.live : ''
+      }`}
+    >
       {/*
         * The diagonal strip, absolutely positioned against the hero and rendered FIRST so it
         * paints underneath the headline. It is aria-hidden inside the component already, so it
