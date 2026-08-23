@@ -1,0 +1,217 @@
+/* README "Overlays" → Contact modal */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.root[aria-hidden='true'] {
+  pointer-events: none;
+  visibility: hidden;
+  transition: visibility 0s linear 0.7s;
+}
+
+.backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 18, 15, 0.5);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  transition: opacity 0.7s ease;
+  border: none;
+  padding: 0;
+  cursor: default;
+}
+
+.card {
+  position: relative;
+  width: 100%;
+  max-width: 560px;
+  background: var(--paper);
+  padding: 44px 44px 40px;
+  box-shadow: var(--shadow-modal);
+
+  opacity: 0;
+  transform: translateY(22px) scale(0.99);
+  transition: opacity 0.7s cubic-bezier(0.22, 0.7, 0.24, 1),
+    transform 0.7s cubic-bezier(0.22, 0.7, 0.24, 1);
+}
+
+.open .backdrop {
+  opacity: 1;
+}
+
+.open .card {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* ---- head ---- */
+
+.folio {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 13px;
+  color: var(--muted-light);
+}
+
+.close {
+  font-size: 18px;
+  line-height: 1;
+  color: var(--ink);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.close:hover,
+.close:focus-visible {
+  transform: rotate(90deg);
+}
+
+.heading {
+  font-size: 42px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--ink);
+  margin-top: 26px;
+}
+
+.line {
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--body);
+  margin-top: 14px;
+}
+
+/* ---- channel rows ---- */
+
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 32px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  padding: 18px 22px;
+
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* The reflection sweep, same as every other button (README "Button interaction"). */
+.row::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(
+    105deg,
+    transparent 34%,
+    rgba(128, 128, 128, 0.85) 50%,
+    transparent 66%
+  );
+  mix-blend-mode: difference;
+  transform: translateX(-140%);
+  pointer-events: none;
+}
+
+.row:hover::before,
+.row:focus-visible::before {
+  transform: translateX(140%);
+  transition: transform 0.95s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.row > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* E-mail is filled; WhatsApp and LinkedIn are outlined. */
+.filled {
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--ink);
+}
+
+.filled:hover,
+.filled:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-button);
+}
+
+.outline {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--hairline-light);
+}
+
+.outline:hover,
+.outline:focus-visible {
+  border-color: var(--ink);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-button-outline);
+}
+
+.channel {
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.value {
+  margin-left: auto;
+  font-size: 15px;
+  opacity: 0.78;
+}
+
+.arrow {
+  --ax: 0px;
+  transform: translateX(var(--ax));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.row:hover .arrow,
+.row:focus-visible .arrow {
+  --ax: 5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .backdrop {
+    transition: opacity 0.2s linear;
+  }
+  .row::before {
+    display: none;
+  }
+  .row:hover,
+  .row:focus-visible {
+    transform: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .card {
+    padding: 32px 24px 28px;
+  }
+  .value {
+    display: none;
+  }
+}

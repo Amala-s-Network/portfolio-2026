@@ -178,6 +178,13 @@
   flex: none;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  .portraitLink:hover,
+  .portraitLink:focus-visible {
+    transform: none;
+  }
+}
+
 @media (max-width: 1100px) {
   .body {
     grid-template-columns: minmax(0, 1fr);

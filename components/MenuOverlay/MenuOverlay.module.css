@@ -1,0 +1,230 @@
+/* README "Overlays" → Menu */
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  background: var(--ink);
+  color: var(--on-dark);
+
+  /* A curtain down from the top. */
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.78s cubic-bezier(0.62, 0, 0.32, 1);
+
+  display: flex;
+  flex-direction: column;
+  padding: 44px 48px 56px;
+  overflow: hidden;
+}
+
+.open {
+  clip-path: inset(0 0 0 0);
+}
+
+/* Closed: out of the way of both the pointer and the tab order. */
+.overlay[aria-hidden='true'] {
+  pointer-events: none;
+  visibility: hidden;
+  transition: clip-path 0.78s cubic-bezier(0.62, 0, 0.32, 1), visibility 0s linear 0.78s;
+}
+
+/* ---- bauhaus tiles ---- */
+
+/*
+ * README: the right 46% carries four tiles at 10% opacity running the ambient animations. These
+ * are the only circles in the design besides the avatar — radius is 0 everywhere else.
+ */
+.tiles {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 46%;
+  height: 100%;
+  opacity: 0.1;
+  pointer-events: none;
+}
+
+.tile {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.tile1 {
+  width: 320px;
+  height: 320px;
+  top: 8%;
+  left: 12%;
+  background: #dcdcdc;
+  animation: drift1 19s ease-in-out infinite;
+}
+
+.tile2 {
+  width: 210px;
+  height: 210px;
+  top: 44%;
+  left: 52%;
+  background: #bdb9b6;
+  animation: drift2 23s ease-in-out infinite;
+}
+
+.tile3 {
+  width: 150px;
+  height: 150px;
+  top: 68%;
+  left: 18%;
+  background: #ececec;
+  animation: drift1 27s ease-in-out infinite reverse;
+}
+
+.tile4 {
+  width: 96px;
+  height: 96px;
+  top: 24%;
+  left: 68%;
+  background: #c6c3c0;
+  animation: drift2 17s ease-in-out infinite reverse;
+}
+
+@keyframes drift1 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(-22px, 26px, 0) scale(1.06);
+  }
+}
+
+@keyframes drift2 {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(18px, -20px, 0) scale(0.94);
+  }
+}
+
+/* ---- head ---- */
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.wordmark {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+}
+
+.close {
+  font-size: 22px;
+  line-height: 1;
+  color: var(--on-dark);
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.close:hover,
+.close:focus-visible {
+  transform: rotate(90deg);
+}
+
+/* ---- columns ---- */
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 64px;
+  margin-top: auto;
+  padding-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+
+.colHeading {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--on-dark-50);
+  margin-bottom: 26px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+/* Main nav links: 34px Playfair, sliding 6px right on hover. */
+.mainLink {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--on-dark);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.mainLink:hover,
+.mainLink:focus-visible {
+  transform: translateX(6px);
+}
+
+.subLink {
+  font-size: 17px;
+  color: var(--on-dark-72);
+  transition: color 0.3s ease, transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.subLink:hover,
+.subLink:focus-visible {
+  color: var(--on-dark);
+  transform: translateX(4px);
+}
+
+/* ---- kicker ---- */
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.13em;
+  color: var(--on-dark-50);
+  position: relative;
+  z-index: 1;
+  padding-top: 22px;
+  border-top: 1px solid var(--on-dark-rule);
+}
+
+.diamond {
+  width: 10px;
+  height: 10px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .overlay {
+    transition: opacity 0.2s linear;
+  }
+  .tile {
+    animation: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 36px;
+  }
+  .tiles {
+    display: none;
+  }
+}
