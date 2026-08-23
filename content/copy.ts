@@ -213,6 +213,404 @@ export const projects: Project[] = [
   },
 ];
 
+/* ------------------------------------------------------- case pages */
+
+export type CaseMedia = {
+  /** null until real artwork exists; falls back to the generated placeholder. */
+  src: string | null;
+  caption: T;
+  /**
+   * true = this frame would show a real employer interface. Keep it null until João has
+   * confirmed, per case, what his NDA allows him to publish.
+   */
+  confidential?: boolean;
+};
+
+export type CaseSection = { title: T; body: T };
+export type Outcome = { value: string; label: T; note: T };
+
+/**
+ * Case pages are structured on the 6s / 60s / 6min method João asked for — layered by reading
+ * depth rather than by chronology, so a recruiter skimming for six seconds and a design lead
+ * reading for six minutes both get a coherent story at their own altitude.
+ *
+ *   6s    title, impact, context      — what this is and what it moved
+ *   60s   conflict, decision, evidence — the tension, the call, the proof
+ *   6min  detail, what changed the game
+ *
+ * The 60s layer is the one that separates senior from mid. Anyone can list what they shipped;
+ * naming the conflict and stating what was *given up* to resolve it is the part that shows
+ * judgement. That is also why those fields cannot be written from a CV — see the note below.
+ */
+export type CaseDetail = {
+  slug: string;
+  year: string;
+  role: T;
+  duration: T;
+  team: T;
+
+  /** ---- 6 seconds ---- */
+  impact: Outcome;
+  context: T;
+
+  /** ---- 60 seconds ---- */
+  /** The tension at the heart of the case. Two forces that could not both win. */
+  conflict: T | null;
+  /** What was deliberately given up to resolve it. The absence of this is what reads as junior. */
+  tradeoff: T | null;
+  /** The call that was made. */
+  decision: T | null;
+  /** The proof it worked. */
+  evidence: Outcome[];
+
+  /** ---- 6 minutes ---- */
+  /** The single hardest thing about the work. */
+  challenge: T | null;
+  detail: CaseSection[];
+  /** What this changed beyond the immediate metric. */
+  gameChanger: T | null;
+
+  contribution: T[];
+  gallery: CaseMedia[];
+};
+
+/**
+ * PROVENANCE — every populated field traces to the CV or LinkedIn export supplied 2026-08-22.
+ *
+ * `conflict`, `tradeoff`, `decision`, `challenge` and `gameChanger` are deliberately `null` on
+ * every case. A CV records outcomes; it does not record which two forces were in tension, what
+ * was sacrificed to resolve them, or what the hardest part actually was. Those live only in
+ * João's head, and inventing them would be fabricating the exact material that is supposed to
+ * demonstrate his judgement — the worst possible thing to guess at in a portfolio.
+ *
+ * The page renders a visible prompt wherever one of these is null, so a half-written case can
+ * never be mistaken for a finished one.
+ */
+export const caseDetails: Record<string, CaseDetail> = {
+  'itau-cartoes-pj': {
+    slug: 'itau-cartoes-pj',
+    year: '2025 — 2026',
+    role: { pt: 'CX Designer / Product Designer', en: 'CX Designer / Product Designer' },
+    duration: { pt: '11 meses', en: '11 months' },
+    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+
+    impact: {
+      value: '−21%',
+      label: { pt: 'VOLUME DE LIGAÇÕES', en: 'CALL VOLUME' },
+      note: {
+        pt: 'Na Central de Atendimento, em contestação de despesas.',
+        en: 'At the call centre, on expense disputes.',
+      },
+    },
+    context: {
+      pt: 'Cinco jornadas críticas de cartões PJ no Itaú, num produto lançado com a VISA.',
+      en: 'Five critical business-card journeys at Itaú, in a product launched with VISA.',
+    },
+
+    conflict: null,
+    tradeoff: null,
+    decision: null,
+    evidence: [
+      {
+        value: '−21%',
+        label: { pt: 'LIGAÇÕES NA CENTRAL', en: 'CALL CENTRE VOLUME' },
+        note: { pt: 'Em contestação de despesas.', en: 'On expense disputes.' },
+      },
+      {
+        value: '5',
+        label: { pt: 'JORNADAS CRÍTICAS', en: 'CRITICAL JOURNEYS' },
+        note: {
+          pt: 'Do mapeamento ao handoff: contestar despesas, consultar senha, bloqueio temporário, segunda via e dados físicos do cartão.',
+          en: 'Mapping through handoff: disputes, PIN retrieval, temporary block, replacement, and physical card data.',
+        },
+      },
+    ],
+
+    challenge: null,
+    detail: [
+      {
+        title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
+        body: {
+          pt: 'O Itaú é um dos maiores bancos da América Latina, e o time de design é um dos maiores do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ, durante o lançamento de um produto novo em parceria com a VISA.',
+          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team, during the launch of a new product built with VISA.',
+        },
+      },
+      {
+        title: { pt: 'Como foi construído', en: 'How it was built' },
+        body: {
+          pt: 'Dentro do JIP, o Jeito Itaú de Produtar, e sobre o iDS, o design system do banco — o que manteve consistência com o resto do produto e baixou o custo de implementação. Descoberta com Double Diamond, Matriz CSD e Continuous Discovery; validação com protótipos em alta e baixa fidelidade e testes de usabilidade, junto ao time de research.',
+          en: 'Inside JIP, Itaú’s product framework, and on iDS, the bank’s design system — which kept consistency with the rest of the product and lowered implementation cost. Discovery through Double Diamond, CSD matrix and Continuous Discovery; validation through low- and high-fidelity prototypes and usability testing alongside the research team.',
+        },
+      },
+    ],
+    gameChanger: null,
+
+    contribution: [
+      {
+        pt: 'Mapeei a jornada do cliente e construí as cinco jornadas críticas de cartões PJ.',
+        en: 'Mapped the customer journey and built the five critical business-card flows.',
+      },
+      {
+        pt: 'Ajustei layouts contra restrições e impactos de front-end, junto ao time de tecnologia.',
+        en: 'Adjusted layouts against front-end constraints and impacts, with the engineering team.',
+      },
+      {
+        pt: 'Conduzi rotinas de Design Critique e entrevistas de UX com usuários e stakeholders.',
+        en: 'Ran Design Critique routines and UX interviews with users and stakeholders.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: { pt: 'Jornada de contestação de despesas.', en: 'The expense dispute journey.' },
+        confidential: true,
+      },
+    ],
+  },
+
+  'reserva-ink-aparencia-de-loja': {
+    slug: 'reserva-ink-aparencia-de-loja',
+    year: '2023 — 2024',
+    role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
+    duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
+    team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
+
+    impact: {
+      value: '+90%',
+      label: { pt: 'AUMENTO DE CSAT', en: 'CSAT INCREASE' },
+      note: {
+        pt: 'Na configuração de aparência de loja.',
+        en: 'On store appearance configuration.',
+      },
+    },
+    context: {
+      pt: 'A configuração de loja era a maior fonte de tickets do produto. Virou o fluxo de maior CSAT.',
+      en: 'Store setup was the product’s biggest source of tickets. It became its highest-CSAT flow.',
+    },
+
+    conflict: null,
+    tradeoff: null,
+    decision: null,
+    evidence: [
+      {
+        value: '+90%',
+        label: { pt: 'CSAT', en: 'CSAT' },
+        note: { pt: 'Na configuração de aparência de loja.', en: 'On store appearance configuration.' },
+      },
+      {
+        value: '−87%',
+        label: { pt: 'TICKETS DE RECLAMAÇÃO', en: 'COMPLAINT TICKETS' },
+        note: { pt: 'Nos fluxos de configuração de loja.', en: 'Across the store configuration flows.' },
+      },
+      {
+        value: '60k+',
+        label: { pt: 'LOJISTAS NA PLATAFORMA', en: 'SELLERS ON THE PLATFORM' },
+        note: { pt: 'Base ativa impactada pela mudança.', en: 'The active base the change reached.' },
+      },
+    ],
+
+    challenge: null,
+    detail: [
+      {
+        title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
+        body: {
+          pt: 'A INK é a plataforma de print on demand da Reserva, parte do grupo AZZAS 2154, o maior grupo de vestuário da América Latina. Mais de 60 mil empreendedores usam a plataforma para montar e operar as próprias lojas.',
+          en: 'INK is Reserva’s print-on-demand platform, part of AZZAS 2154 — Latin America’s largest apparel group. Over 60,000 entrepreneurs use it to build and run their own stores.',
+        },
+      },
+      {
+        title: { pt: 'A evidência veio do suporte', en: 'The evidence came from support' },
+        body: {
+          pt: 'Os tickets de reclamação foram a fonte primária: os motivos apontavam direto para os pontos de quebra do fluxo. Somados a entrevistas de UX com lojistas e testes de usabilidade, deram o mapa do que precisava mudar.',
+          en: 'Complaint tickets were the primary source — the reasons pointed straight at where the flow broke. Combined with UX interviews and usability testing, they mapped what had to change.',
+        },
+      },
+    ],
+    gameChanger: null,
+
+    contribution: [
+      {
+        pt: 'Reescrevi o fluxo de configuração de aparência, reduzindo a fricção do onboarding.',
+        en: 'Rebuilt the appearance configuration flow, cutting onboarding friction.',
+      },
+      {
+        pt: 'Elevei o nível de design da plataforma e reduzi o custo operacional de suporte.',
+        en: 'Raised the platform’s design standard and lowered support cost.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: { pt: 'Fluxo de configuração de aparência.', en: 'The appearance configuration flow.' },
+        confidential: true,
+      },
+    ],
+  },
+
+  'reserva-ink-imagens-de-vitrine': {
+    slug: 'reserva-ink-imagens-de-vitrine',
+    year: '2023 — 2024',
+    role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
+    duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
+    team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
+
+    impact: {
+      value: '99%',
+      label: { pt: 'SATISFAÇÃO', en: 'SATISFACTION' },
+      note: {
+        pt: 'Entre mais de 60 mil empreendedores ativos.',
+        en: 'Across 60,000+ active sellers.',
+      },
+    },
+    context: {
+      pt: 'Criar uma imagem de vitrine passou a custar dois cliques em vez de uma tarde.',
+      en: 'Producing a showcase image went from an afternoon’s work to two clicks.',
+    },
+
+    conflict: null,
+    tradeoff: null,
+    decision: null,
+    evidence: [
+      {
+        value: '99%',
+        label: { pt: 'SATISFAÇÃO', en: 'SATISFACTION' },
+        note: { pt: 'Na ferramenta de personalização de vitrine.', en: 'On the showcase customisation tool.' },
+      },
+      {
+        value: '95%',
+        label: { pt: 'MAIS RÁPIDO', en: 'FASTER' },
+        note: { pt: 'Que o processo anterior — o fluxo caiu para dois cliques.', en: 'Than the previous process — the flow dropped to two clicks.' },
+      },
+      {
+        value: '−60%',
+        label: { pt: 'TEMPO E CUSTO', en: 'TIME AND COST' },
+        note: { pt: 'De criação de produto, para 92% dos usuários.', en: 'Of product creation, for 92% of users.' },
+      },
+    ],
+
+    challenge: null,
+    detail: [
+      {
+        title: { pt: 'Por que isso importava', en: 'Why it mattered' },
+        body: {
+          pt: 'Todo produto na INK precisa de imagem de vitrine para vender. Sem ela, o item existe no catálogo mas não converte — e a maioria dos lojistas não é designer. O custo de criar produto era, na prática, uma barreira de entrada no negócio.',
+          en: 'Every INK product needs a showcase image to sell. Without one, an item exists in the catalogue but does not convert — and most sellers are not designers. The cost of creating a product was, in practice, a barrier to entry.',
+        },
+      },
+      {
+        title: { pt: 'Acessibilidade como requisito de negócio', en: 'Accessibility as a business requirement' },
+        body: {
+          pt: 'O alcance da mudança dependia de funcionar para quem não tem repertório visual. Isso colocou acessibilidade e facilidade de uso como requisito, não como refinamento — e é o que explica os 92% de cobertura.',
+          en: 'The reach of the change depended on it working for people with no visual training. That made accessibility and ease of use a requirement rather than a polish item — and it is what explains the 92% coverage.',
+        },
+      },
+    ],
+    gameChanger: null,
+
+    contribution: [
+      {
+        pt: 'Redesenhei a ferramenta de personalização de imagens de vitrine para um fluxo de dois cliques.',
+        en: 'Redesigned the showcase image customisation tool into a two-click flow.',
+      },
+      {
+        pt: 'Medi tempo e custo de criação antes e depois, para sustentar o resultado com dado.',
+        en: 'Measured creation time and cost before and after, to back the result with data.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: { pt: 'Ferramenta de personalização de vitrine.', en: 'The showcase customisation tool.' },
+        confidential: true,
+      },
+    ],
+  },
+
+  'bricker-amelie': {
+    slug: 'bricker-amelie',
+    year: '2024 — 2025',
+    role: { pt: 'Product Designer', en: 'Product Designer' },
+    duration: { pt: '4 meses', en: '4 months' },
+    team: { pt: 'Bricker · startup early-stage', en: 'Bricker · early-stage startup' },
+
+    impact: {
+      value: 'IA',
+      label: { pt: 'LEITURA DE DOCUMENTOS', en: 'DOCUMENT READING' },
+      note: {
+        pt: 'Validação automática para análise prévia de crédito imobiliário.',
+        en: 'Automated validation for mortgage pre-approval.',
+      },
+    },
+    context: {
+      pt: 'Uma IA que lê e valida documentos de crédito imobiliário, para tirar a burocracia do caminho.',
+      en: 'An AI that reads and validates mortgage documents, to take bureaucracy out of the path.',
+    },
+
+    conflict: null,
+    tradeoff: null,
+    decision: null,
+    evidence: [
+      {
+        value: '1',
+        label: { pt: 'DESIGN SYSTEM', en: 'DESIGN SYSTEM' },
+        note: {
+          pt: 'Criado do zero para a plataforma Corban Bricker.',
+          en: 'Built from scratch for the Corban Bricker platform.',
+        },
+      },
+      {
+        value: '4',
+        label: { pt: 'MESES', en: 'MONTHS' },
+        note: {
+          pt: 'De jornada mapeada, design system e IA em produção.',
+          en: 'From journey mapping to a design system and AI in production.',
+        },
+      },
+    ],
+
+    challenge: null,
+    detail: [
+      {
+        title: { pt: 'A tese', en: 'The thesis' },
+        body: {
+          pt: 'A Bricker é uma startup early-stage que aplica tecnologia ao financiamento imobiliário. A ideia é direta: no mundo Bricker, as máquinas fazem o trabalho chato. A análise prévia depende de ler e validar pilhas de documentos — lento, manual, propenso a erro, e a primeira coisa entre alguém e a casa que quer comprar.',
+          en: 'Bricker is an early-stage startup applying technology to mortgage lending. The idea is blunt: at Bricker, machines do the boring work. Pre-approval depends on reading and validating stacks of documents — slow, manual, error-prone, and the first thing between someone and the home they want.',
+        },
+      },
+      {
+        title: { pt: 'Trabalhar sem fundação', en: 'Working without foundations' },
+        body: {
+          pt: 'Sem design system herdado e sem base de usuários instalada, o trabalho foi estabelecer fundações e validar rápido. Criei o Design System da Corban do zero e usei N8N para construir e manter os chatbots de IA.',
+          en: 'With no inherited design system and no installed user base, the work was to lay foundations and validate fast. I built the Corban design system from scratch and used N8N to build and maintain the AI chatbots.',
+        },
+      },
+    ],
+    gameChanger: null,
+
+    contribution: [
+      {
+        pt: 'Fiz parte do time responsável pela criação da Amelie, a IA de leitura e validação de documentos.',
+        en: 'Part of the team behind Amelie, the document reading and validation AI.',
+      },
+      {
+        pt: 'Mapeei a jornada do cliente e os requisitos de Crédito Imobiliário e Home Equity.',
+        en: 'Mapped the customer journey and the mortgage and home equity requirements.',
+      },
+      {
+        pt: 'Criei o Design System da plataforma Corban Bricker.',
+        en: 'Built the Corban Bricker platform design system.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: { pt: 'Amelie, leitura e validação de documentos.', en: 'Amelie, reading and validating documents.' },
+        confidential: true,
+      },
+    ],
+  },
+};
+
 export const caseLabels = {
   /** The label that rises into place on panel hover (README §5). */
   hover: {

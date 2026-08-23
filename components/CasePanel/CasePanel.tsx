@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/lib/language';
 import { caseLabels, type Case } from '@/content/copy';
@@ -97,11 +98,12 @@ export function CasePanel({ data, index }: CasePanelProps) {
 
           <div className={styles.scrim} />
 
-          {/*
-           * README §5: an absolute anchor covers the panel as the click target. Individual case
-           * pages do not exist yet (README "Open items" #4), so this still points at #.
-           */}
-          <a className={styles.anchor} href="#" aria-label={t(data.title)} />
+          {/* README §5: an absolute anchor covers the panel as the click target. */}
+          <Link
+            className={styles.anchor}
+            href={`/cases/${data.slug}`}
+            aria-label={t(data.title)}
+          />
 
           <div className={styles.veil} />
 

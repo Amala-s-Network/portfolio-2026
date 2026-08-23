@@ -1,0 +1,329 @@
+/*
+ * Case page, laid out on the 6s / 60s / 6min method.
+ *
+ * The layers are visually distinct on purpose: a reader should be able to tell, without deciding
+ * to, how deep they currently are. The 6s block owns the fold, the 60s block sits on a rule and
+ * reads as an argument, and the 6min block is quieter and longer.
+ */
+
+.page {
+  background: var(--paper);
+}
+
+/* ---------------------------------------------------------- 6 seconds */
+
+.six {
+  min-height: calc(100vh - var(--navH));
+  padding: calc(var(--navH) + 72px) var(--gutter) 72px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.folio {
+  display: flex;
+  gap: 26px;
+  align-items: baseline;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--muted-light);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.folioSpacer {
+  margin-left: auto;
+}
+
+.title {
+  font-size: clamp(46px, 5.2vw, 78px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  max-width: 16ch;
+  margin-top: 46px;
+}
+
+.context {
+  font-size: 21px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: var(--body);
+  max-width: 640px;
+  margin-top: 26px;
+}
+
+/* The headline number — the thing a six-second reader actually takes away. */
+.impact {
+  margin-top: auto;
+  padding-top: 58px;
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  flex-wrap: wrap;
+}
+
+.impactValue {
+  font-size: clamp(64px, 8vw, 128px);
+  font-weight: 300;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.impactText {
+  padding-bottom: 10px;
+}
+
+.impactLabel {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--muted-light);
+}
+
+.impactNote {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--body);
+  max-width: 340px;
+  margin-top: 8px;
+}
+
+/* --------------------------------------------------------- 60 seconds */
+
+.sixty {
+  background: var(--ink);
+  color: var(--on-dark);
+  padding: 112px var(--gutter);
+}
+
+.layerMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--on-dark-50);
+}
+
+.diamond {
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.argument {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 56px;
+  margin-top: 58px;
+}
+
+.argumentHead {
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  color: var(--on-dark-50);
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--on-dark-rule-2);
+}
+
+.argumentBody {
+  font-size: 18px;
+  line-height: 1.55;
+  margin-top: 22px;
+  color: var(--on-dark-72);
+}
+
+.evidence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 34px;
+  row-gap: 28px;
+  margin-top: 76px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.evidenceValue {
+  font-size: clamp(36px, 3.6vw, 54px);
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.evidenceLabel {
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--on-dark-50);
+  margin-top: 14px;
+}
+
+.evidenceNote {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--on-dark-72);
+  margin-top: 10px;
+  padding-right: 18px;
+}
+
+/* --------------------------------------------------------- 6 minutes */
+
+.sixMin {
+  padding: 112px var(--gutter) 120px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: 72px;
+  margin-top: 58px;
+  padding-top: 40px;
+  border-top: 1px solid var(--hairline);
+}
+
+.detailTitle {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+}
+
+.detailBody {
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--body);
+  max-width: 660px;
+}
+
+.contribution {
+  list-style: none;
+  padding: 0;
+  margin: 22px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.contribution li {
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--body);
+  padding-left: 22px;
+  position: relative;
+  max-width: 660px;
+}
+
+.contribution li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+/* ---- gallery ---- */
+
+.gallery {
+  display: flex;
+  flex-direction: column;
+  gap: 46px;
+  margin-top: 76px;
+}
+
+.frame {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f1f1f1;
+  position: relative;
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.caption {
+  font-size: 14px;
+  color: var(--muted);
+  margin-top: 14px;
+}
+
+/* ---- the missing-content notice ---- */
+
+/*
+ * Rendered wherever a 60s/6min field is still null. Deliberately loud: a case page with no stated
+ * conflict is not a case page, and a half-written one must never be mistaken for finished if the
+ * URL gets shared.
+ */
+.todo {
+  border: 1px dashed currentColor;
+  padding: 18px 20px;
+  font-size: 14px;
+  line-height: 1.55;
+  opacity: 0.68;
+}
+
+.todoTitle {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-size: 11px;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ---- footer nav ---- */
+
+.pageFoot {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 26px;
+  padding: 40px var(--gutter) 96px;
+  border-top: 1px solid var(--hairline);
+  margin: 0 var(--gutter);
+  padding-left: 0;
+  padding-right: 0;
+  flex-wrap: wrap;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 17px;
+  color: var(--ink);
+  --ax: 0px;
+}
+
+.backLink span[aria-hidden] {
+  transform: translateX(var(--ax));
+  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.backLink:hover span[aria-hidden] {
+  --ax: -5px;
+}
+
+@media (max-width: 1000px) {
+  .argument,
+  .evidence {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+  .detailGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
+}
