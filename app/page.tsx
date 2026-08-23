@@ -11,21 +11,25 @@ import { About } from '@/components/About/About';
 import { Metrics } from '@/components/Metrics/Metrics';
 import { History } from '@/components/History/History';
 import { Footer } from '@/components/Footer/Footer';
+import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
+import { ContactModal } from '@/components/ContactModal/ContactModal';
+import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { cases } from '@/content/copy';
 
 /**
  * The one-pager. Section order from CLAUDE.md:
  *   Hero → Divider → Marquee → Cases → Carousel → About → Metrics → History → Footer
  *
- * Still to come: the carousel (step 6), the menu overlay and contact modal (step 7), the intro
- * overlay (step 3), and the back-to-top button.
+ * Still to come: the intro overlay (step 3).
  */
 export default function Page() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [, setContactOpen] = useState(false);
-  const [, setFooterUp] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [footerUp, setFooterUp] = useState(false);
 
   const openContact = useCallback(() => setContactOpen(true), []);
+  const closeContact = useCallback(() => setContactOpen(false), []);
+  const closeMenu = useCallback(() => setMenuOpen(false), []);
   const handleFooterRise = useCallback((up: boolean) => setFooterUp(up), []);
 
   return (
@@ -35,6 +39,7 @@ export default function Page() {
         onToggleMenu={() => setMenuOpen((v) => !v)}
         onContact={openContact}
       />
+
       <main>
         <Hero onContact={openContact} />
         <Divider />
@@ -51,6 +56,12 @@ export default function Page() {
         <History />
         <Footer onContact={openContact} onRiseChange={handleFooterRise} />
       </main>
+
+      {/* Suppressed while the footer is up, per README. */}
+      <BackToTop suppressed={footerUp} />
+
+      <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
+      <ContactModal open={contactOpen} onClose={closeContact} />
     </>
   );
 }

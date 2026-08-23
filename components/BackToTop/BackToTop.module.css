@@ -1,0 +1,57 @@
+/* README "Back-to-top button" */
+
+.button {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 60;
+
+  width: 54px;
+  height: 54px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  border: 1px solid currentColor;
+
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  visibility: hidden;
+
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0s linear 0.5s;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  visibility: visible;
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
+    background 0.5s cubic-bezier(0.4, 0, 0.2, 1), color 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* On paper: ink mark. */
+.onLight {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+/* Over a dark panel it inverts, so it is always the opposite of its own backdrop. */
+.onDark {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.button:hover {
+  transform: translateY(-3px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button:hover {
+    transform: none;
+  }
+}
