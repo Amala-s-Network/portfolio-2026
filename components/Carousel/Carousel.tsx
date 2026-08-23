@@ -62,10 +62,20 @@ export function Carousel() {
     };
   }, [readEdges]);
 
-  /* Drag-to-scroll — the rail advertises it with cursor: grab. */
+  /*
+   * Drag-to-scroll, TOUCH ONLY.
+   *
+   * On mobile this is the whole navigation: the arrows are hidden below 768px, so swiping the
+   * rail is the only way through the projects and it MUST stay.
+   *
+   * On a pointer device it goes, for the same reason the wheel capture did. A mouse drag across
+   * the rail is not a gesture anyone means as "scroll sideways", and once the arrows are the
+   * stated navigation, a second hidden way to move the rail only muddies it.
+   */
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
+    if (!window.matchMedia('(pointer: coarse)').matches) return;
 
     let startX = 0;
     let startScroll = 0;
