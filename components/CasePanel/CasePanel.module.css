@@ -10,17 +10,33 @@
  * The stage is fixed so the panel stays put while the section scrolls past it — that difference
  * between a fixed panel and a moving section is what produces the turn.
  */
+/*
+ * The stage is a full-viewport fixed box that exists for the whole page, so it must not take
+ * pointer events by default.
+ *
+ * This was a real bug: with `pointer-events: auto` all four stages sat on top of the hero from
+ * first paint at z-index 20–23, and elementFromPoint over the hero CTA returned the stage, not
+ * the button. Nothing in the hero could be hovered or clicked — no avatar flip, no button hover,
+ * and the contact modal never opened. The README only calls out releasing pointer events *after*
+ * a section has passed; the same problem exists before it arrives.
+ */
 .stage {
   position: fixed;
   inset: 0;
   perspective: 1500px;
   perspective-origin: 50% 100%;
   overflow: hidden;
+  pointer-events: none;
+}
+
+/* Only while the panel is actually on screen does it become interactive. */
+.stageLive {
+  pointer-events: auto;
 }
 
 /*
- * Once the section has fully passed, the stage must stop intercepting clicks — otherwise four
- * invisible full-screen layers sit on top of everything below them.
+ * Once the section has fully passed, the stage is hidden outright — belt and braces alongside
+ * the pointer-events release above.
  */
 .stageHidden {
   visibility: hidden;

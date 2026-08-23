@@ -62,6 +62,9 @@
   overflow: hidden;
   border: 1px solid rgba(20, 18, 15, 0.14);
   display: block;
+  /* Without preserve-3d the rotateY reads as a horizontal squash, not a coin turning. */
+  transform-style: preserve-3d;
+  cursor: pointer;
 }
 
 .avatar img {
@@ -71,8 +74,13 @@
   display: block;
 }
 
-/* Hover AND click both run coinFlip (README §2). */
-.avatarWrap:hover .avatar {
+/*
+ * Hover AND click both run coinFlip (README §2). The class is what the click handler toggles —
+ * a class rather than an inline `style.animation` string because CSS Modules hashes the keyframe
+ * name, so the literal the prototype assigns would not resolve here.
+ */
+.avatarWrap:hover .avatar,
+.flipping {
   animation: coinFlip 1.15s cubic-bezier(0.42, 0.02, 0.38, 1);
 }
 

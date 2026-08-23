@@ -52,6 +52,13 @@ export function CasePanel({ data, index }: CasePanelProps) {
       // Once the section is behind us the stage must stop intercepting clicks.
       const done = r.bottom <= 0;
       stage.style.visibility = done ? 'hidden' : '';
+
+      /*
+       * And it must not intercept them before it arrives either. The stage is full-viewport and
+       * fixed for the entire page, so it only becomes interactive while the panel is genuinely
+       * on screen — otherwise it covers the hero and swallows every hover and click.
+       */
+      stage.classList.toggle(styles.stageLive, p > 0.02 && !done);
     };
 
     apply();

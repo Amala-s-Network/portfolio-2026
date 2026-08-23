@@ -65,23 +65,41 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
   };
 
   /*
-   * README §2: click restarts coinFlip by clearing style.animation, forcing reflow, then
-   * re-assigning it. Without the reflow the browser coalesces the two writes and nothing replays.
+   * README §2: clicking restarts coinFlip. The prototype clears style.animation, forces reflow,
+   * then re-assigns the literal keyframe string — that last step cannot be copied here because
+   * CSS Modules hashes the keyframe name, so a class is toggled instead.
+   *
+   * The reflow between removing and re-adding is essential: without it the browser coalesces the
+   * two class writes into one frame, sees no change, and nothing replays.
    */
   const replayFlip = () => {
     const el = avatarRef.current;
     if (!el) return;
-    el.style.animation = 'none';
+    el.classList.remove(styles.flipping);
     void el.offsetWidth; // force reflow
-    el.style.animation = '';
+    el.classList.add(styles.flipping);
   };
 
   return (
     <header className={styles.hero}>
       <div className={styles.stack}>
         <div className={styles.avatarWrap}>
-          {/* Not a link (README §2). */}
-          <div ref={avatarRef} className={styles.avatar} onClick={replayFlip}>
+          {/* Not a link (README §2) — a button role, since clicking it does something. */}
+          <div
+            ref={avatarRef}
+            className={styles.avatar}
+            onClick={replayFlip}
+            onAnimationEnd={() => avatarRef.current?.classList.remove(styles.flipping)}
+            role="button"
+            tabIndex={0}
+            aria-label="Foto de João Vitor Melo"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                replayFlip();
+              }
+            }}
+          >
             <Image src={avatar} alt="João Vitor Melo" width={56} height={56} priority />
           </div>
         </div>
