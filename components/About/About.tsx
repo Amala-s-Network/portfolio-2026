@@ -8,8 +8,7 @@ import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useParallax } from '@/hooks/useParallax';
 import { useLanguage } from '@/lib/language';
-import { Mascot } from '@/components/Mascot/Mascot';
-import { about as copy, mascot as mascotCopy, links } from '@/content/copy';
+import { about as copy, links } from '@/content/copy';
 import portrait from '@/public/retrato.webp';
 import styles from './About.module.css';
 
@@ -60,8 +59,11 @@ export function About() {
 
         <Reveal on={revealed} order={3} scaled className={styles.portraitCol}>
           {/*
-           * The portrait and the mascot share one hover area. Hovering the photo is what summons
-           * him — the reader is already looking at João when the offer to know more appears.
+           * The mascot used to stand to the left of this photo and appear on hover, offering a
+           * way into a secret area. He is switched off, not deleted: the page he pointed at was
+           * never built, so the reveal was an invitation to a dead link — and João intends to
+           * build that area properly later. The <Mascot /> component and its copy stay in the
+           * repo for that. What is left here is the portrait's own lift on hover.
            */}
           <span className={styles.portraitStage}>
             <a
@@ -77,11 +79,6 @@ export function About() {
                 width={470}
                 height={470}
               />
-            </a>
-
-            {/* TODO: the secret area does not exist yet — João has the page drafted elsewhere. */}
-            <a className={styles.secretLink} href="#" aria-label={t(mascotCopy.label)}>
-              <Mascot />
             </a>
           </span>
 

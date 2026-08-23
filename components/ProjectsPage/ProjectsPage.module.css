@@ -1,0 +1,391 @@
+/*
+ * The projects index.
+ *
+ * Deliberately quieter than a case page. This is a place people pass through on their way to
+ * something else, so it earns its keep by being scannable — one column of substantial entries,
+ * then a grid of small ones — rather than by competing with the work it points at.
+ */
+
+.page {
+  background: var(--paper);
+  padding-bottom: 120px;
+}
+
+/* ------------------------------------------------------------------ head */
+
+.head {
+  padding: calc(var(--navH) + 56px) var(--gutter) 0;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--muted-light);
+  --ax: 0px;
+  transition: color 0.45s var(--ease);
+}
+
+.back:hover,
+.back:focus-visible {
+  color: var(--ink);
+  --ax: -5px;
+}
+
+.backArrow {
+  transform: translateX(var(--ax));
+  transition: transform 0.45s var(--ease);
+}
+
+.folio {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 26px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  margin-top: 30px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.heading {
+  font-size: clamp(46px, 5.6vw, 84px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-top: 44px;
+}
+
+.intro {
+  font-size: 19px;
+  font-weight: 300;
+  line-height: var(--lh-body);
+  color: var(--body);
+  max-width: 60ch;
+  margin-top: 22px;
+}
+
+/* ----------------------------------------------------------------- block */
+
+.block {
+  padding: 0 var(--gutter);
+  margin-top: 92px;
+}
+
+.blockMark {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+/* ------------------------------------------------------- the four cases */
+
+.caseList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 34px;
+  border-top: 1px solid var(--hairline);
+}
+
+.caseItem {
+  border-bottom: 1px solid var(--hairline);
+}
+
+/*
+ * The whole row is the target, not just the title. A 96px-tall row with a small link in it asks
+ * the reader to aim; a row that is itself the link does not.
+ */
+.caseLink {
+  display: grid;
+  grid-template-columns: 3.5rem 264px minmax(0, 1fr);
+  align-items: start;
+  gap: 34px;
+  padding: 32px 0;
+  --ax: 0px;
+  transition: background-color 0.45s var(--ease);
+}
+
+.caseLink:hover,
+.caseLink:focus-visible {
+  --ax: 6px;
+}
+
+.caseIndex {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--muted-light);
+  font-variant-numeric: tabular-nums;
+  padding-top: 5px;
+}
+
+.caseFrame {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.caseFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.7s var(--ease);
+}
+
+.caseLink:hover .caseFrame img,
+.caseLink:focus-visible .caseFrame img {
+  transform: scale(1.04);
+}
+
+.caseText {
+  display: block;
+}
+
+.caseCompany {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.caseTitle {
+  display: block;
+  font-family: var(--font-display, inherit);
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin-top: 10px;
+}
+
+.caseDesc {
+  display: block;
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: var(--lh-body);
+  color: var(--body);
+  max-width: 62ch;
+  margin-top: 12px;
+}
+
+.caseFoot {
+  display: flex;
+  align-items: baseline;
+  gap: 22px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+
+.caseImpact {
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.caseCta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 14px;
+  color: var(--ink);
+  margin-left: auto;
+}
+
+.caseArrow {
+  transform: translateX(var(--ax));
+  transition: transform 0.45s var(--ease);
+}
+
+/* --------------------------------------------------- the six without one */
+
+.othersNote {
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: var(--lh-body);
+  color: var(--muted-light);
+  max-width: 56ch;
+  margin-top: 16px;
+}
+
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 44px 30px;
+}
+
+.gridItem {
+  display: block;
+}
+
+.gridFrame {
+  display: block;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #f1f1f1;
+}
+
+.gridFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.gridName {
+  display: block;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-top: 16px;
+}
+
+.gridCompany {
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ------------------------------------------------------------ responsive */
+
+@media (max-width: 1100px) {
+  .caseLink {
+    grid-template-columns: 2.5rem 200px minmax(0, 1fr);
+    gap: 24px;
+  }
+  .caseTitle {
+    font-size: 24px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .page {
+    padding-bottom: 72px;
+  }
+
+  .head {
+    padding: calc(var(--navH) + 24px) var(--gutter) 0;
+  }
+
+  .back {
+    font-size: 13px;
+    /* WCAG 2.5.5 — the text row alone is ~18px. */
+    padding: 13px 0;
+    margin: -13px 0 0;
+  }
+
+  .folio {
+    margin-top: 22px;
+    font-size: 11px;
+    gap: 16px;
+  }
+
+  .heading {
+    margin-top: 28px;
+  }
+
+  .intro {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+
+  .block {
+    margin-top: 56px;
+  }
+
+  /*
+   * The row stops being a row. At 360px the 16:9 frame and the text cannot share a line without
+   * one of them becoming unreadable, so the image goes full width and the text sits under it —
+   * and the index number moves inline with the company, where it still says which of the four
+   * this is without spending a column on it.
+   */
+  .caseLink {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    padding: 26px 0;
+  }
+
+  .caseIndex {
+    display: none;
+  }
+
+  .caseTitle {
+    font-size: 21px;
+    margin-top: 8px;
+  }
+
+  .caseDesc {
+    font-size: 14.5px;
+  }
+
+  .caseFoot {
+    margin-top: 14px;
+    gap: 14px;
+  }
+
+  .caseImpact {
+    font-size: 22px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+    margin-top: 28px;
+  }
+
+  .gridName {
+    font-size: 17px;
+    margin-top: 14px;
+  }
+}
+
+/* Touch has no hover, so the image push is dead weight there. */
+@media (pointer: coarse) {
+  .caseLink:hover .caseFrame img,
+  .caseLink:focus-visible .caseFrame img {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caseFrame img,
+  .caseArrow,
+  .backArrow {
+    transition: none;
+  }
+  .caseLink:hover .caseFrame img,
+  .caseLink:focus-visible .caseFrame img {
+    transform: none;
+  }
+}

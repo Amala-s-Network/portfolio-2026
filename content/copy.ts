@@ -867,6 +867,31 @@ export const contact = {
 
 /* ------------------------------------------------------------ overlays */
 
+/* -------------------------------------------------------- projects page */
+
+export const projectsPage = {
+  folioLeft: { pt: 'Índice', en: 'Index' } satisfies T,
+  folioRight: { pt: 'Trabalho selecionado', en: 'Selected work' } satisfies T,
+  heading: { pt: 'Todos os projetos', en: 'All projects' } satisfies T,
+  intro: {
+    pt: 'Nove anos de trabalho em banking, varejo de alto volume, consultoria global e startups. Os quatro primeiros têm o caso completo escrito; os demais estão listados com o essencial.',
+    en: 'Nine years across banking, high-volume retail, global consulting and startups. The first four have the full case written; the rest are listed with the essentials.',
+  } satisfies T,
+  casesHeading: { pt: 'Cases com estudo completo', en: 'Cases with a full study' } satisfies T,
+  othersHeading: { pt: 'Outros projetos', en: 'Other projects' } satisfies T,
+  /*
+   * Shown on the six projects that have no page of their own. They are deliberately NOT links:
+   * a card that looks clickable and goes nowhere is the exact defect this page was built to
+   * remove from the site.
+   */
+  othersNote: {
+    pt: 'Estudo completo em preparação — fale comigo se quiser saber mais sobre algum deles.',
+    en: 'Full study in progress — get in touch if you would like to hear about any of them.',
+  } satisfies T,
+  readCase: { pt: 'Ler o case', en: 'Read the case' } satisfies T,
+  back: { pt: 'Voltar', en: 'Back' } satisfies T,
+};
+
 /* ------------------------------------------------------------ case page */
 
 export const casePage = {

@@ -71,7 +71,24 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
           <p className={styles.colHeading}>{t(copy.headings.menu)}</p>
           <div className={styles.links}>
             {sections.map((s) => (
-              <a key={s.href} className={styles.mainLink} href={s.href} onClick={onClose}>
+              <a
+                key={s.href}
+                className={styles.mainLink}
+                href={s.href}
+                onClick={(e) => {
+                  onClose();
+                  /*
+                   * "Página inicial" on the home route pointed at "#", which does land at the top
+                   * but leaves a bare hash on the URL and jumps rather than travels — everything
+                   * else on this site scrolls smoothly, back-to-top included. Handled explicitly
+                   * so the one link that means "take me back to the start" behaves like the rest.
+                   */
+                  if (s.href === '#') {
+                    e.preventDefault();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }
+                }}
+              >
                 {t(s.label)}
               </a>
             ))}

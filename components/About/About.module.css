@@ -64,42 +64,13 @@
   align-items: flex-end;
 }
 
-/*
- * Shared hover area for the portrait and the mascot beside it.
- *
- * `--mascotShow` and `--mascotPlay` are flipped here and inherit down into the Mascot component,
- * so the whole reveal is CSS — no state, no listener. `overflow: visible` matters: he stands to
- * the LEFT of the portrait, outside this box.
- */
+/* Wrapper for the portrait. It also held the mascot, which is switched off — see About.tsx. */
 .portraitStage {
   position: relative;
   display: block;
   width: 100%;
   max-width: 470px;
   overflow: visible;
-}
-
-.portraitStage:hover,
-.portraitStage:focus-within {
-  --mascotShow: 1;
-  --mascotPlay: running;
-}
-
-/* The mascot's own link — sized to him, so the portrait link stays clickable on its own. */
-.secretLink {
-  position: absolute;
-  left: -104px;
-  bottom: 0;
-  width: 96px;
-  height: 120px;
-  z-index: 2;
-  /* Not clickable until he is actually visible — see the hover rule below. */
-  pointer-events: none;
-}
-
-.portraitStage:hover .secretLink,
-.portraitStage:focus-within .secretLink {
-  pointer-events: auto;
 }
 
 .portraitLink {

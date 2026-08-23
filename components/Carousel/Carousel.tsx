@@ -172,7 +172,7 @@ export function Carousel() {
           <span aria-hidden="true">⇢</span>
         </button>
 
-        <ButtonLink className={styles.viewAll} variant="outline" href="#" small>
+        <ButtonLink className={styles.viewAll} variant="outline" href="/projetos" small>
           {t(copy.viewAll)}
         </ButtonLink>
       </Reveal>

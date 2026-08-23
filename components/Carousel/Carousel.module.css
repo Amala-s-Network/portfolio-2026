@@ -79,9 +79,20 @@
     box-shadow 0.6s var(--ease);
 }
 
+/*
+ * The lift, and nothing else.
+ *
+ * There was a scale(1.03) here too, and it was the problem: scaling the card scales its NAME and
+ * COMPANY along with the image, so the type visibly grows and gets re-rasterised on every hover.
+ * Text that changes size under the cursor reads as the card inflating rather than rising, and at
+ * 1.03 it is just large enough to notice and too small to look deliberate.
+ *
+ * translateY moves the card without touching its geometry, so the type stays exactly as set. The
+ * shadow stays because that is what makes the movement read as height rather than as a slide.
+ */
 .card:hover,
 .card:focus-visible {
-  transform: translateY(-10px) scale(1.03);
+  transform: translateY(-10px);
   box-shadow: var(--shadow-card);
 }
 
