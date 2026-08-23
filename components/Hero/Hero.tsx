@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { Button } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useLanguage } from '@/lib/language';
@@ -80,6 +80,26 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
     el.classList.add(styles.flipping);
   };
 
+  /*
+   * Hover is bound natively rather than through React's onMouseEnter. React synthesises
+   * enter/leave from delegated mouseover/mouseout at the root, which makes the handler awkward
+   * to exercise and adds a layer between a very simple interaction and its trigger. A native
+   * mouseenter on the element itself is exactly the semantic wanted: fires once on entry, does
+   * not repeat for children.
+   */
+  useEffect(() => {
+    const el = avatarRef.current;
+    if (!el) return;
+    const onEnter = () => replayFlip();
+    const onEnd = () => el.classList.remove(styles.flipping);
+    el.addEventListener('mouseenter', onEnter);
+    el.addEventListener('animationend', onEnd);
+    return () => {
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('animationend', onEnd);
+    };
+  }, []);
+
   return (
     <header className={styles.hero}>
       <div className={styles.stack}>
@@ -89,7 +109,6 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
             ref={avatarRef}
             className={styles.avatar}
             onClick={replayFlip}
-            onAnimationEnd={() => avatarRef.current?.classList.remove(styles.flipping)}
             role="button"
             tabIndex={0}
             aria-label="Foto de João Vitor Melo"

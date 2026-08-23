@@ -12,9 +12,16 @@ type CasePanelProps = {
   data: Case;
   /** 0-based; drives the z-index stack so each panel covers the one before it. */
   index: number;
+  /**
+   * The last panel needs an exit the others do not. Panels 1–3 are covered by the next panel
+   * rising over them, so their disappearance is never seen. The last has nothing above it, so
+   * without this it sits perfectly still for 1.7 viewports and then blinks out of existence at
+   * the exact scroll position where the carousel begins.
+   */
+  isLast?: boolean;
 };
 
-export function CasePanel({ data, index }: CasePanelProps) {
+export function CasePanel({ data, index, isLast }: CasePanelProps) {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -44,9 +51,18 @@ export function CasePanel({ data, index }: CasePanelProps) {
       const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
       const rest = 1 - eased;
 
-      panel.style.transform = `translateY(${rest * 100}%) rotateX(${rest * -11}deg) scale(${
-        1 - rest * 0.05
-      })`;
+      /*
+       * Exit, last panel only. `r.bottom` is also exactly where the next section's top sits, so
+       * translating up by the same proportion keeps the panel's bottom edge locked to the
+       * carousel's top edge: the panel slides away at precisely the rate the carousel arrives,
+       * and the seam between them never moves. At r.bottom === 0 it is fully clear, which is the
+       * same instant the stage hides — so the hide is invisible instead of being a cut.
+       */
+      const exit = isLast ? clamp01((vh - r.bottom) / vh) : 0;
+
+      panel.style.transform = `translateY(${rest * 100 - exit * 100}%) rotateX(${
+        rest * -11
+      }deg) scale(${1 - rest * 0.05})`;
       photo.style.transform = `translateY(${rest * -6}%)`;
 
       // Once the section is behind us the stage must stop intercepting clicks.
@@ -82,7 +98,7 @@ export function CasePanel({ data, index }: CasePanelProps) {
       document.removeEventListener('visibilitychange', onWake);
       window.removeEventListener('pageshow', onWake);
     };
-  }, []);
+  }, [isLast]);
 
   return (
     <section ref={sectionRef} className={styles.section}>

@@ -75,11 +75,15 @@
 }
 
 /*
- * Hover AND click both run coinFlip (README §2). The class is what the click handler toggles —
- * a class rather than an inline `style.animation` string because CSS Modules hashes the keyframe
- * name, so the literal the prototype assigns would not resolve here.
+ * Hover AND click both run coinFlip (README §2) — and BOTH go through this one class, driven
+ * from JS. There is deliberately no `:hover` rule here.
+ *
+ * A `.avatarWrap:hover .avatar` rule looks like the obvious way to do the hover half, but it
+ * silently breaks the click half: the pointer is by definition over the avatar when you click
+ * it, so the hover rule is active, so the computed animation never leaves `coinFlip`. Removing
+ * and re-adding the class then changes nothing to restart, and clicking appears dead. Driving
+ * both from the same class means removing it genuinely clears the animation every time.
  */
-.avatarWrap:hover .avatar,
 .flipping {
   animation: coinFlip 1.15s cubic-bezier(0.42, 0.02, 0.38, 1);
 }
