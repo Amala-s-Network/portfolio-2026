@@ -27,6 +27,8 @@
    * wins and the band is pinned to the fold exactly as before.
    */
   min-height: min(calc(100vh - var(--bandH)), 800px);
+  /* svh = viewport with the iOS URL bar showing, so the band is never pushed under it. */
+  min-height: min(calc(100svh - var(--bandH)), 800px);
 
   /* Clear the fixed nav, then 48px of breathing room before the content starts. */
   padding-top: calc(var(--navH) + 48px);

@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { playfair, archivo } from '@/lib/fonts';
 import { LanguageProvider } from '@/lib/language';
 import './globals.css';
@@ -7,6 +7,23 @@ const SITE = 'https://joaomeloux.vercel.app';
 const TITLE = 'João V. Melo — Senior Product Designer & CX Designer';
 const DESCRIPTION =
   'Product Designer com 9 anos de experiência, 6 deles em produtos digitais. Banking em escala, varejo de alto volume, consultoria global e startups — com foco em craft, métricas e IA.';
+
+/*
+ * Declared explicitly rather than left to the framework default.
+ *
+ * No maximumScale and no userScalable: false. Both are common in mobile boilerplate and both
+ * break WCAG 1.4.4 — a user who needs to pinch-zoom to read is simply locked out. The only
+ * thing set here is the initial scale.
+ *
+ * viewportFit: 'cover' lets the page paint into the notch/home-indicator area on iPhone; the
+ * safe-area insets below keep content out of it.
+ */
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#14120f',
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

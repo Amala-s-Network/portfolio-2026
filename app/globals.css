@@ -108,8 +108,19 @@ body {
   padding: 0;
 }
 
+html {
+  /*
+   * Safari on iOS enlarges text when a page rotates to landscape unless this is pinned. It is
+   * not a zoom control — user zoom stays fully available, which 1.4.4 requires.
+   */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 body {
   background: var(--paper);
+  /* The default grey flash on tap reads as a bug against this palette; :active carries the feedback. */
+  -webkit-tap-highlight-color: transparent;
   color: var(--body);
   font-family: var(--font-archivo), system-ui, sans-serif;
   /* Radius is 0 on every surface except circles (README). */
@@ -243,4 +254,45 @@ button {
   background: var(--ink);
   color: var(--paper);
   font-size: 15px;
+}
+
+/*
+ * ------------------------------------------------------- iPhone safe areas
+ *
+ * `viewportFit: cover` lets the page paint edge to edge, including behind the notch and the
+ * home indicator. That is what makes a site feel native rather than letterboxed — but it means
+ * the insets have to be honoured by hand, or the nav slides under the notch and the footer's
+ * bottom bar sits under the home indicator.
+ *
+ * env() resolves to 0 everywhere without a notch, so these are inert on Android and desktop.
+ */
+@supports (padding: env(safe-area-inset-left)) {
+  @media (max-width: 768px) {
+    nav,
+    [class*='Hero-module'][class*='hero'],
+    [class*='About-module'][class*='section'],
+    [class*='Metrics-module'][class*='section'],
+    [class*='History-module'][class*='section'],
+    [class*='CasePanel-module'][class*='panel'],
+    [class*='Footer-module'][class*='panel'],
+    [class*='MenuOverlay-module'][class*='overlay'],
+    [class*='CasePage-module'][class*='six'],
+    [class*='CasePage-module'][class*='sixty'],
+    [class*='CasePage-module'][class*='sixMin'] {
+      padding-left: max(var(--gutter), env(safe-area-inset-left));
+      padding-right: max(var(--gutter), env(safe-area-inset-right));
+    }
+
+    /* The two blocks that actually reach the bottom edge. */
+    [class*='Footer-module'][class*='panel'],
+    [class*='MenuOverlay-module'][class*='overlay'] {
+      padding-bottom: max(32px, env(safe-area-inset-bottom));
+    }
+
+    /* The rail is padded rather than inset, so it keeps bleeding cards past the edge. */
+    [class*='Carousel-module'][class*='rail'] {
+      padding-left: max(var(--gutter), env(safe-area-inset-left));
+      padding-right: max(var(--gutter), env(safe-area-inset-right));
+    }
+  }
 }

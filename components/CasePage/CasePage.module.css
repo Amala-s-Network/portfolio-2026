@@ -14,6 +14,7 @@
 
 .six {
   min-height: calc(100vh - var(--navH));
+  min-height: calc(100svh - var(--navH));
   padding: calc(var(--navH) + 72px) var(--gutter) 72px;
   display: flex;
   flex-direction: column;
