@@ -1,14 +1,14 @@
 /*
  * The projects index.
  *
- * Deliberately quieter than a case page. This is a place people pass through on their way to
- * something else, so it earns its keep by being scannable — one column of substantial entries,
- * then a grid of small ones — rather than by competing with the work it points at.
+ * Quieter than a case page on purpose: this is somewhere people pass through on the way to
+ * something else, so it earns its keep by being scannable rather than by competing with the work
+ * it points at.
  */
 
 .page {
   background: var(--paper);
-  padding-bottom: 120px;
+  padding-bottom: 110px;
 }
 
 /* ------------------------------------------------------------------ head */
@@ -17,10 +17,18 @@
   padding: calc(var(--navH) + 56px) var(--gutter) 0;
 }
 
+/*
+ * WCAG 2.2 target size. João asked for 32px minimum, which is above the 24px the guideline
+ * requires and below the 44px it recommends — a deliberate middle. The row of text is ~18px, so
+ * the padding does the rest; the negative margin keeps the extra from shifting the layout.
+ */
 .back {
   display: inline-flex;
   align-items: center;
   gap: 9px;
+  min-height: 32px;
+  padding: 7px 0;
+  margin: -7px 0 0;
   font-size: 14px;
   color: var(--muted-light);
   --ax: 0px;
@@ -38,112 +46,120 @@
   transition: transform 0.45s var(--ease);
 }
 
-.folio {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 26px;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted-light);
-  margin-top: 30px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--hairline);
-}
-
 .heading {
-  font-size: clamp(46px, 5.6vw, 84px);
+  font-size: clamp(44px, 5.4vw, 80px);
   font-weight: 700;
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--ink);
-  margin-top: 44px;
+  margin-top: 34px;
 }
 
-.intro {
-  font-size: 19px;
+.subheading {
+  font-size: 17px;
   font-weight: 300;
   line-height: var(--lh-body);
-  color: var(--body);
-  max-width: 60ch;
-  margin-top: 22px;
-}
-
-/* ----------------------------------------------------------------- block */
-
-.block {
-  padding: 0 var(--gutter);
-  margin-top: 92px;
-}
-
-.blockMark {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11.5px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
   color: var(--muted-light);
+  margin-top: 14px;
 }
 
-.diamond {
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  transform: rotate(45deg);
-  flex: none;
-}
-
-/* ------------------------------------------------------- the four cases */
-
-.caseList {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-top: 34px;
-  border-top: 1px solid var(--hairline);
-}
-
-.caseItem {
-  border-bottom: 1px solid var(--hairline);
-}
+/* ------------------------------------------------------------------ tabs */
 
 /*
- * The whole row is the target, not just the title. A 96px-tall row with a small link in it asks
- * the reader to aim; a row that is itself the link does not.
+ * The rule under the row is the tab bar's baseline; the active tab paints over it. Drawing the
+ * line on the container rather than on each tab means it runs the full width even where there
+ * are no tabs, which is what makes the row read as a bar rather than as four underlined words.
  */
-.caseLink {
-  display: grid;
-  grid-template-columns: 3.5rem 264px minmax(0, 1fr);
-  align-items: start;
-  gap: 34px;
-  padding: 32px 0;
-  --ax: 0px;
-  transition: background-color 0.45s var(--ease);
+.tabsRow {
+  display: flex;
+  align-items: flex-end;
+  gap: 26px;
+  margin: 40px var(--gutter) 0;
+  border-bottom: 1px solid var(--hairline);
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
-.caseLink:hover,
-.caseLink:focus-visible {
-  --ax: 6px;
+.tabsRow::-webkit-scrollbar {
+  display: none;
 }
 
-.caseIndex {
-  font-size: 12px;
-  letter-spacing: 0.1em;
+.tab {
+  position: relative;
+  flex: none;
+  background: none;
+  border: 0;
+  padding: 0 0 14px;
+  /* WCAG 2.2 target size — see .back. */
+  min-height: 32px;
+  font-size: 16px;
+  font-weight: 400;
   color: var(--muted-light);
-  font-variant-numeric: tabular-nums;
-  padding-top: 5px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.35s var(--ease);
 }
 
-.caseFrame {
+.tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s var(--ease);
+}
+
+.tab:hover,
+.tab:focus-visible {
+  color: var(--ink);
+}
+
+.tabActive {
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.tabActive::after {
+  transform: scaleX(1);
+}
+
+/* ----------------------------------------------------------------- cards */
+
+.panel {
+  padding: 0 var(--gutter);
+}
+
+.grid {
+  list-style: none;
+  margin: 46px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 52px 30px;
+}
+
+.card {
   display: block;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #f1f1f1;
 }
 
-.caseFrame img {
+.cardLink,
+.cardStatic {
+  display: block;
+  --ax: 0px;
+}
+
+.frame {
+  display: block;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #eceae4;
+}
+
+.frame img {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -151,141 +167,116 @@
   transition: transform 0.7s var(--ease);
 }
 
-.caseLink:hover .caseFrame img,
-.caseLink:focus-visible .caseFrame img {
+.cardLink:hover .frame img,
+.cardLink:focus-visible .frame img {
   transform: scale(1.04);
 }
 
-.caseText {
+.company {
   display: block;
-}
-
-.caseCompany {
-  display: block;
-  font-size: 12px;
-  letter-spacing: 0.12em;
+  margin-top: 16px;
+  font-size: 11.5px;
+  letter-spacing: 0.13em;
   text-transform: uppercase;
   color: var(--muted-light);
 }
 
-.caseTitle {
+.title {
   display: block;
-  font-family: var(--font-display, inherit);
-  font-size: 28px;
-  font-weight: 700;
-  line-height: 1.14;
-  letter-spacing: -0.02em;
+  margin-top: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
   color: var(--ink);
-  margin-top: 10px;
 }
 
-.caseDesc {
+.desc {
   display: block;
-  font-size: 15.5px;
+  margin-top: 9px;
+  font-size: 14px;
   font-weight: 300;
-  line-height: var(--lh-body);
+  line-height: 1.5;
   color: var(--body);
-  max-width: 62ch;
-  margin-top: 12px;
 }
 
-.caseFoot {
-  display: flex;
-  align-items: baseline;
-  gap: 22px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-}
-
-.caseImpact {
-  font-size: 26px;
-  font-weight: 300;
-  letter-spacing: -0.03em;
-  font-variant-numeric: tabular-nums;
-  color: var(--ink);
-}
-
-.caseCta {
+.cta {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  font-size: 14px;
+  gap: 8px;
+  margin-top: 13px;
+  font-size: 13.5px;
   color: var(--ink);
-  margin-left: auto;
 }
 
-.caseArrow {
+.ctaArrow {
   transform: translateX(var(--ax));
   transition: transform 0.45s var(--ease);
 }
 
-/* --------------------------------------------------- the six without one */
+.cardLink:hover,
+.cardLink:focus-visible {
+  --ax: 5px;
+}
 
-.othersNote {
-  font-size: 15.5px;
+.empty {
+  margin: 46px 0 0;
+  font-size: 16px;
   font-weight: 300;
-  line-height: var(--lh-body);
   color: var(--muted-light);
-  max-width: 56ch;
-  margin-top: 16px;
 }
 
-.grid {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  margin-top: 40px;
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 44px 30px;
+/* ------------------------------------------------------------ pagination */
+
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin: 56px var(--gutter) 0;
 }
 
-.gridItem {
-  display: block;
-}
-
-.gridFrame {
-  display: block;
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #f1f1f1;
-}
-
-.gridFrame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.gridName {
-  display: block;
-  font-size: 18px;
-  font-weight: 500;
+.pageButton {
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--hairline-mid);
+  background: transparent;
   color: var(--ink);
-  margin-top: 16px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: border-color 0.4s var(--ease), transform 0.4s var(--ease);
 }
 
-.gridCompany {
-  display: block;
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--muted);
-  margin-top: 6px;
+.pageButton:hover:not(:disabled),
+.pageButton:focus-visible:not(:disabled) {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.pageButton:disabled {
+  opacity: 0.32;
+  cursor: default;
+}
+
+.pageCount {
+  font-size: 13.5px;
+  color: var(--muted-light);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ------------------------------------------------------------ responsive */
 
-@media (max-width: 1100px) {
-  .caseLink {
-    grid-template-columns: 2.5rem 200px minmax(0, 1fr);
-    gap: 24px;
+@media (max-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .caseTitle {
-    font-size: 24px;
-  }
+}
+
+@media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px 24px;
   }
 }
 
@@ -298,94 +289,63 @@
     padding: calc(var(--navH) + 24px) var(--gutter) 0;
   }
 
-  .back {
-    font-size: 13px;
-    /* WCAG 2.5.5 — the text row alone is ~18px. */
-    padding: 13px 0;
-    margin: -13px 0 0;
-  }
-
-  .folio {
-    margin-top: 22px;
-    font-size: 11px;
-    gap: 16px;
-  }
-
   .heading {
-    margin-top: 28px;
+    margin-top: 26px;
   }
 
-  .intro {
-    font-size: 16px;
-    margin-top: 16px;
-  }
-
-  .block {
-    margin-top: 56px;
+  .subheading {
+    font-size: 15px;
+    margin-top: 10px;
   }
 
   /*
-   * The row stops being a row. At 360px the 16:9 frame and the text cannot share a line without
-   * one of them becoming unreadable, so the image goes full width and the text sits under it —
-   * and the index number moves inline with the company, where it still says which of the four
-   * this is without spending a column on it.
+   * The tabs scroll sideways rather than wrapping. Five filters cannot sit on a 312px line, and
+   * wrapping them onto three rows turns a control into a paragraph — the bar stops reading as a
+   * single choice. The gutter is bled through so the row can run edge to edge, which is what
+   * signals there is more to the right.
    */
-  .caseLink {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 16px;
-    padding: 26px 0;
+  .tabsRow {
+    margin: 28px 0 0;
+    padding: 0 var(--gutter);
+    gap: 20px;
   }
 
-  .caseIndex {
-    display: none;
-  }
-
-  .caseTitle {
-    font-size: 21px;
-    margin-top: 8px;
-  }
-
-  .caseDesc {
-    font-size: 14.5px;
-  }
-
-  .caseFoot {
-    margin-top: 14px;
-    gap: 14px;
-  }
-
-  .caseImpact {
-    font-size: 22px;
+  .tab {
+    font-size: 15px;
+    padding-bottom: 12px;
   }
 
   .grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 34px;
-    margin-top: 28px;
+    margin-top: 30px;
   }
 
-  .gridName {
-    font-size: 17px;
-    margin-top: 14px;
+  .pagination {
+    margin-top: 40px;
   }
 }
 
-/* Touch has no hover, so the image push is dead weight there. */
+/* Touch has no hover, so the image push is dead weight. */
 @media (pointer: coarse) {
-  .caseLink:hover .caseFrame img,
-  .caseLink:focus-visible .caseFrame img {
+  .cardLink:hover .frame img,
+  .cardLink:focus-visible .frame img {
     transform: none;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .caseFrame img,
-  .caseArrow,
-  .backArrow {
+  .frame img,
+  .ctaArrow,
+  .backArrow,
+  .tab::after {
     transition: none;
   }
-  .caseLink:hover .caseFrame img,
-  .caseLink:focus-visible .caseFrame img {
+  .cardLink:hover .frame img,
+  .cardLink:focus-visible .frame img {
+    transform: none;
+  }
+  .pageButton:hover:not(:disabled) {
     transform: none;
   }
 }

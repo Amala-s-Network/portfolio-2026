@@ -166,9 +166,14 @@
 }
 
 /* Main nav links: 20px, sliding 6px right on hover. */
+/*
+ * 34px, up from 20px. These four are the only navigation the overlay has, and at 20px they read
+ * as a list of settings rather than as the way through the site. The mobile size below is
+ * untouched at João's instruction — it is already the size this is being brought up to meet.
+ */
 .mainLink {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: 20px;
+  font-size: 34px;
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--on-dark);

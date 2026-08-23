@@ -89,8 +89,23 @@
 
 /* ---- avatar ---- */
 
+/*
+ * The wrap must HUG the avatar, or the flip deforms.
+ *
+ * perspective puts its vanishing point at the centre of this box by default. While the stack
+ * centred its children the box was avatar-sized and the point sat behind the photo, which is
+ * what makes a coin flip look like a coin flip. Switching the column to a left margin let the
+ * wrap stretch the full width, so the vanishing point moved to the middle of the page and the
+ * rotation started reading as a skew — the photo squashing sideways instead of turning.
+ *
+ * align-self keeps it content-sized on a stretch column; perspective-origin is stated anyway so
+ * the geometry does not depend on that staying true.
+ */
 .avatarWrap {
+  align-self: flex-start;
+  width: fit-content;
   perspective: 620px;
+  perspective-origin: center center;
 }
 
 .avatar {
@@ -484,9 +499,8 @@
    * defined by its left edge, and on a 312px measure that edge is the only structure available.
    */
   .hero {
-    /* The band is a real element again below 768px, so its height comes back. */
-    --bandH: 34px;
-    overflow: visible;
+    /* The strip is absolute at every width now, so it costs the flow nothing here either. */
+    --bandH: 0px;
   }
 
   /*
@@ -544,7 +558,7 @@
    */
   .title,
   .titleSphere {
-    font-size: 38px;
+    font-size: 42px;
     line-height: 1.04;
     letter-spacing: -0.025em;
     text-wrap: balance;

@@ -81,25 +81,26 @@
 /*
  * ------------------------------------------------------------------ mobile
  *
- * The diagonal is a desktop drawing. At 360px a strip at 13deg either crosses the headline or
- * leaves the frame within a couple of words, and the disciplines stop being readable as a list.
- * Below 768px it goes back to being a horizontal band under the content, which is the layout
- * João approved — see Hero.module.css for the budget it sits in.
+ * The diagonal stays, at João's instruction — the same drawing as the desktop, retuned.
+ *
+ * Three things had to change for it to work at 360px. The angle steepens to 17deg, because the
+ * same 13deg over a third of the width barely reads as a slope. The crossing point moves left
+ * and up, so the strip enters above the avatar rather than through it. And the type comes down
+ * to 8.5px, since at 10px barely two disciplines fitted across the screen.
+ *
+ * The useful side effect: absolute means it leaves the flow, and the 34px band it used to
+ * occupy below the content goes with it — which is exactly the 23px the first screen was
+ * overrunning by. Nothing had to be removed to get that back.
  */
 @media (max-width: 768px) {
   .marquee {
-    position: static;
-    /* 190vw would be 402px of horizontal overflow on a 360px screen. */
-    width: 100%;
-    max-width: 100%;
-    transform: none;
-    padding: 11px 0;
-    margin-top: 28px;
-    /* Last in the hero's flex column, whatever its position in the markup. */
-    order: 1;
+    --angle: 17deg;
+    --originX: -14%;
+    --originY: 2%;
+    width: 260vw;
+    padding: 9px 0;
   }
 
-  /* Down from 10px/0.28em — at that size barely two disciplines fitted across a 360px screen. */
   .span {
     font-size: 8.5px;
     letter-spacing: 0.2em;

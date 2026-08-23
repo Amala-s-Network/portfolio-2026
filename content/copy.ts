@@ -129,8 +129,22 @@ export const marquee = {
 
 /* -------------------------------------------------------------- cases */
 
+/**
+ * The four filters on /projetos.
+ *
+ * ⚠️ The assignment below is MINE, inferred from each project's own description — João has not
+ * confirmed it. It is the kind of thing that looks authoritative on a portfolio and is wrong
+ * only the author can tell: "Interfaces" versus "Produtos digitais" is a judgement about what
+ * the work actually was, not about what it looked like. Worth a pass before launch.
+ *
+ * "handoff" currently has no work assigned to it. The tab still renders, and says so, rather
+ * than being quietly dropped — João named these four categories deliberately.
+ */
+export type Category = 'produtos' | 'interfaces' | 'branding' | 'handoff';
+
 export type Case = {
   slug: string;
+  categories: Category[];
   title: T;
   company: T;
   description: T;
@@ -147,6 +161,7 @@ export type Case = {
 export const cases: Case[] = [
   {
     slug: 'itau-cartoes-pj',
+    categories: ['produtos'],
     title: {
       pt: 'Contestação de despesas em cartões PJ',
       en: 'Expense disputes for business cards',
@@ -160,6 +175,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'reserva-ink-aparencia-de-loja',
+    categories: ['produtos', 'interfaces'],
     title: {
       pt: 'Aparência de loja para 60 mil lojistas',
       en: 'Storefront appearance for 60k sellers',
@@ -173,6 +189,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'reserva-ink-imagens-de-vitrine',
+    categories: ['interfaces', 'produtos'],
     title: {
       pt: 'Imagens de vitrine em dois cliques',
       en: 'Showcase images in two clicks',
@@ -186,6 +203,7 @@ export const cases: Case[] = [
   },
   {
     slug: 'bricker-amelie',
+    categories: ['produtos'],
     title: {
       pt: 'Amelie, a IA que lê documentos de crédito',
       en: 'Amelie, the AI that reads credit documents',
@@ -203,6 +221,7 @@ export const cases: Case[] = [
 
 export type Project = {
   slug: string;
+  categories: Category[];
   name: T;
   company: T;
   /** TODO: 16:9 imagery — none exists yet (README "Open items" #2). */
@@ -216,36 +235,42 @@ export type Project = {
 export const projects: Project[] = [
   {
     slug: 'ems-saude',
+    categories: ['produtos'],
     name: { pt: 'Treinamento de propagandistas com IA', en: 'AI-driven rep training' },
     company: { pt: 'EMS Saúde', en: 'EMS Saúde' },
     image: null,
   },
   {
     slug: 'itau-investimentos',
+    categories: ['produtos'],
     name: { pt: 'Ativos escriturais e investimentos', en: 'Book-entry assets and investments' },
     company: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
     image: null,
   },
   {
     slug: 'zema-emprestimo-pessoal',
+    categories: ['produtos', 'interfaces'],
     name: { pt: 'Fluxo de empréstimo pessoal', en: 'Personal loan flow' },
     company: { pt: 'ZEMA', en: 'ZEMA' },
     image: null,
   },
   {
     slug: 'zema-black-friday',
+    categories: ['interfaces', 'branding'],
     name: { pt: 'Landing page de Black Friday', en: 'Black Friday landing page' },
     company: { pt: 'ZEMA', en: 'ZEMA' },
     image: null,
   },
   {
     slug: 'm1place-ecommerce',
+    categories: ['interfaces', 'produtos'],
     name: { pt: 'Redesign do e-commerce', en: 'E-commerce redesign' },
     company: { pt: 'M1Place', en: 'M1Place' },
     image: null,
   },
   {
     slug: 'canva-creator',
+    categories: ['branding'],
     name: { pt: 'Templates como Canva Creator', en: 'Templates as a Canva Creator' },
     company: { pt: 'Canva', en: 'Canva' },
     image: null,
@@ -896,27 +921,42 @@ export const contact = {
 /* -------------------------------------------------------- projects page */
 
 export const projectsPage = {
-  folioLeft: { pt: 'Índice', en: 'Index' } satisfies T,
-  folioRight: { pt: 'Trabalho selecionado', en: 'Selected work' } satisfies T,
-  heading: { pt: 'Todos os projetos', en: 'All projects' } satisfies T,
-  intro: {
-    pt: 'Nove anos de trabalho em banking, varejo de alto volume, consultoria global e startups. Os quatro primeiros têm o caso completo escrito; os demais estão listados com o essencial.',
-    en: 'Nine years across banking, high-volume retail, global consulting and startups. The first four have the full case written; the rest are listed with the essentials.',
+  heading: { pt: 'Projetos selecionados', en: 'Selected projects' } satisfies T,
+  subheading: {
+    pt: 'Selecione o tipo de projeto',
+    en: 'Choose a kind of project',
   } satisfies T,
-  casesHeading: { pt: 'Cases com estudo completo', en: 'Cases with a full study' } satisfies T,
-  othersHeading: { pt: 'Outros projetos', en: 'Other projects' } satisfies T,
+
+  /** Order matters — this is the order the tabs render in. */
+  tabs: [
+    { id: 'todos', label: { pt: 'Todos', en: 'All' } satisfies T },
+    { id: 'produtos', label: { pt: 'Produtos digitais', en: 'Digital products' } satisfies T },
+    { id: 'interfaces', label: { pt: 'Interfaces', en: 'Interfaces' } satisfies T },
+    { id: 'branding', label: { pt: 'Branding', en: 'Branding' } satisfies T },
+    { id: 'handoff', label: { pt: 'Processos de handoff', en: 'Handoff processes' } satisfies T },
+  ] as const,
+
   /*
-   * Shown on the six projects that have no page of their own. They are deliberately NOT links:
-   * a card that looks clickable and goes nowhere is the exact defect this page was built to
-   * remove from the site.
+   * Shown when a filter matches nothing. "handoff" has no work assigned to it yet, and an empty
+   * grid with no explanation reads as a page that failed to load.
    */
-  othersNote: {
-    pt: 'Estudo completo em preparação — fale comigo se quiser saber mais sobre algum deles.',
-    en: 'Full study in progress — get in touch if you would like to hear about any of them.',
+  empty: {
+    pt: 'Nada por aqui ainda — os projetos desta categoria estão sendo escritos.',
+    en: 'Nothing here yet — the projects in this category are still being written.',
   } satisfies T,
+
   readCase: { pt: 'Ler o case', en: 'Read the case' } satisfies T,
   back: { pt: 'Voltar', en: 'Back' } satisfies T,
+
+  pagination: {
+    previous: { pt: 'Página anterior', en: 'Previous page' } satisfies T,
+    next: { pt: 'Próxima página', en: 'Next page' } satisfies T,
+    /** Rendered as "Página 1 de 2" — the numbers are filled in at runtime. */
+    page: { pt: 'Página', en: 'Page' } satisfies T,
+    of: { pt: 'de', en: 'of' } satisfies T,
+  },
 };
+
 
 /* ------------------------------------------------------------ case page */
 

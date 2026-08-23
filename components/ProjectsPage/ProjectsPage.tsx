@@ -1,30 +1,98 @@
 'use client';
 
 import Link from 'next/link';
-import { useRef } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
-import { cases, projects, caseDetails, projectsPage as copy } from '@/content/copy';
+import {
+  cases,
+  projects,
+  caseDetails,
+  projectsPage as copy,
+  type Category,
+  type T,
+} from '@/content/copy';
 import styles from './ProjectsPage.module.css';
 
+/** README-scale decision: eight to a page, then paginate (João's brief). */
+const PER_PAGE = 8;
+
+type Entry = {
+  slug: string;
+  categories: Category[];
+  company: T;
+  title: T;
+  description: T;
+  image: string;
+  /** Only the four written cases have a page to go to. */
+  href: string | null;
+};
+
 /**
- * The index behind "ver todos os projetos".
+ * The projects index.
  *
- * The page exists in two halves on purpose, and the split is editorial rather than technical.
- * Four projects have a written case behind them and are links; six do not and are not. Making
- * all ten look alike would have been tidier and would have meant six cards that invite a click
- * and answer with nothing — which is the defect this page was built to remove from the site.
+ * Cases and carousel projects are two shapes in content/copy.ts — one has a written study, the
+ * other is a name and a company. On this page they are one list, because a visitor filtering by
+ * "Interfaces" is asking about the work, not about how much of it has been written up. What
+ * still separates them is whether the card is a link: the four with a case go somewhere, the six
+ * without do not, and a card that invites a click and answers with nothing is the defect this
+ * page was built to remove.
  */
 export function ProjectsPage() {
   const { t } = useLanguage();
   const headRef = useRef<HTMLElement>(null);
-  const casesRef = useRef<HTMLElement>(null);
-  const othersRef = useRef<HTMLElement>(null);
-
+  const gridRef = useRef<HTMLDivElement>(null);
   const headIn = useReveal(headRef);
-  const casesIn = useReveal(casesRef);
-  const othersIn = useReveal(othersRef);
+
+  const [tab, setTab] = useState<string>('todos');
+  const [page, setPage] = useState(0);
+
+  const all: Entry[] = useMemo(
+    () => [
+      ...cases.map((c) => ({
+        slug: c.slug,
+        categories: c.categories,
+        company: c.company,
+        title: c.title,
+        description: c.description,
+        image: c.photo ?? `/placeholders/cases/${c.slug}.svg`,
+        href: caseDetails[c.slug] ? `/cases/${c.slug}` : null,
+      })),
+      ...projects.map((p) => ({
+        slug: p.slug,
+        categories: p.categories,
+        company: p.company,
+        title: p.name,
+        /* No written description exists for these six yet — the company carries the card. */
+        description: { pt: '', en: '' } as T,
+        image: p.image ?? `/placeholders/projects/${p.slug}.svg`,
+        href: null,
+      })),
+    ],
+    []
+  );
+
+  const filtered = useMemo(
+    () => (tab === 'todos' ? all : all.filter((e) => e.categories.includes(tab as Category))),
+    [all, tab]
+  );
+
+  const pageCount = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const current = Math.min(page, pageCount - 1);
+  const shown = filtered.slice(current * PER_PAGE, current * PER_PAGE + PER_PAGE);
+
+  /* Changing filter resets to the first page — otherwise a narrow filter lands on page 2 of 1. */
+  const chooseTab = (id: string) => {
+    setTab(id);
+    setPage(0);
+  };
+
+  const goToPage = (n: number) => {
+    setPage(n);
+    /* Send the reader back to the top of the grid, not the top of the document. */
+    gridRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   return (
     <article className={styles.page}>
@@ -36,104 +104,119 @@ export function ProjectsPage() {
           {t(copy.back)}
         </Link>
 
-        <div className={styles.folio}>
-          <span>{t(copy.folioLeft)}</span>
-          <span>{t(copy.folioRight)}</span>
-        </div>
-
         <Reveal on={headIn} order={0}>
           <h1 className={styles.heading}>{t(copy.heading)}</h1>
         </Reveal>
 
         <Reveal on={headIn} order={1}>
-          <p className={styles.intro}>{t(copy.intro)}</p>
+          <p className={styles.subheading}>{t(copy.subheading)}</p>
         </Reveal>
       </header>
 
-      {/* ------------------------------------------------ the four written cases */}
-      <section ref={casesRef} className={styles.block}>
-        <Reveal on={casesIn} order={0}>
-          <span className={styles.blockMark}>
-            <span className={styles.diamond} aria-hidden="true" />
-            {t(copy.casesHeading)}
-          </span>
-        </Reveal>
+      {/*
+        * A tablist, not a row of links.
+        *
+        * The filter changes what is on the page without changing the page, which is exactly what
+        * the tab pattern describes — so it carries the roles that tell a screen reader the same
+        * thing the underline tells everyone else. Arrow-key navigation is what the pattern
+        * expects next; it is NOT implemented here, so every tab stays in the tab order rather
+        * than pretending to be a composite widget that only half works.
+        */}
+      <div className={styles.tabsRow} role="tablist" aria-label={t(copy.subheading)}>
+        {copy.tabs.map((tb) => (
+          <button
+            key={tb.id}
+            type="button"
+            role="tab"
+            id={`tab-${tb.id}`}
+            aria-selected={tab === tb.id}
+            aria-controls="painel-projetos"
+            className={`${styles.tab} ${tab === tb.id ? styles.tabActive : ''}`}
+            onClick={() => chooseTab(tb.id)}
+          >
+            {t(tb.label)}
+          </button>
+        ))}
+      </div>
 
-        <ol className={styles.caseList}>
-          {cases.map((c, i) => {
-            const detail = caseDetails[c.slug];
-            return (
-              <Reveal key={c.slug} on={casesIn} order={i + 1} as="li" className={styles.caseItem}>
-                <Link className={styles.caseLink} href={`/cases/${c.slug}`}>
-                  <span className={styles.caseIndex} aria-hidden="true">
-                    {String(i + 1).padStart(2, '0')}
-                  </span>
-
-                  <span className={styles.caseFrame}>
+      <div
+        ref={gridRef}
+        id="painel-projetos"
+        role="tabpanel"
+        aria-labelledby={`tab-${tab}`}
+        className={styles.panel}
+      >
+        {shown.length === 0 ? (
+          <p className={styles.empty}>{t(copy.empty)}</p>
+        ) : (
+          <ul className={styles.grid}>
+            {shown.map((e) => {
+              const inner = (
+                <>
+                  <span className={styles.frame}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={c.photo ?? `/placeholders/cases/${c.slug}.svg`}
-                      alt=""
-                      aria-hidden="true"
-                    />
+                    <img src={e.image} alt="" aria-hidden="true" />
                   </span>
-
-                  <span className={styles.caseText}>
-                    <span className={styles.caseCompany}>{t(c.company)}</span>
-                    <span className={styles.caseTitle}>{t(c.title)}</span>
-                    <span className={styles.caseDesc}>{t(c.description)}</span>
-
-                    <span className={styles.caseFoot}>
-                      {/* The impact number is the one thing a skimming reader takes away. */}
-                      {detail ? (
-                        <span className={styles.caseImpact}>{detail.impact.value}</span>
-                      ) : null}
-                      <span className={styles.caseCta}>
-                        {t(copy.readCase)}
-                        <span className={styles.caseArrow} aria-hidden="true">
-                          →
-                        </span>
+                  <span className={styles.company}>{t(e.company)}</span>
+                  <span className={styles.title}>{t(e.title)}</span>
+                  {t(e.description) ? (
+                    <span className={styles.desc}>{t(e.description)}</span>
+                  ) : null}
+                  {e.href ? (
+                    <span className={styles.cta}>
+                      {t(copy.readCase)}
+                      <span className={styles.ctaArrow} aria-hidden="true">
+                        →
                       </span>
                     </span>
-                  </span>
-                </Link>
-              </Reveal>
-            );
-          })}
-        </ol>
-      </section>
+                  ) : null}
+                </>
+              );
 
-      {/* --------------------------------------------- the six without a page yet */}
-      <section ref={othersRef} className={styles.block}>
-        <Reveal on={othersIn} order={0}>
-          <span className={styles.blockMark}>
-            <span className={styles.diamond} aria-hidden="true" />
-            {t(copy.othersHeading)}
+              return (
+                <li key={e.slug} className={styles.card}>
+                  {e.href ? (
+                    <Link className={styles.cardLink} href={e.href}>
+                      {inner}
+                    </Link>
+                  ) : (
+                    <div className={styles.cardStatic}>{inner}</div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+
+      {/* Only when there is more than one page — a lone "1 of 1" is furniture. */}
+      {pageCount > 1 && (
+        <nav className={styles.pagination} aria-label={t(copy.pagination.page)}>
+          <button
+            type="button"
+            className={styles.pageButton}
+            onClick={() => goToPage(current - 1)}
+            disabled={current === 0}
+            aria-label={t(copy.pagination.previous)}
+          >
+            <span aria-hidden="true">⇠</span>
+          </button>
+
+          <span className={styles.pageCount} aria-live="polite">
+            {t(copy.pagination.page)} {current + 1} {t(copy.pagination.of)} {pageCount}
           </span>
-        </Reveal>
 
-        <Reveal on={othersIn} order={1}>
-          <p className={styles.othersNote}>{t(copy.othersNote)}</p>
-        </Reveal>
-
-        <ul className={styles.grid}>
-          {projects.map((p, i) => (
-            <Reveal key={p.slug} on={othersIn} order={i + 2} as="li" className={styles.gridItem}>
-              {/* Not a link, and not focusable — there is nothing behind it yet. */}
-              <span className={styles.gridFrame}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={p.image ?? `/placeholders/projects/${p.slug}.svg`}
-                  alt=""
-                  aria-hidden="true"
-                />
-              </span>
-              <span className={styles.gridName}>{t(p.name)}</span>
-              <span className={styles.gridCompany}>{t(p.company)}</span>
-            </Reveal>
-          ))}
-        </ul>
-      </section>
+          <button
+            type="button"
+            className={styles.pageButton}
+            onClick={() => goToPage(current + 1)}
+            disabled={current === pageCount - 1}
+            aria-label={t(copy.pagination.next)}
+          >
+            <span aria-hidden="true">⇢</span>
+          </button>
+        </nav>
+      )}
     </article>
   );
 }

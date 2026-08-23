@@ -17,7 +17,7 @@ export const metadata: Metadata = {
  * gets, and for the same reason: without it the bar renders with no handlers and goes dead. */
 export default function Page() {
   return (
-    <CaseShell>
+    <CaseShell withFooter>
       <ProjectsPage />
     </CaseShell>
   );

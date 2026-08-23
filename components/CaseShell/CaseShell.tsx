@@ -5,6 +5,7 @@ import { Nav } from '@/components/Nav/Nav';
 import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
+import { Footer } from '@/components/Footer/Footer';
 
 /**
  * The chrome around a case page: nav, menu, contact modal, back-to-top.
@@ -19,9 +20,17 @@ import { BackToTop } from '@/components/BackToTop/BackToTop';
  * shell both routes use is the fix; the alternative — moving it up into the layout — would put
  * a client boundary around every page for the benefit of two of them.
  */
-export function CaseShell({ children }: { children: React.ReactNode }) {
+export function CaseShell({
+  children,
+  /** The projects index closes with the same panel the one-pager does; a case page does not. */
+  withFooter = false,
+}: {
+  children: React.ReactNode;
+  withFooter?: boolean;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [footerUp, setFooterUp] = useState(false);
 
   const openContact = useCallback(() => setContactOpen(true), []);
   const closeContact = useCallback(() => setContactOpen(false), []);
@@ -37,10 +46,13 @@ export function CaseShell({ children }: { children: React.ReactNode }) {
 
       <Nav menuOpen={menuOpen} onToggleMenu={toggleMenu} onContact={openContact} />
 
-      <main id="conteudo">{children}</main>
+      <main id="conteudo">
+        {children}
+        {withFooter && <Footer onContact={openContact} onRiseChange={setFooterUp} />}
+      </main>
 
-      {/* No footer panel on a case page, so nothing ever suppresses it. */}
-      <BackToTop />
+      {/* Suppressed while the footer panel is up, exactly as on the one-pager. */}
+      <BackToTop suppressed={footerUp} />
 
       <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
       <ContactModal open={contactOpen} onClose={closeContact} />

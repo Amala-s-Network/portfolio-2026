@@ -407,3 +407,49 @@ body::after {
     display: none;
   }
 }
+
+
+/*
+ * ------------------------------------------------- WCAG 2.2 · target size
+ *
+ * A 32px floor on every interactive control, at EVERY width — João's number, which sits above
+ * the 24px SC 2.5.8 requires and below the 44px SC 2.5.5 recommends.
+ *
+ * The existing rule below the 768px breakpoint raises this to 44px for touch. What was missing
+ * is that target size is not a touch-only concern: 2.5.8 applies regardless of input device,
+ * and a 13px-tall "voltar ao topo" is a hard target for anyone using a trackpad with a tremor,
+ * or a head pointer, or a mouse on a moving train. Eighteen controls were under the floor on
+ * desktop — the language pair, the wordmark, both overlay close buttons, every social link.
+ *
+ * min-width is deliberately NOT set globally: it would stretch narrow text links into odd boxes,
+ * and every control measured was failing on height. The two ✕ buttons are the exception and get
+ * it explicitly.
+ */
+a,
+button,
+[role='button'],
+[role='tab'],
+summary {
+  min-height: 32px;
+}
+
+/*
+ * Links inside running text are excluded. A paragraph is not a control surface, and giving each
+ * inline link a 32px box would space the lines apart wherever one appears.
+ */
+p a,
+li a,
+span a,
+a.srOnly {
+  min-height: 0;
+}
+
+/* Icon-only buttons have no text to give them width, so they need the floor on both axes. */
+[class*='ContactModal-module'][class*='close'],
+[class*='MenuOverlay-module'][class*='close'] {
+  min-width: 32px;
+  min-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
