@@ -946,7 +946,7 @@ export const projectsPage = {
   } satisfies T,
 
   readCase: { pt: 'Ler o case', en: 'Read the case' } satisfies T,
-  back: { pt: 'Voltar', en: 'Back' } satisfies T,
+  back: { pt: 'Voltar ao início', en: 'Back to the start' } satisfies T,
 
   pagination: {
     previous: { pt: 'Página anterior', en: 'Previous page' } satisfies T,
@@ -961,7 +961,12 @@ export const projectsPage = {
 /* ------------------------------------------------------------ case page */
 
 export const casePage = {
-  back: { pt: 'Voltar', en: 'Back' } satisfies T,
+  /*
+   * A case is reached FROM the projects index, so that is where "back" goes — not to the home
+   * page. Sending it home discards the filter and the page the reader had got to and makes them
+   * find their way to the list again, which is the opposite of what the control promises.
+   */
+  back: { pt: 'Voltar aos projetos', en: 'Back to projects' } satisfies T,
   backLong: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
 };
 

@@ -18,26 +18,37 @@
 }
 
 /*
- * WCAG 2.2 target size. João asked for 32px minimum, which is above the 24px the guideline
- * requires and below the 44px it recommends — a deliberate middle. The row of text is ~18px, so
- * the padding does the rest; the negative margin keeps the extra from shifting the layout.
+ * Given a body, not left as a grey line of text.
+ *
+ * It was 14px of --muted-light with an arrow — the same weight as a caption, so it read as a
+ * label rather than as the way out, and on a case page it is the ONLY way out that does not go
+ * through the menu. A border and a filled hover state say "control"; the arrow that slides on
+ * hover says which direction.
  */
 .back {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  min-height: 32px;
-  padding: 7px 0;
-  margin: -7px 0 0;
+  gap: 10px;
+
+  /* WCAG 2.2 target size, to João's 32px floor. */
+  min-height: 38px;
+  padding: 0 18px;
+
+  border: 1px solid var(--hairline-mid);
   font-size: 14px;
-  color: var(--muted-light);
+  color: var(--ink);
+  background: transparent;
   --ax: 0px;
-  transition: color 0.45s var(--ease);
+
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
+    color 0.4s var(--ease);
 }
 
 .back:hover,
 .back:focus-visible {
-  color: var(--ink);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
   --ax: -5px;
 }
 

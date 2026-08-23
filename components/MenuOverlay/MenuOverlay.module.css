@@ -143,7 +143,13 @@
 .columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, auto));
-  justify-content: center;
+  /*
+   * start, not center. Centring the three columns floated the whole block in the middle of the
+   * screen with no relationship to anything else on the site — the nav above it, the hero behind
+   * it and every page under it all hang off the same left gutter, and the menu was the one
+   * surface that did not.
+   */
+  justify-content: start;
   gap: 96px;
   margin-top: 72px;
   margin-bottom: auto;

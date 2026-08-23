@@ -29,23 +29,41 @@
  * them to the bottom of the screen. Absolute keeps the composition and drops the link into the
  * padding that already exists above it.
  */
+/*
+ * Given a body, not left as a grey line of text.
+ *
+ * It was 14px of --muted-light with an arrow — the same weight as a caption, so it read as a
+ * label rather than as the way out, and on a case page it is the ONLY way out that does not go
+ * through the menu. A border and a filled hover state say "control"; the arrow that slides on
+ * hover says which direction.
+ */
 .backTop {
   position: absolute;
-  top: calc(var(--navH) + 26px);
+  top: calc(var(--navH) + 22px);
   left: var(--gutter);
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
+
+  /* WCAG 2.2 target size, to João's 32px floor. */
+  min-height: 38px;
+  padding: 0 18px;
+
+  border: 1px solid var(--hairline-mid);
   font-size: 14px;
-  letter-spacing: 0.01em;
-  color: var(--muted-light);
+  color: var(--ink);
+  background: transparent;
   --ax: 0px;
-  transition: color 0.45s var(--ease);
+
+  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
+    color 0.4s var(--ease);
 }
 
 .backTop:hover,
 .backTop:focus-visible {
-  color: var(--ink);
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
   --ax: -5px;
 }
 
@@ -383,9 +401,7 @@
   .backTop {
     position: static;
     font-size: 13px;
-    /* WCAG 2.5.5: the text row alone is ~18px, so the target is padded out to 44px. */
-    padding: 13px 0;
-    margin: -13px 0 22px;
+    margin-bottom: 24px;
   }
 
   .six {

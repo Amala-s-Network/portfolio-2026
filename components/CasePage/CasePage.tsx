@@ -54,7 +54,7 @@ export function CasePage({ slug }: { slug: string }) {
          * menu rather than going home, so without this the only escape was the browser's own
          * back button.
          */}
-        <Link className={styles.backTop} href="/">
+        <Link className={styles.backTop} href="/projetos">
           <span className={styles.backArrow} aria-hidden="true">⇠</span>
           {t(copy.back)}
         </Link>

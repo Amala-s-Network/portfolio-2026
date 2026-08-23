@@ -20,12 +20,31 @@
   pointer-events: none;
 }
 
+/*
+ * .stageLive NO LONGER TOUCHES POINTER EVENTS — and that is the whole fix.
+ *
+ * The stage is fixed and fills the viewport, so whenever it took events it took ALL of them,
+ * everywhere on screen, whether or not the panel behind it had actually risen. It was gated on a
+ * progress threshold (p > 0.02), which is a proxy for "is the panel up" that stops being true
+ * the moment the page gets short: filtering /projetos down to an empty category cut the document
+ * from 2581px to 1709px, the footer section slid into view, the threshold tripped, and a
+ * full-screen transparent layer landed over the tabs. Every click on the page died.
+ *
+ * The panel below carries the events instead. Hit-testing respects transforms, so it receives
+ * them exactly where it is actually drawn — no threshold, no proxy, and nothing to get wrong
+ * when the page length changes. This is the same correction the case panels already had; the
+ * footer was the one place still doing it the old way.
+ *
+ * The class stays because the component still uses it to report the rise to the page, which is
+ * what suppresses the back-to-top button.
+ */
 .stageLive {
-  pointer-events: auto;
+  /* intentionally no pointer-events — see above */
 }
 
 .panel {
   position: absolute;
+  pointer-events: auto;
   inset: 0;
   transform-origin: 50% 100%;
   transform: translateY(100%);
