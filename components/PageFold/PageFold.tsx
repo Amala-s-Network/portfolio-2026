@@ -5,9 +5,22 @@ import { useLanguage } from '@/lib/language';
 import { pageFold as copy } from '@/content/copy';
 import styles from './PageFold.module.css';
 
-/** Corner size at rest, and how far scrolling through the hero peels it back. */
-const REST = 96;
-const PEELED = 300;
+/**
+ * Corner size at rest and at full peel, both as a FRACTION OF THE VIEWPORT HEIGHT.
+ *
+ * Fixed pixels were wrong across João's three screens: 96px is a confident corner on a 768-tall
+ * window and a stamp on a 1080-tall one, and the peeled 300px that read well at 1920 crowded the
+ * deck at 1366. Sizing from the height ties the corner to the sheet it belongs to — it is a
+ * proportion of the page, which is what a folded corner actually is.
+ *
+ * The clamps stop it collapsing on a short window or swallowing a tall one.
+ */
+const REST_RATIO = 0.105;
+const PEEL_RATIO = 0.3;
+const REST_MIN = 62;
+const REST_MAX = 132;
+const PEEL_MIN = 150;
+const PEEL_MAX = 340;
 
 /**
  * How far the flap rotates off the page, in degrees, at full peel.
@@ -17,9 +30,6 @@ const PEELED = 300;
  * paper does when it is pulled, instead of sliding or growing flat.
  */
 const LIFT = 34;
-
-/** Resting size while the page is held still and the corner is the only way forward. */
-const HELD = 190;
 
 /**
  * The dog-ear in the bottom-right corner of the first screen.
@@ -33,20 +43,9 @@ const HELD = 190;
  * touches it still sees the page beginning to turn as they move; hovering lifts it and names
  * where it goes; clicking takes them there. Three ways in, one destination.
  */
-export function PageFold({
-  onEnter,
-  /**
-   * When the page is held still, the corner cannot take its cue from scroll — there is none.
-   * It sits already peeled instead, with the photograph showing through, because the whole
-   * invitation depends on the reader seeing that something is under there.
-   */
-  held = false,
-  /** True during the single animated lift: the corner has done its job and gets out of the way. */
-  turning = false,
+export function PageFold({ onEnter
 }: {
   onEnter?: () => void;
-  held?: boolean;
-  turning?: boolean;
 }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
@@ -58,21 +57,6 @@ export function PageFold({
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const apply = () => {
-      if (turning) {
-        /* The reader has pulled it. Leave before the sheet does, not with it. */
-        el.style.opacity = '0';
-        el.style.visibility = 'hidden';
-        return;
-      }
-
-      if (held) {
-        el.style.setProperty('--foldSize', `${HELD}px`);
-        el.style.setProperty('--lift', reduced ? '0deg' : `${LIFT * 0.55}deg`);
-        el.style.opacity = '1';
-        el.style.visibility = '';
-        return;
-      }
-
       const hero = document.querySelector('header');
       if (!hero) return;
 
@@ -85,7 +69,10 @@ export function PageFold({
       const p = Math.min(1, Math.max(0, window.scrollY / heroHeight));
 
       /* Reduced motion gets the corner, at a fixed size, with no peeling and no lift. */
-      const size = reduced ? REST : REST + (PEELED - REST) * p;
+      const vh = window.innerHeight;
+      const rest = Math.min(REST_MAX, Math.max(REST_MIN, vh * REST_RATIO));
+      const peeled = Math.min(PEEL_MAX, Math.max(PEEL_MIN, vh * PEEL_RATIO));
+      const size = reduced ? rest : rest + (peeled - rest) * p;
       el.style.setProperty('--foldSize', `${size}px`);
       el.style.setProperty('--lift', `${reduced ? 0 : LIFT * p}deg`);
 
@@ -114,7 +101,7 @@ export function PageFold({
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
     };
-  }, [held, turning]);
+  }, []);
 
   /*
    * Clicking scrolls to the first case rather than jumping. The panels are driven BY scroll

@@ -466,14 +466,3 @@ a.srOnly {
 }
 
 
-/*
- * The held first screen.
- *
- * On the ROOT element, not on body, and deliberately so: the intro overlay manages
- * body.style.overflow for its own lock, and child effects run before parent ones — so the page's
- * lock was being captured and handed back by the intro's cleanup. Two owners of one property is
- * a race, and the fix is not to sequence them but to stop sharing.
- */
-html.isHeld {
-  overflow: hidden;
-}

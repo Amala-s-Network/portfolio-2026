@@ -31,25 +31,9 @@ const FLIP_EVERY = 3000;
 export function Hero({
   onContact,
   started = true,
-  /**
-   * Where the sheet is in its life:
-   *
-   *   'held'    — flat on the page, waiting for the corner to be pulled
-   *   'turning' — the one animated lift, played once, driven by a CSS transition
-   *   'live'    — position comes from the scroll offset, continuously
-   *
-   * The third phase is the one that matters and the one that was missing. A boolean meant the
-   * sheet was either down or gone, so scrolling back up from the cases spent almost a full
-   * screen with the sheet still away and nothing on screen but the photograph, then snapped it
-   * back at the last moment. Tied to the offset instead, the paper comes down at exactly the
-   * rate the reader scrolls up — which is the same relationship the case panels have always had
-   * with the scrollbar.
-   */
-  phase = 'live',
 }: {
   onContact?: () => void;
   started?: boolean;
-  phase?: 'held' | 'turning' | 'live';
 }) {
   const { lang, t } = useLanguage();
   const heroRef = useRef<HTMLElement>(null);
@@ -137,11 +121,6 @@ export function Hero({
     const hero = heroRef.current;
     if (!hero) return;
 
-    if (phase !== 'live') {
-      hero.style.transform = '';
-      return;
-    }
-
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     const apply = () => {
@@ -161,7 +140,7 @@ export function Hero({
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
     };
-  }, [phase]);
+  }, []);
 
   useEffect(() => {
     const el = avatarRef.current;
@@ -184,9 +163,7 @@ export function Hero({
   return (
     <header
       ref={heroRef}
-      className={`${styles.hero} ${phase === 'turning' ? styles.turned : ''} ${
-        phase === 'live' ? styles.live : ''
-      }`}
+      className={`${styles.hero} ${styles.live}`}
     >
       {/*
         * The diagonal strip, absolutely positioned against the hero and rendered FIRST so it

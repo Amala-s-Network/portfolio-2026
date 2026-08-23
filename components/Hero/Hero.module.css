@@ -710,3 +710,43 @@
     transform: translate(-50%, -50%);
   }
 }
+
+
+/*
+ * ------------------------------------------------- short desktop viewports
+ *
+ * Keyed on HEIGHT, not width, because that is the thing actually running out.
+ *
+ * A 1366x768 screen is not a 768px viewport: Chrome's tab strip, address bar and bookmarks take
+ * roughly 110px, leaving about 657. At that height the hero measured 731px — 128 of top padding,
+ * 555 of content, 48 of bottom — and overran the screen by 74px, which is the first section
+ * failing the one rule it has.
+ *
+ * Everything here is trimmed proportionally rather than one thing being cut hard: 24px off the
+ * top clearance, 8px off the headline's scale, 16px off the deck's lead-in and 16px off the
+ * bottom. No single reduction is large enough to notice; together they are 74px.
+ */
+@media (min-width: 769px) and (max-height: 780px) {
+  .hero {
+    padding-top: calc(var(--navH) + 24px);
+    padding-bottom: 32px;
+  }
+
+  .title,
+  .titleSphere {
+    font-size: clamp(56px, 5.2vw, 72px);
+  }
+
+  .deck {
+    margin-top: 28px;
+    padding-top: 18px;
+  }
+
+  .kicker {
+    margin-top: 12px;
+  }
+
+  .titleWrap {
+    margin-top: 16px;
+  }
+}

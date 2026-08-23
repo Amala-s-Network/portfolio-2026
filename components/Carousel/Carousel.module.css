@@ -2,11 +2,21 @@
 
 .section {
   /*
-   * 168px of lead-in, up from 96px. The section now arrives as a turning page, and a page that
-   * lands with its heading already at the top of the screen has not been seen arriving — the
-   * extra space is what the entrance needs to happen inside.
+   * A screen of its own, like the header and the cases before it.
+   *
+   * min-height rather than height: the content is a heading, a rail of 16:9 cards and a row of
+   * controls, and on a 620px browser viewport that is taller than the screen. A fixed height
+   * would crop it; a minimum fills the screen where there is room and lets it grow where there
+   * is not, which is the difference between a section that fills the view and one that hides
+   * things from it.
    */
-  padding: 168px 0 104px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  /* Padding drops to what the entrance needs, since the height now supplies the breathing room. */
+  padding: 96px 0 96px;
   background: var(--paper);
   position: relative;
   z-index: 1;
