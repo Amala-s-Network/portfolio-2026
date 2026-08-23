@@ -27,11 +27,11 @@
   overflow: hidden;
   isolation: isolate;
 
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.5s var(--ease),
+    background 0.5s var(--ease),
+    color 0.5s var(--ease),
+    border-color 0.5s var(--ease),
+    box-shadow 0.5s var(--ease);
 }
 
 /* ---- 3. Reflection ---- */
@@ -54,7 +54,7 @@
 .button:hover::before,
 .button:focus-visible::before {
   transform: translateX(140%);
-  transition: transform 0.95s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.95s var(--ease);
 }
 
 /* Label and arrow must sit above the sweep (README step 3). */
@@ -68,7 +68,7 @@
 
 .arrow {
   transform: translate(var(--ax), var(--ay));
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.45s var(--ease);
 }
 
 .button:hover .arrow,

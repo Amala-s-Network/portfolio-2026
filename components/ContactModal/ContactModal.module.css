@@ -23,7 +23,7 @@
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
   opacity: 0;
-  transition: opacity 0.7s ease;
+  transition: opacity 0.7s var(--ease);
   border: none;
   padding: 0;
   cursor: default;
@@ -39,8 +39,8 @@
 
   opacity: 0;
   transform: translateY(22px) scale(0.99);
-  transition: opacity 0.7s cubic-bezier(0.22, 0.7, 0.24, 1),
-    transform 0.7s cubic-bezier(0.22, 0.7, 0.24, 1);
+  transition: opacity 0.7s var(--ease),
+    transform 0.7s var(--ease);
 }
 
 .open .backdrop {
@@ -66,7 +66,7 @@
   font-size: 18px;
   line-height: 1;
   color: var(--ink);
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.45s var(--ease);
 }
 
 .close:hover,
@@ -85,7 +85,7 @@
 
 .line {
   font-size: 15.5px;
-  line-height: 1.55;
+  line-height: var(--lh-body);
   color: var(--body);
   margin-top: 14px;
 }
@@ -110,10 +110,10 @@
   overflow: hidden;
   isolation: isolate;
 
-  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    border-color 0.5s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.5s var(--ease),
+    background 0.5s var(--ease), color 0.5s var(--ease),
+    border-color 0.5s var(--ease),
+    box-shadow 0.5s var(--ease);
 }
 
 /* The reflection sweep, same as every other button (README "Button interaction"). */
@@ -135,7 +135,7 @@
 .row:hover::before,
 .row:focus-visible::before {
   transform: translateX(140%);
-  transition: transform 0.95s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.95s var(--ease);
 }
 
 .row > * {
@@ -185,7 +185,7 @@
 .arrow {
   --ax: 0px;
   transform: translateX(var(--ax));
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.45s var(--ease);
 }
 
 .row:hover .arrow,

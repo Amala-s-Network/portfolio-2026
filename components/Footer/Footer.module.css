@@ -73,7 +73,7 @@
 
 .blurb {
   font-size: 17px;
-  line-height: 1.6;
+  line-height: var(--lh-body);
   color: var(--on-dark-72);
   max-width: 460px;
   margin-top: 26px;
@@ -101,7 +101,7 @@
   gap: 20px;
   padding: 16px 0;
   border-bottom: 1px solid var(--on-dark-rule-2);
-  transition: color 0.35s ease;
+  transition: color 0.35s var(--ease);
 }
 
 .channel:hover {
@@ -128,7 +128,7 @@
 }
 
 .social a {
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s var(--ease);
   opacity: 0.72;
 }
 
@@ -179,7 +179,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  transition: color 0.3s ease;
+  transition: color 0.3s var(--ease);
 }
 
 .toTop:hover {
@@ -188,7 +188,7 @@
 
 .toTopArrow {
   transform: translateY(var(--ay));
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.45s var(--ease);
 }
 
 .toTop:hover .toTopArrow {

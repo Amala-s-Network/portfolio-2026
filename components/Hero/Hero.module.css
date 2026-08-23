@@ -192,8 +192,8 @@
   animation: titleSway 13s ease-in-out 4.6s infinite;
 
   /* The 0.32s trail from README §2 — the sphere lags the pointer slightly. */
-  transition: --mx 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
-    --my 0.32s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: --mx 0.32s var(--ease),
+    --my 0.32s var(--ease);
 }
 
 /* ---- 1. the disc ---- */
@@ -212,7 +212,7 @@
   pointer-events: none;
 
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.8s var(--ease);
 }
 
 /* ---- 2. the knocked-out letters ---- */
@@ -238,7 +238,7 @@
    * README §2 is emphatic: set opacity synchronously in the enter handler, never behind a lone
    * requestAnimationFrame.
    */
-  transition: opacity 0.8s ease;
+  transition: opacity 0.8s var(--ease);
 }
 
 .sphereOn .sphereDisc,
@@ -323,7 +323,7 @@
   margin-top: 30px;
   font-size: 18px;
   font-weight: 300;
-  line-height: 1.48;
+  line-height: var(--lh-body);
   color: var(--body);
 }
 

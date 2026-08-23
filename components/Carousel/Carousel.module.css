@@ -75,8 +75,8 @@
   min-width: 200px;
   scroll-snap-align: start;
 
-  transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.6s var(--ease),
+    box-shadow 0.6s var(--ease);
 }
 
 .card:hover,
@@ -140,9 +140,9 @@
   color: var(--ink);
   font-size: 17px;
 
-  transition: border-color 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease;
+  transition: border-color 0.45s var(--ease),
+    transform 0.45s var(--ease),
+    box-shadow 0.45s var(--ease), opacity 0.3s var(--ease);
 }
 
 .arrow:hover:not(:disabled),

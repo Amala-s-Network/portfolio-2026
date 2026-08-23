@@ -18,8 +18,8 @@
   color: var(--navFg);
 
   /* README §1: no border — the progress bar is the border. */
-  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.6s var(--ease),
+    color 0.6s var(--ease);
 }
 
 /* ---- wordmark + caret ---- */
@@ -43,7 +43,7 @@
   border-right: 1.5px solid currentColor;
   border-bottom: 1.5px solid currentColor;
   transform: rotate(45deg) translateY(-2px);
-  transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: transform 0.45s var(--ease);
 }
 
 .caretOpen {
@@ -67,7 +67,7 @@
  */
 .lang {
   opacity: 0.48;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s var(--ease);
 }
 
 .langActive {
@@ -95,12 +95,12 @@
   bottom: 0;
   height: 1px;
   background: var(--navTrack);
-  transition: background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: background 0.6s var(--ease);
 }
 
 .bar {
   height: 100%;
   background: var(--navFg);
   transform-origin: left;
-  transition: transform 0.18s linear, background 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.18s linear, background 0.6s var(--ease);
 }
