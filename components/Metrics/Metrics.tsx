@@ -13,7 +13,7 @@ export function Metrics() {
   const revealed = useReveal(sectionRef);
 
   return (
-    <section ref={sectionRef} className={styles.section}>
+    <section ref={sectionRef} className={styles.section} data-dark>
       <Reveal on={revealed} order={0}>
         <span className={styles.kicker}>
           <span className={styles.diamond} aria-hidden="true" />

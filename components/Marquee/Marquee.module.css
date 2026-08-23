@@ -53,3 +53,17 @@
     letter-spacing: 0.2em;
   }
 }
+
+/*
+ * With the hero sitting up against the nav, the strip follows the content instead of being
+ * pinned to the fold — so it needs its own separation or it collides with the CTA.
+ */
+/*
+ * The gap below is what actually lifts the strip off the fold: the hero is short by exactly this
+ * amount, so the space lands under the marquee and the first case section still begins at 100svh.
+ */
+@media (max-width: 768px) {
+  .marquee {
+    margin-bottom: 72px;
+  }
+}

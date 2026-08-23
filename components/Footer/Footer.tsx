@@ -71,7 +71,7 @@ export function Footer({ onContact, onRiseChange }: FooterProps) {
   return (
     <section ref={sectionRef} className={styles.section} id="contato">
       <div ref={stageRef} className={styles.stage}>
-        <div ref={panelRef} className={styles.panel}>
+        <div ref={panelRef} className={styles.panel} data-dark>
           <div className={styles.folio}>
             <span>{t(copy.folioLeft)}</span>
             <span>{t(copy.folioRight)}</span>

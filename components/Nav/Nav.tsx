@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/Button/Button';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
+import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
 import { nav as copy } from '@/content/copy';
 import styles from './Nav.module.css';
@@ -17,6 +18,9 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
   const { lang, setLang, t } = useLanguage();
   const progress = useScrollProgress();
   const ref = useRef<HTMLElement>(null);
+
+  // README §1: the bar inverts when a dark surface passes under it.
+  useSurfaceInversion(ref);
 
   /*
    * README §1: "The nav height is measured at runtime and published as --navH so the hero can

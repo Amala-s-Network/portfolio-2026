@@ -296,3 +296,32 @@ button {
     }
   }
 }
+
+/*
+ * -------------------------------------------------------------- case snap
+ *
+ * Each case pulls the screen to itself and holds until the next scroll — João's ask, on both
+ * platforms.
+ *
+ * `proximity`, not `mandatory`, and the distinction is the whole difference between "natural"
+ * and "fighting the page". Mandatory forces a landing on the nearest snap point from anywhere on
+ * the page, so a small deliberate scroll gets yanked somewhere the user did not ask to go, and a
+ * section taller than the viewport can become impossible to stop inside. Proximity only engages
+ * when the scroll already ends near a snap point, which reads as the panel settling itself.
+ *
+ * Snap lives on the case sections only. The hero, carousel, about, metrics and history are
+ * ordinary reading sections and must stay free to stop anywhere.
+ */
+html {
+  scroll-snap-type: y proximity;
+}
+
+/*
+ * Someone on reduced motion has asked not to be moved by the interface. Snapping is exactly
+ * that — the page taking over the scroll position — so it is switched off entirely.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-snap-type: none;
+  }
+}

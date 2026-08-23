@@ -357,19 +357,39 @@
    * here, which left 197px of dead space at 360x800 and still overflowed on a real iPhone,
    * because the emulator's 800px and a phone's visible area are not the same number.
    */
+  /*
+   * Content sits UP against the nav rather than centred in the viewport.
+   *
+   * Filling 100svh and centring put the block in the middle of the screen with a large empty
+   * band above and below it, and pushed the marquee onto the very edge of the fold where a
+   * phone's URL bar cuts it in half. Sitting the content near the top brings the marquee up with
+   * it, so the strip is read as part of the page rather than glimpsed at the bottom.
+   *
+   * The fill is gone with it: the first screen is now as tall as its content, which also means
+   * it cannot be cut short by whatever chrome a given device takes.
+   */
   .hero {
     /*
-     * The band is shorter here than on desktop: 11px padding, 8.5px type and the two rules come
-     * to 34px against the desktop 61px. Leaving --bandH at the desktop figure subtracted 27px
-     * that did not exist and left a strip of dead space under the marquee.
+     * The band on mobile is 34px, not the desktop 61px: 11px padding, 8.5px type, two rules.
      */
     --bandH: 34px;
+    /* How far the strip sits above the fold, so it is clearly on the page rather than glimpsed. */
+    --bandLift: 72px;
 
-    min-height: calc(100vh - var(--bandH));
-    min-height: calc(100svh - var(--bandH));
-    justify-content: center;
-    padding-top: calc(var(--navH) + 16px);
-    padding-bottom: 16px;
+    /*
+     * Height still comes from the viewport — dropping it entirely was wrong. Without it the hero
+     * collapses to its content, the first case section starts inside the fold, and its panel
+     * rises over the hero at scroll zero.
+     *
+     * What changed is where the content sits inside that height: flex-start, so it reads up
+     * against the nav instead of floating in the middle of the screen. The remaining space falls
+     * below the strip, which lifts it clear of the phone's URL bar.
+     */
+    min-height: calc(100vh - var(--bandH) - var(--bandLift));
+    min-height: calc(100svh - var(--bandH) - var(--bandLift));
+    justify-content: flex-start;
+    padding-top: calc(var(--navH) + 20px);
+    padding-bottom: 0;
   }
 
   .stack {
@@ -442,16 +462,17 @@
     animation: none;
   }
 
-  /* Reduced from 15px so the whole first screen clears a phone's visible area. */
+  /* 16px from the headline, per João's spacing. */
   .paragraph {
-    margin-top: 14px;
+    margin-top: 16px;
     font-size: 13.5px;
     line-height: 1.45;
     text-wrap: pretty;
   }
 
+  /* 24px from the paragraph, per João's spacing. */
   .cta {
-    margin-top: 20px;
+    margin-top: 24px;
   }
 }
 

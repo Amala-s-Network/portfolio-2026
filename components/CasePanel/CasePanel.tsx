@@ -104,7 +104,8 @@ export function CasePanel({ data, index, isLast }: CasePanelProps) {
   return (
     <section ref={sectionRef} className={styles.section}>
       <div ref={stageRef} className={styles.stage} style={{ zIndex: 20 + index }}>
-        <div ref={panelRef} className={styles.panel}>
+        {/* data-dark: the nav reads these to know when to invert. */}
+        <div ref={panelRef} className={styles.panel} data-dark>
           <div className={styles.photoFrame}>
             {/*
              * Placeholder art, generated for this repo — see assets/placeholders/README.md.

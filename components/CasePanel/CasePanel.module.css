@@ -259,3 +259,16 @@
     --ctaY: 0px;
   }
 }
+
+/*
+ * The snap point is the section's start, which is also where the panel finishes rising — the
+ * reveal completes at r.top = 0.42vh, so by r.top = 0 the panel is fully up. Landing here is the
+ * panel at rest covering the screen, which is the state worth holding.
+ *
+ * scroll-margin-top offsets it by the nav, or the panel's own top edge lands underneath the bar.
+ */
+.section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  scroll-margin-top: var(--navH);
+}
