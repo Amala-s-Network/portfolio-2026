@@ -23,7 +23,7 @@ export function Carousel() {
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
   const [dragging, setDragging] = useState(false);
-  /** Timer that restores scroll snapping once a wheel gesture stops. */
+  /** Timer that restores scroll snapping once a drag settles. */
   const settleRef = useRef<number | undefined>(undefined);
 
   const readEdges = useCallback(() => {
@@ -35,53 +35,27 @@ export function Carousel() {
   }, []);
 
   /*
-   * README §6 "Wheel capture": a non-passive wheel listener turns vertical wheel delta into
-   * scrollLeft and calls preventDefault() — EXCEPT at either end, where the event is let through
-   * so the page keeps scrolling.
+   * README §6 describes a wheel capture that converts vertical wheel delta into horizontal
+   * scroll. It is deliberately NOT used on a pointer device any more.
    *
-   * That exception is the whole point. Without it the rail swallows every wheel event while the
-   * pointer is over it and the user cannot scroll past the section at all.
+   * João's reason is the right one: a rail that hijacks the wheel steals the gesture the user was
+   * making. They meant to move down the page, the page stopped, and something sideways happened
+   * instead. Even implemented correctly — with the end-check that hands the event back at either
+   * edge — the moment of "why did the page stop" is itself the confusion. On desktop the arrows
+   * are now the whole navigation, which is unambiguous.
    *
-   * Registered here rather than via onWheel because React's synthetic wheel handler is passive,
-   * and a passive listener is forbidden from calling preventDefault().
+   * Touch keeps its native horizontal swipe, which is a distinct gesture from a vertical scroll
+   * and confuses nobody.
    */
   useEffect(() => {
     const rail = railRef.current;
     if (!rail) return;
 
-    const onWheel = (e: WheelEvent) => {
-      // Leave horizontal trackpad gestures to the browser; it already does the right thing.
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-
-      const max = rail.scrollWidth - rail.clientWidth;
-      const goingRight = e.deltaY > 0;
-      const stuck = goingRight ? rail.scrollLeft >= max - EDGE : rail.scrollLeft <= EDGE;
-
-      // At the end in the direction of travel: hand the event back to the page.
-      if (stuck) return;
-
-      e.preventDefault();
-
-      // Suspend snapping for the gesture, or each tick is snapped back before the next arrives.
-      rail.classList.add(styles.railFree);
-      rail.scrollLeft += e.deltaY;
-      readEdges();
-
-      window.clearTimeout(settleRef.current);
-      settleRef.current = window.setTimeout(() => {
-        // Gesture over: restore snapping and let the rail settle onto the nearest card.
-        rail.classList.remove(styles.railFree);
-        readEdges();
-      }, 140);
-    };
-
-    rail.addEventListener('wheel', onWheel, { passive: false });
     rail.addEventListener('scroll', readEdges, { passive: true });
     window.addEventListener('resize', readEdges);
     readEdges();
 
     return () => {
-      rail.removeEventListener('wheel', onWheel);
       rail.removeEventListener('scroll', readEdges);
       window.removeEventListener('resize', readEdges);
       window.clearTimeout(settleRef.current);

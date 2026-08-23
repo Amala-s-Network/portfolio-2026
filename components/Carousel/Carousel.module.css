@@ -262,3 +262,15 @@
     transform: scale(0.985);
   }
 }
+
+/*
+ * No grab cursor on a pointer device: the rail is no longer draggable there, and a cursor that
+ * promises a gesture the page will not honour is worse than no affordance at all. The arrows are
+ * the navigation. Keyboard focus can still scroll the rail, which is why overflow stays auto
+ * rather than hidden.
+ */
+@media (pointer: fine) {
+  .rail {
+    cursor: default;
+  }
+}
