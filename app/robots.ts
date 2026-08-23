@@ -1,15 +1,13 @@
 import type { MetadataRoute } from 'next';
 
 /**
- * Crawling is ALLOWED on purpose, even though the site is currently kept out of search.
+ * Crawling is allowed, and as of 2026-08-22 indexing is too — the `noindex` block that used to
+ * sit in app/layout.tsx has been removed.
  *
- * The `noindex` directive in app/layout.tsx is what does the blocking. A crawler has to fetch the
- * page to read that directive, so disallowing here would defeat it: Google would be unable to see
- * the noindex and could still list the URL from inbound links, with no way to drop it.
- *
- * Allow the crawl, serve noindex, and the page stays out of the index properly.
- *
- * REMOVE the robots block in app/layout.tsx before launch — this file can stay as it is.
+ * If the site ever needs to come back out of search, add `robots: { index: false }` to the
+ * metadata in app/layout.tsx rather than adding a Disallow here. A Disallow blocks crawling, and
+ * a crawler that never fetches the page never reads the noindex — Google can still list a
+ * disallowed URL picked up from inbound links, with no clean way to remove it.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
