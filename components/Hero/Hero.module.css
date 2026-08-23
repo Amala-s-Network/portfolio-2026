@@ -85,12 +85,15 @@
    */
   transform-origin: 50% 0%;
   /*
-   * 1.5s on a long ease-out. The first version ran 1.15s on --ease-curtain, which has
-   * acceleration at both ends — right for a curtain being drawn, wrong for paper, which leaves
-   * quickly and settles slowly. This curve puts almost all of its speed at the start, so the
-   * sheet is pulled away rather than swept.
+   * 1.9s on the site's own --ease, which is a long, deep ease-out.
+   *
+   * Two earlier goes were wrong in opposite directions: --ease-curtain accelerates at both ends,
+   * which is right for a curtain and wrong for paper, and cubic-bezier(0.22, 1, 0.36, 1) at 1.5s
+   * spent almost all of its speed in the first third and then crawled, which reads as a snag.
+   * This curve keeps moving through the middle and settles without stopping short — and the
+   * extra 400ms matters because the sheet is travelling a full viewport, not a few pixels.
    */
-  transition: transform 1.5s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 1.9s var(--ease);
   will-change: transform;
 }
 

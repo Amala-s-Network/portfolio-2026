@@ -71,7 +71,7 @@ export default function Page() {
         window.scrollTo(0, hero ? hero.offsetHeight : window.innerHeight);
         setPhase('live');
       },
-      reduced ? 260 : 1500
+      reduced ? 260 : 1900
     );
   }, []);
   const openContact = useCallback(() => setContactOpen(true), []);
@@ -145,7 +145,7 @@ export default function Page() {
         * sibling of <main> — fixed to the viewport corner, fading out as the first case takes
         * the screen.
         */}
-      <PageFold held={phase === 'held'} onEnter={turnPage} />
+      <PageFold held={phase === 'held'} turning={phase === 'turning'} onEnter={turnPage} />
 
       {/* Suppressed while the footer is up, per README. */}
       <BackToTop suppressed={footerUp} />

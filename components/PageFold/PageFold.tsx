@@ -41,9 +41,12 @@ export function PageFold({
    * invitation depends on the reader seeing that something is under there.
    */
   held = false,
+  /** True during the single animated lift: the corner has done its job and gets out of the way. */
+  turning = false,
 }: {
   onEnter?: () => void;
   held?: boolean;
+  turning?: boolean;
 }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
@@ -55,6 +58,13 @@ export function PageFold({
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const apply = () => {
+      if (turning) {
+        /* The reader has pulled it. Leave before the sheet does, not with it. */
+        el.style.opacity = '0';
+        el.style.visibility = 'hidden';
+        return;
+      }
+
       if (held) {
         el.style.setProperty('--foldSize', `${HELD}px`);
         el.style.setProperty('--lift', reduced ? '0deg' : `${LIFT * 0.55}deg`);
@@ -80,13 +90,18 @@ export function PageFold({
       el.style.setProperty('--lift', `${reduced ? 0 : LIFT * p}deg`);
 
       /*
-       * Gone by the time the first case owns the screen.
+       * Gone BEFORE the first case owns the screen, which is much earlier than it looks.
        *
-       * The fade runs over the last third rather than the last quarter, because the corner is
-       * much larger now: 300px vanishing in a quarter of a screen reads as a blink, and the
-       * whole point is that it should feel handed over to the case rather than switched off.
+       * The hero is exactly one viewport tall, so the first case section's top sits exactly one
+       * screen down — and its panel therefore starts rising on the very first pixel of scroll,
+       * covering the screen completely by 58% of it (README §5's reveal window). The fade used
+       * to start at 66%, which left roughly 320px of scrolling where the case had taken the
+       * screen and the corner was still painted on top of it. That is the dog-ear João
+       * photographed sitting on the forest.
+       *
+       * Gone by 50%, comfortably ahead of the panel it would otherwise be standing on.
        */
-      const fade = p > 0.66 ? Math.max(0, 1 - (p - 0.66) / 0.34) : 1;
+      const fade = Math.max(0, 1 - p / 0.5);
       el.style.opacity = String(fade);
       /* visibility, not pointer-events: the box already takes none — see the CSS. */
       el.style.visibility = fade < 0.05 ? 'hidden' : '';
@@ -99,7 +114,7 @@ export function PageFold({
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
     };
-  }, [held]);
+  }, [held, turning]);
 
   /*
    * Clicking scrolls to the first case rather than jumping. The panels are driven BY scroll
