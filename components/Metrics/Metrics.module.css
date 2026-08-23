@@ -110,3 +110,33 @@
     row-gap: 20px;
   }
 }
+
+/* Mobile: two columns rather than four — one column wastes the number's visual weight. */
+@media (max-width: 768px) {
+  .section {
+    padding: 56px var(--gutter) 56px;
+  }
+  .subhead {
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 20px;
+    row-gap: 12px;
+    margin-top: 40px;
+  }
+  .cell {
+    padding-top: 26px;
+  }
+  /* The 2.9em label reservation exists to align four numbers; with two it just adds a hole. */
+  .label {
+    min-height: 0;
+    margin-bottom: 10px;
+  }
+  .note {
+    font-size: 13px;
+    margin-top: 12px;
+    padding-right: 0;
+  }
+}

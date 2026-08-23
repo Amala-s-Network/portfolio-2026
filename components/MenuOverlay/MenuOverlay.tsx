@@ -14,7 +14,7 @@ type MenuOverlayProps = {
 };
 
 export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
-  const { lang, t } = useLanguage();
+  const { lang, setLang, t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);
 
   // Focus trap, Escape, focus return, and the body scroll lock (README "Overlays").
@@ -109,6 +109,31 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
             </a>
           </div>
         </div>
+      </div>
+
+      {/*
+        * Mobile only. Below 768px the nav bar drops the language pair to make room, so this
+        * overlay becomes its only route — without it the site would be single-language on a
+        * phone. Hidden above the breakpoint, where the nav still carries it.
+        */}
+      <div className={styles.mobileLangs}>
+        <button
+          type="button"
+          className={`${styles.mobileLang} ${lang === "pt" ? styles.mobileLangActive : ""}`}
+          onClick={() => setLang("pt")}
+          aria-pressed={lang === "pt"}
+        >
+          {navCopy.langPt}
+        </button>
+        <span aria-hidden="true">/</span>
+        <button
+          type="button"
+          className={`${styles.mobileLang} ${lang === "en" ? styles.mobileLangActive : ""}`}
+          onClick={() => setLang("en")}
+          aria-pressed={lang === "en"}
+        >
+          {navCopy.langEn}
+        </button>
       </div>
 
       <p className={styles.kicker}>

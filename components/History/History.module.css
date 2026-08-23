@@ -61,3 +61,30 @@
     gap: 10px;
   }
 }
+
+/* Mobile: the two-column row collapses; the company name leads, description follows. */
+@media (max-width: 768px) {
+  .section {
+    padding: 56px var(--gutter) 64px;
+  }
+  .heading {
+    font-size: 32px;
+  }
+  .intro {
+    font-size: 16px;
+  }
+  .list {
+    margin-top: 40px;
+  }
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 8px;
+    padding: 22px 0;
+  }
+  .name {
+    font-size: 22px;
+  }
+  .description {
+    font-size: 15px;
+  }
+}

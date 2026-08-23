@@ -39,13 +39,21 @@ export default function Page() {
     <>
       <Intro onDone={handleIntroDone} />
 
+      {/*
+        * WCAG 2.4.1 — a way past the nav for keyboard and switch users. Visually hidden until
+        * focused, at which point it is the first thing Tab reaches on the page.
+        */}
+      <a href="#conteudo" className="srOnly">
+        Pular para o conteúdo
+      </a>
+
       <Nav
         menuOpen={menuOpen}
         onToggleMenu={() => setMenuOpen((v) => !v)}
         onContact={openContact}
       />
 
-      <main>
+      <main id="conteudo">
         <Hero onContact={openContact} started={introDone} />
         <Divider />
         <Marquee />

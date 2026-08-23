@@ -76,6 +76,28 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
         {t(copy.cta)}
       </Button>
 
+      {/*
+        * Mobile only — replaces the language pair and the CTA, which do not fit at 360px and both
+        * live on inside the menu overlay this opens. It is the same control as the wordmark, so
+        * it carries the same aria-expanded and controls the same panel; aria-hidden is NOT used,
+        * because the button is genuinely interactive at this width.
+        */}
+      <button
+        type="button"
+        className={`${styles.burger} ${menuOpen ? styles.burgerOpen : ""}`}
+        onClick={onToggleMenu}
+        aria-expanded={menuOpen}
+        aria-label={
+          menuOpen
+            ? lang === "pt" ? "Fechar menu" : "Close menu"
+            : lang === "pt" ? "Abrir menu" : "Open menu"
+        }
+      >
+        <span className={styles.burgerBar} aria-hidden="true" />
+        <span className={styles.burgerBar} aria-hidden="true" />
+        <span className={styles.burgerBar} aria-hidden="true" />
+      </button>
+
       {/* README §1: the progress bar IS the nav's bottom border. */}
       <div className={styles.track}>
         <div className={styles.bar} style={{ transform: `scaleX(${progress})` }} />

@@ -327,3 +327,51 @@
     gap: 20px;
   }
 }
+
+/* Mobile: single column throughout, and the 6s block stops reserving a full viewport. */
+@media (max-width: 768px) {
+  .six {
+    min-height: 0;
+    padding: calc(var(--navH) + 32px) var(--gutter) 40px;
+  }
+  .title {
+    font-size: 32px;
+    margin-top: 28px;
+    max-width: none;
+  }
+  .context {
+    font-size: 16px;
+    margin-top: 18px;
+  }
+  .impact {
+    padding-top: 36px;
+    gap: 16px;
+  }
+  .impactValue {
+    font-size: 56px;
+  }
+  .sixty,
+  .sixMin {
+    padding: 56px var(--gutter);
+  }
+  .argument,
+  .evidence,
+  .detailGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 24px;
+  }
+  .argumentBody {
+    font-size: 16px;
+  }
+  .detailTitle {
+    font-size: 22px;
+  }
+  .detailBody,
+  .contribution li {
+    font-size: 15px;
+  }
+  .pageFoot {
+    padding: 28px 0 56px;
+    margin: 0 var(--gutter);
+  }
+}

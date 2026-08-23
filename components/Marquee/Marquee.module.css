@@ -39,3 +39,16 @@
     animation: none;
   }
 }
+
+/* Mobile: Figma frame 102:660 — 10px type, tighter tracking, rules top and bottom. */
+@media (max-width: 768px) {
+  .marquee {
+    padding: 14px 0;
+    border-top: 1px solid var(--hairline-mid-3);
+  }
+
+  .span {
+    font-size: 10px;
+    letter-spacing: 0.28em;
+  }
+}

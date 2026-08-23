@@ -233,3 +233,98 @@
     display: none;
   }
 }
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * The overlay carries more weight on a phone: it is the ONLY route to the language toggle and
+ * the contact CTA, both of which leave the nav bar below 768px. So the columns stack, the main
+ * links grow back to a comfortable tap size, and a language pair is added at the bottom.
+ */
+@media (max-width: 768px) {
+  .overlay {
+    padding: 16px var(--gutter) 32px;
+    overflow-y: auto;
+  }
+
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    justify-content: start;
+    gap: 32px;
+    margin-top: 40px;
+    margin-bottom: 32px;
+  }
+
+  .colHeading {
+    margin-bottom: 16px;
+  }
+
+  .links {
+    gap: 4px;
+  }
+
+  /* 26px and a 44px hit box — the primary navigation of the whole site at this width. */
+  .mainLink {
+    font-size: 26px;
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+  }
+
+  .subLink {
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    min-height: var(--tap);
+    word-break: break-word;
+  }
+
+  .kicker {
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    align-items: flex-start;
+    line-height: var(--lh-body);
+  }
+
+  .close {
+    width: var(--tap);
+    height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+/* ---- language pair, mobile only ---- */
+
+.mobileLangs {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .mobileLangs {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 26px;
+    font-size: 14px;
+    color: var(--on-dark-50);
+  }
+
+  .mobileLang {
+    opacity: 0.48;
+    padding: 10px 4px;
+    min-height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.3s var(--ease);
+  }
+
+  .mobileLangActive {
+    opacity: 1;
+    color: var(--on-dark);
+    border-bottom: 1px solid currentColor;
+  }
+}

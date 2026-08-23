@@ -208,3 +208,54 @@
     transition: none;
   }
 }
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * The page-turn itself is kept — it is the reason this design exists, and it is transform-only
+ * so it costs nothing extra on a phone. Only the panel's internal composition changes: the
+ * Figma frame (112:25) sets 24px padding, a 20px title and 14px body.
+ */
+@media (max-width: 768px) {
+  .section {
+    height: 110vh;
+  }
+
+  .panel {
+    padding: 88px var(--gutter) 32px;
+  }
+
+  .title {
+    font-size: 24px;
+    line-height: 1.15;
+  }
+
+  .company {
+    font-size: 15px;
+    margin-top: 6px;
+  }
+
+  .description {
+    font-size: 15px;
+  }
+
+  .foot {
+    gap: 14px;
+  }
+
+  /*
+   * The hover label has no touch equivalent, so on coarse pointers it is shown permanently
+   * rather than hidden behind an interaction that cannot happen. It is the only thing telling
+   * the reader the panel is tappable.
+   */
+  .hoverLabel {
+    font-size: 11px;
+  }
+}
+
+@media (pointer: coarse) {
+  .panel {
+    --ctaOp: 1;
+    --ctaY: 0px;
+  }
+}

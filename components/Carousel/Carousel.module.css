@@ -180,3 +180,73 @@
     width: calc((100% - 30px) / 2);
   }
 }
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * Figma frame 112:98: 230px cards with a 16px gap, so a second card bleeds past the right edge
+ * and signals the rail scrolls. Heading 24px, controls 44px.
+ */
+@media (max-width: 768px) {
+  .section {
+    padding: 48px 0 56px;
+  }
+
+  .heading {
+    font-size: 24px;
+    line-height: 1.15;
+  }
+
+  .rail {
+    gap: 16px;
+    margin-top: 28px;
+    padding: 0 var(--gutter) 4px;
+    scroll-padding-left: var(--gutter);
+  }
+
+  .card {
+    width: 230px;
+    min-width: 230px;
+  }
+
+  .name {
+    font-size: 17px;
+    margin-top: 14px;
+  }
+
+  .company {
+    font-size: 14px;
+  }
+
+  .controls {
+    margin-top: 28px;
+    gap: 16px;
+  }
+
+  .arrow {
+    /* Figma draws 42px; raised to the 44px minimum. */
+    width: var(--tap);
+    height: var(--tap);
+  }
+}
+
+/*
+ * Touch: the rail scrolls natively, so drag-to-scroll and the wheel capture are pointer-only
+ * concerns. `cursor: grab` is meaningless without a cursor, and the hover lift has nothing to
+ * trigger it — leaving it in means a card can stick in a raised state after a tap.
+ */
+@media (pointer: coarse) {
+  .rail {
+    cursor: auto;
+  }
+
+  .card:hover,
+  .card:focus-visible {
+    transform: none;
+    box-shadow: none;
+  }
+
+  .card:active {
+    transform: scale(0.985);
+  }
+}

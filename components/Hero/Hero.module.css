@@ -332,3 +332,134 @@
 .cta {
   margin-top: 30px;
 }
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * From the Figma handoff frame (100:659): 24px padding, avatar 40px, a 24px gap to the kicker,
+ * H1 32px, 16px to the paragraph, CTA centred below.
+ *
+ * Two deliberate departures from that frame:
+ *
+ * 1. The paragraph is 15px, not the 12px drawn. 12px on a phone is below what most people can
+ *    read comfortably and is the size that pushes users to pinch-zoom; WCAG has no minimum, but
+ *    1.4.4 requires text to survive 200% zoom, and starting that small leaves no headroom.
+ * 2. The 800px hero cap and the vertical centring are dropped. On a phone the content is taller
+ *    than the viewport anyway, so centring only pushes the fold; the hero simply flows.
+ */
+@media (max-width: 768px) {
+  .hero {
+    min-height: 0;
+    justify-content: flex-start;
+    padding-top: calc(var(--navH) + 24px);
+    padding-bottom: 24px;
+  }
+
+  .stack {
+    gap: 0;
+    width: 100%;
+  }
+
+  .avatarWrap {
+    perspective: 480px;
+  }
+
+  .avatar {
+    width: 40px;
+    height: 40px;
+  }
+
+  .kicker {
+    margin-top: 24px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    /* The kicker is three roles joined by slashes — it must be free to wrap at this width. */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    line-height: var(--lh-body);
+  }
+
+  .diamond {
+    width: 9px;
+    height: 9px;
+  }
+
+  .titleWrap {
+    margin-top: 16px;
+    /* Full width on mobile: fit-content would leave the headline off-centre once it wraps. */
+    width: 100%;
+  }
+
+  .title,
+  .titleSphere {
+    font-size: 32px;
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+  }
+
+  /*
+   * The sphere is a pointer affordance with no touch equivalent — it would need a tap to arm and
+   * would then sit under the finger. Removed rather than left as a dead layer, which also drops
+   * a duplicated copy of the headline from the accessibility tree.
+   */
+  .sphereDisc,
+  .titleSphere {
+    display: none;
+  }
+
+  .titleWrap {
+    cursor: auto;
+    animation: none;
+  }
+
+  .paragraph {
+    margin-top: 16px;
+    font-size: 15px;
+    line-height: var(--lh-body);
+  }
+
+  .cta {
+    margin-top: 24px;
+  }
+}
+
+/*
+ * The hard line breaks in the headline and paragraph are a desktop composition. At 360px they
+ * produce ragged, arbitrary lines, so below the breakpoint the spans fall back to normal
+ * inline flow and the text wraps to the measure.
+ */
+@media (max-width: 768px) {
+  .title span,
+  .paragraph span {
+    display: inline !important;
+  }
+
+  .title span::after,
+  .paragraph span::after {
+    content: ' ';
+  }
+}
+
+/*
+ * The avatar is a 40px circle on mobile but a real control, so its hit area is expanded past its
+ * visual size with a pseudo-element rather than by growing the circle. Same technique the design
+ * would use for any small icon button: what you see stays 40px, what you can hit is 44px.
+ */
+@media (pointer: coarse), (max-width: 768px) {
+  .avatar {
+    position: relative;
+    min-width: 0;
+    min-height: 0;
+  }
+
+  .avatar::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: var(--tap);
+    height: var(--tap);
+    transform: translate(-50%, -50%);
+  }
+}

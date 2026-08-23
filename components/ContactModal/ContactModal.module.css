@@ -215,3 +215,38 @@
     display: none;
   }
 }
+
+/* Mobile: the card meets the gutter, and each channel row clears the tap minimum. */
+@media (max-width: 768px) {
+  .root {
+    padding: var(--gutter) 16px;
+    align-items: flex-end;
+  }
+  .card {
+    padding: 28px 24px 24px;
+  }
+  .heading {
+    font-size: 32px;
+    margin-top: 20px;
+  }
+  .line {
+    font-size: 14px;
+  }
+  .rows {
+    margin-top: 24px;
+  }
+  .row {
+    padding: 16px 18px;
+    min-height: var(--tap);
+  }
+  .channel {
+    font-size: 14px;
+  }
+  .close {
+    width: var(--tap);
+    height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

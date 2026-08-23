@@ -104,3 +104,83 @@
   transform-origin: left;
   transition: transform 0.18s linear, background 0.6s var(--ease);
 }
+
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * Per the Figma handoff frame (99:627): wordmark left, hamburger right, 24px gutter, 16px
+ * vertical padding, and a hairline under. The language pair and the CTA both leave the bar —
+ * there is no room for them at 360px and both survive inside the menu overlay, which the
+ * hamburger opens.
+ */
+@media (max-width: 768px) {
+  .nav {
+    padding: 16px var(--gutter);
+    border-bottom: 1px solid var(--hairline-alt);
+    gap: 16px;
+  }
+
+  .langs,
+  .cta {
+    display: none;
+  }
+
+  .wordmark {
+    font-size: 22px;
+  }
+
+  /* The caret belongs to the desktop wordmark-as-menu-trigger; the hamburger replaces it. */
+  .caret {
+    display: none;
+  }
+}
+
+/* ---- hamburger ---- */
+
+.burger {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .burger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    margin-left: auto;
+
+    /* Figma draws 40px; raised to the 44px minimum — see --tap in globals.css. */
+    width: var(--tap);
+    height: var(--tap);
+    padding: 0 9px;
+  }
+
+  .burgerBar {
+    display: block;
+    width: 100%;
+    height: 2.5px;
+    background: var(--navFg);
+    transition: transform var(--t-fast) var(--ease), opacity var(--t-fast) var(--ease),
+      background 0.6s var(--ease);
+  }
+
+  /*
+   * Open state folds the three bars into a cross: the outer two rotate onto each other and the
+   * middle one fades. Transform-only, so it stays on the compositor.
+   */
+  .burgerOpen .burgerBar:nth-child(1) {
+    transform: translateY(7.5px) rotate(45deg);
+  }
+  .burgerOpen .burgerBar:nth-child(2) {
+    opacity: 0;
+  }
+  .burgerOpen .burgerBar:nth-child(3) {
+    transform: translateY(-7.5px) rotate(-45deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .burgerBar {
+    transition: none;
+  }
+}

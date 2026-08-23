@@ -201,3 +201,74 @@
     gap: 40px;
   }
 }
+
+/*
+ * Mobile: the footer keeps its rising page-turn but the two-column body stacks, and the bottom
+ * bar wraps instead of forcing four items onto one 360px line.
+ */
+@media (max-width: 768px) {
+  .panel {
+    padding: 32px var(--gutter);
+  }
+  .body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+    padding-top: 28px;
+  }
+  .heading {
+    font-size: 38px;
+  }
+  .blurb {
+    font-size: 15px;
+    margin-top: 16px;
+  }
+  .right {
+    gap: 22px;
+  }
+  .channel {
+    padding: 12px 0;
+    /* Label above value: side by side, a long e-mail collides with its own label at 360px. */
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .channelValue {
+    font-size: 15px;
+    word-break: break-all;
+  }
+  .social {
+    gap: 18px;
+    font-size: 16px;
+  }
+  .bottom {
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 12px;
+    padding-top: 18px;
+  }
+  .wordmark {
+    font-size: 18px;
+  }
+  .copyright {
+    margin-left: 0;
+  }
+}
+
+/* Social links and back-to-top are controls, not prose — they take the 44px floor. */
+@media (pointer: coarse), (max-width: 768px) {
+  .social a,
+  .toTop {
+    min-height: var(--tap);
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Width minimum would stretch a short word like "Steam" into an odd block; height is enough. */
+  .social a {
+    min-width: 0;
+  }
+
+  .toTop {
+    min-width: 0;
+  }
+}
