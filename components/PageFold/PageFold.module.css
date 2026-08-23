@@ -12,7 +12,15 @@
  */
 
 .fold {
-  --foldSize: 58px;
+  --foldSize: 96px;
+  --lift: 0deg;
+
+  /*
+   * Perspective is what makes the lift read as paper coming off a surface rather than as a
+   * triangle being squashed. It lives here, on the parent, so the flap rotates inside it.
+   */
+  perspective: 900px;
+  perspective-origin: 100% 100%;
 
   position: fixed;
   right: 0;
@@ -62,6 +70,16 @@
 
   /* The crease itself: a hard edge where the sheet doubles over. */
   box-shadow: -1px -1px 0 rgba(20, 18, 15, 0.1), -8px -8px 18px rgba(20, 18, 15, 0.12);
+
+  /*
+   * The turn. Rotating about (1, -1, 0) is rotating about the fold line — the 45-degree diagonal
+   * the corner is creased along — so the flap swings up towards the reader exactly as a pulled
+   * page does. transform-origin sits on that line's far end, which is the point the paper is
+   * still attached by.
+   */
+  transform-origin: 100% 0;
+  transform: rotate3d(1, -1, 0, var(--lift));
+  transition: transform 0.5s var(--ease);
 }
 
 /* ---- the label ---- */
@@ -96,11 +114,11 @@
 /* Hovering lifts the corner further — the same gesture as pinching a page to see what is under. */
 .fold:hover,
 .fold:focus-visible {
-  --foldSize: 190px;
+  --foldSize: 330px;
 }
 
 .fold:active {
-  --foldSize: 176px;
+  --foldSize: 308px;
 }
 
 /*
@@ -112,12 +130,12 @@
  */
 @media (max-width: 768px) {
   .fold {
-    --foldSize: 44px;
+    --foldSize: 64px;
   }
 
   .fold:hover,
   .fold:focus-visible {
-    --foldSize: 44px;
+    --foldSize: 64px;
   }
 
   .label {
@@ -135,7 +153,12 @@
   .fold:hover,
   .fold:focus-visible,
   .fold:active {
-    --foldSize: 58px;
+    --foldSize: 96px;
+  }
+
+  .flap {
+    transform: none;
+    transition: none;
   }
 
   .label {

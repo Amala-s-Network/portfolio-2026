@@ -1,10 +1,28 @@
 /* README §6 "Outros projetos (carousel)" */
 
 .section {
-  padding: 96px 0 104px;
+  /*
+   * 168px of lead-in, up from 96px. The section now arrives as a turning page, and a page that
+   * lands with its heading already at the top of the screen has not been seen arriving — the
+   * extra space is what the entrance needs to happen inside.
+   */
+  padding: 168px 0 104px;
   background: var(--paper);
   position: relative;
   z-index: 1;
+
+  /* The rise below rotates in this space. */
+  perspective: 1500px;
+  perspective-origin: 50% 0%;
+}
+
+/*
+ * The wrapper the entrance is applied to. It exists so the transform is never on the element
+ * whose getBoundingClientRect the maths reads — see the comment in Carousel.tsx.
+ */
+.rise {
+  transform-origin: 50% 0%;
+  will-change: transform;
 }
 
 /* Header and controls are padded horizontally; the rail is not, so cards can bleed. */
@@ -209,7 +227,7 @@
  */
 @media (max-width: 768px) {
   .section {
-    padding: 48px 0 56px;
+    padding: 96px 0 56px;
   }
 
   .heading {

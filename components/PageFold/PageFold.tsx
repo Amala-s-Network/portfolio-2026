@@ -6,8 +6,17 @@ import { pageFold as copy } from '@/content/copy';
 import styles from './PageFold.module.css';
 
 /** Corner size at rest, and how far scrolling through the hero peels it back. */
-const REST = 58;
-const PEELED = 168;
+const REST = 96;
+const PEELED = 300;
+
+/**
+ * How far the flap rotates off the page, in degrees, at full peel.
+ *
+ * This is what turns a static dog-ear into a page being turned. The rotation runs about the
+ * fold line itself — the 45-degree diagonal — so the corner lifts towards the reader the way
+ * paper does when it is pulled, instead of sliding or growing flat.
+ */
+const LIFT = 34;
 
 /**
  * The dog-ear in the bottom-right corner of the first screen.
@@ -43,12 +52,19 @@ export function PageFold({ onEnter }: { onEnter?: () => void }) {
       const heroHeight = hero.getBoundingClientRect().height || window.innerHeight;
       const p = Math.min(1, Math.max(0, window.scrollY / heroHeight));
 
-      /* Reduced motion gets the corner, at a fixed size, with no peeling. */
+      /* Reduced motion gets the corner, at a fixed size, with no peeling and no lift. */
       const size = reduced ? REST : REST + (PEELED - REST) * p;
       el.style.setProperty('--foldSize', `${size}px`);
+      el.style.setProperty('--lift', `${reduced ? 0 : LIFT * p}deg`);
 
-      /* Fades out over the last quarter, as the first case takes the screen. */
-      const fade = p > 0.75 ? Math.max(0, 1 - (p - 0.75) / 0.25) : 1;
+      /*
+       * Gone by the time the first case owns the screen.
+       *
+       * The fade runs over the last third rather than the last quarter, because the corner is
+       * much larger now: 300px vanishing in a quarter of a screen reads as a blink, and the
+       * whole point is that it should feel handed over to the case rather than switched off.
+       */
+      const fade = p > 0.66 ? Math.max(0, 1 - (p - 0.66) / 0.34) : 1;
       el.style.opacity = String(fade);
       el.style.pointerEvents = fade < 0.1 ? 'none' : 'auto';
     };

@@ -33,7 +33,13 @@
    * it is what holds the block in the space the nav leaves behind.
    */
   align-items: flex-start;
-  justify-content: center;
+  /*
+   * flex-start, not centred. With the hero filling the viewport, centring left a wide band of
+   * empty paper above the avatar and another below the deck, and the block floated with no
+   * relationship to either edge. Hung from the top it reads as the head of a page — and the
+   * space it gives back falls at the bottom, which is where the fold needs room to be pulled.
+   */
+  justify-content: flex-start;
   /*
    * Left, not centred. Centring was what made the headline's second line hang in the middle of
    * the page and the deck's columns read as two captions rather than two columns — a newspaper

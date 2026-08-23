@@ -65,16 +65,29 @@ export const hero = {
    * "9 anos" is counted from 2017 — João's official framing, settled. Do not recompute it from
    * the earliest CV entry (Silk & Arte, 2015), which he deliberately does not count.
    */
+  /*
+   * Lengthened to match the column beside it. Two columns of visibly different depth read as one
+   * paragraph and one leftover — the newspaper structure only holds when both are full.
+   *
+   * What was added is more biography, not more argument: the second column already carries the
+   * thesis, and repeating it here would make the pair say one thing twice. Everything stated is
+   * João's own — the seniority, where he works in the process, and the drawing that predates the
+   * screens.
+   */
   paragraph: {
     pt: [
       'Olá! Sou o João. Product Designer com 9 anos em design, sendo 6 deles',
       'dedicados a produtos digitais. Passei por banking em escala, varejo de alto',
       'volume, consultoria global e startups — hoje com foco em craft, métricas e IA.',
+      'Atuo em nível senior, de discovery a entrega, perto de produto e engenharia —',
+      'decisão que não sobrevive ao handoff não chegou a ser decisão.',
     ],
     en: [
       'Hi! I’m João. A Product Designer with 9 years in design, 6 of them devoted',
       'to digital products. I’ve worked across banking at scale, high-volume retail,',
       'global consultancy and startups — now focused on craft, metrics and AI.',
+      'I work at senior level, from discovery through delivery and close to product',
+      'and engineering — a decision that does not survive handoff was never one.',
     ],
   } satisfies Record<Lang, string[]>,
 

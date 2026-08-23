@@ -17,6 +17,7 @@ const EDGE = 2;
 export function Carousel() {
   const { lang, t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
+  const riseRef = useRef<HTMLDivElement>(null);
   const railRef = useRef<HTMLDivElement>(null);
   const revealed = useReveal(sectionRef);
 
@@ -25,6 +26,58 @@ export function Carousel() {
   const [dragging, setDragging] = useState(false);
   /** Timer that restores scroll snapping once a drag settles. */
   const settleRef = useRef<number | undefined>(undefined);
+
+  /*
+   * The section arrives as another page turning, the way the cases do.
+   *
+   * Case 04 has nothing above it to be covered by, so its exit already slides it away at exactly
+   * the rate this section arrives. What was missing was the other half of that gesture: the
+   * carousel simply sat there, static, while the panel above it left. Giving it the same
+   * rotateX-and-scale entrance means the seam reads as one page passing over another rather
+   * than as one page leaving and a flat page being underneath all along.
+   *
+   * It is applied to a wrapper INSIDE the section rather than to the section itself: the section
+   * owns the scroll geometry the maths is read from, and transforming the thing you are also
+   * measuring is how you get a feedback loop.
+   *
+   * No fold here, at João's instruction. The dog-ear is an invitation to the cases, and by this
+   * point the reader has taken it.
+   */
+  useEffect(() => {
+    const section = sectionRef.current;
+    const rise = riseRef.current;
+    if (!section || !rise) return;
+
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const apply = () => {
+      const vh = window.innerHeight;
+      const r = section.getBoundingClientRect();
+
+      /* Same 58% reveal window and easeInOutQuad as README §5, so the two gestures match. */
+      const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.58)));
+      const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
+      const rest = 1 - eased;
+
+      /*
+       * Shallower than a case panel: 26% against 100%, 9deg against 11. A full-strength turn on
+       * a section that is not full-screen overshoots — the content would swing up from below the
+       * fold and land, which reads as a slide rather than as a page settling.
+       */
+      rise.style.transform = `translateY(${rest * 26}%) rotateX(${rest * -9}deg) scale(${
+        1 - rest * 0.04
+      })`;
+      rise.style.opacity = String(1 - rest * 0.45);
+    };
+
+    apply();
+    window.addEventListener('scroll', apply, { passive: true });
+    window.addEventListener('resize', apply);
+    return () => {
+      window.removeEventListener('scroll', apply);
+      window.removeEventListener('resize', apply);
+    };
+  }, []);
 
   const readEdges = useCallback(() => {
     const rail = railRef.current;
@@ -135,6 +188,7 @@ export function Carousel() {
 
   return (
     <section ref={sectionRef} className={styles.section} id="projetos">
+      <div ref={riseRef} className={styles.rise}>
       <Reveal on={revealed} order={0} className={styles.header}>
         <h2 className={styles.heading}>{t(copy.heading)}</h2>
       </Reveal>
@@ -176,6 +230,7 @@ export function Carousel() {
           {t(copy.viewAll)}
         </ButtonLink>
       </Reveal>
+      </div>
     </section>
   );
 }
