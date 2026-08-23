@@ -54,8 +54,8 @@ export const hero = {
    * 235.2px, freeing 78.4px of the first-screen budget.
    */
   title: {
-    pt: ['Design com foco em', 'experiência, produto', 'e métricas'],
-    en: ['Design focused on', 'experience, product', 'and metrics'],
+    pt: ['Design com foco em', 'experiência, produto e', 'métricas'],
+    en: ['Design focused on', 'experience, product and', 'metrics'],
   } satisfies Record<Lang, string[]>,
 
   /**

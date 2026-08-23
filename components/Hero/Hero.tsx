@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useEffect, useRef } from 'react';
 import { Button } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
+import { Marquee } from '@/components/Marquee/Marquee';
 import { useLanguage } from '@/lib/language';
 import { hero as copy } from '@/content/copy';
 import avatar from '@/public/avatar.webp';
@@ -120,6 +121,13 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
 
   return (
     <header className={styles.hero}>
+      {/*
+        * The diagonal strip, absolutely positioned against the hero and rendered FIRST so it
+        * paints underneath the headline. It is aria-hidden inside the component already, so it
+        * adds nothing to the reading order by sitting here.
+        */}
+      <Marquee />
+
       <div className={styles.stack}>
         <div className={styles.avatarWrap}>
           {/* Not a link (README §2) — a button role, since clicking it does something. */}

@@ -1,9 +1,47 @@
-/* README §4 "Marquee". */
+/*
+ * The disciplines strip, set on the diagonal across the top-right of the hero.
+ *
+ * It stopped being a divider the moment it went diagonal. A horizontal band separates what is
+ * above it from what is below; a diagonal one belongs to neither side and reads as a mark laid
+ * ACROSS the page — which is why it is absolutely positioned inside the hero rather than
+ * sitting between two sections, and why the animated Divider that used to introduce it is gone.
+ *
+ * Everything about the placement is a variable, because the angle and the crossing point are
+ * exactly the kind of thing that gets nudged half a dozen times before it looks right.
+ */
 
 .marquee {
-  padding: 22px 0;
+  --angle: 13deg;
+  /* Where the strip crosses, measured from the hero's top-left corner. */
+  --originX: 34%;
+  --originY: -2%;
+
+  position: absolute;
+  left: var(--originX);
+  top: var(--originY);
+
+  /*
+   * Wider than the page it crosses, so neither end is ever in view — a diagonal that starts or
+   * stops inside the frame reads as a rectangle someone rotated, not as a line passing through.
+   */
+  width: 190vw;
+
+  transform: rotate(var(--angle));
+  transform-origin: 0 50%;
+
+  padding: 20px 0;
   overflow: hidden;
+  border-top: 1px solid var(--hairline-mid-3);
   border-bottom: 1px solid var(--hairline-mid-3);
+  background: var(--paper);
+
+  /*
+   * Under the headline. The strip passes behind the type rather than over it: crossing a 80px
+   * Playfair headline with a rule and a row of caps would make both unreadable, and the drawing
+   * only works because the headline's own space is left clear.
+   */
+  z-index: 0;
+  pointer-events: none;
 }
 
 /*
@@ -40,30 +78,30 @@
   }
 }
 
-/* Mobile: Figma frame 102:660 — 10px type, tighter tracking, rules top and bottom. */
+/*
+ * ------------------------------------------------------------------ mobile
+ *
+ * The diagonal is a desktop drawing. At 360px a strip at 13deg either crosses the headline or
+ * leaves the frame within a couple of words, and the disciplines stop being readable as a list.
+ * Below 768px it goes back to being a horizontal band under the content, which is the layout
+ * João approved — see Hero.module.css for the budget it sits in.
+ */
 @media (max-width: 768px) {
   .marquee {
+    position: static;
+    /* 190vw would be 402px of horizontal overflow on a 360px screen. */
+    width: 100%;
+    max-width: 100%;
+    transform: none;
     padding: 11px 0;
-    border-top: 1px solid var(--hairline-mid-3);
+    margin-top: 28px;
+    /* Last in the hero's flex column, whatever its position in the markup. */
+    order: 1;
   }
 
   /* Down from 10px/0.28em — at that size barely two disciplines fitted across a 360px screen. */
   .span {
     font-size: 8.5px;
     letter-spacing: 0.2em;
-  }
-}
-
-/*
- * With the hero sitting up against the nav, the strip follows the content instead of being
- * pinned to the fold — so it needs its own separation or it collides with the CTA.
- */
-/*
- * The gap below is what actually lifts the strip off the fold: the hero is short by exactly this
- * amount, so the space lands under the marquee and the first case section still begins at 100svh.
- */
-@media (max-width: 768px) {
-  .marquee {
-    margin-bottom: 72px;
   }
 }

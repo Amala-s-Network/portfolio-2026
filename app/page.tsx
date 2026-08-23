@@ -3,8 +3,6 @@
 import { useCallback, useState } from 'react';
 import { Nav } from '@/components/Nav/Nav';
 import { Hero } from '@/components/Hero/Hero';
-import { Divider } from '@/components/Divider/Divider';
-import { Marquee } from '@/components/Marquee/Marquee';
 import { CasePanel } from '@/components/CasePanel/CasePanel';
 import { Carousel } from '@/components/Carousel/Carousel';
 import { About } from '@/components/About/About';
@@ -19,7 +17,8 @@ import { cases } from '@/content/copy';
 
 /**
  * The one-pager. Section order from CLAUDE.md:
- *   Hero → Divider → Marquee → Cases → Carousel → About → Metrics → History → Footer
+ *   Hero (carries the diagonal marquee) → Cases → Carousel → About → Metrics →
+ *   History → Footer
  *
  * Still to come: the intro overlay (step 3).
  */
@@ -54,9 +53,15 @@ export default function Page() {
       />
 
       <main id="conteudo">
+        {/*
+          * The marquee is INSIDE the hero now, not a band under it.
+          *
+          * As a diagonal strip it is a mark laid across the page rather than a divider between
+          * two sections, so it belongs to the hero's own box — which is also what lets it be
+          * positioned absolutely against it. The animated Divider that used to sit above it is
+          * gone at João's instruction.
+          */}
         <Hero onContact={openContact} started={introDone} />
-        <Divider />
-        <Marquee />
 
         {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
         {cases.map((c, i) => (

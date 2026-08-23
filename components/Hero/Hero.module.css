@@ -9,7 +9,21 @@
  * viewport, so the band always lands on the fold instead of being chased by a fixed px budget.
  */
 .hero {
-  --bandH: 61px;
+  /*
+   * --bandH is now 0 on desktop: the strip is absolutely positioned, so it takes no height in
+   * the flow and there is nothing to subtract from the viewport. The token stays because the
+   * mobile layout still uses a real band below the content.
+   */
+  --bandH: 0px;
+
+  /* The strip is positioned against this box, and clipped by it. */
+  position: relative;
+  /*
+   * clip, not hidden: a 190vw strip rotated 13deg reaches well past the right edge, and
+   * overflow: hidden on a block that also has to be scrolled into would create a scroll
+   * container. clip removes the overflow without that side effect.
+   */
+  overflow: clip;
 
   display: flex;
   flex-direction: column;
@@ -63,6 +77,9 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+  /* Above the diagonal strip, which paints at z-index 0. */
+  position: relative;
+  z-index: 1;
 }
 
 /* ---- avatar ---- */
@@ -459,7 +476,17 @@
   /* The approved mobile layout is centred; only the desktop hero turns editorial. */
   .hero {
     text-align: center;
+    /* The band is a real element again below 768px, so its height comes back. */
+    --bandH: 34px;
+    overflow: visible;
   }
+
+  /*
+   * The Marquee is rendered BEFORE the stack, because on desktop it has to paint underneath the
+   * headline. On mobile it is back in the flow, where that same DOM order would put the strip
+   * above the avatar. The reorder is done on the strip itself in Marquee.module.css — putting
+   * order: 1 on the stack, as this first did, moves the wrong element and leaves the strip on top.
+   */
 
   .titleWrap {
     margin-left: auto;
