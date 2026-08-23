@@ -6,7 +6,7 @@ import { Button } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useLanguage } from '@/lib/language';
 import { hero as copy } from '@/content/copy';
-import avatar from '@/public/avatar.png';
+import avatar from '@/public/avatar.webp';
 import styles from './Hero.module.css';
 
 /**

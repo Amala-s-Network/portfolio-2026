@@ -9,7 +9,7 @@ import { useReveal } from '@/hooks/useReveal';
 import { useParallax } from '@/hooks/useParallax';
 import { useLanguage } from '@/lib/language';
 import { about as copy, links } from '@/content/copy';
-import portrait from '@/public/retrato.png';
+import portrait from '@/public/retrato.webp';
 import styles from './About.module.css';
 
 export function About() {
