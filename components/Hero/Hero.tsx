@@ -28,7 +28,16 @@ const FLIP_EVERY = 3000;
  * releases scroll. (The 260×1px divider that used to sit between H1 and paragraph was removed at
  * João's request, so it is no longer a step.)
  */
-export function Hero({ onContact, started = true }: { onContact?: () => void; started?: boolean }) {
+export function Hero({
+  onContact,
+  started = true,
+  /** True once the reader has pulled the corner: the sheet lifts away and stays gone. */
+  turned = false,
+}: {
+  onContact?: () => void;
+  started?: boolean;
+  turned?: boolean;
+}) {
   const { lang, t } = useLanguage();
   const avatarRef = useRef<HTMLDivElement>(null);
   const titleWrapRef = useRef<HTMLDivElement>(null);
@@ -120,7 +129,7 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
   }, []);
 
   return (
-    <header className={styles.hero}>
+    <header className={`${styles.hero} ${turned ? styles.turned : ''}`}>
       {/*
         * The diagonal strip, absolutely positioned against the hero and rendered FIRST so it
         * paints underneath the headline. It is aria-hidden inside the component already, so it

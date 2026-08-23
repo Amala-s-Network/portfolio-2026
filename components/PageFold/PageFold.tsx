@@ -18,6 +18,9 @@ const PEELED = 300;
  */
 const LIFT = 34;
 
+/** Resting size while the page is held still and the corner is the only way forward. */
+const HELD = 210;
+
 /**
  * The dog-ear in the bottom-right corner of the first screen.
  *
@@ -30,7 +33,18 @@ const LIFT = 34;
  * touches it still sees the page beginning to turn as they move; hovering lifts it and names
  * where it goes; clicking takes them there. Three ways in, one destination.
  */
-export function PageFold({ onEnter }: { onEnter?: () => void }) {
+export function PageFold({
+  onEnter,
+  /**
+   * When the page is held still, the corner cannot take its cue from scroll — there is none.
+   * It sits already peeled instead, with the photograph showing through, because the whole
+   * invitation depends on the reader seeing that something is under there.
+   */
+  held = false,
+}: {
+  onEnter?: () => void;
+  held?: boolean;
+}) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
 
@@ -41,6 +55,14 @@ export function PageFold({ onEnter }: { onEnter?: () => void }) {
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const apply = () => {
+      if (held) {
+        el.style.setProperty('--foldSize', `${HELD}px`);
+        el.style.setProperty('--lift', reduced ? '0deg' : `${LIFT * 0.55}deg`);
+        el.style.opacity = '1';
+        el.style.pointerEvents = 'auto';
+        return;
+      }
+
       const hero = document.querySelector('header');
       if (!hero) return;
 
@@ -76,7 +98,7 @@ export function PageFold({ onEnter }: { onEnter?: () => void }) {
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
     };
-  }, []);
+  }, [held]);
 
   /*
    * Clicking scrolls to the first case rather than jumping. The panels are driven BY scroll

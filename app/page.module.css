@@ -1,0 +1,22 @@
+/*
+ * The photograph that lives under the first screen.
+ *
+ * Fixed and full-viewport, painted at z-index 0 with the hero sheet at 1 directly over it. The
+ * fold's own window onto it uses background-attachment: fixed for the same reason this is fixed:
+ * both are showing the same picture in the same place, so the corner is a hole in the paper
+ * rather than a thumbnail that happens to look similar.
+ *
+ * The real photograph sits on top of the generated placeholder in the stack; if it is not on
+ * disk the browser skips that layer and paints the one below.
+ */
+.underlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-color: var(--ink);
+  background-image: url('/cases/floresta.jpg'), url('/placeholders/cases/itau-cartoes-pj.svg');
+  background-size: cover, cover;
+  background-position: center, center;
+}

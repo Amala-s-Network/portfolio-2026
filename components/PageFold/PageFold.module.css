@@ -41,11 +41,27 @@
 
 /* ---- the page underneath, seen through the lifted corner ---- */
 
+/*
+ * The photograph of the case, seen through the lifted corner.
+ *
+ * Two background images, and the order matters: the real photograph sits on top, the generated
+ * placeholder underneath. If the photograph is not on disk the browser simply skips that layer
+ * and paints the one below — so the corner is never an empty hole while the artwork is pending.
+ *
+ * background-attachment: fixed pins the image to the viewport rather than to this 210px box, so
+ * what shows through is the part of the picture that is actually behind the corner — the same
+ * frame the reader will see when the page lifts. Scaled or re-cropped, it would not match, and
+ * the illusion of one continuous sheet over another dies at that seam.
+ */
 .hole {
   position: absolute;
   inset: 0;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  background: var(--ink);
+  background-color: var(--ink);
+  background-image: url('/cases/floresta.jpg'), url('/placeholders/cases/itau-cartoes-pj.svg');
+  background-size: cover, cover;
+  background-position: center, center;
+  background-attachment: fixed, fixed;
 }
 
 /* ---- the back of the sheet ---- */
