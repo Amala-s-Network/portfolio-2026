@@ -45,10 +45,19 @@
  * The stack's own padding is now zero — the hero owns the breathing room (48px top and bottom)
  * so that centring stays symmetrical instead of being skewed by padding on the inner block.
  */
+/*
+ * Left-aligned, not centred.
+ *
+ * A centred hero is a poster: every line is an announcement and nothing leads to the next. A
+ * newspaper hangs everything off one left margin, so the eye returns to the same place after
+ * each line and the page reads as a column of information rather than a stack of statements.
+ * The masthead, the headline and the deck all share that margin.
+ */
 .stack {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
+  width: 100%;
 }
 
 /* ---- avatar ---- */
@@ -179,7 +188,7 @@
   position: relative;
   /* Hug the text so the hover region is the headline, not the full column width. */
   width: fit-content;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 
   /*
@@ -321,18 +330,51 @@
  * per João's reference layout — the two-line headline reads better with open space under it.
  * Its 30px margin went with it. Restore both together if the rule ever comes back.
  */
+/* ---- deck: two text columns and the CTA, on one line ---- */
+
+/*
+ * The CTA column is `auto`, so the button takes exactly its own width and the two text columns
+ * split what is left. Sized in fr rather than in ch because the columns must stay equal to each
+ * other — unequal columns are what makes a two-column block look like a mistake rather than a
+ * layout.
+ */
+.deck {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  align-items: start;
+  gap: 40px;
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: 1px solid var(--hairline);
+}
+
 .paragraph {
-  margin-top: 30px;
-  font-size: 18px;
+  font-size: 15.5px;
   font-weight: 300;
-  line-height: var(--lh-body);
+  line-height: 1.55;
   color: var(--body);
+  /*
+   * Hard line breaks come from copy.ts, and they are wrong for a column that can be any width:
+   * the <span>s are set to inline here so the text reflows to the column instead of keeping
+   * breaks that were measured for a full-width paragraph.
+   */
+  text-wrap: pretty;
+}
+
+.paragraph span {
+  display: inline !important;
 }
 
 /* ---- CTA ---- */
 
+.ctaWrap {
+  display: flex;
+  align-items: flex-start;
+}
+
 .cta {
-  margin-top: 30px;
+  margin-top: 0;
+  white-space: nowrap;
 }
 
 /*
@@ -373,7 +415,15 @@
      * The band on mobile is 34px, not the desktop 61px: 11px padding, 8.5px type, two rules.
      */
     --bandH: 34px;
-    /* How far the strip sits above the fold, so it is clearly on the page rather than glimpsed. */
+    /*
+     * How far the strip sits above the fold when the hero is SHORTER than its content box —
+     * which, since the deck gained its second paragraph, it no longer is on a phone.
+     *
+     * Left at 72px deliberately, and worth knowing it is currently inert: the hero's height now
+     * comes from its content, so this min-height is not the binding constraint and lowering it
+     * buys nothing. It still governs the English copy, which is shorter, and any future trim.
+     * The first screen at 360x800 now closes at 796px — it fits, with almost nothing to spare.
+     */
     --bandLift: 72px;
 
     /*
@@ -467,6 +517,18 @@
   }
 
   /* 16px from the headline, per João's spacing. */
+  /*
+   * The deck stacks. Two columns of prose inside 312px would be ~18 characters wide, which is
+   * not a column, it is a stack of fragments — the newspaper structure only earns its keep at a
+   * width that can hold a line of text.
+   */
+  .deck {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0;
+    margin-top: 24px;
+    padding-top: 18px;
+  }
+
   .paragraph {
     margin-top: 24px;
     font-size: 13.5px;
@@ -477,6 +539,10 @@
   /* 24px from the paragraph, per João's spacing. */
   .cta {
     margin-top: 32px;
+  }
+
+  .ctaWrap {
+    display: block;
   }
 }
 

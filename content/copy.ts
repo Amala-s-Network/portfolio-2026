@@ -78,6 +78,32 @@ export const hero = {
     ],
   } satisfies Record<Lang, string[]>,
 
+  /**
+   * The SECOND column of the deck.
+   *
+   * The prototype printed the same paragraph twice because it was placeholder. João's intent is
+   * a newspaper: two columns that carry different weight, not one text set twice.
+   *
+   * So this one is not more biography — the first column already is that. In a newspaper the
+   * lede says who and what, and the column beside it says why you should keep reading. This is
+   * the thesis: it names the method the case pages are built on (conflict → trade-off →
+   * decision → evidence) so the claim and the proof are made in the same breath.
+   */
+  paragraphB: {
+    pt: [
+      'Trabalho por conflito. Toda decisão aqui resolveu uma tensão real —',
+      'velocidade contra profundidade, o sistema contra a exceção, o que o',
+      'negócio pedia contra o que o usuário de fato fazia. As páginas a seguir',
+      'contam o que escolhi, o que abri mão, e o que o número mostrou depois.',
+    ],
+    en: [
+      'I work from conflict. Every decision here resolved a real tension —',
+      'speed against depth, the system against the exception, what the',
+      'business asked for against what people actually did. The pages that',
+      'follow say what I chose, what I gave up, and what the numbers showed.',
+    ],
+  } satisfies Record<Lang, string[]>,
+
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
 };
 

@@ -172,19 +172,40 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
         </div>
         </Reveal>
 
-        <Reveal on={started} order={2} as="p" className={styles.paragraph}>
-          {copy.paragraph[lang].map((line, i) => (
-            <span key={i} style={{ display: 'block' }}>
-              {line}
-            </span>
-          ))}
-        </Reveal>
+        {/*
+          * The deck: two columns of body text and the call to action, on one line.
+          *
+          * A newspaper sets its lede and its angle side by side rather than stacked, and that is
+          * the whole reason this reads as a front page instead of a landing page. The first
+          * column says who; the second says how the work is argued. They are different texts —
+          * the prototype printed one twice because it was placeholder.
+          *
+          * It also buys vertical space: the same words in one column would cost roughly twice
+          * the height, and the first screen has to hold nav, hero and marquee inside 768px.
+          */}
+        <div className={styles.deck}>
+          <Reveal on={started} order={2} as="p" className={styles.paragraph}>
+            {copy.paragraph[lang].map((line, i) => (
+              <span key={i} style={{ display: 'block' }}>
+                {line}
+              </span>
+            ))}
+          </Reveal>
 
-        <Reveal on={started} order={3}>
-          <Button className={styles.cta} onClick={onContact}>
-            {t(copy.cta)}
-          </Button>
-        </Reveal>
+          <Reveal on={started} order={3} as="p" className={styles.paragraph}>
+            {copy.paragraphB[lang].map((line, i) => (
+              <span key={i} style={{ display: 'block' }}>
+                {line}
+              </span>
+            ))}
+          </Reveal>
+
+          <Reveal on={started} order={4} className={styles.ctaWrap}>
+            <Button className={styles.cta} onClick={onContact}>
+              {t(copy.cta)}
+            </Button>
+          </Reveal>
+        </div>
       </div>
     </header>
   );
