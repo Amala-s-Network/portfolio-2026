@@ -27,8 +27,8 @@
    * being texture and starts being noise laid over the design.
    * --grain-size is the tile. Smaller grain reads as film, larger as coarse stock.
    */
-  --grain-opacity: 0.05;
-  --grain-size: 160px;
+  --grain-opacity: 0.22;
+  --grain-size: 180px;
   --body: #3d3d3d;
   --muted: #6a6a6a;
   /*
@@ -378,8 +378,23 @@ body::after {
   z-index: 60;
   pointer-events: none;
   opacity: var(--grain-opacity);
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+
+  /*
+   * The tile is DESATURATED and its alpha flattened before it is used.
+   *
+   * Raw feTurbulence writes noise into all four channels, so the tile comes out as faint
+   * multicoloured static that is also mostly transparent — on warm paper at low opacity that
+   * reads as nothing at all, which is exactly what happened at 0.05. The feColorMatrix collapses
+   * it to a single grey channel and forces alpha to 1, so what is left is honest black-and-white
+   * grain whose strength is governed entirely by --grain-opacity rather than by two multiplied
+   * transparencies fighting each other.
+   *
+   * mix-blend-mode: multiply keeps it as tooth in the paper: it darkens where the grain is dark
+   * and leaves the light areas alone, instead of laying a grey veil over the whole page.
+   */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 0.5 0 0 0 0 1'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
   background-size: var(--grain-size) var(--grain-size);
+  mix-blend-mode: multiply;
 }
 
 /*

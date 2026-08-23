@@ -15,7 +15,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center; /* the centring João asked for */
-  text-align: center;
+  /*
+   * Left, not centred. Centring was what made the headline's second line hang in the middle of
+   * the page and the deck's columns read as two captions rather than two columns — a newspaper
+   * aligns everything to one margin. Mobile keeps its centred setting, which João approved.
+   */
+  text-align: left;
 
   /*
    * `min()` caps how far the hero will stretch. Left uncapped it fills the viewport, which on a
@@ -299,7 +304,15 @@
 .title,
 .titleSphere {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(80px, 6.4vw, 96px);
+  /*
+   * Retuned when the headline went back to three lines.
+   *
+   * 6.4vw resolved to 87.4px at 1366, and three lines of that overran the first screen by 22px —
+   * the budget CLAUDE.md says has regressed several times and must be measured rather than
+   * estimated. 5.86vw lands on exactly the 80px João approved at that width, which is where the
+   * 22px comes back from. The 96px ceiling is unchanged, so wide screens are unaffected.
+   */
+  font-size: clamp(64px, 5.86vw, 96px);
   font-weight: 700;
   line-height: 0.98;
   letter-spacing: -0.028em;
@@ -359,10 +372,6 @@
    * breaks that were measured for a full-width paragraph.
    */
   text-wrap: pretty;
-}
-
-.paragraph span {
-  display: inline !important;
 }
 
 /* ---- CTA ---- */
@@ -445,6 +454,16 @@
   .stack {
     gap: 0;
     width: 100%;
+  }
+
+  /* The approved mobile layout is centred; only the desktop hero turns editorial. */
+  .hero {
+    text-align: center;
+  }
+
+  .titleWrap {
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .avatarWrap {

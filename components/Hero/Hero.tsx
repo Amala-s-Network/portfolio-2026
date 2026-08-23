@@ -184,20 +184,21 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
           * the height, and the first screen has to hold nav, hero and marquee inside 768px.
           */}
         <div className={styles.deck}>
+          {/*
+            * JOINED WITH SPACES, not rendered as separate blocks.
+            *
+            * copy.ts stores these as arrays because the old full-width paragraph had hard line
+            * breaks that were part of the design. In a column that can be any width those breaks
+            * are wrong, so the text has to reflow — but simply setting the spans to inline glued
+            * the last word of each line to the first word of the next ("sendo 6 delesdedicados"),
+            * because the stored strings carry no trailing space. Joining is the honest fix.
+            */}
           <Reveal on={started} order={2} as="p" className={styles.paragraph}>
-            {copy.paragraph[lang].map((line, i) => (
-              <span key={i} style={{ display: 'block' }}>
-                {line}
-              </span>
-            ))}
+            {copy.paragraph[lang].join(' ')}
           </Reveal>
 
           <Reveal on={started} order={3} as="p" className={styles.paragraph}>
-            {copy.paragraphB[lang].map((line, i) => (
-              <span key={i} style={{ display: 'block' }}>
-                {line}
-              </span>
-            ))}
+            {copy.paragraphB[lang].join(' ')}
           </Reveal>
 
           <Reveal on={started} order={4} className={styles.ctaWrap}>
