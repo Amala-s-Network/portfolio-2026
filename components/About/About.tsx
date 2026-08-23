@@ -93,14 +93,20 @@ export function About() {
       </div>
 
       <Reveal on={revealed} order={4} className={styles.metadata}>
+        {/*
+          * Each label sits next to its own value in the DOM. The previous version emitted all
+          * four labels and then all four values, which the desktop grid hid by placing them into
+          * explicit rows — but stacked into one column on mobile the DOM order showed through and
+          * every label was orphaned from its text.
+          *
+          * The wrapper is display: contents on desktop, so the grid still sees eight individual
+          * cells and can align them in two rows; on mobile it becomes a block and each pair holds
+          * together on its own.
+          */}
         {copy.metadata.map((m, i) => (
-          <span key={`l-${i}`} className={styles.metaLabel} style={{ gridColumn: i + 1 }}>
-            {t(m.label)}
-          </span>
-        ))}
-        {copy.metadata.map((m, i) => (
-          <span key={`v-${i}`} className={styles.metaValue} style={{ gridColumn: i + 1 }}>
-            {t(m.value)}
+          <span key={i} className={styles.metaPair} style={{ '--metaCol': i + 1 } as React.CSSProperties}>
+            <span className={styles.metaLabel}>{t(m.label)}</span>
+            <span className={styles.metaValue}>{t(m.value)}</span>
           </span>
         ))}
       </Reveal>

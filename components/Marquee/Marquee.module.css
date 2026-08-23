@@ -43,12 +43,13 @@
 /* Mobile: Figma frame 102:660 — 10px type, tighter tracking, rules top and bottom. */
 @media (max-width: 768px) {
   .marquee {
-    padding: 14px 0;
+    padding: 11px 0;
     border-top: 1px solid var(--hairline-mid-3);
   }
 
+  /* Down from 10px/0.28em — at that size barely two disciplines fitted across a 360px screen. */
   .span {
-    font-size: 10px;
-    letter-spacing: 0.28em;
+    font-size: 8.5px;
+    letter-spacing: 0.2em;
   }
 }

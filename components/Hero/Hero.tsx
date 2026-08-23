@@ -10,6 +10,19 @@ import avatar from '@/public/avatar.webp';
 import styles from './Hero.module.css';
 
 /**
+ * How often the avatar turns on its own.
+ *
+ * Touch has no hover, so without a timer the flip simply does not exist on a phone. Running it
+ * on desktop too keeps one behaviour rather than two — hovering or tapping still restarts it
+ * immediately.
+ *
+ * Named rather than inlined because 1500ms against a 1150ms animation means the avatar is
+ * turning almost continuously. That is what was asked for, but it also sits close to where WCAG
+ * 2.2.2 would want a way to stop it. Raising this number is the only edit needed.
+ */
+const FLIP_EVERY = 1500;
+
+/**
  * README "Entrance cascade": kicker → H1 → paragraph → CTA, 260ms apart, starting when the intro
  * releases scroll. (The 260×1px divider that used to sit between H1 and paragraph was removed at
  * João's request, so it is no longer a step.)
@@ -94,9 +107,14 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
     const onEnd = () => el.classList.remove(styles.flipping);
     el.addEventListener('mouseenter', onEnter);
     el.addEventListener('animationend', onEnd);
+
+    // Anyone who asked for less motion gets the flip on interaction only, never unprompted.
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const timer = reduced ? 0 : window.setInterval(replayFlip, FLIP_EVERY);
     return () => {
       el.removeEventListener('mouseenter', onEnter);
       el.removeEventListener('animationend', onEnd);
+      if (timer) window.clearInterval(timer);
     };
   }, []);
 
@@ -124,7 +142,8 @@ export function Hero({ onContact, started = true }: { onContact?: () => void; st
         </div>
 
         <Reveal on={started} order={0} as="p" className={styles.kicker}>
-          <span className={styles.diamond} aria-hidden="true" />
+          {/* Inline, not a flex sibling — as a flex item it wrapped onto its own line on mobile. */}
+          <span className={`${styles.diamond} ${styles.diamondInline}`} aria-hidden="true" />
           {t(copy.kicker)}
         </Reveal>
 

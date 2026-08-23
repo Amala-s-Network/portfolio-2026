@@ -223,10 +223,22 @@
     gap: 16px;
   }
 
+  /*
+   * The arrows go. The rail already scrolls by swipe, which is the native gesture and needs no
+   * affordance, so on a phone they are two 44px targets that duplicate a gesture the user
+   * already has. "Ver todos os projetos" is the only control left, and it does something the
+   * swipe cannot.
+   */
   .arrow {
-    /* Figma draws 42px; raised to the 44px minimum. */
-    width: var(--tap);
-    height: var(--tap);
+    display: none;
+  }
+
+  .viewAll {
+    margin-left: 0;
+  }
+
+  .controls {
+    justify-content: flex-start;
   }
 }
 

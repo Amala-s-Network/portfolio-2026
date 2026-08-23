@@ -350,11 +350,26 @@
  *    than the viewport anyway, so centring only pushes the fold; the hero simply flows.
  */
 @media (max-width: 768px) {
+  /*
+   * The first screen fills exactly one viewport minus the marquee band, so the band lands on the
+   * fold on any device. svh is what makes that true on a phone: it is the height with the URL
+   * bar VISIBLE, so nothing hides behind browser chrome. An earlier version set min-height: 0
+   * here, which left 197px of dead space at 360x800 and still overflowed on a real iPhone,
+   * because the emulator's 800px and a phone's visible area are not the same number.
+   */
   .hero {
-    min-height: 0;
-    justify-content: flex-start;
-    padding-top: calc(var(--navH) + 24px);
-    padding-bottom: 24px;
+    /*
+     * The band is shorter here than on desktop: 11px padding, 8.5px type and the two rules come
+     * to 34px against the desktop 61px. Leaving --bandH at the desktop figure subtracted 27px
+     * that did not exist and left a strip of dead space under the marquee.
+     */
+    --bandH: 34px;
+
+    min-height: calc(100vh - var(--bandH));
+    min-height: calc(100svh - var(--bandH));
+    justify-content: center;
+    padding-top: calc(var(--navH) + 16px);
+    padding-bottom: 16px;
   }
 
   .stack {
@@ -371,33 +386,45 @@
     height: 40px;
   }
 
+  /*
+   * The diamond is set inline with the text rather than as a flex sibling. As a flex item it
+   * was being pushed onto a line of its own whenever the roles wrapped, which read as a stray
+   * green dot floating above the kicker.
+   */
   .kicker {
-    margin-top: 24px;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    /* The kicker is three roles joined by slashes — it must be free to wrap at this width. */
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    line-height: var(--lh-body);
+    margin-top: 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    display: block;
+    line-height: 1.45;
+    text-wrap: balance;
+  }
+
+  .kicker .diamondInline {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 7px;
+    position: relative;
+    top: -1px;
   }
 
   .diamond {
-    width: 9px;
-    height: 9px;
+    width: 8px;
+    height: 8px;
   }
 
   .titleWrap {
-    margin-top: 16px;
+    margin-top: 14px;
     /* Full width on mobile: fit-content would leave the headline off-centre once it wraps. */
     width: 100%;
   }
 
   .title,
   .titleSphere {
-    font-size: 32px;
-    line-height: 1.06;
-    letter-spacing: -0.02em;
+    font-size: 30px;
+    line-height: 1.05;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
   }
 
   /*
@@ -415,14 +442,16 @@
     animation: none;
   }
 
+  /* Reduced from 15px so the whole first screen clears a phone's visible area. */
   .paragraph {
-    margin-top: 16px;
-    font-size: 15px;
-    line-height: var(--lh-body);
+    margin-top: 14px;
+    font-size: 13.5px;
+    line-height: 1.45;
+    text-wrap: pretty;
   }
 
   .cta {
-    margin-top: 24px;
+    margin-top: 20px;
   }
 }
 

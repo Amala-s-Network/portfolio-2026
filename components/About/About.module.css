@@ -171,11 +171,17 @@
 }
 
 /*
- * All four labels share row 1 and all four values share row 2, so the values stay aligned even
- * when one label wraps.
+ * The pair wrapper vanishes from layout on desktop so its two children become grid items in
+ * their own right — that is what lets all four labels share row 1 and all four values share row
+ * 2, keeping the values aligned even when one label wraps.
  */
+.metaPair {
+  display: contents;
+}
+
 .metaLabel {
   grid-row: 1;
+  grid-column: var(--metaCol);
   font-size: 11.5px;
   letter-spacing: 0.12em;
   color: var(--muted-light);
@@ -184,6 +190,7 @@
 
 .metaValue {
   grid-row: 2;
+  grid-column: var(--metaCol);
   font-size: 14px;
   line-height: var(--lh-body);
   color: var(--body);
@@ -240,6 +247,7 @@
   .metaLabel,
   .metaValue {
     grid-row: auto;
+    grid-column: auto;
   }
 }
 
@@ -293,14 +301,19 @@
     border-top: 1px solid var(--hairline-alt);
   }
 
-  /* Row placement is a desktop concern; stacked, each pair follows its own label. */
+  /* Stacked: the wrapper becomes a real block so each label keeps its own value with it. */
+  .metaPair {
+    display: block;
+  }
+
   .metaLabel,
   .metaValue {
     grid-row: auto;
-    grid-column: 1 !important;
+    grid-column: auto;
+    display: block;
   }
 
-  .metaLabel {
+  .metaPair + .metaPair {
     margin-top: 22px;
   }
 
