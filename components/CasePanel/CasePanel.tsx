@@ -70,11 +70,12 @@ export function CasePanel({ data, index, isLast }: CasePanelProps) {
       stage.style.visibility = done ? 'hidden' : '';
 
       /*
-       * And it must not intercept them before it arrives either. The stage is full-viewport and
-       * fixed for the entire page, so it only becomes interactive while the panel is genuinely
-       * on screen — otherwise it covers the hero and swallows every hover and click.
+       * Pointer events are handled purely in CSS now — the stage never takes them and the panel
+       * always does, so the interactive area is exactly the panel geometry. The progress-threshold
+       * version this replaces made the whole viewport interactive as soon as a section edged into
+       * view, which broke the hero on any screen tall enough for the first section to start above
+       * the fold. See the note in CasePanel.module.css.
        */
-      stage.classList.toggle(styles.stageLive, p > 0.02 && !done);
     };
 
     apply();

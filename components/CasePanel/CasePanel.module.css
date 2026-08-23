@@ -29,8 +29,25 @@
   pointer-events: none;
 }
 
-/* Only while the panel is actually on screen does it become interactive. */
-.stageLive {
+/*
+ * The PANEL takes pointer events, not the stage. This is geometric rather than threshold-based,
+ * and that distinction was a real bug.
+ *
+ * The stage is a full-viewport fixed box; the panel inside it is translated down by the scroll
+ * maths. Gating the stage on a progress threshold meant that as soon as a section edged into
+ * view — p > 0.02 — the whole viewport became interactive, even though the panel itself was
+ * still translated 91% off the bottom of the screen.
+ *
+ * That fired at scrollY 0 on taller viewports: the hero caps at 800px, so on a 910px screen the
+ * first case section starts at 861px, already inside the fold, giving p = 0.09. The stage went
+ * live and swallowed every pointer event on the hero — no sphere, no avatar flip. On a 768px
+ * screen the section starts exactly at the fold, p = 0, and nothing broke. Hence "works on the
+ * notebook, not on the desktop".
+ *
+ * Hit-testing respects transforms, so putting pointer-events on the panel means only the area it
+ * actually occupies responds. No threshold to tune, and it cannot drift with viewport height.
+ */
+.panel {
   pointer-events: auto;
 }
 
@@ -100,7 +117,7 @@
   inset: 0;
   background: var(--ink);
   opacity: var(--veil);
-  transition: opacity 0.6s ease;
+  transition: opacity 0.6s var(--ease);
   pointer-events: none;
 }
 
@@ -145,7 +162,7 @@
 
   opacity: var(--ctaOp);
   transform: translateY(var(--ctaY));
-  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
 }
 
 /* The green diamond, rotated — the one place the accent colour is allowed. */
@@ -160,7 +177,7 @@
 .description {
   font-size: 25px;
   font-weight: 400;
-  line-height: 1.42;
+  line-height: var(--lh-body);
   max-width: 780px;
   margin: 0;
 }
