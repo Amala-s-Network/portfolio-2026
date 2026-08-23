@@ -102,10 +102,19 @@
   background: #f1f1f1;
 }
 
-/* The inner div carries the 26px of parallax so the frame itself stays put. */
+/*
+ * The inner div carries the 26px of parallax, and it has to be TALLER than the frame by the full
+ * travel in each direction.
+ *
+ * At height: 100% it is exactly as tall as what it moves inside, so any displacement slides an
+ * edge into view and the frame's own #f1f1f1 shows through. Measured: 22px of bare background
+ * along the top of every card with the carousel high in the viewport. The overhang is hidden by
+ * the frame's overflow until the parallax needs it.
+ */
 .frameInner {
   width: 100%;
-  height: 100%;
+  height: calc(100% + 52px);
+  margin-top: -26px;
 }
 
 .frameInner img {

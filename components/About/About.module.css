@@ -89,9 +89,14 @@
   box-shadow: var(--shadow-card);
 }
 
+/*
+ * Same overhang as the carousel frames, sized to the portrait's larger 46px of parallax —
+ * without it the photo slides off its own frame and leaves a bare strip along one edge.
+ */
 .portraitLink img {
   width: 100%;
-  height: 100%;
+  height: calc(100% + 92px);
+  margin-top: -46px;
   object-fit: cover;
   display: block;
 }
