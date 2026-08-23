@@ -14,6 +14,7 @@ import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Intro } from '@/components/Intro/Intro';
 import { PageFold } from '@/components/PageFold/PageFold';
+import { useSectionSettle } from '@/hooks/useSectionSettle';
 import { cases } from '@/content/copy';
 import styles from './page.module.css';
 
@@ -29,6 +30,9 @@ export default function Page() {
   const [contactOpen, setContactOpen] = useState(false);
   const [footerUp, setFooterUp] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+
+  /* Pulls the page onto a section edge once the reader stops, so nobody parks mid-turn. */
+  useSectionSettle();
 
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
   const openContact = useCallback(() => setContactOpen(true), []);
