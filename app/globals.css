@@ -347,7 +347,17 @@ button {
  * ordinary reading sections and must stay free to stop anywhere.
  */
 html {
-  scroll-snap-type: y proximity;
+  /*
+   * NO scroll snapping.
+   *
+   * It was here so the case panels would settle onto their own screens. With those sections at
+   * exactly 100vh the snap points ended up one viewport apart, which meant a single wheel
+   * gesture reached the next one immediately — and the browser's snap animation ran straight
+   * through the panel's own turn, compressing a 410px reveal into a jump. The page appeared to
+   * have no animation between cases at all.
+   *
+   * The turn IS the transition. It does not need help arriving.
+   */
 }
 
 /*
@@ -355,9 +365,7 @@ html {
  * that — the page taking over the scroll position — so it is switched off entirely.
  */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-snap-type: none;
-  }
+  /* (scroll snapping removed entirely — see above) */
 }
 
 

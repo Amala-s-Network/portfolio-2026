@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/lib/language';
 import { pageFold as copy } from '@/content/copy';
+import { playPaper } from '@/lib/paper';
 import styles from './PageFold.module.css';
 
 /**
@@ -21,24 +22,6 @@ const REST_MIN = 62;
 const REST_MAX = 132;
 const PEEL_MIN = 150;
 const PEEL_MAX = 340;
-
-/**
- * The paper.
- *
- * Kept at 0.45 — audible as texture, not as an event. It plays on the CLICK and nowhere else:
- * the corner also peels on scroll and on hover, and a rustle firing on either of those would go
- * off dozens of times in a single pass down the page, which is how a nice detail becomes the
- * reason someone mutes the tab.
- *
- * Being click-driven also means it always plays. Browsers refuse audio before the reader has
- * interacted with the page — the reason the old intro drip was silent on a first visit — and a
- * click IS that interaction, so there is nothing to work around here.
- *
- * WCAG 1.4.2 wants a stop control for audio that plays automatically for more than three
- * seconds. This is neither automatic nor three seconds, so it is out of scope; if the file is
- * ever replaced with something longer, that stops being true.
- */
-const PAPER_VOLUME = 0.45;
 
 /**
  * How far the flap rotates off the page, in degrees, at full peel.
@@ -88,19 +71,6 @@ export function PageFold({
 }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
-  const paperRef = useRef<HTMLAudioElement | null>(null);
-
-  /* Built once and reused, so a second pull does not wait on a second fetch. */
-  useEffect(() => {
-    const paper = new Audio('/audio/papel.mp3');
-    paper.volume = PAPER_VOLUME;
-    paper.preload = 'auto';
-    paperRef.current = paper;
-    return () => {
-      paper.pause();
-      paperRef.current = null;
-    };
-  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -164,12 +134,7 @@ export function PageFold({
    * there is what makes the turn happen.
    */
   const turn = () => {
-    const paper = paperRef.current;
-    if (paper) {
-      paper.currentTime = 0;
-      /* A refused play is not worth interrupting the navigation for. */
-      paper.play().catch(() => {});
-    }
+    playPaper();
 
     if (onEnter) {
       onEnter();

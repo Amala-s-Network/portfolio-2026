@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/lib/language';
 import { PageFold } from '@/components/PageFold/PageFold';
+import { playPaper } from '@/lib/paper';
 import { caseLabels, caseFold, type Case } from '@/content/copy';
 import styles from './CasePanel.module.css';
 
@@ -34,6 +35,15 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const photoRef = useRef<HTMLImageElement>(null);
+  /*
+   * Whether this panel's arrival has already been sounded.
+   *
+   * Latched rather than fired on a threshold crossing: scroll events arrive in clusters and the
+   * progress value jitters across any given number, so "p just went past 0.5" is true several
+   * times for one gesture. The latch releases only when the panel has gone well back down,
+   * which is what makes scrolling up and down again rustle once per pass instead of continuously.
+   */
+  const soundedRef = useRef(false);
 
   useEffect(() => {
     const section = sectionRef.current;
@@ -70,6 +80,18 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
       panel.style.transform = `translateY(${rest * 100 - exit * 100}%) rotateX(${
         rest * -11
       }deg) scale(${1 - rest * 0.05})`;
+
+      /*
+       * The page turning has a sound whether the reader pulled the corner or simply scrolled.
+       * It fires at 0.45 — while the panel is still visibly arriving — because a rustle that
+       * lands after the paper has settled reads as an echo rather than as the movement itself.
+       */
+      if (p > 0.45 && !soundedRef.current) {
+        soundedRef.current = true;
+        playPaper();
+      } else if (p < 0.12) {
+        soundedRef.current = false;
+      }
       photo.style.transform = `translateY(${rest * -6}%)`;
 
       // Once the section is behind us the stage must stop intercepting clicks.

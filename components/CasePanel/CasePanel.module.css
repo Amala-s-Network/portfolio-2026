@@ -280,7 +280,5 @@
  * scroll-margin-top offsets it by the nav, or the panel's own top edge lands underneath the bar.
  */
 .section {
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
   scroll-margin-top: var(--navH);
 }
