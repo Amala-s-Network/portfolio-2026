@@ -1,9 +1,14 @@
 /*
- * The craft side. Same tokens as the gate, so walking through the door lands somewhere that
- * looks like what the door promised.
+ * The craft side, arranged the way the reference arranges a choice.
+ *
+ * Measured off the frame João sent rather than approximated: the title sits at the top left in
+ * wide tracking, the list is a third of the way down and hard against the left, the status bar
+ * is pinned at the foot between two dotted rules, and every row is a rectangle with a square
+ * marker whose ARMED state inverts.
  */
 
 .page {
+  position: relative;
   min-height: 100vh;
   background: var(--nier-bg);
   color: var(--nier-ink);
@@ -11,124 +16,296 @@
 
   display: flex;
   flex-direction: column;
-  padding: 20px var(--gutter);
+  padding: 18px clamp(24px, 4vw, 64px) 14px;
+  overflow: hidden;
 }
 
-/* The dotted rules that frame every screen in the reference — top and bottom, never the sides. */
+/*
+ * The drawing behind everything, at the edge of visible. 0.14 is deliberate: any stronger and it
+ * competes with the menu, any weaker and the screen is a flat colour field again — which is what
+ * it looked like before, and why the first attempt read as a palette rather than as a place.
+ */
+.backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  color: var(--nier-ink);
+  opacity: 0.14;
+  pointer-events: none;
+}
+
 .dots {
-  height: 3px;
-  background-image: radial-gradient(var(--nier-rule) 1px, transparent 1px);
-  background-size: 7px 3px;
-  background-repeat: repeat-x;
+  position: relative;
+  height: 4px;
   flex: none;
+  background-image: radial-gradient(var(--nier-rule) 1.2px, transparent 1.2px);
+  background-size: 9px 4px;
+  background-repeat: repeat-x;
 }
 
-.head {
-  padding: 64px 0 40px;
+.frame {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 34px;
 }
+
+/* ---- head ---- */
 
 .system {
   font-size: 11px;
   letter-spacing: 0.34em;
-  opacity: 0.66;
-}
-
-.heading {
-  margin-top: 16px;
-  font-size: clamp(52px, 9vw, 120px);
-  font-weight: 400;
-  letter-spacing: 0.14em;
-  line-height: 1;
-}
-
-.lead {
-  margin-top: 22px;
-  font-size: 16px;
-  line-height: 1.6;
-  max-width: 56ch;
-  opacity: 0.9;
+  opacity: 0.6;
 }
 
 /*
- * Where the work goes. It is an empty frame that admits to being one — a page dressed as
- * finished with nothing in it is the same lie the portfolio spent a week removing from itself.
+ * Wide tracking and a light weight, the way the reference sets its screen titles — they read as
+ * a label for the screen rather than as a headline competing with the menu under them.
  */
-.slot {
+.title {
+  margin-top: 10px;
+  font-size: clamp(38px, 5.4vw, 68px);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  opacity: 0.72;
+}
+
+/* ---- columns ---- */
+
+.columns {
   flex: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 360px) minmax(0, 1fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+  padding-top: clamp(40px, 8vh, 96px);
+}
+
+.menu {
+  position: relative;
+  padding-left: 26px;
+}
+
+/* The thin vertical rule beside the list, which the reference runs down the side of every menu. */
+.track {
+  position: absolute;
+  left: 0;
+  top: -6px;
+  bottom: -6px;
+  width: 3px;
+  background: var(--nier-rule);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.row {
+  position: relative;
+  display: block;
+}
+
+/*
+ * The pointer sits OUTSIDE the row, in the margin, and points at it. Inside the row it would be
+ * a bullet; outside it is a cursor — and that difference is most of why the reference reads as a
+ * console menu rather than as a list of links.
+ */
+.pointer {
+  position: absolute;
+  left: -20px;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid var(--nier-ink);
+
+  opacity: 0;
+  transform: translate(-4px, -50%);
+  transition: opacity 0.16s linear, transform 0.22s var(--ease);
+}
+
+.pointerOn {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.option {
   display: flex;
   align-items: center;
-  justify-content: center;
-
-  margin: 20px 0 40px;
-  padding: 72px 32px;
-  border: 1px solid var(--nier-rule);
-}
-
-.pending {
-  font-size: 14px;
-  line-height: 1.6;
-  text-align: center;
-  max-width: 46ch;
-  opacity: 0.75;
-}
-
-.foot {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 18px 0 22px;
-  border-top: 1px solid var(--nier-rule);
-}
-
-/* The same row-that-inverts the gate uses: one gesture across both screens. */
-.back {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
+  gap: 14px;
+  width: 100%;
   min-height: 44px;
   padding: 0 16px;
 
+  border: 0;
   background: var(--nier-row);
   color: var(--nier-ink);
-  font-size: 13px;
-  letter-spacing: 0.16em;
 
-  transition: background-color 0.18s linear, color 0.18s linear;
-}
+  font-family: inherit;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  cursor: pointer;
 
-.back:hover,
-.back:focus-visible {
-  background: var(--nier-ink);
-  color: var(--nier-bg);
+  transition: background-color 0.16s linear, color 0.16s linear;
 }
 
 .mark {
-  width: 9px;
-  height: 9px;
+  width: 10px;
+  height: 10px;
   background: currentColor;
   flex: none;
 }
 
-.credit {
-  font-size: 11px;
-  line-height: 1.55;
-  opacity: 0.7;
-  max-width: 54ch;
+/* The one gesture the whole reference is built on: the armed row trades ground for ink. */
+.armed {
+  background: var(--nier-ink);
+  color: var(--nier-bg);
 }
 
-@media (max-width: 700px) {
-  .head {
-    padding: 40px 0 28px;
+/*
+ * No focus ring. The armed row is already the loudest thing on the screen, and focus arms it —
+ * a ring would be a second signal for a state that is impossible to miss.
+ */
+.option:focus-visible {
+  outline: none;
+}
+
+/* ---- the panel ---- */
+
+.panel {
+  min-height: 220px;
+  padding: 26px 28px;
+  border: 1px solid var(--nier-rule);
+}
+
+.empty {
+  font-size: 14px;
+  line-height: 1.6;
+  opacity: 0.7;
+  max-width: 42ch;
+}
+
+/* ---- status bar ---- */
+
+/*
+ * The bar carries the explanation of the ARMED row, one sentence at a time, and the keys on the
+ * right. Putting those sentences in the list instead would turn a menu into a page of
+ * paragraphs — this is where the reference puts them, and it is right.
+ */
+.status {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  margin-top: 20px;
+  padding: 14px 18px 14px 22px;
+  background: var(--nier-bar);
+}
+
+/* The heavy stub at the bar's left edge. */
+.statusBar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: var(--nier-ink);
+}
+
+.statusText {
+  flex: 1;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+
+.keys {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex: none;
+}
+
+.key {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-size: 12.5px;
+  letter-spacing: 0.05em;
+  color: var(--nier-ink);
+}
+
+.keyCap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+
+  border: 1px solid var(--nier-ink);
+  border-radius: 999px;
+  font-size: 10.5px;
+  line-height: 1;
+}
+
+/* Only the "back" key is a link, and it says so by responding. */
+a.key:hover .keyCap,
+a.key:focus-visible .keyCap {
+  background: var(--nier-ink);
+  color: var(--nier-bg);
+}
+
+/* ---- credit ---- */
+
+.credit {
+  position: relative;
+  margin-top: 12px;
+  font-size: 10.5px;
+  line-height: 1.5;
+  opacity: 0.6;
+  max-width: 96ch;
+}
+
+/* ---- narrow ---- */
+
+@media (max-width: 860px) {
+  .columns {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+    padding-top: 40px;
   }
 
-  .slot {
-    padding: 48px 20px;
+  .title {
+    letter-spacing: 0.14em;
   }
 
-  .foot {
+  .status {
     flex-direction: column;
     align-items: flex-start;
+    gap: 12px;
+  }
+
+  .keys {
     gap: 16px;
+    flex-wrap: wrap;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pointer,
+  .option {
+    transition: none;
   }
 }

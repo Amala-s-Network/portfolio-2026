@@ -220,6 +220,63 @@ export const craftGate = {
   hint: { pt: 'Esc para permanecer', en: 'Esc to remain' } satisfies T,
 };
 
+/* -------------------------------------------------------- the craft page */
+
+/**
+ * The craft side, built as a start menu.
+ *
+ * The three categories and their meanings are João's. The bottom bar carries a line per option
+ * because that is how the reference works — the menu never explains itself in the list, it
+ * explains the ARMED row down in the status bar, one sentence at a time. Writing the
+ * descriptions into the rows instead would have been the easy port and the wrong one: it turns
+ * a menu into a page of paragraphs.
+ */
+export const craftPage = {
+  title: { pt: 'CRAFT', en: 'CRAFT' } satisfies T,
+  system: { pt: 'AMBIENTE ALTERADO', en: 'ENVIRONMENT CHANGED' } satisfies T,
+
+  options: [
+    {
+      id: 'jogos',
+      label: { pt: 'Interfaces de jogos', en: 'Game interfaces' } satisfies T,
+      hint: {
+        pt: 'Projetos autorais de interface para jogos.',
+        en: 'Self-directed interface work for games.',
+      } satisfies T,
+    },
+    {
+      id: 'diversas',
+      label: { pt: 'Interfaces diversas', en: 'Other interfaces' } satisfies T,
+      hint: {
+        pt: 'Filmes, projetos que não foram para a frente e trabalhos ainda não vitrinados.',
+        en: 'Films, projects that never shipped, and work not yet put on show.',
+      } satisfies T,
+    },
+    {
+      id: 'tudo',
+      label: { pt: 'Explorar', en: 'Explore' } satisfies T,
+      hint: {
+        pt: 'Exibe todas as opções, sem filtro.',
+        en: 'Shows everything, unfiltered.',
+      } satisfies T,
+    },
+  ],
+
+  /* The right-hand panel while a category has nothing in it yet. */
+  empty: {
+    pt: 'Nenhum projeto catalogado nesta categoria ainda.',
+    en: 'No projects catalogued in this category yet.',
+  } satisfies T,
+
+  keys: {
+    select: { pt: 'Selecionar', en: 'Select' } satisfies T,
+    confirm: { pt: 'Confirmar', en: 'Confirm' } satisfies T,
+    back: { pt: 'Voltar', en: 'Back' } satisfies T,
+  },
+
+  backLabel: { pt: 'VOLTAR AO PORTFÓLIO', en: 'BACK TO THE PORTFOLIO' } satisfies T,
+};
+
 /* ------------------------------------------------------------- story */
 
 /**
