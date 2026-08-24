@@ -23,13 +23,30 @@ const TURN_MS = 1500;
 
 
 /**
- * How much wheel travel counts as a deliberate gesture.
+ * How much wheel travel counts as a deliberate gesture — ACCUMULATED, not per event.
  *
- * Trackpads emit a long tail of tiny deltas as a flick decays, and treating those as new
- * gestures would page the reader through three sections for one swipe. 14 is above that noise
- * and well below a mouse wheel's single notch.
+ * The old test asked a single event to clear 14, and that is the wrong question. A mouse notch
+ * arrives as one delta of 100 or so and passes easily; a trackpad sends a stream of values in the
+ * single digits, none of which ever clears the bar on its own. So the page answered a mouse
+ * immediately and appeared stuck under a finger — "precisa scrollar muito".
+ *
+ * Summing over a short window asks the honest question: has the reader moved enough, however
+ * they chose to move. 20 is roughly a fifth of a mouse notch and a few frames of a trackpad.
  */
-const GESTURE_DELTA = 14;
+const GESTURE_DELTA = 20;
+
+/** How long the accumulator remembers. Past this, a new stretch of scrolling is a new gesture. */
+const GESTURE_WINDOW_MS = 200;
+
+/**
+ * How far into a turn a second gesture is accepted.
+ *
+ * Everything used to be swallowed for the full 1500ms, so scrolling twice quickly registered
+ * once and the page felt locked. Past two thirds the turn is visually all but finished, and
+ * letting the next one start there is what makes several pages in a row feel like scrolling
+ * rather than like waiting.
+ */
+const CHAIN_AT = 0.66;
 
 /**
  * Pulls the page onto a section boundary once the reader stops scrolling.
@@ -67,6 +84,10 @@ export function useSectionSettle() {
      * case, well before this fires.
      */
     let deadline = 0;
+    /* Wheel travel summed over GESTURE_WINDOW_MS, and when the current turn began. */
+    let travel = 0;
+    let travelReset = 0;
+    let turnBegan = 0;
 
     /* Recomputed per settle rather than cached: these heights are all vh-based and a window
      * resize would silently invalidate anything measured once. */
@@ -103,6 +124,7 @@ export function useSectionSettle() {
       if (Math.abs(distance) < 1) return;
 
       const began = performance.now();
+      turnBegan = began;
       settling = true;
       window.clearTimeout(deadline);
       deadline = window.setTimeout(() => {
@@ -177,13 +199,26 @@ export function useSectionSettle() {
       if (y >= last - 4 && e.deltaY > 0) return;
       if (y <= first + 4 && e.deltaY < 0) return;
 
-      /* Mid-flight, swallow everything: this is what stops a flick paging three sections. */
-      if (settling) {
+      /*
+       * Mid-flight, swallow — but only for the first two thirds. This is still what stops a
+       * flick paging three sections, while letting a deliberate second gesture land.
+       */
+      if (settling && performance.now() - turnBegan < TURN_MS * CHAIN_AT) {
         e.preventDefault();
         return;
       }
 
-      if (Math.abs(e.deltaY) < GESTURE_DELTA) return;
+      /* Inside the paged run the wheel never scrolls the page directly — it asks for a turn. */
+      e.preventDefault();
+
+      travel += e.deltaY;
+      window.clearTimeout(travelReset);
+      travelReset = window.setTimeout(() => {
+        travel = 0;
+      }, GESTURE_WINDOW_MS);
+
+      if (Math.abs(travel) < GESTURE_DELTA) return;
+      travel = 0;
 
       /*
        * The wheel is a DIRECTION, not a distance.
@@ -201,7 +236,6 @@ export function useSectionSettle() {
 
       if (target === undefined) return;
 
-      e.preventDefault();
       window.clearTimeout(idle);
       glideTo(target);
     };
@@ -236,6 +270,7 @@ export function useSectionSettle() {
       window.removeEventListener('resize', onScroll);
       window.clearTimeout(idle);
       window.clearTimeout(deadline);
+      window.clearTimeout(travelReset);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
