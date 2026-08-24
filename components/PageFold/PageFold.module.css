@@ -149,6 +149,19 @@
   --foldSize: clamp(130px, 18vh, 210px);
 }
 
+/*
+ * Pulled by the page turning, not by the cursor.
+ *
+ * The size it reaches is the same one hovering reaches, deliberately: a reader who scrolls and
+ * a reader who pulls the corner should be watching the same thing happen. What differs is the
+ * timing — this one is slower, because it is riding a 1.5s turn rather than answering a cursor
+ * that arrived instantly.
+ */
+.pulling {
+  --foldSize: clamp(130px, 18vh, 210px);
+  transition: width 0.75s var(--ease), height 0.75s var(--ease), opacity 0.4s var(--ease);
+}
+
 .fold:active {
   --foldSize: clamp(122px, 17vh, 196px);
 }
@@ -178,6 +191,12 @@
 @media (prefers-reduced-motion: reduce) {
   .fold,
   .label {
+    transition: none;
+  }
+
+  /* No peel on a turn either: the corner stays exactly as drawn. */
+  .pulling {
+    --foldSize: clamp(54px, 7vh, 84px);
     transition: none;
   }
 
@@ -231,6 +250,11 @@
 
 .inCase:active {
   --foldSize: clamp(122px, 17vh, 196px);
+}
+
+/* The between-cases corners peel on a turn too — same size, same reason. */
+.inCase.pulling {
+  --foldSize: clamp(130px, 18vh, 210px);
 }
 
 /*

@@ -54,6 +54,19 @@ export function useSectionSettle() {
 
     let idle = 0;
     let settling = false;
+    /*
+     * Dead-man's switch on the turn.
+     *
+     * settling is cleared when the animation's last frame runs — and if that frame never runs,
+     * it never clears and paging is dead for the rest of the session. requestAnimationFrame does
+     * not fire in a background tab and can be throttled to nothing in embedded contexts; the
+     * README warns about exactly this class of failure elsewhere in the project, and it showed
+     * up here the moment a turn was started in a pane that composites no frames.
+     *
+     * The timer is a floor, not the mechanism: the animation clears the flag itself in the normal
+     * case, well before this fires.
+     */
+    let deadline = 0;
 
     /* Recomputed per settle rather than cached: these heights are all vh-based and a window
      * resize would silently invalidate anything measured once. */
@@ -74,6 +87,7 @@ export function useSectionSettle() {
       if (frame) cancelAnimationFrame(frame);
       frame = 0;
       settling = false;
+      window.clearTimeout(deadline);
     };
 
     /*
@@ -90,6 +104,21 @@ export function useSectionSettle() {
 
       const began = performance.now();
       settling = true;
+      window.clearTimeout(deadline);
+      deadline = window.setTimeout(() => {
+        settling = false;
+        if (frame) cancelAnimationFrame(frame);
+        frame = 0;
+      }, TURN_MS + 400);
+
+      /*
+       * The corners peel while the page turns.
+       *
+       * Broadcast rather than wired directly: there are four corners on this page, one per
+       * screen, and the hook has no business knowing which of them is currently visible. Each
+       * listens and pulls itself; the ones that are off-screen do it unseen and cost nothing.
+       */
+      window.dispatchEvent(new CustomEvent('pageturn', { detail: { duration: TURN_MS } }));
 
       const step = (now: number) => {
         const t = Math.min(1, (now - began) / TURN_MS);
@@ -101,6 +130,7 @@ export function useSectionSettle() {
         } else {
           frame = 0;
           settling = false;
+          window.clearTimeout(deadline);
         }
       };
 
@@ -163,16 +193,21 @@ export function useSectionSettle() {
 
       if (Math.abs(e.deltaY) < GESTURE_DELTA) return;
 
+      /*
+       * The wheel is a DIRECTION, not a distance.
+       *
+       * This used to require the reader to be sitting exactly on a boundary, and anywhere in
+       * between it did nothing and left the settle to tidy up — so a gesture that landed slightly
+       * off would appear to be ignored, and the next one after it too. Reading it as up or down
+       * and going to the adjacent boundary from wherever they are makes it behave like a pair of
+       * buttons: one flick, one page, no distance to cover.
+       */
       const down = e.deltaY > 0;
-      /* The boundary the reader is currently sitting on, allowing for sub-pixel drift. */
-      const here = marks.findIndex((m) => Math.abs(m - y) < 4);
       const target = down
         ? marks.find((m) => m > y + 4)
         : [...marks].reverse().find((m) => m < y - 4);
 
       if (target === undefined) return;
-      /* If they are between boundaries, the settle handles it — this only pages from a landing. */
-      if (here === -1) return;
 
       e.preventDefault();
       window.clearTimeout(idle);
@@ -208,6 +243,7 @@ export function useSectionSettle() {
       window.removeEventListener('keydown', onIntent);
       window.removeEventListener('resize', onScroll);
       window.clearTimeout(idle);
+      window.clearTimeout(deadline);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
