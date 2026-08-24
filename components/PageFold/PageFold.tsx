@@ -9,19 +9,20 @@ import styles from './PageFold.module.css';
 /**
  * Corner size at rest and at full peel, both as a FRACTION OF THE VIEWPORT HEIGHT.
  *
- * Fixed pixels were wrong across João's three screens: 96px is a confident corner on a 768-tall
- * window and a stamp on a 1080-tall one, and the peeled 300px that read well at 1920 crowded the
- * deck at 1366. Sizing from the height ties the corner to the sheet it belongs to — it is a
- * proportion of the page, which is what a folded corner actually is.
+ * These are the SAME numbers the between-cases corner uses, and that is the point: one corner
+ * appears on the first screen and three more appear between the cases, and a reader meeting them
+ * in sequence should be meeting one object, not a large version and then a small one. The hero's
+ * ran to 420px against the case corners' 210 — twice the size for no reason beyond the empty
+ * screen it happened to have around it.
  *
  * The clamps stop it collapsing on a short window or swallowing a tall one.
  */
-const REST_RATIO = 0.105;
-const PEEL_RATIO = 0.3;
-const REST_MIN = 62;
-const REST_MAX = 132;
-const PEEL_MIN = 150;
-const PEEL_MAX = 340;
+const REST_RATIO = 0.07;
+const PEEL_RATIO = 0.18;
+const REST_MIN = 54;
+const REST_MAX = 84;
+const PEEL_MIN = 130;
+const PEEL_MAX = 210;
 
 /**
  * How far the flap rotates off the page, in degrees, at full peel.

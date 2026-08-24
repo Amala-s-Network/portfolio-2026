@@ -12,7 +12,7 @@
  */
 
 .fold {
-  --foldSize: 10vh;
+  --foldSize: clamp(54px, 7vh, 84px);
   --lift: 0deg;
 
   /*
@@ -143,17 +143,14 @@
 }
 
 /* Hovering lifts the corner further — the same gesture as pinching a page to see what is under. */
-/*
- * Hover lifts it a third further than the scroll ever does, in the same viewport-relative units
- * — the gesture reads as "pull harder", which only works if it out-reaches the resting peel.
- */
+/* Identical to the between-cases corner: one object, met four times, not two sizes of it. */
 .fold:hover,
 .fold:focus-visible {
-  --foldSize: clamp(200px, 40vh, 420px);
+  --foldSize: clamp(130px, 18vh, 210px);
 }
 
 .fold:active {
-  --foldSize: clamp(186px, 37vh, 392px);
+  --foldSize: clamp(122px, 17vh, 196px);
 }
 
 /*
@@ -188,7 +185,7 @@
   .fold:hover,
   .fold:focus-visible,
   .fold:active {
-    --foldSize: 10vh;
+    --foldSize: clamp(54px, 7vh, 84px);
   }
 
   .flap {
