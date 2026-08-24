@@ -47,28 +47,8 @@ const LIFT = 34;
  */
 export function PageFold({
   onEnter,
-  /**
-   * 'hero' is the big corner on the first screen: fixed to the viewport, peeling as the reader
-   * scrolls through the header.
-   *
-   * 'case' is the small one that sits between cases. It is ABSOLUTE, because it lives inside a
-   * panel that is already fixed and already the full viewport — a second fixed element there
-   * would be positioned against the window rather than against the page it belongs to, and would
-   * survive its own panel leaving the screen.
-   *
-   * It also does not peel with scroll. The panel behind it is mid-turn for the whole time it is
-   * visible, and a corner growing on top of a page that is itself moving is two motions arguing.
-   * It answers to hover, and to the click.
-   */
-  variant = 'hero',
-  /** What shows through the hole. Defaults to the first case, which is what the hero reveals. */
-  image,
-  label,
 }: {
   onEnter?: () => void;
-  variant?: 'hero' | 'case';
-  image?: string;
-  label?: string;
 }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
@@ -91,8 +71,6 @@ export function PageFold({
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     const apply = () => {
-      /* The case corner is a fixed size; only the hero's peels with the scroll. */
-      if (variant === 'case') return;
       /* Hovered, the CSS owns the size — see hoverRef. */
       if (hoverRef.current) return;
 
@@ -158,7 +136,7 @@ export function PageFold({
       el.removeEventListener('focus', onEnter);
       el.removeEventListener('blur', onLeave);
     };
-  }, [variant]);
+  }, []);
 
   /*
    * Clicking scrolls to the first case rather than jumping. The panels are driven BY scroll
@@ -180,10 +158,9 @@ export function PageFold({
     <button
       ref={ref}
       type="button"
-      className={`${styles.fold} ${variant === 'case' ? styles.inCase : ''}`}
+      className={styles.fold}
       onClick={turn}
-      aria-label={label ?? t(copy.label)}
-      style={image ? ({ '--foldImage': `url('${image}')` } as React.CSSProperties) : undefined}
+      aria-label={t(copy.label)}
     >
       {/* What shows through the hole the lifted corner leaves — the page underneath. */}
       <span className={styles.hole} aria-hidden="true" />
@@ -194,7 +171,7 @@ export function PageFold({
         */}
       <span className={styles.flap} aria-hidden="true" />
 
-      <span className={styles.label}>{label ?? t(copy.label)}</span>
+      <span className={styles.label}>{t(copy.label)}</span>
     </button>
   );
 }

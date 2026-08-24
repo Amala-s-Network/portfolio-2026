@@ -200,10 +200,6 @@ export const story = {
 
 /* --------------------------------------------------------- page fold */
 
-export const caseFold = {
-  label: { pt: 'Próximo case', en: 'Next case' } satisfies T,
-};
-
 export const pageFold = {
   /*
    * The visible label and the accessible name are the SAME string, deliberately.

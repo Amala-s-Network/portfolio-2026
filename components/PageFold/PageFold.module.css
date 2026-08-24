@@ -68,9 +68,9 @@
   pointer-events: auto;
   cursor: pointer;
   background-color: var(--ink);
-  background-image: var(
-    --foldImage,
-    image-set(url('/cases/floresta.webp') type('image/webp'), url('/cases/floresta.jpg') type('image/jpeg'))
+  background-image: image-set(
+    url('/cases/floresta.webp') type('image/webp'),
+    url('/cases/floresta.jpg') type('image/jpeg')
   );
   background-size: cover;
   background-position: center;
@@ -202,65 +202,3 @@
 }
 
 
-/*
- * ---------------------------------------------- the corner between cases
- *
- * Absolute, not fixed: it lives inside a panel that is already fixed and already fills the
- * viewport, so a second fixed element would be positioned against the window instead of against
- * the page it belongs to — and would still be there after its own panel had left the screen.
- *
- * Smaller than the hero's, and the reason is not decoration. The hero's corner is the only way
- * into the work and has a whole empty screen to sit in; this one is laid over a photograph with
- * a title, a description and a click target of its own, and at the hero's size it would be
- * competing with the case it is meant to be leaving.
- */
-.inCase {
-  position: absolute;
-  --foldSize: clamp(54px, 7vh, 84px);
-  /*
-   * 4, above the panel-wide anchor at 3. They currently tie and the corner wins on DOM order,
-   * which is true today and is the kind of thing that quietly stops being true when someone
-   * reorders the markup — at which point the reader clicking the corner lands on the case page
-   * they were trying to move past.
-   */
-  z-index: 4;
-}
-
-.inCase:hover,
-.inCase:focus-visible {
-  --foldSize: clamp(130px, 18vh, 210px);
-}
-
-.inCase:active {
-  --foldSize: clamp(122px, 17vh, 196px);
-}
-
-
-/*
- * The flap is white paper over a dark photograph, so it needs its own edge to sit on — the
- * page-level crease shadow disappears against ink.
- */
-.inCase .flap {
-  box-shadow: -1px -1px 0 rgba(20, 18, 15, 0.22), -10px -10px 24px rgba(20, 18, 15, 0.3);
-}
-
-/* The label sits on the photograph, so it takes the light type the panel already uses. */
-.inCase .label {
-  color: var(--on-dark);
-  bottom: 20px;
-}
-
-/*
- * The between-cases corner is REMOVED on touch, at João's instruction.
- *
- * On a phone it sits in the corner of a panel that is already one big link to the case page, and
- * a thumb resting near the edge while scrolling hits it — the reader ends up on a case they
- * never chose, which is the opposite of moving through the work. Nothing is lost: swiping
- * onwards already does what the corner did, and the hero's corner stays, since that one is the
- * invitation rather than a shortcut between two things.
- */
-@media (pointer: coarse), (max-width: 768px) {
-  .inCase {
-    display: none;
-  }
-}

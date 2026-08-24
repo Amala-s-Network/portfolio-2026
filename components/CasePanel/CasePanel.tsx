@@ -3,9 +3,8 @@
 import Link from 'next/link';
 import { useEffect, useRef } from 'react';
 import { useLanguage } from '@/lib/language';
-import { PageFold } from '@/components/PageFold/PageFold';
 import { playPaper } from '@/lib/paper';
-import { caseLabels, caseFold, type Case } from '@/content/copy';
+import { caseLabels, type Case } from '@/content/copy';
 import styles from './CasePanel.module.css';
 
 const clamp01 = (n: number) => Math.min(1, Math.max(0, n));
@@ -21,15 +20,9 @@ type CasePanelProps = {
    * the exact scroll position where the carousel begins.
    */
   isLast?: boolean;
-  /**
-   * The case this one hands over to. Present on 01-03 and absent on 04, which hands over to
-   * "Outros projetos" — a different kind of place, and not something a corner promising another
-   * case should be pointing at.
-   */
-  next?: Case;
 };
 
-export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
+export function CasePanel({ data, index, isLast }: CasePanelProps) {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -191,32 +184,6 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
             <p className={styles.company}>{t(data.company)}</p>
           </div>
 
-          {/*
-            * The corner, carried through from the first screen. Cases 01-03 have one; it shows
-            * the next case's photograph and takes the reader there, so the same gesture that got
-            * them into the work is the one that moves them through it.
-            *
-            * It sits AFTER the anchor in the markup and above it in z-index: the panel's own
-            * full-bleed link would otherwise swallow the corner's clicks, and the reader would
-            * land on the case page they were trying to move past.
-            */}
-          {next && (
-            <PageFold
-              variant="case"
-              image={next.photo ?? `/placeholders/cases/${next.slug}.svg`}
-              label={t(caseFold.label)}
-              onEnter={() => {
-                const sections = document.querySelectorAll('main > section');
-                const target = sections[index + 1];
-                target?.scrollIntoView({
-                  behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-                    ? 'auto'
-                    : 'smooth',
-                  block: 'start',
-                });
-              }}
-            />
-          )}
 
           <div className={styles.foot}>
             <span className={styles.hoverLabel}>
