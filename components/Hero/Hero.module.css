@@ -503,7 +503,38 @@
 
 .ctaWrap {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
+  gap: 14px;
+}
+
+/*
+ * Secondary, and looks it: no fill, a hairline, the same height as the button above so the two
+ * read as a pair rather than as a control and an afterthought.
+ */
+.unlock {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 0 20px;
+
+  border: 1px solid var(--hairline-mid);
+  background: transparent;
+  color: var(--ink);
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+
+  transition: border-color 0.4s var(--ease), letter-spacing 0.5s var(--ease);
+}
+
+.unlock:hover,
+.unlock:focus-visible {
+  border-color: var(--ink);
+  /* The letters open up as the world flips — small, and it is what sells the moment. */
+  letter-spacing: 0.09em;
 }
 
 .cta {

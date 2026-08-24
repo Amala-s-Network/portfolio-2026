@@ -174,6 +174,52 @@ export const services = {
   ],
 };
 
+/* ------------------------------------------------------- the craft gate */
+
+/**
+ * The door to the other side of the site.
+ *
+ * ⚠️ ATTRIBUTION IS NOT DECORATION HERE. NieR: Automata's interface is Square Enix's, designed
+ * under Yoko Taro's direction, and this borrows its visual language openly. The credit line is
+ * not fine print at the bottom of a page nobody reaches — it is inside the gate itself, on the
+ * screen where the borrowing is announced, because that is the only place it is guaranteed to be
+ * read. It also states plainly that the page is personal and non-commercial, which is the claim
+ * the whole thing rests on.
+ *
+ * The gate exists because the two halves of this site want different things from a reader. The
+ * portfolio is an argument for hiring him; the craft side is work made for its own sake, with
+ * invented briefs. Walking from one into the other without a word would read as the site losing
+ * its mind, so the door says which room is which and lets the reader decline.
+ */
+export const craftGate = {
+  trigger: { pt: 'Desbloquear criatividade', en: 'Unlock creativity' } satisfies T,
+
+  system: { pt: 'SISTEMA', en: 'SYSTEM' } satisfies T,
+  heading: { pt: 'ALTERAR AMBIENTE?', en: 'CHANGE ENVIRONMENT?' } satisfies T,
+
+  body: {
+    pt: [
+      'Você está prestes a ser direcionado para uma experiência separada, dedicada a craft design — trabalho autoral, briefings inventados e peças feitas por gosto, não por contrato.',
+      'Para acompanhar os cases de produto, com clientes reais e números verificados, permaneça nesta página.',
+    ],
+    en: [
+      'You are about to be directed to a separate experience, dedicated to craft design — self-directed work, invented briefs, and pieces made for their own sake rather than to a contract.',
+      'To follow the product cases, with real clients and verified numbers, remain on this page.',
+    ],
+  } satisfies Record<Lang, string[]>,
+
+  confirm: { pt: 'PROSSEGUIR', en: 'PROCEED' } satisfies T,
+  cancel: { pt: 'PERMANECER', en: 'REMAIN' } satisfies T,
+
+  /* Rendered inside the gate, not tucked into a footer. */
+  credit: {
+    pt: 'A linguagem visual desta tela é uma homenagem a NieR: Automata — © Square Enix, direção de Yoko Taro. Todos os direitos são deles. Esta é uma página pessoal, sem fins lucrativos e sem vínculo com a Square Enix.',
+    en: 'The visual language of this screen is a tribute to NieR: Automata — © Square Enix, directed by Yoko Taro. All rights are theirs. This is a personal, non-commercial page with no affiliation to Square Enix.',
+  } satisfies T,
+
+  hint: { pt: 'Esc para permanecer', en: 'Esc to remain' } satisfies T,
+};
+
 /* ------------------------------------------------------------- story */
 
 /**

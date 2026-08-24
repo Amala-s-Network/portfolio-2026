@@ -1,0 +1,134 @@
+/*
+ * The craft side. Same tokens as the gate, so walking through the door lands somewhere that
+ * looks like what the door promised.
+ */
+
+.page {
+  min-height: 100vh;
+  background: var(--nier-bg);
+  color: var(--nier-ink);
+  font-family: var(--font-archivo), system-ui, sans-serif;
+
+  display: flex;
+  flex-direction: column;
+  padding: 20px var(--gutter);
+}
+
+/* The dotted rules that frame every screen in the reference — top and bottom, never the sides. */
+.dots {
+  height: 3px;
+  background-image: radial-gradient(var(--nier-rule) 1px, transparent 1px);
+  background-size: 7px 3px;
+  background-repeat: repeat-x;
+  flex: none;
+}
+
+.head {
+  padding: 64px 0 40px;
+}
+
+.system {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  opacity: 0.66;
+}
+
+.heading {
+  margin-top: 16px;
+  font-size: clamp(52px, 9vw, 120px);
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  line-height: 1;
+}
+
+.lead {
+  margin-top: 22px;
+  font-size: 16px;
+  line-height: 1.6;
+  max-width: 56ch;
+  opacity: 0.9;
+}
+
+/*
+ * Where the work goes. It is an empty frame that admits to being one — a page dressed as
+ * finished with nothing in it is the same lie the portfolio spent a week removing from itself.
+ */
+.slot {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin: 20px 0 40px;
+  padding: 72px 32px;
+  border: 1px solid var(--nier-rule);
+}
+
+.pending {
+  font-size: 14px;
+  line-height: 1.6;
+  text-align: center;
+  max-width: 46ch;
+  opacity: 0.75;
+}
+
+.foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 0 22px;
+  border-top: 1px solid var(--nier-rule);
+}
+
+/* The same row-that-inverts the gate uses: one gesture across both screens. */
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 0 16px;
+
+  background: var(--nier-row);
+  color: var(--nier-ink);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+
+  transition: background-color 0.18s linear, color 0.18s linear;
+}
+
+.back:hover,
+.back:focus-visible {
+  background: var(--nier-ink);
+  color: var(--nier-bg);
+}
+
+.mark {
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+  flex: none;
+}
+
+.credit {
+  font-size: 11px;
+  line-height: 1.55;
+  opacity: 0.7;
+  max-width: 54ch;
+}
+
+@media (max-width: 700px) {
+  .head {
+    padding: 40px 0 28px;
+  }
+
+  .slot {
+    padding: 48px 20px;
+  }
+
+  .foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

@@ -1,0 +1,219 @@
+/*
+ * The gate, in the other identity.
+ *
+ * Every value here is from the --nier-* tokens, which were sampled off the reference footage
+ * rather than estimated. Nothing on the portfolio side may use them and nothing here may use the
+ * portfolio's paper and ink: two identities that share colours are one identity with a mood.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 340;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+
+  background: rgba(28, 27, 22, 0.72);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.35s var(--ease), visibility 0s linear 0.35s;
+}
+
+.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.35s var(--ease), visibility 0s;
+}
+
+/* ---- the panel ---- */
+
+.panel {
+  position: relative;
+  width: min(680px, 100%);
+  max-height: calc(100vh - 80px);
+  overflow-y: auto;
+
+  background: var(--nier-bg);
+  color: var(--nier-ink);
+  /*
+   * Squared off. The game has no rounded corners anywhere in its interface — everything is cut,
+   * and softening it is the fastest way to make a tribute look like an approximation.
+   */
+  border-radius: 0;
+  padding: 26px 32px 22px;
+
+  font-family: var(--font-archivo), system-ui, sans-serif;
+
+  transform: translateY(10px);
+  transition: transform 0.4s var(--ease);
+}
+
+.open .panel {
+  transform: none;
+}
+
+/*
+ * The dotted rules the game frames its screens with — top and bottom, never the sides. Drawn as
+ * a repeating gradient rather than a border-style, because dotted borders render as squares at
+ * some zoom levels and as smears at others.
+ */
+.dots {
+  height: 3px;
+  background-image: radial-gradient(var(--nier-rule) 1px, transparent 1px);
+  background-size: 7px 3px;
+  background-repeat: repeat-x;
+}
+
+/* ---- head ---- */
+
+.head {
+  padding: 22px 0 18px;
+}
+
+.system {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  opacity: 0.66;
+}
+
+.heading {
+  margin-top: 12px;
+  font-size: clamp(28px, 3.4vw, 40px);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1.1;
+  color: var(--nier-ink);
+}
+
+/* ---- body ---- */
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--nier-rule);
+}
+
+.body p {
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: var(--nier-ink);
+  opacity: 0.9;
+  max-width: 62ch;
+}
+
+/* ---- the two rows ---- */
+
+.choices {
+  display: flex;
+  flex-direction: column;
+  margin: 20px 0 24px;
+  gap: 4px;
+}
+
+/*
+ * A row, not a button — that is the whole reference. It sits on the mid tone with a square
+ * marker, and the ARMED one inverts: ground and ink trade places. In the game exactly one row is
+ * ever armed, which is why hovering and focusing both set it rather than adding a second state
+ * on top of the first.
+ */
+.choice {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  width: 100%;
+  min-height: 44px;
+  padding: 0 16px;
+
+  border: 0;
+  background: var(--nier-row);
+  color: var(--nier-ink);
+
+  font-family: inherit;
+  font-size: 14px;
+  letter-spacing: 0.16em;
+  text-align: left;
+  cursor: pointer;
+
+  transition: background-color 0.18s linear, color 0.18s linear;
+}
+
+.mark {
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+  flex: none;
+}
+
+.armed {
+  background: var(--nier-ink);
+  color: var(--nier-bg);
+}
+
+/*
+ * A visible ring would be a third state on a control that already announces itself by inverting.
+ * Focus arms the row, and the armed row is unmistakable — so the ring is removed only because
+ * the state it would signal is already the loudest thing on screen.
+ */
+.choice:focus-visible {
+  outline: none;
+}
+
+/* ---- foot ---- */
+
+.foot {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 16px 0 18px;
+  border-top: 1px solid var(--nier-rule);
+}
+
+.credit {
+  font-size: 11px;
+  line-height: 1.55;
+  opacity: 0.72;
+  max-width: 52ch;
+}
+
+.hint {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  opacity: 0.6;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .panel {
+    padding: 20px 20px 16px;
+  }
+
+  .foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .hint {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .panel,
+  .choice {
+    transition: opacity 0.2s linear;
+  }
+
+  .panel {
+    transform: none;
+  }
+}

@@ -27,6 +27,21 @@
    * being texture and starts being noise laid over the design.
    * --grain-size is the tile. Smaller grain reads as film, larger as coarse stock.
    */
+  /*
+   * ------------------------------------------------------------ the other identity
+   *
+   * Sampled from the reference footage rather than estimated: these are the actual pixel values
+   * of NieR: Automata's menu — the warm olive ground, the dark row, the mid row, the lighter
+   * bar. They live here as tokens so the gate and the craft page cannot drift apart from each
+   * other, and so it is obvious at a glance that this palette is a SEPARATE system from the
+   * portfolio's paper and ink. Nothing on the main site may use them.
+   */
+  --nier-bg: #c3c2a5;
+  --nier-ink: #46443b;
+  --nier-row: #a9a58b;
+  --nier-bar: #d1cdad;
+  --nier-rule: rgba(70, 68, 59, 0.34);
+
   --grain-opacity: 0.22;
   /* The dark surfaces take less: screen on near-black lifts hard, so the same number shouts. */
   --grain-opacity-dark: 0.13;
@@ -474,3 +489,43 @@ a.srOnly {
 }
 
 
+
+
+/*
+ * ------------------------------------------------------- crossing over
+ *
+ * Hovering "Desbloquear criatividade" inverts the whole document.
+ *
+ * On the BODY rather than on html, because a filter creates a containing block for fixed
+ * children — applying it to html would break every fixed thing on the page (the nav, the grain,
+ * the case stages) by re-parenting them mid-hover.
+ *
+ * It is a filter rather than a swapped palette on purpose: a palette swap recolours what it
+ * knows about, and this has to take the photographs with it. The whole point is that the world
+ * turns over, not that the theme changes.
+ */
+html.inverted body {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+/*
+ * hue-rotate puts the colours back where invert sent them, so the portrait and the case
+ * photography read as negatives rather than as a psychedelic accident. Greys are unaffected —
+ * which is almost everything here — so the effect on the page's own furniture is a clean flip.
+ */
+
+html.inverted body,
+html.inverted body * {
+  transition: filter 0.45s var(--ease);
+}
+
+/*
+ * Anyone who asked for less motion gets the door without the theatre. A full-page inversion is
+ * the single most aggressive thing on this site, and it is exactly what a photosensitive reader
+ * would want no part of.
+ */
+@media (prefers-reduced-motion: reduce) {
+  html.inverted body {
+    filter: none;
+  }
+}

@@ -12,6 +12,7 @@ import { History } from '@/components/History/History';
 import { Footer } from '@/components/Footer/Footer';
 import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
+import { CraftGate } from '@/components/CraftGate/CraftGate';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Intro } from '@/components/Intro/Intro';
 import { PageFold } from '@/components/PageFold/PageFold';
@@ -31,6 +32,8 @@ export default function Page() {
   const [contactOpen, setContactOpen] = useState(false);
   const [footerUp, setFooterUp] = useState(false);
   const [introDone, setIntroDone] = useState(false);
+  /* The door to the craft side; see components/CraftGate. */
+  const [gateOpen, setGateOpen] = useState(false);
 
   /* Pulls the page onto a section edge once the reader stops, so nobody parks mid-turn. */
   useSectionSettle();
@@ -39,6 +42,8 @@ export default function Page() {
   const openContact = useCallback(() => setContactOpen(true), []);
   const closeContact = useCallback(() => setContactOpen(false), []);
   const closeMenu = useCallback(() => setMenuOpen(false), []);
+  const openGate = useCallback(() => setGateOpen(true), []);
+  const closeGate = useCallback(() => setGateOpen(false), []);
   const handleFooterRise = useCallback((up: boolean) => setFooterUp(up), []);
 
   /*
@@ -92,7 +97,7 @@ export default function Page() {
           * positioned absolutely against it. The animated Divider that used to sit above it is
           * gone at João's instruction.
           */}
-        <Hero onContact={openContact} started={introDone} />
+        <Hero onContact={openContact} onUnlock={openGate} started={introDone} />
 
         {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
         {cases.map((c, i) => (
@@ -128,6 +133,7 @@ export default function Page() {
 
       <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
       <ContactModal open={contactOpen} onClose={closeContact} />
+      <CraftGate open={gateOpen} onClose={closeGate} />
     </>
   );
 }

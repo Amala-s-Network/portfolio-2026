@@ -6,7 +6,7 @@ import { Button } from '@/components/Button/Button';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { Marquee } from '@/components/Marquee/Marquee';
 import { useLanguage } from '@/lib/language';
-import { hero as copy } from '@/content/copy';
+import { hero as copy, craftGate } from '@/content/copy';
 import avatar from '@/public/avatar.webp';
 import styles from './Hero.module.css';
 
@@ -30,9 +30,11 @@ const FLIP_EVERY = 3000;
  */
 export function Hero({
   onContact,
+  onUnlock,
   started = true,
 }: {
   onContact?: () => void;
+  onUnlock?: () => void;
   started?: boolean;
 }) {
   const { lang, t } = useLanguage();
@@ -257,6 +259,27 @@ export function Hero({
             <Button className={styles.cta} onClick={onContact}>
               {t(copy.cta)}
             </Button>
+
+            {/*
+              * The secondary way out of this page.
+              *
+              * Hovering it inverts the ENTIRE page rather than just the button, which is the
+              * point: the other side of this site is a different world, and the door should feel
+              * like one. The inversion also turns this button white on its own — a dark control
+              * on light paper becomes a light control on dark, so nothing has to be recoloured
+              * by hand for João's "deixar o botão em branco" to be true.
+              */}
+            <button
+              type="button"
+              className={styles.unlock}
+              onClick={onUnlock}
+              onMouseEnter={() => document.documentElement.classList.add('inverted')}
+              onMouseLeave={() => document.documentElement.classList.remove('inverted')}
+              onFocus={() => document.documentElement.classList.add('inverted')}
+              onBlur={() => document.documentElement.classList.remove('inverted')}
+            >
+              {t(craftGate.trigger)}
+            </button>
           </Reveal>
         </div>
       </div>
