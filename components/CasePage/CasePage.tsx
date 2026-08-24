@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Reveal } from '@/components/Reveal/Reveal';
+import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
 import { cases, caseDetails, casePage as copy, type T } from '@/content/copy';
 import styles from './CasePage.module.css';
@@ -28,6 +30,23 @@ function Missing({ what, ask, dark }: { what: string; ask: string; dark?: boolea
 
 export function CasePage({ slug }: { slug: string }) {
   const { t } = useLanguage();
+
+  /*
+   * The case page had no entrance at all: everything was simply present on load, which reads as
+   * a document appearing rather than as one being opened. It now uses the same cascade the rest
+   * of the site does — the one "Sobre mim" runs on — so each of the three layers fades and rises
+   * as the reader reaches it.
+   *
+   * One observer per layer rather than one for the page. The 6s block is above the fold and
+   * should play immediately; the 60s and 6min blocks are further down and should wait for the
+   * reader rather than having already happened by the time they arrive.
+   */
+  const sixRef = useRef<HTMLElement>(null);
+  const sixtyRef = useRef<HTMLElement>(null);
+  const sixMinRef = useRef<HTMLElement>(null);
+  const sixIn = useReveal(sixRef);
+  const sixtyIn = useReveal(sixtyRef);
+  const sixMinIn = useReveal(sixMinRef);
 
   /*
    * Where "back" goes, decided by where the reader came from.
@@ -64,7 +83,7 @@ export function CasePage({ slug }: { slug: string }) {
   return (
     <article className={styles.page}>
       {/* ------------------------------------------------ 6 seconds */}
-      <header className={styles.six}>
+      <header ref={sixRef} className={styles.six}>
         {/*
          * The way out, at the top.
          *
@@ -79,32 +98,37 @@ export function CasePage({ slug }: { slug: string }) {
           {fromHome ? t(copy.backHome) : t(copy.back)}
         </Link>
 
-        <div className={styles.folio}>
+        <Reveal on={sixIn} order={0} className={styles.folio}>
           <span>{t(summary.company)}</span>
           <span>{t(data.role)}</span>
           <span className={styles.folioSpacer}>{data.year}</span>
-        </div>
+        </Reveal>
 
-        <h1 className={styles.title}>{t(summary.title)}</h1>
-        <p className={styles.context}>{t(data.context)}</p>
+        <Reveal on={sixIn} order={1} as="h1" className={styles.title}>
+          {t(summary.title)}
+        </Reveal>
 
-        <div className={styles.impact}>
+        <Reveal on={sixIn} order={2} as="p" className={styles.context}>
+          {t(data.context)}
+        </Reveal>
+
+        <Reveal on={sixIn} order={3} className={styles.impact}>
           <span className={styles.impactValue}>{data.impact.value}</span>
           <span className={styles.impactText}>
             <span className={styles.impactLabel}>{t(data.impact.label)}</span>
             <span className={styles.impactNote}>{t(data.impact.note)}</span>
           </span>
-        </div>
+        </Reveal>
       </header>
 
       {/* ----------------------------------------------- 60 seconds */}
-      <section className={styles.sixty}>
-        <span className={styles.layerMark}>
+      <section ref={sixtyRef} className={styles.sixty}>
+        <Reveal on={sixtyIn} order={0} as="span" className={styles.layerMark}>
           <span className={styles.diamond} aria-hidden="true" />
           {showArgument ? '60 SEGUNDOS — CONFLITO, DECISÃO, EVIDÊNCIA' : 'RESULTADOS'}
-        </span>
+        </Reveal>
 
-        <div className={styles.argument} hidden={!showArgument}>
+        <Reveal on={sixtyIn} order={1} className={styles.argument} hidden={!showArgument}>
           <div>
             <p className={styles.argumentHead}>O CONFLITO</p>
             {line(data.conflict) ? (
@@ -143,9 +167,9 @@ export function CasePage({ slug }: { slug: string }) {
               />
             )}
           </div>
-        </div>
+        </Reveal>
 
-        <div className={styles.evidence}>
+        <Reveal on={sixtyIn} order={2} className={styles.evidence}>
           {data.evidence.map((e, i) => (
             <div key={i}>
               <div className={styles.evidenceValue}>{e.value}</div>
@@ -153,15 +177,21 @@ export function CasePage({ slug }: { slug: string }) {
               <div className={styles.evidenceNote}>{t(e.note)}</div>
             </div>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       {/* ------------------------------------------------ 6 minutes */}
-      <section className={styles.sixMin}>
-        <span className={styles.layerMark} style={{ color: 'var(--muted-light)' }}>
+      <section ref={sixMinRef} className={styles.sixMin}>
+        <Reveal
+          on={sixMinIn}
+          order={0}
+          as="span"
+          className={styles.layerMark}
+          style={{ color: 'var(--muted-light)' }}
+        >
           <span className={styles.diamond} aria-hidden="true" />
           6 MINUTOS — DETALHE E O QUE MUDOU O JOGO
-        </span>
+        </Reveal>
 
         {(SHOW_PROMPTS || data.challenge) && (
           <div className={styles.detailGrid}>
@@ -211,7 +241,7 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
         )}
 
-        <div className={styles.gallery}>
+        <Reveal on={sixMinIn} order={1} className={styles.gallery}>
           {data.gallery.map((g, i) => (
             <figure key={i} style={{ margin: 0 }}>
               <div className={styles.frame}>
@@ -224,7 +254,7 @@ export function CasePage({ slug }: { slug: string }) {
               </figcaption>
             </figure>
           ))}
-        </div>
+        </Reveal>
       </section>
 
       <footer className={styles.pageFoot}>

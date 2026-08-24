@@ -18,6 +18,19 @@ import { Intro } from '@/components/Intro/Intro';
 import { PageFold } from '@/components/PageFold/PageFold';
 import { useSectionSettle } from '@/hooks/useSectionSettle';
 import { cases } from '@/content/copy';
+
+/**
+ * Whether "Outros projetos" and its nav entry are shown.
+ *
+ * OFF at João's request, so the page argues for four cases and nothing else — parked, not
+ * deleted. The carousel, the /projetos index, the filters and the pagination are all intact
+ * and one edit away.
+ *
+ * A flag rather than commented-out markup: commented JSX stops being type-checked and stops
+ * being touched by refactors, so it rots quietly and is broken by the time anyone brings it
+ * back. Gating the render keeps the code live.
+ */
+export const SHOW_PROJECTS = false;
 import styles from './page.module.css';
 
 /**
@@ -111,7 +124,7 @@ export default function Page() {
           />
         ))}
 
-        <Carousel />
+        {SHOW_PROJECTS && <Carousel />}
         <About />
         {/* Between who he is and what the work moved: the reader reaches the numbers already
             knowing what they would be buying. */}

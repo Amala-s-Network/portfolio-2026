@@ -49,6 +49,7 @@ export function useActiveSection(): string {
         }
       }
 
+      /* Absent while SHOW_PROJECTS is off, which is why every read of it is guarded. */
       const projetos = document.querySelector('#projetos');
       if (projetos) {
         const r = projetos.getBoundingClientRect();
@@ -63,8 +64,15 @@ export function useActiveSection(): string {
        * The cases have no nav entry of their own, and marking nothing at all while the reader
        * moves through the main body of the site reads as the bar having lost track of them.
        */
-      const projectsTop = projetos ? projetos.getBoundingClientRect().top : Infinity;
-      setActive(projectsTop > line ? 'home' : '');
+      /*
+       * Everything above the first section after the cases counts as home. With the projects
+       * section gone that boundary becomes "Sobre mim" — without the fallback the boundary was
+       * Infinity, so the whole page below the cases still reported as home and the mark never
+       * moved off it.
+       */
+      const boundary = projetos ?? document.querySelector('#sobre');
+      const boundaryTop = boundary ? boundary.getBoundingClientRect().top : Infinity;
+      setActive(boundaryTop > line ? 'home' : '');
     };
 
     check();

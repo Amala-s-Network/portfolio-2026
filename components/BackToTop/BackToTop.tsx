@@ -40,12 +40,17 @@ export function BackToTop({ suppressed = false }: { suppressed?: boolean }) {
 
     const check = () => {
       /*
-       * Anchored to the projects section by id rather than by position in the DOM: the sections
-       * around it have been reordered more than once, and an nth-child would have gone quietly
-       * wrong the next time.
+       * Anchored to the first section AFTER the cases, by id, and with a fallback.
+       *
+       * It used to key on #projetos alone. That section is now behind a flag, and with it gone
+       * the query returned null and the button simply never appeared — a dependency that fails
+       * silently is worse than one that fails loudly, so this asks for whichever of the two
+       * exists. The rule itself is unchanged: nothing offers to abandon the case sequence while
+       * the reader is still inside it.
        */
-      const projects = document.querySelector('#projetos');
-      const shown = projects ? projects.getBoundingClientRect().top <= window.innerHeight * 0.5 : false;
+      const after =
+        document.querySelector('#projetos') ?? document.querySelector('#sobre');
+      const shown = after ? after.getBoundingClientRect().top <= window.innerHeight * 0.5 : false;
       setVisible(shown && !suppressed);
       if (!shown) return;
 

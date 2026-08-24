@@ -8,6 +8,7 @@ import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
 import { nav as copy, menu as menuCopy } from '@/content/copy';
 import { useActiveSection } from '@/hooks/useActiveSection';
+import { SHOW_PROJECTS } from '@/app/page';
 import styles from './Nav.module.css';
 
 type NavProps = {
@@ -33,7 +34,8 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
    */
   const items = [
     { id: 'home', href: home ? '#' : '/', label: menuCopy.links[0] },
-    { id: 'projetos', href: '/projetos', label: menuCopy.links[1] },
+    /* Dropped with the section it points at — see SHOW_PROJECTS in app/page.tsx. */
+    ...(SHOW_PROJECTS ? [{ id: 'projetos', href: '/projetos', label: menuCopy.links[1] }] : []),
     { id: 'sobre', href: home ? '#sobre' : '/#sobre', label: menuCopy.links[2] },
   ];
 
