@@ -6,6 +6,7 @@ import { Hero } from '@/components/Hero/Hero';
 import { CasePanel } from '@/components/CasePanel/CasePanel';
 import { Carousel } from '@/components/Carousel/Carousel';
 import { About } from '@/components/About/About';
+import { Services } from '@/components/Services/Services';
 import { Metrics } from '@/components/Metrics/Metrics';
 import { History } from '@/components/History/History';
 import { Footer } from '@/components/Footer/Footer';
@@ -20,8 +21,8 @@ import styles from './page.module.css';
 
 /**
  * The one-pager. Section order from CLAUDE.md:
- *   Hero (carries the diagonal marquee) → Cases → Carousel → About → Metrics →
- *   History → Footer
+ *   Hero (carries the diagonal marquee) → Cases → Carousel → About → Services →
+ *   Metrics → History → Footer
  *
  * Still to come: the intro overlay (step 3).
  */
@@ -107,6 +108,9 @@ export default function Page() {
 
         <Carousel />
         <About />
+        {/* Between who he is and what the work moved: the reader reaches the numbers already
+            knowing what they would be buying. */}
+        <Services />
         <Metrics />
         <History />
         <Footer onContact={openContact} onRiseChange={handleFooterRise} />

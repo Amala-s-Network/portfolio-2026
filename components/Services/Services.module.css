@@ -1,0 +1,139 @@
+/*
+ * "O que eu posso entregar".
+ *
+ * A two-by-two grid rather than the full-width rows "Minha história" uses. Both are lists, and
+ * two identical-looking lists on one page stop being read as different things — the history is a
+ * chronology to be scanned, this is four offers to be compared, and comparison wants them side
+ * by side.
+ */
+
+.section {
+  padding: 118px var(--gutter) 124px;
+  background: var(--paper);
+  position: relative;
+  z-index: 1;
+}
+
+.kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.diamond {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  flex: none;
+}
+
+.heading {
+  font-size: clamp(40px, 4.6vw, 68px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+  margin-top: 26px;
+}
+
+.intro {
+  font-size: 18px;
+  font-weight: 300;
+  line-height: var(--lh-body);
+  color: var(--body);
+  /* The same measure the hero's deck uses, so the page keeps one column width. */
+  max-width: 62ch;
+  margin-top: 22px;
+}
+
+/* ---- the four ---- */
+
+.list {
+  list-style: none;
+  margin: 68px 0 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 56px 72px;
+}
+
+/*
+ * Each one is a column with a rule over it, the way an entry in a printed index is. The rule is
+ * on the item rather than between them, so the four read as four rather than as one block cut
+ * into pieces.
+ */
+.item {
+  padding-top: 26px;
+  border-top: 1px solid var(--hairline);
+}
+
+.number {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: var(--muted-light);
+  font-variant-numeric: tabular-nums;
+}
+
+.title {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 27px;
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--ink);
+  margin: 14px 0 0;
+}
+
+.body {
+  font-size: 15.5px;
+  font-weight: 300;
+  line-height: 1.6;
+  color: var(--body);
+  margin-top: 12px;
+  max-width: 46ch;
+}
+
+/* ---- responsive ---- */
+
+@media (max-width: 900px) {
+  .list {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 40px;
+  }
+}
+
+@media (max-width: 768px) {
+  .section {
+    padding: 64px var(--gutter) 72px;
+  }
+
+  .heading {
+    font-size: 32px;
+    margin-top: 20px;
+  }
+
+  .intro {
+    font-size: 16px;
+    margin-top: 16px;
+  }
+
+  .list {
+    margin-top: 44px;
+    gap: 34px;
+  }
+
+  .title {
+    font-size: 22px;
+  }
+
+  .body {
+    font-size: 15px;
+    max-width: none;
+  }
+}

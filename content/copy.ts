@@ -120,6 +120,60 @@ export const hero = {
   cta: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
 };
 
+/* ---------------------------------------------------------- services */
+
+/**
+ * What João offers, in his own list.
+ *
+ * The four are HIS, and the order is his. The descriptions are mine and are the part to argue
+ * with — they say what each one actually involves, because a service named and not explained is
+ * a price list, and the reader deciding whether to write is trying to work out what working with
+ * him is like.
+ *
+ * Item three arrived as a bundle — research, benchmarking, market practice, usability interviews,
+ * planning — and is kept as one offer rather than split into five. Split, it would outweigh the
+ * other three and read as the main thing he does; together it is what it is, which is discovery.
+ */
+export const services = {
+  kicker: { pt: 'Serviços', en: 'Services' } satisfies T,
+  heading: { pt: 'O que eu posso entregar', en: 'What I can deliver' } satisfies T,
+  intro: {
+    pt: 'Trabalho por projeto, sozinho ou dentro do time que já existe. O escopo se ajusta ao que falta — às vezes é o produto inteiro, às vezes é a pergunta que ninguém teve tempo de fazer.',
+    en: 'I work by project, alone or inside the team that is already there. Scope follows whatever is missing — sometimes that is the whole product, sometimes it is the question nobody has had time to ask.',
+  } satisfies T,
+
+  items: [
+    {
+      title: { pt: 'Produto de ponta a ponta', en: 'Product, end to end' } satisfies T,
+      body: {
+        pt: 'Da pesquisa ao desenvolvimento: descoberta, definição de escopo, fluxos, interface, design system e o acompanhamento até a entrega. Fico perto de produto e engenharia porque decisão que não sobrevive ao handoff não chegou a ser decisão.',
+        en: 'From research through to development: discovery, scoping, flows, interface, design system, and staying with it until it ships. I work close to product and engineering, because a decision that does not survive handoff was never a decision.',
+      } satisfies T,
+    },
+    {
+      title: { pt: 'Landing pages de alta conversão', en: 'High-conversion landing pages' } satisfies T,
+      body: {
+        pt: 'Página desenhada em torno de uma única ação, com a hierarquia decidida pelo que precisa ser lido primeiro e não pelo que é bonito primeiro. Copy, layout e ritmo tratados como uma coisa só, porque numa landing eles são.',
+        en: 'A page built around one action, with the hierarchy decided by what has to be read first rather than by what looks best first. Copy, layout and pacing treated as one thing, because on a landing page they are.',
+      } satisfies T,
+    },
+    {
+      title: { pt: 'Pesquisa e direcionamento', en: 'Research and direction' } satisfies T,
+      body: {
+        pt: 'Benchmarking, leitura de práticas de mercado, apoio em entrevistas de usabilidade e planejamento do que vem depois. Serve para o time decidir com evidência em vez de opinião — inclusive quando a evidência diz para não fazer.',
+        en: 'Benchmarking, reading market practice, support on usability interviews, and planning what comes next. It exists so a team can decide on evidence rather than opinion — including when the evidence says not to build it.',
+      } satisfies T,
+    },
+    {
+      title: { pt: 'Mentoria', en: 'Mentoring' } satisfies T,
+      body: {
+        pt: 'Para quem está começando ou vindo de outra área. Menos “faça assim” e mais por que uma decisão se sustenta: como defender um trabalho, como ler um problema antes de desenhar e como sobreviver ao primeiro handoff.',
+        en: 'For people starting out or arriving from another field. Less “do it this way” and more why a decision holds up: how to defend a piece of work, how to read a problem before drawing it, and how to survive a first handoff.',
+      } satisfies T,
+    },
+  ],
+};
+
 /* ------------------------------------------------------------- story */
 
 /**
