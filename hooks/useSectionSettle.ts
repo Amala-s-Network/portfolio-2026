@@ -6,8 +6,21 @@ import { useEffect } from 'react';
 const IDLE_MS = 180;
 /** Nothing under this is worth moving for; below it the settle would read as a twitch. */
 const DEAD_ZONE = 10;
-/** Long enough for the smooth scroll to arrive before we listen again. */
-const SETTLE_MS = 900;
+/**
+ * How long a page turn takes.
+ *
+ * This is THE control over the speed of the transition, and it did not exist before: the code
+ * used scrollTo({ behavior: 'smooth' }), whose duration belongs to the browser — around 300 to
+ * 500ms in Chrome, unadjustable. Widening the reveal window changed how far the panel travelled
+ * per pixel of scroll, but the scroll itself still finished in under half a second, so the whole
+ * turn did too.
+ *
+ * Driving the offset frame by frame puts the duration here. The panel needs no changes to follow:
+ * its position has always been a function of scroll offset, so a slower scroll IS a slower turn,
+ * and the two cannot fall out of step.
+ */
+const TURN_MS = 1500;
+
 
 /**
  * How much wheel travel counts as a deliberate gesture.
@@ -41,7 +54,6 @@ export function useSectionSettle() {
 
     let idle = 0;
     let settling = false;
-    let release = 0;
 
     /* Recomputed per settle rather than cached: these heights are all vh-based and a window
      * resize would silently invalidate anything measured once. */
@@ -56,11 +68,43 @@ export function useSectionSettle() {
       return [hero.offsetTop, ...cases.map((c) => c.offsetTop), last.offsetTop + last.offsetHeight];
     };
 
+    let frame = 0;
+
     const stop = () => {
-      /* Halting a smooth scroll means asking for the position it is already at. */
-      window.scrollTo({ top: window.scrollY, behavior: 'auto' });
+      if (frame) cancelAnimationFrame(frame);
+      frame = 0;
       settling = false;
-      window.clearTimeout(release);
+    };
+
+    /*
+     * The turn, driven by hand.
+     *
+     * easeInOutCubic rather than the browser's own curve: it leaves slowly, carries speed through
+     * the middle and arrives without stopping short, which is what a sheet of paper does. The
+     * browser's smooth scroll is tuned for getting somewhere, not for being watched.
+     */
+    const glideTo = (target: number) => {
+      const start = window.scrollY;
+      const distance = target - start;
+      if (Math.abs(distance) < 1) return;
+
+      const began = performance.now();
+      settling = true;
+
+      const step = (now: number) => {
+        const t = Math.min(1, (now - began) / TURN_MS);
+        const eased = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        window.scrollTo(0, start + distance * eased);
+
+        if (t < 1) {
+          frame = requestAnimationFrame(step);
+        } else {
+          frame = 0;
+          settling = false;
+        }
+      };
+
+      frame = requestAnimationFrame(step);
     };
 
     const settle = () => {
@@ -76,11 +120,7 @@ export function useSectionSettle() {
       const nearest = marks.reduce((best, m) => (Math.abs(m - y) < Math.abs(best - y) ? m : best));
       if (Math.abs(nearest - y) < DEAD_ZONE) return;
 
-      settling = true;
-      window.scrollTo({ top: nearest, behavior: 'smooth' });
-      release = window.setTimeout(() => {
-        settling = false;
-      }, SETTLE_MS);
+      glideTo(nearest);
     };
 
     const onScroll = () => {
@@ -136,11 +176,7 @@ export function useSectionSettle() {
 
       e.preventDefault();
       window.clearTimeout(idle);
-      settling = true;
-      window.scrollTo({ top: target, behavior: 'smooth' });
-      release = window.setTimeout(() => {
-        settling = false;
-      }, SETTLE_MS);
+      glideTo(target);
     };
 
     /*
@@ -172,7 +208,7 @@ export function useSectionSettle() {
       window.removeEventListener('keydown', onIntent);
       window.removeEventListener('resize', onScroll);
       window.clearTimeout(idle);
-      window.clearTimeout(release);
+      if (frame) cancelAnimationFrame(frame);
     };
   }, []);
 }

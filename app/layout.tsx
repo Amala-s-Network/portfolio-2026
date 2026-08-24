@@ -59,6 +59,28 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${playfair.variable} ${archivo.variable}`}>
+      <head>
+        {/*
+          * Every load starts at the top.
+          *
+          * This has to be an inline script in the head, and a React effect will not do — which
+          * is how the first attempt failed. The browser restores the previous scroll position
+          * during load, long before hydration, and Next's router sets scrollRestoration back to
+          * "auto" for its own purposes; by the time an effect runs, the page has already been
+          * put back where the reader left it. Parsed here, this runs before either happens.
+          *
+          * It matters more than tidiness: the case sequence is driven entirely by scroll offset,
+          * so being dropped into the middle of it on a reload means landing among panels whose
+          * arrival was never played.
+          */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "if('scrollRestoration' in history){history.scrollRestoration='manual'}" +
+              "window.addEventListener('load',function(){window.scrollTo(0,0)});",
+          }}
+        />
+      </head>
       <body>
         <LanguageProvider>{children}</LanguageProvider>
       </body>
