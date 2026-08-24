@@ -20,9 +20,24 @@ type CasePanelProps = {
    * the exact scroll position where the carousel begins.
    */
   isLast?: boolean;
+  /**
+   * The first panel PINS its photograph instead of parallaxing it.
+   *
+   * There is a static copy of this same image behind the first screen — the one the dog-ear is a
+   * window onto. This panel rises over it, and until now it carried its own crop (inset: -8%,
+   * drifting) while the one behind used the viewport's (inset: 0, still). Two different crops of
+   * one photograph, both on screen through the slivers the panel's own scale leaves at its edges:
+   * the image appeared to duplicate, one copy cut off against the other.
+   *
+   * Pinned, the panel's photograph occupies exactly the frame the static one does and is
+   * counter-translated by however far the panel has risen — so it does not move at all while the
+   * page turns over it. The reveal reads as the sheet being drawn off a photograph that was there
+   * the whole time, which is what it is.
+   */
+  pinned?: boolean;
 };
 
-export function CasePanel({ data, index, isLast }: CasePanelProps) {
+export function CasePanel({ data, index, isLast, pinned }: CasePanelProps) {
   const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const stageRef = useRef<HTMLDivElement>(null);
@@ -81,9 +96,24 @@ export function CasePanel({ data, index, isLast }: CasePanelProps) {
        */
       const exit = isLast ? clamp01((vh - r.bottom) / vh) : 0;
 
-      panel.style.transform = `translateY(${rest * 100 - exit * 100}%) rotateX(${
-        rest * -11
-      }deg) scale(${1 - rest * 0.05})`;
+      /*
+       * The pinned panel rises in PURE TRANSLATION — no rotateX, no scale.
+       *
+       * Not a simplification for its own sake: those two are what stopped the photograph inside
+       * from being cancelled exactly. The counter-translate below can undo a translation
+       * perfectly, but not a scale and a foreshortening, so a residue of up to 34px of drift was
+       * left and the static image behind still showed through misaligned at the panel's edges.
+       *
+       * It also happens to be the right reading of this particular transition. The page being
+       * turned here is the HEADER, lifting away; this panel is the photograph underneath being
+       * uncovered, and a photograph on a table does not tilt and shrink while a sheet is drawn
+       * off it. Panels 02-04 keep the README's full turn, because there they ARE the page.
+       */
+      panel.style.transform = pinned
+        ? `translateY(${rest * 100 - exit * 100}%)`
+        : `translateY(${rest * 100 - exit * 100}%) rotateX(${rest * -11}deg) scale(${
+            1 - rest * 0.05
+          })`;
 
       /*
        * The page turning has a sound whether the reader pulled the corner or simply scrolled.
@@ -96,7 +126,14 @@ export function CasePanel({ data, index, isLast }: CasePanelProps) {
       } else if (p < 0.12) {
         soundedRef.current = false;
       }
-      photo.style.transform = `translateY(${rest * -6}%)`;
+      /*
+       * Pinned: cancel the panel's own rise so the photograph stays put in the viewport. The
+       * frame is inset: 0 in that case, so its height equals the panel's and the two translations
+       * are the same magnitude. Otherwise, the README's 6% parallax inside the frame.
+       */
+      photo.style.transform = pinned
+        ? `translateY(${rest * -100}%)`
+        : `translateY(${rest * -6}%)`;
 
       // Once the section is behind us the stage must stop intercepting clicks.
       const done = r.bottom <= 0;
@@ -132,14 +169,14 @@ export function CasePanel({ data, index, isLast }: CasePanelProps) {
       document.removeEventListener('visibilitychange', onWake);
       window.removeEventListener('pageshow', onWake);
     };
-  }, [isLast]);
+  }, [isLast, pinned]);
 
   return (
     <section ref={sectionRef} className={styles.section}>
       <div ref={stageRef} className={styles.stage} style={{ zIndex: 20 + index }}>
         {/* data-dark: the nav reads these to know when to invert. */}
         <div ref={panelRef} className={styles.panel} data-dark>
-          <div className={styles.photoFrame}>
+          <div className={`${styles.photoFrame} ${pinned ? styles.photoPinned : ''}`}>
             {/*
              * Placeholder art, generated for this repo — see assets/placeholders/README.md.
              * Swapping in real photography is a one-line change here.

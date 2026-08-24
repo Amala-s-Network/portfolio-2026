@@ -110,6 +110,15 @@
   display: block;
 }
 
+/*
+ * The pinned frame takes the viewport's own crop — inset: 0, not -8% — so it matches the static
+ * copy behind the first screen exactly. The parallax headroom is not needed here because the
+ * photograph does not drift: it is counter-translated to stay still.
+ */
+.photoPinned {
+  inset: 0;
+}
+
 .scrim {
   position: absolute;
   inset: 0;

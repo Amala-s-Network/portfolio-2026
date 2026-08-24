@@ -95,7 +95,14 @@ export default function Page() {
 
         {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
         {cases.map((c, i) => (
-          <CasePanel key={c.slug} data={c} index={i} isLast={i === cases.length - 1} />
+          <CasePanel
+            key={c.slug}
+            data={c}
+            index={i}
+            isLast={i === cases.length - 1}
+            /* Only the first rises over the static photograph behind the header. */
+            pinned={i === 0}
+          />
         ))}
 
         <Carousel />
