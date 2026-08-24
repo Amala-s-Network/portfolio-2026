@@ -452,7 +452,20 @@
  */
 .deck {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+  /*
+   * Columns measured in CHARACTERS, not in fractions of the container.
+   *
+   * At 1fr each they stretched to whatever was left — 484px at 1366, which is 62 characters a
+   * line. That is a readable measure and the wrong one here: it makes the deck a wall of text
+   * that happens to be cut in two, and the eye reads it as one wide paragraph rather than as
+   * two columns. A newspaper column is narrow because the narrowness is what identifies it.
+   *
+   * 32ch is about 270px at this size — short enough to read as a column, long enough not to
+   * hyphenate badly. The space left over goes between them and before the button, which is the
+   * air that makes the row look composed rather than filled.
+   */
+  grid-template-columns: minmax(0, 32ch) minmax(0, 32ch) auto;
+  justify-content: space-between;
   align-items: start;
   gap: 40px;
   margin-top: 44px;

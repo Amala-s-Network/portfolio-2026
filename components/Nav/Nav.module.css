@@ -50,12 +50,85 @@
   transform: rotate(-135deg) translateY(-2px);
 }
 
+/* ---- section links ---- */
+
+/*
+ * They take the space the "Entrar em contato" button used to hold, and the languages move to
+ * the far right in its place. A bar whose only action was a call to action could not say where
+ * anything was; now it says where everything is, and contact is one of four things rather than
+ * the only one.
+ */
+.links {
+  display: inline-flex;
+  align-items: center;
+  gap: 30px;
+  margin-left: 34px;
+}
+
+.link {
+  position: relative;
+  padding: 6px 0;
+  border: 0;
+  background: none;
+  font-size: 13.5px;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: var(--navMuted);
+  cursor: pointer;
+  transition: color 0.35s var(--ease);
+}
+
+/*
+ * The line draws itself from the left rather than fading in. scaleX on a 1px rule is the whole
+ * effect: it costs nothing to composite, and because it is a transform it stays crisp at any
+ * width — a rule animated by changing its width redraws its own geometry every frame.
+ */
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.42s var(--ease);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--navFg);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+}
+
+/* The section the reader is actually in keeps the line drawn — same mark, stated rather than offered. */
+.linkActive {
+  color: var(--navFg);
+}
+
+.linkActive::after {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link::after {
+    transition: none;
+  }
+}
+
 /* ---- language pair ---- */
 
 .langs {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  /* Pushed to the far right, into the space the CTA has vacated. */
+  margin-left: auto;
   font-size: 13px;
   font-weight: 400;
   color: var(--navMuted);
@@ -141,7 +214,13 @@
   display: none;
 }
 
-@media (max-width: 768px) {
+/*
+ * The burger appears at 1100px, the same width the section links leave at — not at 768px.
+ * Between those two the bar had no visible way into the menu at all: the links were gone and the
+ * burger had not arrived, leaving only the wordmark, which does open the menu but does not look
+ * like it does. A gap of 330px where the navigation is a guess.
+ */
+@media (max-width: 1100px) {
   .burger {
     display: flex;
     flex-direction: column;
@@ -182,5 +261,18 @@
 @media (prefers-reduced-motion: reduce) {
   .burgerBar {
     transition: none;
+  }
+}
+
+
+/*
+ * Below 1100px the links go and the burger takes over. Four labels, a wordmark and a language
+ * pair do not fit a narrow bar without the gaps closing to the point where the links read as one
+ * run-on word — and the overlay menu already carries exactly these four destinations, so nothing
+ * is lost by folding them back into it.
+ */
+@media (max-width: 1100px) {
+  .links {
+    display: none;
   }
 }

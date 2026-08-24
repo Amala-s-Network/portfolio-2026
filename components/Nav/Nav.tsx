@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Button } from '@/components/Button/Button';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
-import { nav as copy } from '@/content/copy';
+import { nav as copy, menu as menuCopy } from '@/content/copy';
+import { useActiveSection } from '@/hooks/useActiveSection';
 import styles from './Nav.module.css';
 
 type NavProps = {
@@ -18,6 +20,22 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
   const { lang, setLang, t } = useLanguage();
   const progress = useScrollProgress();
   const ref = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const home = pathname === '/';
+  const active = useActiveSection();
+
+  /*
+   * The four destinations, promoted out of the overlay menu and into the bar.
+   *
+   * "Contato" is a BUTTON, not a link: it opens the modal rather than going anywhere, and giving
+   * it an href would promise a page that does not exist. The other three are real anchors, so
+   * they can be opened in a new tab, copied, and read as links by anything that reads links.
+   */
+  const items = [
+    { id: 'home', href: home ? '#' : '/', label: menuCopy.links[0] },
+    { id: 'projetos', href: '/projetos', label: menuCopy.links[1] },
+    { id: 'sobre', href: home ? '#sobre' : '/#sobre', label: menuCopy.links[2] },
+  ];
 
   // README §1: the bar inverts when a dark surface passes under it.
   useSurfaceInversion(ref);
@@ -56,6 +74,34 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
         />
       </button>
 
+      {/*
+        * The section links. The line under each one is drawn on hover and stays drawn on the
+        * section the reader is actually in — same mark, two reasons for being there, which is
+        * what makes "where am I" and "where could I go" read as one system.
+        */}
+      <div className={styles.links}>
+        {items.map((item) => (
+          <Link
+            key={item.id}
+            href={item.href}
+            className={`${styles.link} ${active === item.id ? styles.linkActive : ''}`}
+            aria-current={active === item.id ? 'page' : undefined}
+            onClick={(e) => {
+              if (item.href === '#') {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }
+            }}
+          >
+            {t(item.label)}
+          </Link>
+        ))}
+
+        <button type="button" className={styles.link} onClick={onContact}>
+          {t(menuCopy.links[3])}
+        </button>
+      </div>
+
       <div className={styles.langs}>
         <button
           type="button"
@@ -75,10 +121,6 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
           {copy.langEn}
         </button>
       </div>
-
-      <Button className={styles.cta} small onClick={onContact}>
-        {t(copy.cta)}
-      </Button>
 
       {/*
         * Mobile only — replaces the language pair and the CTA, which do not fit at 360px and both
