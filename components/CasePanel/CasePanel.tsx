@@ -63,8 +63,19 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
       const vh = window.innerHeight;
       const r = section.getBoundingClientRect();
 
-      // Reveal completes over 58% of a screen.
-      const p = clamp01((vh - r.top) / (vh * 0.58));
+      /*
+       * The reveal window, widened from the README's 0.58 to 0.92.
+       *
+       * Not simply "slower" — out of step. At 0.58 the turn finished when the section's top was
+       * still 42% of a screen away from where it was heading, and since a wheel gesture now
+       * carries the page exactly one viewport, nearly half of every gesture was spent scrolling
+       * while the panel sat perfectly still. The page arrived, and then the scroll kept going.
+       * That mismatch is what reads as the transition being odd.
+       *
+       * At 0.92 the turn completes just as the scroll lands: one gesture, one movement, ending
+       * together. It is slower by 59% as a side effect of being in time.
+       */
+      const p = clamp01((vh - r.top) / (vh * 0.92));
       const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2; // easeInOutQuad
       const rest = 1 - eased;
 

@@ -54,8 +54,8 @@ export function Carousel() {
       const vh = window.innerHeight;
       const r = section.getBoundingClientRect();
 
-      /* Same 58% reveal window and easeInOutQuad as README §5, so the two gestures match. */
-      const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.58)));
+      /* The same widened window as the case panels, so the two arrivals stay one gesture. */
+      const p = Math.min(1, Math.max(0, (vh - r.top) / (vh * 0.92)));
       const eased = p < 0.5 ? 2 * p * p : 1 - Math.pow(-2 * p + 2, 2) / 2;
       const rest = 1 - eased;
 
