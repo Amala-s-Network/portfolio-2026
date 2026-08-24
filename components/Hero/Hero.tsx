@@ -263,22 +263,16 @@ export function Hero({
             {/*
               * The secondary way out of this page.
               *
-              * Hovering it inverts the ENTIRE page rather than just the button, which is the
-              * point: the other side of this site is a different world, and the door should feel
-              * like one. The inversion also turns this button white on its own — a dark control
-              * on light paper becomes a light control on dark, so nothing has to be recoloured
-              * by hand for João's "deixar o botão em branco" to be true.
+              * It does not invert the document any more. Inverting everything was a bigger
+              * gesture than the button had earned and it dragged the photographs through a
+              * negative on the way — loud, and about the page rather than about where the button
+              * goes. What happens instead is that the BUTTON crosses over: the other identity
+              * assembles inside it, ground, ink and typeface at once, so the control shows you
+              * the room it opens rather than shouting about the one you are in.
               */}
-            <button
-              type="button"
-              className={styles.unlock}
-              onClick={onUnlock}
-              onMouseEnter={() => document.documentElement.classList.add('inverted')}
-              onMouseLeave={() => document.documentElement.classList.remove('inverted')}
-              onFocus={() => document.documentElement.classList.add('inverted')}
-              onBlur={() => document.documentElement.classList.remove('inverted')}
-            >
-              {t(craftGate.trigger)}
+            <button type="button" className={styles.unlock} onClick={onUnlock}>
+              <span className={styles.unlockNano} aria-hidden="true" />
+              <span className={styles.unlockLabel}>{t(craftGate.trigger)}</span>
             </button>
           </Reveal>
         </div>

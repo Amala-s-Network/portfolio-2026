@@ -492,40 +492,18 @@ a.srOnly {
 
 
 /*
- * ------------------------------------------------------- crossing over
+ * ---------------------------------------------- the other identity's surfaces
  *
- * Hovering "Desbloquear criatividade" inverts the whole document.
+ * NO GRAIN on the NieR side, and this is the whole reason the craft page looked wrong while the
+ * gate looked right: they use identical tokens, but the gate sits at z-index 340 — above the two
+ * grain layers — and the page sits below them. Same colour, one of them filtered through paper
+ * tooth.
  *
- * On the BODY rather than on html, because a filter creates a containing block for fixed
- * children — applying it to html would break every fixed thing on the page (the nav, the grain,
- * the case stages) by re-parenting them mid-hover.
- *
- * It is a filter rather than a swapped palette on purpose: a palette swap recolours what it
- * knows about, and this has to take the photographs with it. The whole point is that the world
- * turns over, not that the theme changes.
+ * It had to go regardless of how it looked. That interface is 100% digital: it is a machine
+ * rendering to a screen, and grain is the texture of something PRINTED. Carrying it across was
+ * the portfolio's identity leaking into a surface that exists to be a different one.
  */
-html.inverted body {
-  filter: invert(1) hue-rotate(180deg);
-}
-
-/*
- * hue-rotate puts the colours back where invert sent them, so the portrait and the case
- * photography read as negatives rather than as a psychedelic accident. Greys are unaffected —
- * which is almost everything here — so the effect on the page's own furniture is a clean flip.
- */
-
-html.inverted body,
-html.inverted body * {
-  transition: filter 0.45s var(--ease);
-}
-
-/*
- * Anyone who asked for less motion gets the door without the theatre. A full-page inversion is
- * the single most aggressive thing on this site, and it is exactly what a photosensitive reader
- * would want no part of.
- */
-@media (prefers-reduced-motion: reduce) {
-  html.inverted body {
-    filter: none;
-  }
+html:has(.nierSurface) body::after,
+html:has(.nierSurface) body::before {
+  display: none;
 }

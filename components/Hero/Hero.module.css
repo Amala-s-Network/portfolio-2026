@@ -509,10 +509,16 @@
 }
 
 /*
- * Secondary, and looks it: no fill, a hairline, the same height as the button above so the two
- * read as a pair rather than as a control and an afterthought.
+ * Secondary, and looks it — until it is touched, when it crosses over.
+ *
+ * At rest it belongs to the portfolio: no fill, a hairline, the same height as the button above
+ * so the two read as a pair. Under the cursor the OTHER identity assembles inside it — ground,
+ * ink and typeface together — so the control shows you the room it opens instead of describing
+ * it. The label stays put while everything under it changes, which is what makes it read as the
+ * button being converted rather than swapped for a different one.
  */
 .unlock {
+  position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -526,15 +532,87 @@
   font-size: 13.5px;
   letter-spacing: 0.02em;
   cursor: pointer;
+  overflow: hidden;
 
-  transition: border-color 0.4s var(--ease), letter-spacing 0.5s var(--ease);
+  transition: border-color 0.35s var(--ease), color 0.3s linear 0.12s,
+    letter-spacing 0.5s var(--ease);
+}
+
+/*
+ * The nanotechnology.
+ *
+ * Two layers rising together from the bottom edge. The FILL is the other identity's ground; the
+ * GRID over it is a 4px lattice that only exists where the fill has already reached, so the
+ * surface appears to be assembled rather than painted — matter arriving row by row.
+ *
+ * scaleY from the bottom rather than an animated height: a transform composites, a height
+ * re-lays-out the button on every frame of a hover that can fire dozens of times a minute.
+ */
+.unlockNano {
+  position: absolute;
+  inset: 0;
+  transform: scaleY(0);
+  transform-origin: 50% 100%;
+  background-color: var(--nier-bg);
+  background-image:
+    repeating-linear-gradient(0deg, var(--nier-rule) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, var(--nier-rule) 0 1px, transparent 1px 4px);
+  opacity: 0.001;
+  transition: transform 0.42s cubic-bezier(0.2, 0.9, 0.25, 1), opacity 0.1s linear;
+}
+
+/*
+ * The leading edge: a hard line at the top of the rising fill, the way a scan has a bright row
+ * where it is currently writing. Without it the fill reads as a liquid; with it, as a process.
+ */
+.unlockNano::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 2px;
+  background: var(--nier-ink);
+  opacity: 0.55;
+}
+
+.unlockLabel {
+  position: relative;
+  z-index: 1;
+  transition: letter-spacing 0.45s var(--ease);
 }
 
 .unlock:hover,
 .unlock:focus-visible {
-  border-color: var(--ink);
-  /* The letters open up as the world flips — small, and it is what sells the moment. */
-  letter-spacing: 0.09em;
+  border-color: var(--nier-ink);
+  color: var(--nier-ink);
+  /* The other identity's voice: geometric, wider, quieter. */
+  font-family: var(--font-jost), var(--font-archivo), system-ui, sans-serif;
+}
+
+.unlock:hover .unlockNano,
+.unlock:focus-visible .unlockNano {
+  transform: scaleY(1);
+  opacity: 1;
+}
+
+.unlock:hover .unlockLabel,
+.unlock:focus-visible .unlockLabel {
+  letter-spacing: 0.16em;
+}
+
+/*
+ * Reduced motion gets the destination without the assembly. The button still crosses over —
+ * that is information, not decoration — it simply does not build itself to get there.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .unlockNano {
+    transition: none;
+  }
+  .unlock:hover .unlockNano,
+  .unlock:focus-visible .unlockNano {
+    transform: scaleY(1);
+  }
 }
 
 .cta {

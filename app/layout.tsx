@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next';
-import { playfair, archivo } from '@/lib/fonts';
+import { playfair, archivo, jost } from '@/lib/fonts';
 import { LanguageProvider } from '@/lib/language';
 import './globals.css';
 
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${playfair.variable} ${archivo.variable}`}>
+    <html lang="pt-BR" className={`${playfair.variable} ${archivo.variable} ${jost.variable}`}>
       <head>
         {/*
           * Every load starts at the top.

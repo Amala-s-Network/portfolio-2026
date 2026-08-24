@@ -46,7 +46,7 @@
   border-radius: 0;
   padding: 26px 32px 22px;
 
-  font-family: var(--font-archivo), system-ui, sans-serif;
+  font-family: var(--font-jost), system-ui, sans-serif;
 
   transform: translateY(10px);
   transition: transform 0.4s var(--ease);

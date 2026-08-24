@@ -12,7 +12,11 @@
   min-height: 100vh;
   background: var(--nier-bg);
   color: var(--nier-ink);
-  font-family: var(--font-archivo), system-ui, sans-serif;
+  /*
+   * The geometric face, not the portfolio's text face. Archivo has humanist detailing that makes
+   * the main site feel printed, and printed is precisely what this surface is not.
+   */
+  font-family: var(--font-jost), system-ui, sans-serif;
 
   display: flex;
   flex-direction: column;

@@ -43,7 +43,8 @@ export function CraftPage() {
   const current = copy.options[armed];
 
   return (
-    <main className={styles.page}>
+    /* nierSurface is the hook globals.css looks for to switch the paper grain off. */
+    <main className={`${styles.page} nierSurface`}>
       {/*
         * The faint drawing behind everything: long diagonals and two wide arcs, at the edge of
         * visible. In the reference it is what stops a flat colour field from reading as an empty
