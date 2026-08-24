@@ -30,7 +30,17 @@
   border-top: 1px solid var(--hairline);
 }
 
+/*
+ * The rows answer to the cursor.
+ *
+ * A list of eleven employers is the driest thing on the page, and it was completely inert — the
+ * only block here with nothing to say back. Three small things happen at once: the row draws a
+ * rule under itself, the company name steps to the right, and everything the cursor is NOT on
+ * dims. That last one is what makes it read as reading rather than as decoration: the list
+ * behaves like a finger held under the line you are on.
+ */
 .row {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
   gap: 72px;
@@ -38,6 +48,69 @@
 
   padding: 30px 0;
   border-bottom: 1px solid var(--hairline);
+
+  transition: opacity 0.4s var(--ease);
+}
+
+/*
+ * Drawn from the left, over the hairline that is already there. A separate rule rather than a
+ * border-colour change, because scaleX composites and a colour change on a 1px border does not
+ * animate cleanly at sub-pixel heights.
+ */
+.row::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--ink);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.55s var(--ease);
+}
+
+.row:hover::after {
+  transform: scaleX(1);
+}
+
+/* Everything the cursor is not on steps back — the list narrows to the line being read. */
+.list:hover .row {
+  opacity: 0.45;
+}
+
+.list:hover .row:hover {
+  opacity: 1;
+}
+
+.name {
+  transition: transform 0.5s var(--ease);
+}
+
+.row:hover .name {
+  transform: translateX(8px);
+}
+
+@media (hover: none) {
+  /* No cursor, no line to hold. Everything stays as written. */
+  .list:hover .row,
+  .list:hover .row:hover {
+    opacity: 1;
+  }
+  .row:hover .name {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .row,
+  .row::after,
+  .name {
+    transition: none;
+  }
+  .row:hover .name {
+    transform: none;
+  }
 }
 
 .name {
