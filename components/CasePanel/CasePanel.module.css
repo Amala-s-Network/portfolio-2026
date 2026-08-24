@@ -36,7 +36,12 @@
   position: fixed;
   inset: 0;
   perspective: 1500px;
-  perspective-origin: 50% 100%;
+  /*
+   * The vanishing point moves to the corner the page turns on. Left at 50% the sheet swung about
+   * its right edge while being viewed from the middle, and the two disagreed — the turn looked
+   * like a glitch in the projection rather than like paper.
+   */
+  perspective-origin: 100% 100%;
   overflow: hidden;
   pointer-events: none;
 }
@@ -78,9 +83,10 @@
 
   position: absolute;
   inset: 0;
-  transform-origin: 50% 100%;
-  /* Starting pose; the scroll handler takes over from the first frame. */
-  transform: translateY(100%);
+  /* The bottom-right corner: the one the dog-ear sits on, and the one paper is lifted by. */
+  transform-origin: 100% 100%;
+  /* Starting pose, on the diagonal; the scroll handler takes over from the first frame. */
+  transform: translate(24%, 88%) rotate(6deg);
 
   display: flex;
   flex-direction: column;
