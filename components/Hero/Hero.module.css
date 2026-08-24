@@ -465,11 +465,11 @@
    * air that makes the row look composed rather than filled.
    */
   /*
-   * João's measurements, taken from the Figma frame: text boxes at 340px maximum, 40px between
+   * João's measurements, taken from the Figma frame: text boxes at 380px maximum, 48px between
    * every item, the whole row packed against the 48px left margin.
    *
-   * The columns are minmax(0, 340px) rather than a flat 340px so they can give ground on a
-   * narrow window instead of forcing the row wider than the page. 340 is the ceiling he asked
+   * The columns are minmax(0, 380px) rather than a flat 380px so they can give ground on a
+   * narrow window instead of forcing the row wider than the page. 380 is the ceiling he asked
    * for, not a floor.
    *
    * justify-content: start is the part that matters and the part I got wrong before. With
@@ -477,10 +477,10 @@
    * and turned the row into three unrelated objects. Packed left, the row is the same shape on
    * every screen and the empty space collects at the right, where it belongs.
    */
-  grid-template-columns: minmax(0, 340px) minmax(0, 340px) auto;
+  grid-template-columns: minmax(0, 380px) minmax(0, 380px) auto;
   justify-content: start;
   align-items: start;
-  gap: 40px;
+  gap: 48px;
   margin-top: 44px;
   padding-top: 22px;
   border-top: 1px solid var(--hairline);
