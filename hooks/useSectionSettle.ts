@@ -2,77 +2,62 @@
 
 import { useEffect } from 'react';
 
+/** How long the pull from the first screen into the first case takes. */
+const TURN_MS = 1400;
+
 /** How long the reader must be still before the page decides they have stopped. */
-const IDLE_MS = 180;
-/** Nothing under this is worth moving for; below it the settle would read as a twitch. */
-const DEAD_ZONE = 10;
-/**
- * How long the settle takes to close the gap.
- *
- * 650, not the 1500 a full page turn used to take. This is no longer moving the reader a whole
- * screen — the wheel does that now, natively and at whatever speed they choose. All this does is
- * close whatever is left over when they stop, and a correction that takes a second and a half
- * stops reading as tidying up and starts reading as the page taking the wheel off them. That is
- * the "trava" João kept running into.
- *
- * The slowness of the TURN itself is untouched and lives elsewhere: the panel completes its
- * reveal over 0.92 of a screen of scrolling, so it is slow because it is tied to the scroll, not
- * because anything is animating on a timer.
- */
-const TURN_MS = 650;
+const IDLE_MS = 170;
 
+/** Below this there is nothing worth moving for; the correction would read as a twitch. */
+const DEAD_ZONE = 12;
+
+/** Wheel travel, summed over a short window, that counts as a deliberate gesture. */
+const GESTURE_DELTA = 20;
+const GESTURE_WINDOW_MS = 200;
 
 /**
- * Pulls the page onto a section boundary once the reader stops scrolling.
+ * The pull from the first screen into the first case — and nothing else.
  *
- * This is scroll snapping, done in JavaScript, and the reason not to use the CSS property is the
- * whole point: `scroll-snap-type` acts DURING the gesture. With the case sections at exactly one
- * viewport, the next snap point sits exactly one wheel gesture away, so the browser ran its snap
- * straight through the panel's own turn — a 410px reveal compressed into a jump, which is why
- * the page appeared to have no animation between cases at all.
+ * The narrowness is the correction. Earlier versions of this hook applied to every boundary in
+ * the case run, so the page kept taking hold of the wheel while the reader was moving between
+ * cases 01 and 04: they scrolled, the page decided how far that meant, and it felt locked no
+ * matter how the thresholds were tuned. Widening the tolerances only moved the problem around,
+ * because the problem was never the numbers — it was that the page was making a decision in a
+ * place where the reader should have been making it.
  *
- * Waiting for the gesture to finish keeps both things: the turn plays out under the reader's own
- * scrolling, and then the page settles rather than leaving them parked half way through a
- * transition with two panels on screen at once.
- *
- * Only the full-height sections take part — the header and the four cases. Below them the page
- * is ordinary editorial content of uneven height, and snapping a reader out of the middle of a
- * paragraph they are reading is the version of this feature everybody hates.
+ * There is exactly one place worth insisting on: leaving the first screen. That is the transition
+ * the dog-ear invites and the one the whole design is built around — a page being turned, not a
+ * document being scrolled. Once the reader is among the cases they are reading, and reading is
+ * theirs to pace. Below the first case this hook does nothing: no interception, no settling.
  */
 export function useSectionSettle() {
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     let idle = 0;
+    let frame = 0;
     let settling = false;
-    /*
-     * Dead-man's switch on the turn.
-     *
-     * settling is cleared when the animation's last frame runs — and if that frame never runs,
-     * it never clears and paging is dead for the rest of the session. requestAnimationFrame does
-     * not fire in a background tab and can be throttled to nothing in embedded contexts; the
-     * README warns about exactly this class of failure elsewhere in the project, and it showed
-     * up here the moment a turn was started in a pane that composites no frames.
-     *
-     * The timer is a floor, not the mechanism: the animation clears the flag itself in the normal
-     * case, well before this fires.
-     */
     let deadline = 0;
+    let travel = 0;
+    let travelReset = 0;
 
-    /* Recomputed per settle rather than cached: these heights are all vh-based and a window
-     * resize would silently invalidate anything measured once. */
-    const boundaries = () => {
+    /*
+     * The only two positions that matter: the top of the page, and the top of the first case.
+     *
+     * Measured on each use rather than cached — every height here is viewport-derived, so a
+     * resize would silently invalidate anything read once.
+     */
+    const marks = (): [number, number] | null => {
       const hero = document.querySelector('header') as HTMLElement | null;
-      const cases = [...document.querySelectorAll('main > section')].filter((s) =>
+      const firstCase = [...document.querySelectorAll('main > section')].find((s) =>
         /CasePanel/.test((s as HTMLElement).className)
-      ) as HTMLElement[];
-      if (!hero || cases.length === 0) return [];
-
-      const last = cases[cases.length - 1];
-      return [hero.offsetTop, ...cases.map((c) => c.offsetTop), last.offsetTop + last.offsetHeight];
+      ) as HTMLElement | undefined;
+      if (!hero || !firstCase) return null;
+      return [hero.offsetTop, firstCase.offsetTop];
     };
 
-    let frame = 0;
+    /** True only while the reader is still on the first screen. */
+    const inRegion = (y: number, top: number, bottom: number) => y >= top - 4 && y < bottom - 4;
 
     const stop = () => {
       if (frame) cancelAnimationFrame(frame);
@@ -82,11 +67,9 @@ export function useSectionSettle() {
     };
 
     /*
-     * The turn, driven by hand.
-     *
-     * easeInOutCubic rather than the browser's own curve: it leaves slowly, carries speed through
-     * the middle and arrives without stopping short, which is what a sheet of paper does. The
-     * browser's smooth scroll is tuned for getting somewhere, not for being watched.
+     * easeInOutCubic: leaves slowly, carries speed through the middle, arrives without stopping
+     * short. The browser's own smooth scroll is tuned for getting somewhere rather than for being
+     * watched, and its duration cannot be changed — which is why this is animated by hand.
      */
     const glideTo = (target: number) => {
       const start = window.scrollY;
@@ -95,13 +78,14 @@ export function useSectionSettle() {
 
       const began = performance.now();
       settling = true;
-      window.clearTimeout(deadline);
-      deadline = window.setTimeout(() => {
-        settling = false;
-        if (frame) cancelAnimationFrame(frame);
-        frame = 0;
-      }, TURN_MS + 400);
 
+      /*
+       * Dead-man's switch. settling is cleared by the animation's last frame, and if that frame
+       * never runs — a background tab, a throttled context — it never clears and the pull is dead
+       * for the rest of the session. The README warns about this class of failure elsewhere.
+       */
+      window.clearTimeout(deadline);
+      deadline = window.setTimeout(stop, TURN_MS + 400);
 
       const step = (now: number) => {
         const t = Math.min(1, (now - began) / TURN_MS);
@@ -120,19 +104,52 @@ export function useSectionSettle() {
       frame = requestAnimationFrame(step);
     };
 
-    const settle = () => {
+    /*
+     * The wheel, on the first screen only: a direction, not a distance.
+     *
+     * Travel is summed over a window rather than tested per event. A mouse notch arrives as one
+     * delta of about 100 and passes either test; a trackpad sends a stream of single-digit values
+     * that never clears a per-event bar, which is what made the page feel dead under a finger.
+     */
+    const onWheel = (e: WheelEvent) => {
+      const m = marks();
+      if (!m) return;
+      const [top, bottom] = m;
+      const y = window.scrollY;
+
+      /* Among the cases the wheel is not ours. Leave before touching the event. */
+      if (!inRegion(y, top, bottom)) return;
+      /* Scrolling up from the very top has nowhere to go. */
+      if (y <= top + 4 && e.deltaY < 0) return;
+
+      e.preventDefault();
       if (settling) return;
 
-      const marks = boundaries();
-      if (marks.length === 0) return;
+      travel += e.deltaY;
+      window.clearTimeout(travelReset);
+      travelReset = window.setTimeout(() => {
+        travel = 0;
+      }, GESTURE_WINDOW_MS);
 
+      if (Math.abs(travel) < GESTURE_DELTA) return;
+
+      const down = travel > 0;
+      travel = 0;
+      window.clearTimeout(idle);
+      glideTo(down ? bottom : top);
+    };
+
+    /* Anything left over when the reader stops is closed — again, first screen only. */
+    const settle = () => {
+      if (settling) return;
+      const m = marks();
+      if (!m) return;
+      const [top, bottom] = m;
       const y = window.scrollY;
-      /* Outside the full-height run, the page is left alone. */
-      if (y < marks[0] - 4 || y > marks[marks.length - 1] + 4) return;
+      if (!inRegion(y, top, bottom)) return;
 
-      const nearest = marks.reduce((best, m) => (Math.abs(m - y) < Math.abs(best - y) ? m : best));
+      const nearest = y - top < bottom - y ? top : bottom;
       if (Math.abs(nearest - y) < DEAD_ZONE) return;
-
       glideTo(nearest);
     };
 
@@ -142,31 +159,31 @@ export function useSectionSettle() {
       idle = window.setTimeout(settle, IDLE_MS);
     };
 
-
     /*
-     * Any deliberate input during a settle cancels it. A page that keeps hauling the reader
-     * somewhere after they have started moving again is fighting them, and it is the single
-     * thing that makes this pattern feel broken rather than helpful.
+     * Deliberate input during a glide cancels it — except the wheel, which is what starts one.
+     * A page that keeps hauling the reader somewhere after they have started moving again is the
+     * single thing that makes this pattern hateful.
      */
     const onIntent = () => {
       if (settling) stop();
     };
 
-
     window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('wheel', onIntent, { passive: true });
+    /* passive: false — holding the first screen means preventing the default scroll. */
+    window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onIntent, { passive: true });
     window.addEventListener('keydown', onIntent);
     window.addEventListener('resize', onScroll);
 
     return () => {
       window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('wheel', onIntent);
+      window.removeEventListener('wheel', onWheel);
       window.removeEventListener('touchstart', onIntent);
       window.removeEventListener('keydown', onIntent);
       window.removeEventListener('resize', onScroll);
       window.clearTimeout(idle);
       window.clearTimeout(deadline);
+      window.clearTimeout(travelReset);
       if (frame) cancelAnimationFrame(frame);
     };
   }, []);
