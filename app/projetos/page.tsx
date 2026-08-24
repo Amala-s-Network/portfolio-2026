@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { CaseShell } from '@/components/CaseShell/CaseShell';
 import { ProjectsPage } from '@/components/ProjectsPage/ProjectsPage';
 
-const TITLE = 'Todos os projetos — João V. Melo';
+const TITLE = 'Todos os projetos · João V. Melo';
 const DESCRIPTION =
   'Índice completo do trabalho: quatro cases com estudo escrito e seis projetos em banking, varejo de alto volume, consultoria global e startups.';
 

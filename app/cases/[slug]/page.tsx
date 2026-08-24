@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const detail = caseDetails[slug];
   if (!summary || !detail) return {};
 
-  const title = `${summary.title.pt} — João V. Melo`;
+  const title = `${summary.title.pt} · João V. Melo`;
   const description = detail.context.pt;
 
   return {

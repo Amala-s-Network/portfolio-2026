@@ -3,7 +3,7 @@
 import { useRef } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
-import type { CaseChart as ChartData } from '@/content/copy';
+import { casePage, type CaseChart as ChartData } from '@/content/copy';
 import styles from './CaseChart.module.css';
 
 /**
@@ -104,8 +104,8 @@ export function CaseChart({ data }: { data: ChartData }) {
         <caption>{t(data.title)}</caption>
         <thead>
           <tr>
-            <th scope="col">Mês</th>
-            <th scope="col">Chamadas</th>
+            <th scope="col">{t(casePage.chart.period)}</th>
+            <th scope="col">{t(casePage.chart.amount)}</th>
           </tr>
         </thead>
         <tbody>

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { CraftPage } from '@/components/CraftPage/CraftPage';
 
-const TITLE = 'Craft — João V. Melo';
+const TITLE = 'Craft · João V. Melo';
 const DESCRIPTION =
   'Trabalho autoral e briefings inventados: peças feitas por gosto, fora do portfólio de produto.';
 

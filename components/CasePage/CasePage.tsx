@@ -23,7 +23,7 @@ function Missing({ what, ask, dark }: { what: string; ask: string; dark?: boolea
   if (!SHOW_PROMPTS) return null;
   return (
     <div className={styles.todo} style={dark ? { color: 'var(--on-dark)' } : undefined}>
-      <span className={styles.todoTitle}>Falta escrever — {what}</span>
+      <span className={styles.todoTitle}>Falta escrever: {what}</span>
       {ask}
     </div>
   );
@@ -126,12 +126,12 @@ export function CasePage({ slug }: { slug: string }) {
       <section ref={sixtyRef} className={styles.sixty}>
         <Reveal on={sixtyIn} order={0} as="span" className={styles.layerMark}>
           <span className={styles.diamond} aria-hidden="true" />
-          {showArgument ? '60 SEGUNDOS — CONFLITO, DECISÃO, EVIDÊNCIA' : 'RESULTADOS'}
+          {showArgument ? t(copy.layers.sixty) : t(copy.layers.sixtyShort)}
         </Reveal>
 
         <Reveal on={sixtyIn} order={1} className={styles.argument} hidden={!showArgument}>
           <div>
-            <p className={styles.argumentHead}>O CONFLITO</p>
+            <p className={styles.argumentHead}>{t(copy.headings.conflict)}</p>
             {line(data.conflict) ? (
               <p className={styles.argumentBody}>{line(data.conflict)}</p>
             ) : (
@@ -144,27 +144,27 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
 
           <div>
-            <p className={styles.argumentHead}>O QUE ABRI MÃO</p>
+            <p className={styles.argumentHead}>{t(copy.headings.tradeoff)}</p>
             {line(data.tradeoff) ? (
               <p className={styles.argumentBody}>{line(data.tradeoff)}</p>
             ) : (
               <Missing
                 dark
                 what="o trade-off"
-                ask="O que foi deliberadamente sacrificado para resolver o conflito? Esta é a parte que separa senior de pleno — sem ela, o case vira lista de entregas."
+                ask="O que foi deliberadamente sacrificado para resolver o conflito? Esta é a parte que separa senior de pleno. Sem ela, o case vira lista de entregas."
               />
             )}
           </div>
 
           <div>
-            <p className={styles.argumentHead}>A DECISÃO</p>
+            <p className={styles.argumentHead}>{t(copy.headings.decision)}</p>
             {line(data.decision) ? (
               <p className={styles.argumentBody}>{line(data.decision)}</p>
             ) : (
               <Missing
                 dark
                 what="a decisão"
-                ask="Qual foi a escolha feita, e por quê? Uma frase que alguém possa discordar — decisão sem alternativa descartada não é decisão."
+                ask="Qual foi a escolha feita, e por quê? Uma frase da qual alguém possa discordar. Sem uma alternativa descartada, não houve escolha."
               />
             )}
           </div>
@@ -198,19 +198,19 @@ export function CasePage({ slug }: { slug: string }) {
           style={{ color: 'var(--muted-light)' }}
         >
           <span className={styles.diamond} aria-hidden="true" />
-          6 MINUTOS — DETALHE E O QUE MUDOU O JOGO
+          {t(copy.layers.sixMin)}
         </Reveal>
 
         {(SHOW_PROMPTS || data.challenge) && (
           <div className={styles.detailGrid}>
-            <p className={styles.detailTitle}>O principal desafio</p>
+            <p className={styles.detailTitle}>{t(copy.headings.challenge)}</p>
             <div>
               {line(data.challenge) ? (
                 <p className={styles.detailBody}>{line(data.challenge)}</p>
               ) : (
                 <Missing
                   what="o principal desafio"
-                  ask="Qual foi a coisa mais difícil deste trabalho? Não o objetivo — o obstáculo. Restrição técnica, política interna, prazo, dado que não existia."
+                  ask="Qual foi a coisa mais difícil deste trabalho? O obstáculo, não o objetivo. Restrição técnica, política interna, prazo, dado que não existia."
                 />
               )}
             </div>
@@ -225,7 +225,7 @@ export function CasePage({ slug }: { slug: string }) {
         ))}
 
         <div className={styles.detailGrid}>
-          <p className={styles.detailTitle}>Meu papel</p>
+          <p className={styles.detailTitle}>{t(copy.headings.contribution)}</p>
           <ul className={styles.contribution}>
             {data.contribution.map((c, i) => (
               <li key={i}>{t(c)}</li>
@@ -235,7 +235,7 @@ export function CasePage({ slug }: { slug: string }) {
 
         {(SHOW_PROMPTS || data.gameChanger) && (
           <div className={styles.detailGrid}>
-            <p className={styles.detailTitle}>O que mudou o jogo</p>
+            <p className={styles.detailTitle}>{t(copy.headings.gameChanger)}</p>
             <div>
               {line(data.gameChanger) ? (
                 <p className={styles.detailBody}>{line(data.gameChanger)}</p>
@@ -258,7 +258,7 @@ export function CasePage({ slug }: { slug: string }) {
               </div>
               <figcaption className={styles.caption}>
                 {t(g.caption)}
-                {g.confidential && !g.src && ' · imagem pendente de avaliação de NDA'}
+                {g.confidential && !g.src && ` · ${t(copy.ndaPending)}`}
               </figcaption>
             </figure>
           ))}

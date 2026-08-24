@@ -76,18 +76,19 @@ export const hero = {
    */
   paragraph: {
     pt: [
-      'Olá! Sou o João. Product Designer com 9 anos em design, sendo 6 deles',
-      'dedicados a produtos digitais. Passei por banking em escala, varejo de alto',
-      'volume, consultoria global e startups — hoje com foco em craft, métricas e IA.',
-      'Atuo em nível senior, de discovery a entrega, perto de produto e engenharia —',
-      'decisão que não sobrevive ao handoff não chegou a ser decisão.',
+      'Oi! Eu sou o João. Trabalho com design há 9 anos, sendo 6 deles em produtos',
+      'digitais. Já passei por grandes bancos, varejo de alto volume, consultoria',
+      'global e startups. Hoje meu foco está em craft, métricas e IA. Atuo em',
+      'nível senior e acompanho o projeto do começo ao fim, sempre perto dos',
+      'times de produto e engenharia, usando IA para acelerar pesquisa e protótipo.',
     ],
     en: [
-      'Hi! I’m João. A Product Designer with 9 years in design, 6 of them devoted',
-      'to digital products. I’ve worked across banking at scale, high-volume retail,',
-      'global consultancy and startups — now focused on craft, metrics and AI.',
-      'I work at senior level, from discovery through delivery and close to product',
-      'and engineering — a decision that does not survive handoff was never one.',
+      'Hi! I’m João. I have worked in design for 9 years, 6 of them on digital',
+      'products. I have been through big banks, high-volume retail, a global',
+      'consultancy and startups. These days my focus is craft, metrics and AI.',
+      'I work at senior level and stay with a project from start to finish,',
+      'always close to the product and engineering teams, using AI to speed up',
+      'research and prototyping.',
     ],
   } satisfies Record<Lang, string[]>,
 
@@ -104,16 +105,19 @@ export const hero = {
    */
   paragraphB: {
     pt: [
-      'Trabalho por conflito. Toda decisão aqui resolveu uma tensão real —',
-      'velocidade contra profundidade, o sistema contra a exceção, o que o',
-      'negócio pedia contra o que o usuário de fato fazia. As páginas a seguir',
-      'contam o que escolhi, o que abri mão, e o que o número mostrou depois.',
+      'Gosto de mostrar o processo inteiro, com as partes difíceis junto. Todo',
+      'projeto aqui teve uma escolha complicada no meio do caminho: um prazo',
+      'curto, uma regra do sistema que não cabia no caso real, ou o negócio',
+      'pedindo uma coisa diferente do que as pessoas faziam. Nas páginas a',
+      'seguir eu conto o que decidi, o que ficou de fora e no que deu.',
     ],
     en: [
-      'I work from conflict. Every decision here resolved a real tension —',
-      'speed against depth, the system against the exception, what the',
-      'business asked for against what people actually did. The pages that',
-      'follow say what I chose, what I gave up, and what the numbers showed.',
+      'I like showing the whole process, difficult parts included. Every project',
+      'here had a hard call somewhere along the way: a short deadline, a system',
+      'rule that did not fit the real case, or the business asking for one thing',
+      'while people were doing something else entirely. On the pages that follow',
+      'I say what I decided, what got left out, and how it turned out. The',
+      'numbers are all there to check.',
     ],
   } satisfies Record<Lang, string[]>,
 
@@ -138,37 +142,37 @@ export const services = {
   kicker: { pt: 'Serviços', en: 'Services' } satisfies T,
   heading: { pt: 'O que eu posso entregar', en: 'What I can deliver' } satisfies T,
   intro: {
-    pt: 'Trabalho por projeto, sozinho ou dentro do time que já existe. O escopo se ajusta ao que falta — às vezes é o produto inteiro, às vezes é a pergunta que ninguém teve tempo de fazer.',
-    en: 'I work by project, alone or inside the team that is already there. Scope follows whatever is missing — sometimes that is the whole product, sometimes it is the question nobody has had time to ask.',
+    pt: 'Trabalho por projeto, sozinho ou junto com o time que já está lá. O escopo depende do que está faltando. Às vezes é o produto inteiro, às vezes é só aquela pergunta que ninguém teve tempo de fazer.',
+    en: 'I work by project, on my own or alongside the team that is already there. The scope depends on what is missing. Sometimes it is the whole product, sometimes it is just the question nobody has had time to ask.',
   } satisfies T,
 
   items: [
     {
       title: { pt: 'Produto de ponta a ponta', en: 'Product, end to end' } satisfies T,
       body: {
-        pt: 'Da pesquisa ao desenvolvimento: descoberta, definição de escopo, fluxos, interface, design system e o acompanhamento até a entrega. Fico perto de produto e engenharia porque decisão que não sobrevive ao handoff não chegou a ser decisão.',
-        en: 'From research through to development: discovery, scoping, flows, interface, design system, and staying with it until it ships. I work close to product and engineering, because a decision that does not survive handoff was never a decision.',
+        pt: 'Da pesquisa até o desenvolvimento: descoberta, escopo, fluxos, interface, design system e acompanhamento até a coisa entrar no ar. Fico perto de produto e engenharia o tempo todo, porque uma boa decisão que se perde no caminho até o código acaba não valendo de muita coisa.',
+        en: 'From research through to development: discovery, scoping, flows, interface, design system, and sticking around until it goes live. I stay close to product and engineering the whole way, because a good decision that gets lost on the way to the code ends up not counting for much.',
       } satisfies T,
     },
     {
       title: { pt: 'Landing pages de alta conversão', en: 'High-conversion landing pages' } satisfies T,
       body: {
-        pt: 'Página desenhada em torno de uma única ação, com a hierarquia decidida pelo que precisa ser lido primeiro e não pelo que é bonito primeiro. Copy, layout e ritmo tratados como uma coisa só, porque numa landing eles são.',
-        en: 'A page built around one action, with the hierarchy decided by what has to be read first rather than by what looks best first. Copy, layout and pacing treated as one thing, because on a landing page they are.',
+        pt: 'Uma página construída em volta de uma ação só. A hierarquia segue o que a pessoa precisa ler primeiro para conseguir decidir. Texto, layout e ritmo eu trato como uma coisa só, porque numa landing page eles trabalham juntos.',
+        en: 'A page built around a single action. The hierarchy follows what someone needs to read first in order to decide. I treat copy, layout and pacing as one thing, because on a landing page they work together.',
       } satisfies T,
     },
     {
       title: { pt: 'Pesquisa e direcionamento', en: 'Research and direction' } satisfies T,
       body: {
-        pt: 'Benchmarking, leitura de práticas de mercado, apoio em entrevistas de usabilidade e planejamento do que vem depois. Serve para o time decidir com evidência em vez de opinião — inclusive quando a evidência diz para não fazer.',
-        en: 'Benchmarking, reading market practice, support on usability interviews, and planning what comes next. It exists so a team can decide on evidence rather than opinion — including when the evidence says not to build it.',
+        pt: 'Benchmarking, leitura de práticas de mercado, apoio nas entrevistas de usabilidade e planejamento do que vem depois. A ideia é dar ao time evidência para decidir, inclusive quando a evidência aponta que o melhor é não construir.',
+        en: 'Benchmarking, reading market practice, support on usability interviews, and planning what comes next. The idea is to give the team evidence to decide with, including when that evidence points at not building the thing.',
       } satisfies T,
     },
     {
       title: { pt: 'Mentoria', en: 'Mentoring' } satisfies T,
       body: {
-        pt: 'Para quem está começando ou vindo de outra área. Menos “faça assim” e mais por que uma decisão se sustenta: como defender um trabalho, como ler um problema antes de desenhar e como sobreviver ao primeiro handoff.',
-        en: 'For people starting out or arriving from another field. Less “do it this way” and more why a decision holds up: how to defend a piece of work, how to read a problem before drawing it, and how to survive a first handoff.',
+        pt: 'Para quem está começando agora ou chegando de outra área. Converso sobre por que uma decisão se sustenta, como defender um trabalho na frente do time, como entender um problema antes de abrir o Figma e como encarar o primeiro handoff sem susto.',
+        en: 'For people just starting out or coming from another field. We talk about why a decision holds up, how to defend your work in front of the team, how to understand a problem before opening Figma, and how to face a first handoff without panicking.',
       } satisfies T,
     },
   ],
@@ -199,12 +203,12 @@ export const craftGate = {
 
   body: {
     pt: [
-      'Você está prestes a ser direcionado para uma experiência separada, dedicada a craft design — trabalho autoral, briefings inventados e peças feitas por gosto, não por contrato.',
-      'Para acompanhar os cases de produto, com clientes reais e números verificados, permaneça nesta página.',
+      'Daqui você vai para uma experiência separada, dedicada a craft design. É trabalho autoral, com briefings inventados e peças que eu fiz por gosto, sem contrato no meio.',
+      'Se você veio pelos cases de produto, com clientes reais e números verificados, é melhor continuar por aqui mesmo.',
     ],
     en: [
-      'You are about to be directed to a separate experience, dedicated to craft design — self-directed work, invented briefs, and pieces made for their own sake rather than to a contract.',
-      'To follow the product cases, with real clients and verified numbers, remain on this page.',
+      'From here you go to a separate experience, dedicated to craft design. It is self-directed work, with invented briefs and pieces I made because I wanted to, no contract involved.',
+      'If you came for the product cases, with real clients and verified numbers, you are better off staying right here.',
     ],
   } satisfies Record<Lang, string[]>,
 
@@ -213,8 +217,8 @@ export const craftGate = {
 
   /* Rendered inside the gate, not tucked into a footer. */
   credit: {
-    pt: 'A linguagem visual desta tela é uma homenagem a NieR: Automata — © Square Enix, direção de Yoko Taro. Todos os direitos são deles. Esta é uma página pessoal, sem fins lucrativos e sem vínculo com a Square Enix.',
-    en: 'The visual language of this screen is a tribute to NieR: Automata — © Square Enix, directed by Yoko Taro. All rights are theirs. This is a personal, non-commercial page with no affiliation to Square Enix.',
+    pt: 'A linguagem visual desta tela é uma homenagem a NieR: Automata, © Square Enix, com direção de Yoko Taro. Todos os direitos são deles. Esta é uma página pessoal, sem fins lucrativos e sem nenhum vínculo com a Square Enix.',
+    en: 'The visual language of this screen is a tribute to NieR: Automata, © Square Enix, directed by Yoko Taro. All rights are theirs. This is a personal, non-commercial page with no affiliation to Square Enix.',
   } satisfies T,
 
   hint: { pt: 'Esc para permanecer', en: 'Esc to remain' } satisfies T,
@@ -248,8 +252,8 @@ export const craftPage = {
       id: 'diversas',
       label: { pt: 'Interfaces diversas', en: 'Other interfaces' } satisfies T,
       hint: {
-        pt: 'Filmes, projetos que não foram para a frente e trabalhos ainda não vitrinados.',
-        en: 'Films, projects that never shipped, and work not yet put on show.',
+        pt: 'Filmes, projetos que não foram para a frente e trabalhos que eu nunca mostrei.',
+        en: 'Films, projects that never went anywhere, and work I have never shown.',
       } satisfies T,
     },
     {
@@ -366,48 +370,48 @@ export const story = {
   pages: {
     pt: [
       {
-        folio: 'Página 01 — Origem',
+        folio: 'Página 01 · Origem',
         title: 'Quem sou eu? Depende do último filme que assisti.',
         lead: 'Obviamente é piada. Ou talvez nem tanto.',
         body: [
-          'Sou o João, tenho 26 anos e nasci em Araxá, no interior de Minas. Trabalho com design há nove anos e sou apaixonado por arte — no digital e no editorial, o que provavelmente já ficou evidente por tudo isso aqui parecer um jornal.',
-          'Sou autodidata. Desde criança desmontava video-games e computadores para ver o que tinha dentro, e virei a referência de tecnologia da família inteira — hardware, software, tanto faz. Crescer nos anos 2000 no interior, gostando de tecnologia, foi um exercício de aprender sozinho quase tudo que eu sei.',
-          'Minha primeira especialização foi em branding, com cursos de gente como Marcelo Kimura e Lucas Rosa. Foi ali que eu entendi que design não é sobre deixar bonito — é sobre decidir. O resto do caminho, do banking ao varejo, foi aprender a decidir com gente olhando e dinheiro em jogo.',
+          'Sou o João, tenho 26 anos e nasci em Araxá, no interior de Minas. Trabalho com design há nove anos e sou apaixonado por arte, tanto no digital quanto no editorial. O fato de tudo isso aqui parecer um jornal provavelmente já entregou essa parte.',
+          'Sou autodidata. Desde criança eu desmontava video-game e computador só para ver o que tinha dentro, e acabei virando o suporte técnico oficial da família inteira. Hardware, software, dava tudo na mesma. Crescer no interior nos anos 2000 gostando de tecnologia foi um exercício de aprender sozinho quase tudo que eu sei hoje.',
+          'Minha primeira especialização foi em branding, com cursos de gente como Marcelo Kimura e Lucas Rosa. Foi ali que eu entendi que esse trabalho é sobre decidir, e que deixar bonito vem depois. O resto do caminho, do banco ao varejo, foi aprender a decidir com gente olhando e dinheiro em jogo.',
         ],
-        aside: 'Essa foto foi tirada uma porção de vezes. Sou péssimo tirando fotos, e essa é uma curiosidade bem evidente.',
+        aside: 'Essa foto foi tirada uma porção de vezes. Sou péssimo tirando foto, e isso fica bem evidente.',
       },
       {
-        folio: 'Página 02 — Obsessões',
+        folio: 'Página 02 · Obsessões',
         title: 'Jogo desde antes de saber que aquilo era design.',
-        lead: 'Metal Gear e NieR não são hobby. São repertório.',
+        lead: 'Metal Gear e NieR viraram repertório sem eu perceber.',
         body: [
-          'Metal Gear me ensinou que um sistema pode ter opinião. Kojima nunca separou a mecânica do que ele queria dizer: o jogo te faz sentir a coisa em vez de te contar sobre ela. Quando eu penso em uma jornada, é isso que eu persigo — que a forma diga a mesma coisa que o texto.',
-          'NieR: Automata fez o oposto e me marcou igual. Ele usa a própria estrutura do jogo como argumento, e pede que você jogue de novo sabendo o que sabe agora. É a coisa mais próxima de pesquisa qualitativa que eu já vi virar entretenimento.',
-          'Não vou fingir que isso é metodologia. Eu jogo porque gosto, e desmonto o que jogo pelo mesmo motivo que desmontava o video-game do meu quarto: para ver como foi feito. Que isso volte para o trabalho é consequência, não plano.',
+          'Metal Gear me ensinou que um sistema pode ter opinião. O Kojima nunca separou a mecânica do que ele queria dizer: o jogo faz você sentir a coisa em vez de te contar sobre ela. Quando eu penso numa jornada, é isso que eu fico perseguindo, que a forma diga a mesma coisa que o texto.',
+          'NieR: Automata fez o contrário e me marcou do mesmo jeito. Ele usa a própria estrutura do jogo como argumento e pede que você jogue de novo, agora sabendo o que sabe. É a coisa mais próxima de pesquisa qualitativa que eu já vi virar entretenimento.',
+          'Não vou fingir que isso tudo é metodologia. Eu jogo porque gosto, e desmonto o que jogo pelo mesmo motivo que desmontava o video-game do meu quarto: para ver como foi feito. Se depois isso volta para o trabalho, ótimo, mas nunca foi o plano.',
         ],
         aside: 'Franquias que eu revisito sempre: Metal Gear, NieR, Persona, Silent Hill, Dark Souls.',
       },
     ],
     en: [
       {
-        folio: 'Page 01 — Origin',
+        folio: 'Page 01 · Origin',
         title: 'Who am I? Depends on the last film I watched.',
         lead: 'Obviously a joke. Or maybe not entirely.',
         body: [
-          'I’m João, 26, born in Araxá in the Brazilian countryside. I have worked in design for nine years and I love art — digital and editorial, which has probably become obvious given that all of this looks like a newspaper.',
-          'I’m self-taught. As a child I took video games and computers apart to see what was inside, and became the entire family’s technology department — hardware, software, either way. Growing up in the 2000s, in a small town, liking technology, meant learning almost everything I know on my own.',
-          'My first specialisation was branding, through courses with people like Marcelo Kimura and Lucas Rosa. That is where I understood design is not about making things pretty — it is about deciding. The rest of it, from banking to retail, was learning to decide with people watching and money on the table.',
+          'I’m João, 26, born in Araxá, in the Brazilian countryside. I have worked in design for nine years and I love art, digital and editorial alike. The fact that all of this looks like a newspaper has probably given that away already.',
+          'I’m self-taught. As a kid I took consoles and computers apart just to see what was inside, and ended up as the official tech support for my whole family. Hardware, software, it was all the same to me. Growing up in a small town in the 2000s and liking technology meant learning almost everything I know on my own.',
+          'My first specialisation was branding, through courses with people like Marcelo Kimura and Lucas Rosa. That is where I understood the job is about deciding, and that making it look good comes after. The rest of the way, from banking to retail, was learning to decide with people watching and money on the table.',
         ],
         aside: 'This photo was taken a great many times. I am terrible at having my picture taken, and it shows.',
       },
       {
-        folio: 'Page 02 — Obsessions',
+        folio: 'Page 02 · Obsessions',
         title: 'I was playing long before I knew any of it was design.',
-        lead: 'Metal Gear and NieR are not a hobby. They are repertoire.',
+        lead: 'Metal Gear and NieR became repertoire without me noticing.',
         body: [
-          'Metal Gear taught me that a system can hold an opinion. Kojima never separated the mechanics from what he wanted to say: the game makes you feel the thing rather than telling you about it. When I think about a journey, that is what I am chasing — the form saying the same thing as the words.',
-          'NieR: Automata did the opposite and marked me just as much. It uses the structure of the game itself as the argument, and asks you to play again knowing what you now know. It is the closest thing to qualitative research I have seen become entertainment.',
-          'I won’t pretend this is methodology. I play because I enjoy it, and I take apart what I play for the same reason I took apart the console in my bedroom: to see how it was made. That it comes back into the work is a consequence, not a plan.',
+          'Metal Gear taught me that a system can hold an opinion. Kojima never separated the mechanics from what he wanted to say: the game makes you feel the thing instead of telling you about it. When I think about a journey, that is what I keep chasing, the form saying the same thing as the words.',
+          'NieR: Automata did the opposite and marked me just as much. It uses the structure of the game itself as its argument, and asks you to play again now that you know what you know. It is the closest thing to qualitative research I have ever seen become entertainment.',
+          'I won’t pretend any of this is methodology. I play because I enjoy it, and I take apart what I play for the same reason I took apart the console in my bedroom: to see how it was made. If it comes back into the work later, great, but that was never the plan.',
         ],
         aside: 'Franchises I keep going back to: Metal Gear, NieR, Persona, Silent Hill, Dark Souls.',
       },
@@ -507,8 +511,8 @@ export const cases: Case[] = [
      * an interface that does not exist is the one kind of error a portfolio cannot afford.
      */
     description: {
-      pt: 'Contestação era o principal motivo de ligação na Central do Itaú PJ. Sem verba de desenvolvimento, atacamos os 40% de chamadas que só perguntavam "em que etapa está?" — e o volume caiu 21%.',
-      en: 'Disputes were the single biggest reason people called Itaú’s business centre. With no development budget, we went after the 40% of calls that only asked "what stage is it at?" — and volume fell 21%.',
+      pt: 'Contestação era o principal motivo de ligação na Central do Itaú PJ. Sem verba de desenvolvimento, a gente foi atrás dos 40% de chamadas que só perguntavam "em que etapa está?". O volume caiu 21%.',
+      en: 'Disputes were the single biggest reason people called Itaú’s business centre. With no development budget, we went after the 40% of calls that only asked "what stage is it at?". Volume fell 21%.',
     },
   },
   {
@@ -520,8 +524,8 @@ export const cases: Case[] = [
     },
     company: { pt: 'Reserva INK · AZZAS 2154', en: 'Reserva INK · AZZAS 2154' },
     description: {
-      pt: 'A configuração da loja era a maior fonte de tickets do produto. Reduzi a fricção do onboarding e da personalização: +90% de CSAT e 87% menos reclamações.',
-      en: 'Store setup was the product’s biggest source of support tickets. I cut friction in onboarding and customisation: +90% CSAT and 87% fewer complaints.',
+      pt: 'A configuração da loja era a maior fonte de tickets do produto inteiro. Mexi no onboarding e na personalização para tirar a fricção do caminho: o CSAT subiu 90% e as reclamações caíram 87%.',
+      en: 'Setting up a store was the biggest source of support tickets in the whole product. I reworked onboarding and customisation to take the friction out: CSAT went up 90% and complaints dropped 87%.',
     },
     photo: null,
   },
@@ -534,8 +538,8 @@ export const cases: Case[] = [
     },
     company: { pt: 'Reserva INK · AZZAS 2154', en: 'Reserva INK · AZZAS 2154' },
     description: {
-      pt: 'Reescrevi a ferramenta de personalização de vitrine para um fluxo de dois cliques — 95% mais rápido, 99% de satisfação e 60% menos tempo e custo de criação para 92% dos usuários.',
-      en: 'Rebuilt the showcase customisation tool into a two-click flow — 95% faster, 99% satisfaction, and 60% less creation time and cost for 92% of users.',
+      pt: 'Reescrevi a ferramenta de personalização de vitrine para um fluxo de dois cliques. Ficou 95% mais rápida, com 99% de satisfação e 60% menos tempo e custo de criação para 92% dos lojistas.',
+      en: 'I rebuilt the showcase customisation tool into a two-click flow. It came out 95% faster, with 99% satisfaction and 60% less creation time and cost for 92% of sellers.',
     },
     photo: null,
   },
@@ -709,7 +713,7 @@ export type CaseDetail = {
 export const caseDetails: Record<string, CaseDetail> = {
   'itau-cartoes-pj': {
     slug: 'itau-cartoes-pj',
-    year: '2025 — 2026',
+    year: '2025-2026',
     role: { pt: 'CX Designer / Product Designer', en: 'CX Designer / Product Designer' },
     duration: { pt: '11 meses', en: '11 months' },
     team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
@@ -723,21 +727,21 @@ export const caseDetails: Record<string, CaseDetail> = {
       },
     },
     context: {
-      pt: 'Contestação de despesas era, havia muito tempo, o principal motivo de ligação na Central de Atendimento do Itaú PJ. Reduzimos esse volume em 21% sem escrever uma linha de código.',
+      pt: 'Contestação de despesas era, fazia tempo, o principal motivo de ligação na Central de Atendimento do Itaú PJ. A gente reduziu esse volume em 21% sem escrever uma linha de código.',
       en: 'Expense disputes had long been the single biggest reason customers called Itaú’s business-banking centre. We cut that volume by 21% without writing a line of code.',
     },
 
     conflict: {
-      pt: 'A pesquisa apontava para um produto: uma versão digital da contestação, dentro do site PJ. Mas o banco tinha outras prioridades naquele ciclo, e a orientação da gerência foi reduzir o volume de acionamentos em formato MVP — sem custo de desenvolvimento e sem envolver times técnicos. A experiência certa e a única entrega possível não eram a mesma coisa.',
-      en: 'The research pointed at a product: a digital version of the dispute flow, inside the business banking site. But the bank had other priorities that cycle, and management’s brief was to cut call volume as an MVP — no development budget, no engineering teams. The right experience and the only shippable one were not the same thing.',
+      pt: 'A pesquisa apontava para um produto: uma versão digital da contestação dentro do site PJ. Só que o banco tinha outras prioridades naquele ciclo. A orientação que veio da gerência foi reduzir o volume de ligações em formato de MVP, sem custo de desenvolvimento e sem envolver os times técnicos. Ou seja, a experiência que a gente queria construir ficou de um lado e o que dava para entregar ficou do outro.',
+      en: 'The research pointed at a product: a digital version of the dispute flow inside the business banking site. The bank had other priorities that cycle, though. The brief that came down from management was to cut call volume as an MVP, with no development budget and no engineering teams involved. So the experience we wanted to build sat on one side and what we could actually ship sat on the other.',
     },
     tradeoff: {
-      pt: 'Abri mão de entregar interface. O visioning da experiência digital foi desenhado e guardado — nada dele foi implementado naquele momento. O que foi para produção não foi uma tela: foram informação, prazo e roteiro de atendimento.',
-      en: 'I gave up shipping an interface. The visioning for the digital experience was designed and then shelved — none of it was built at the time. What went live was not a screen: it was information, deadlines and call scripts.',
+      pt: 'Abri mão de entregar interface. O visioning da experiência digital foi desenhado e ficou guardado, sem nada implementado naquele momento. O que foi para produção nessa etapa foi informação, prazo e roteiro de atendimento.',
+      en: 'I gave up shipping an interface. The visioning for the digital experience was designed and then put on the shelf, with nothing implemented at the time. What went live at that stage was information, deadlines and call scripts.',
     },
     decision: {
-      pt: 'Atacar os 40%. O discovery mostrou que cerca de 40% de todas as ligações eram apenas para saber em que etapa a contestação estava e quanto tempo ainda faltava. Em vez de construir o produto que resolveria tudo, tratamos a dúvida que respondia por quase metade do volume: clareza de prazo, canal correto de contato, e onde documentos seriam pedidos e atualizações enviadas.',
-      en: 'Go after the 40%. Discovery showed roughly 40% of all calls existed only to ask what stage the dispute was at and how long was left. Instead of building the product that would fix everything, we addressed the question behind almost half the volume: clear deadlines, the right contact channel, and where documents would be requested and updates sent.',
+      pt: 'Fomos atrás dos 40%. O discovery mostrou que cerca de 40% de todas as ligações eram só para saber em que etapa a contestação estava e quanto tempo ainda faltava. Em vez de esperar pelo produto que resolveria tudo, a gente tratou a dúvida que respondia por quase metade do volume: deixar o prazo claro, acertar o canal de contato e dizer onde os documentos seriam pedidos e as atualizações enviadas.',
+      en: 'We went after the 40%. Discovery showed that around 40% of all calls existed only to ask what stage a dispute was at and how long was left. Instead of waiting for the product that would fix everything, we tackled the question behind almost half the volume: make the deadline clear, get the contact channel right, and say where documents would be requested and updates sent.',
     },
     evidence: [
       {
@@ -785,8 +789,8 @@ export const caseDetails: Record<string, CaseDetail> = {
     chart: {
       title: { pt: 'Chamadas de contestação por mês', en: 'Dispute calls per month' },
       note: {
-        pt: 'Fonte: relatório de volume da Central de Atendimento, ago–dez/2025.',
-        en: 'Source: call centre volume report, Aug–Dec 2025.',
+        pt: 'Fonte: relatório de volume da Central de Atendimento, de agosto a dezembro de 2025.',
+        en: 'Source: the call centre volume report, August to December 2025.',
       },
       points: [
         { label: '08/25', value: 2395 },
@@ -798,49 +802,49 @@ export const caseDetails: Record<string, CaseDetail> = {
     },
 
     challenge: {
-      pt: 'Mover uma métrica de operação sem poder construir nada. Sem verba de desenvolvimento e sem time técnico, só restava o que já existia: o roteiro do analista, o que ele diz sobre prazo, e por qual canal o cliente é procurado depois. Achar, dentro dessas restrições, o ponto que respondia por 40% do volume levou 16 semanas de discovery.',
-      en: 'Moving an operational metric with nothing to build. With no development budget and no engineering team, all that was left was what already existed: the analyst’s script, what it says about deadlines, and which channel the customer is contacted through afterwards. Finding the one point worth 40% of the volume, inside those constraints, took 16 weeks of discovery.',
+      pt: 'Mexer numa métrica de operação sem poder construir nada. Sem verba e sem time técnico, sobrou o que já existia: o roteiro do analista, o que ele fala sobre prazo e por qual canal o cliente é procurado depois. Achar dentro dessas restrições o ponto que respondia por 40% do volume levou 16 semanas de discovery.',
+      en: 'Moving an operational metric with nothing to build. No budget and no engineering team left us with what was already there: the analyst’s script, what it says about deadlines, and which channel the customer gets contacted through afterwards. Finding the one point worth 40% of the volume inside those limits took 16 weeks of discovery.',
     },
     detail: [
       {
         title: { pt: 'O problema', en: 'The problem' },
         body: {
-          pt: 'A vertente PJ do Itaú é antiga e boa parte dela ainda roda em Voxel. Os clientes presos a esse sistema legado não têm a experiência dos padrões atuais do banco: estudos de usabilidade, design, acessibilidade e o JIP não chegavam até ali. Nesse cenário, Contestação de Despesas era a área mais crítica em reclamações e em ligações — custo mensal alto e sobrecarga constante para os analistas.',
-          en: 'Itaú’s business-banking side is old, and much of it still runs on Voxel. Customers stuck on that legacy system do not get the bank’s current standards: usability studies, design, accessibility and the JIP framework never reached them. Inside that picture, expense disputes were the most critical area for both complaints and calls — high monthly cost and constant load on the analysts.',
+          pt: 'A vertente PJ do Itaú é antiga e boa parte dela ainda roda em Voxel. Quem depende desse sistema legado não recebe a experiência dos padrões atuais do banco, porque estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram até ali. Nesse cenário, Contestação de Despesas era a área mais crítica em reclamações e em ligações, com custo mensal alto e sobrecarga constante para os analistas.',
+          en: 'Itaú’s business-banking side is old, and a good part of it still runs on Voxel. Anyone who depends on that legacy system misses out on the bank’s current standards, because usability studies, design, accessibility and the JIP framework never reached it. In that setting, expense disputes were the most critical area for complaints and calls alike, with a high monthly cost and a constant load on the analysts.',
         },
       },
       {
         title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
         body: {
-          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ, durante o lançamento de um produto novo em parceria com a VISA — cinco jornadas críticas, das quais contestação era, de longe, a mais cara.',
-          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA — five critical journeys, of which disputes were by far the most expensive.',
+          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.',
+          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.',
         },
       },
       {
         title: { pt: 'O discovery', en: 'Discovery' },
         body: {
-          pt: 'Reunimos meu time, a Central de Atendimento, o time de contestação da PF e outras áreas envolvidas. Ao longo de 16 semanas: sessões de Lean Inception, revisão completa dos fluxos e da esteira de contestação, benchmarks com bancos tradicionais e digitais — PJ e PF —, entrevistas com usuários e uma contestação real aberta do começo ao fim. Também mapeamos o motor de fraudes, os prazos e os SLAs envolvidos no processo.',
-          en: 'We brought together my team, the call centre, the retail-side dispute team and the other areas involved. Over 16 weeks: Lean Inception sessions, a full review of the flows and of the dispute pipeline, benchmarks against traditional and digital banks — business and retail — user interviews, and a real dispute filed and followed end to end. We also mapped the fraud engine, the deadlines and the SLAs in the process.',
+          pt: 'Juntamos meu time, a Central de Atendimento, o time de contestação da PF e as outras áreas envolvidas. Foram 16 semanas de sessões de Lean Inception, revisão completa dos fluxos e da esteira de contestação, benchmarks com bancos tradicionais e digitais (PJ e PF), entrevistas com usuários e uma contestação real que eu mesmo abri e acompanhei até o fim. Também mapeamos o motor de fraudes, os prazos e os SLAs do processo.',
+          en: 'We pulled together my team, the call centre, the retail-side dispute team and the other areas involved. Sixteen weeks of Lean Inception sessions, a full review of the flows and the dispute pipeline, benchmarks against traditional and digital banks (business and retail), user interviews, and a real dispute that I filed myself and followed to the end. We also mapped the fraud engine, the deadlines and the SLAs in the process.',
         },
       },
       {
         title: { pt: 'O visioning que ficou guardado', en: 'The visioning that was shelved' },
         body: {
-          pt: 'Antes de tocar no roteiro, construímos um visioning de como a experiência ideal funcionaria no site PJ — dentro do JIP, o Jeito Itaú de Produtar, e sobre o iDS, o design system do banco. Ele não foi implementado, e ainda assim serviu ao propósito: orientar as decisões do MVP para que continuassem válidas quando o produto digital chegasse.',
-          en: 'Before touching the script, we built a visioning of how the ideal experience would work on the business banking site — inside JIP, Itaú’s product framework, and on iDS, the bank’s design system. It was never implemented, and it still did its job: it kept the MVP’s decisions valid for the day the digital product arrived.',
+          pt: 'Antes de tocar no roteiro, construímos um visioning de como a experiência ideal funcionaria no site PJ, dentro do JIP (o Jeito Itaú de Produtar) e sobre o iDS, o design system do banco. Ele nunca foi implementado e mesmo assim cumpriu o papel dele: orientou as decisões do MVP para que continuassem valendo quando o produto digital chegasse.',
+          en: 'Before touching the script, we built a visioning of how the ideal experience would work on the business banking site, inside JIP (Itaú’s product framework) and on iDS, the bank’s design system. It was never implemented and it still did its job: it steered the MVP decisions so they would still hold when the digital product arrived.',
         },
       },
       {
         title: { pt: 'O que mudou na Central', en: 'What changed at the call centre' },
         body: {
-          pt: 'Propusemos melhorias pontuais nos scripts usados pelos analistas: clareza sobre o prazo e a etapa da solicitação, qual canal o banco usa para falar com o cliente, e onde documentos são pedidos e atualizações enviadas. Nenhuma dessas coisas é uma tela. Foram elas que derrubaram 21% do volume ao longo dos meses.',
-          en: 'We proposed targeted changes to the scripts the analysts use: clarity on the deadline and the stage of a request, which channel the bank uses to reach the customer, and where documents are requested and updates sent. None of that is a screen. Those are the things that took 21% off the volume over the following months.',
+          pt: 'Propusemos melhorias pontuais nos scripts que os analistas usam: deixar claro o prazo e a etapa da solicitação, dizer qual canal o banco usa para falar com o cliente e apontar onde os documentos são pedidos e as atualizações enviadas. São ajustes de conversa, sem uma tela nova em nenhum deles, e foram eles que derrubaram 21% do volume ao longo dos meses.',
+          en: 'We proposed targeted changes to the scripts the analysts use: make the deadline and the stage of a request clear, say which channel the bank uses to reach the customer, and point out where documents get requested and updates sent. They are adjustments to a conversation, with no new screen anywhere in them, and they are what took 21% off the volume over the following months.',
         },
       },
     ],
     gameChanger: {
-      pt: 'Depois do MVP, fui responsável por desenhar toda a nova experiência de Contestação de Despesas da BUPJ Itaú, com previsão de implementação em 2026. Reduzir ligações com roteiro virou o argumento que justificou construir o produto. Por se tratar de informação sensível, esse material não pode ser divulgado aqui — para mais detalhes, entre em contato.',
-      en: 'After the MVP I was responsible for designing the whole new expense-dispute experience for Itaú’s business unit, scheduled for 2026. Cutting calls with a script became the argument that justified building the product. As this is sensitive material it cannot be published here — get in touch for the details.',
+      pt: 'Depois do MVP, fiquei responsável por desenhar toda a nova experiência de Contestação de Despesas da BUPJ Itaú, com previsão de implementação em 2026. Ter derrubado as ligações só com roteiro virou o argumento que justificou construir o produto de verdade. Como é informação sensível, esse material não pode ser divulgado aqui. Se quiser saber mais, é só entrar em contato.',
+      en: 'After the MVP I became responsible for designing the whole new expense-dispute experience for Itaú’s business unit, scheduled for 2026. Having brought the calls down with a script alone became the argument that justified building the real product. Since this is sensitive material it cannot be published here. If you want to know more, just get in touch.',
     },
 
     contribution: [
@@ -865,8 +869,8 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         src: null,
         caption: {
-          pt: 'Acompanhamento da contestação: etapa, prazo e canal — exatamente a dúvida que respondia por 40% das ligações.',
-          en: 'Dispute tracking: stage, deadline and channel — precisely the question behind 40% of the calls.',
+          pt: 'Acompanhamento da contestação: etapa, prazo e canal. Era exatamente essa a dúvida por trás de 40% das ligações.',
+          en: 'Dispute tracking: stage, deadline and channel. This was exactly the question behind 40% of the calls.',
         },
         confidential: true,
       },
@@ -875,7 +879,7 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'reserva-ink-aparencia-de-loja': {
     slug: 'reserva-ink-aparencia-de-loja',
-    year: '2023 — 2024',
+    year: '2023-2024',
     role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
     duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
@@ -889,8 +893,8 @@ export const caseDetails: Record<string, CaseDetail> = {
       },
     },
     context: {
-      pt: 'A configuração de loja era a maior fonte de tickets do produto. Virou o fluxo de maior CSAT.',
-      en: 'Store setup was the product’s biggest source of tickets. It became its highest-CSAT flow.',
+      pt: 'A configuração de loja era a maior fonte de tickets do produto e acabou virando o fluxo com o melhor CSAT de todos.',
+      en: 'Setting up a store was the product’s biggest source of tickets, and it ended up becoming the flow with the best CSAT of all.',
     },
 
     conflict: null,
@@ -910,7 +914,7 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         value: '60k+',
         label: { pt: 'LOJISTAS NA PLATAFORMA', en: 'SELLERS ON THE PLATFORM' },
-        note: { pt: 'Base ativa impactada pela mudança.', en: 'The active base the change reached.' },
+        note: { pt: 'O tamanho da base ativa que a mudança alcançou.', en: 'The size of the active base the change reached.' },
       },
     ],
 
@@ -920,14 +924,14 @@ export const caseDetails: Record<string, CaseDetail> = {
         title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
         body: {
           pt: 'A INK é a plataforma de print on demand da Reserva, parte do grupo AZZAS 2154, o maior grupo de vestuário da América Latina. Mais de 60 mil empreendedores usam a plataforma para montar e operar as próprias lojas.',
-          en: 'INK is Reserva’s print-on-demand platform, part of AZZAS 2154 — Latin America’s largest apparel group. Over 60,000 entrepreneurs use it to build and run their own stores.',
+          en: 'INK is Reserva’s print-on-demand platform, part of AZZAS 2154, the largest apparel group in Latin America. Over 60,000 entrepreneurs use it to build and run their own stores.',
         },
       },
       {
         title: { pt: 'A evidência veio do suporte', en: 'The evidence came from support' },
         body: {
-          pt: 'Os tickets de reclamação foram a fonte primária: os motivos apontavam direto para os pontos de quebra do fluxo. Somados a entrevistas de UX com lojistas e testes de usabilidade, deram o mapa do que precisava mudar.',
-          en: 'Complaint tickets were the primary source — the reasons pointed straight at where the flow broke. Combined with UX interviews and usability testing, they mapped what had to change.',
+          pt: 'Os tickets de reclamação foram a fonte principal, porque os motivos apontavam direto para onde o fluxo quebrava. Junto com entrevistas de UX com lojistas e testes de usabilidade, eles deram o mapa do que precisava mudar.',
+          en: 'Complaint tickets were the main source, because the reasons pointed straight at where the flow was breaking. Together with UX interviews with sellers and usability testing, they gave us the map of what had to change.',
         },
       },
     ],
@@ -954,7 +958,7 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'reserva-ink-imagens-de-vitrine': {
     slug: 'reserva-ink-imagens-de-vitrine',
-    year: '2023 — 2024',
+    year: '2023-2024',
     role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
     duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
@@ -984,7 +988,7 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         value: '95%',
         label: { pt: 'MAIS RÁPIDO', en: 'FASTER' },
-        note: { pt: 'Que o processo anterior — o fluxo caiu para dois cliques.', en: 'Than the previous process — the flow dropped to two clicks.' },
+        note: { pt: 'Que o processo anterior. O fluxo inteiro caiu para dois cliques.', en: 'Than the previous process. The whole flow dropped to two clicks.' },
       },
       {
         value: '−60%',
@@ -998,15 +1002,15 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         title: { pt: 'Por que isso importava', en: 'Why it mattered' },
         body: {
-          pt: 'Todo produto na INK precisa de imagem de vitrine para vender. Sem ela, o item existe no catálogo mas não converte — e a maioria dos lojistas não é designer. O custo de criar produto era, na prática, uma barreira de entrada no negócio.',
-          en: 'Every INK product needs a showcase image to sell. Without one, an item exists in the catalogue but does not convert — and most sellers are not designers. The cost of creating a product was, in practice, a barrier to entry.',
+          pt: 'Todo produto na INK precisa de imagem de vitrine para vender. Sem ela, o item até existe no catálogo, mas não converte, e a maioria dos lojistas não é designer. O custo de criar um produto virou, na prática, uma barreira de entrada no negócio.',
+          en: 'Every INK product needs a showcase image to sell. Without one an item does sit in the catalogue, but it does not convert, and most sellers are not designers. The cost of creating a product had become, in practice, a barrier to entry.',
         },
       },
       {
         title: { pt: 'Acessibilidade como requisito de negócio', en: 'Accessibility as a business requirement' },
         body: {
-          pt: 'O alcance da mudança dependia de funcionar para quem não tem repertório visual. Isso colocou acessibilidade e facilidade de uso como requisito, não como refinamento — e é o que explica os 92% de cobertura.',
-          en: 'The reach of the change depended on it working for people with no visual training. That made accessibility and ease of use a requirement rather than a polish item — and it is what explains the 92% coverage.',
+          pt: 'O alcance da mudança dependia de funcionar para quem não tem repertório visual. Por isso acessibilidade e facilidade de uso entraram como requisito desde o começo, e é isso que explica os 92% de cobertura.',
+          en: 'The reach of the change depended on it working for people with no visual training. That is why accessibility and ease of use went in as a requirement from the start, and it is what explains the 92% coverage.',
         },
       },
     ],
@@ -1018,7 +1022,7 @@ export const caseDetails: Record<string, CaseDetail> = {
         en: 'Redesigned the showcase image customisation tool into a two-click flow.',
       },
       {
-        pt: 'Medi tempo e custo de criação antes e depois, para sustentar o resultado com dado.',
+        pt: 'Medi tempo e custo de criação antes e depois, para sustentar o resultado com dados.',
         en: 'Measured creation time and cost before and after, to back the result with data.',
       },
     ],
@@ -1033,7 +1037,7 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'bricker-amelie': {
     slug: 'bricker-amelie',
-    year: '2024 — 2025',
+    year: '2024-2025',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     duration: { pt: '4 meses', en: '4 months' },
     team: { pt: 'Bricker · startup early-stage', en: 'Bricker · early-stage startup' },
@@ -1078,15 +1082,15 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         title: { pt: 'A tese', en: 'The thesis' },
         body: {
-          pt: 'A Bricker é uma startup early-stage que aplica tecnologia ao financiamento imobiliário. A ideia é direta: no mundo Bricker, as máquinas fazem o trabalho chato. A análise prévia depende de ler e validar pilhas de documentos — lento, manual, propenso a erro, e a primeira coisa entre alguém e a casa que quer comprar.',
-          en: 'Bricker is an early-stage startup applying technology to mortgage lending. The idea is blunt: at Bricker, machines do the boring work. Pre-approval depends on reading and validating stacks of documents — slow, manual, error-prone, and the first thing between someone and the home they want.',
+          pt: 'A Bricker é uma startup early-stage que aplica tecnologia ao financiamento imobiliário. A ideia é bem direta: no mundo Bricker, as máquinas fazem o trabalho chato. A análise prévia depende de ler e validar pilhas de documentos, um processo lento, manual e cheio de erro, que ainda por cima é a primeira coisa entre a pessoa e a casa que ela quer comprar.',
+          en: 'Bricker is an early-stage startup applying technology to mortgage lending. The idea is pretty blunt: at Bricker, machines do the boring work. Pre-approval depends on reading and validating stacks of documents, a slow and manual process full of errors, which also happens to be the first thing standing between someone and the home they want.',
         },
       },
       {
         title: { pt: 'Trabalhar sem fundação', en: 'Working without foundations' },
         body: {
-          pt: 'Sem design system herdado e sem base de usuários instalada, o trabalho foi estabelecer fundações e validar rápido. Criei o Design System da Corban do zero e usei N8N para construir e manter os chatbots de IA.',
-          en: 'With no inherited design system and no installed user base, the work was to lay foundations and validate fast. I built the Corban design system from scratch and used N8N to build and maintain the AI chatbots.',
+          pt: 'Não havia design system herdado nem base de usuários instalada, então o trabalho ali foi montar as fundações e validar rápido. Criei o Design System da Corban do zero e usei N8N para construir e manter os chatbots de IA.',
+          en: 'There was no inherited design system and no installed user base, so the work there was to lay the foundations and validate fast. I built the Corban design system from scratch and used N8N to build and maintain the AI chatbots.',
         },
       },
     ],
@@ -1142,12 +1146,12 @@ export const about = {
 
   paragraphs: {
     pt: [
-      'Minha carreira teve início no branding, desenhando identidade e campanhas, e levei esse repertório visual para dentro de produto digital. Hoje combino Continuous Discovery com processos ágeis para criar soluções que equilibram experiência, viabilidade técnica e resultado de negócio — de MVPs a jornadas complexas em larga escala.',
-      'Na minha trajetória passei por banking em escala, varejo de alto volume, consultoria global e startups early-stage e scale-up. Uso inteligência artificial para acelerar etapas do processo: síntese de pesquisa, geração de wireframes, testes de usabilidade e verificação de acessibilidade.',
+      'Minha carreira começou no branding, desenhando identidade e campanha, e eu fui levando esse repertório visual para dentro do produto digital. Hoje combino Continuous Discovery com processos ágeis para chegar em soluções que equilibram experiência, viabilidade técnica e resultado de negócio, desde MVPs até jornadas complexas em larga escala.',
+      'Ao longo do caminho passei por grandes bancos, varejo de alto volume, consultoria global e startups, tanto early-stage quanto scale-up. Uso inteligência artificial para acelerar etapas do processo, como síntese de pesquisa, geração de wireframes, testes de usabilidade e verificação de acessibilidade.',
     ],
     en: [
-      'My career began in branding, designing identities and campaigns, and I carried that visual repertoire into digital product. Today I combine Continuous Discovery with agile process to build solutions that balance experience, technical feasibility and business outcome — from MVPs to complex journeys at scale.',
-      'Along the way I’ve worked in banking at scale, high-volume retail, global consultancy, and both early-stage and scale-up startups. I use AI to accelerate parts of the process: research synthesis, wireframe generation, usability testing and accessibility checks.',
+      'My career started in branding, designing identities and campaigns, and I carried that visual repertoire with me into digital product. These days I combine Continuous Discovery with agile process to reach solutions that balance experience, technical feasibility and business outcome, from MVPs through to complex journeys at scale.',
+      'Along the way I have worked in big banks, high-volume retail, a global consultancy, and startups both early-stage and scale-up. I use AI to speed up parts of the process, things like research synthesis, wireframe generation, usability testing and accessibility checks.',
     ],
   } satisfies Record<Lang, string[]>,
 
@@ -1204,8 +1208,8 @@ export type Metric = {
 export const metrics = {
   kicker: { pt: 'RESULTADOS EM DESTAQUE', en: 'SELECTED RESULTS' } satisfies T,
   subhead: {
-    pt: 'Resultados significativos e comprovados durante a minha jornada como Product Designer ao longo dos anos.',
-    en: 'Significant, proven results from my journey as a Product Designer over the years.',
+    pt: 'Alguns números que eu ajudei a mover ao longo desses anos trabalhando como Product Designer.',
+    en: 'A few numbers I helped move over these years working as a Product Designer.',
   } satisfies T,
 
   items: [
@@ -1213,8 +1217,8 @@ export const metrics = {
       label: { pt: 'AUMENTO DE CSAT', en: 'CSAT INCREASE' },
       value: '+90%',
       note: {
-        pt: 'Após o redesenho da configuração de aparência de loja na Reserva INK.',
-        en: 'After redesigning storefront appearance configuration at Reserva INK.',
+        pt: 'Depois que eu redesenhei a configuração de aparência de loja na Reserva INK.',
+        en: 'After I redesigned the storefront appearance settings at Reserva INK.',
       },
       verified: true,
     },
@@ -1234,7 +1238,7 @@ export const metrics = {
       label: { pt: 'REDUÇÃO DE LIGAÇÕES', en: 'CALL VOLUME REDUCTION' },
       value: '−21%',
       note: {
-        pt: 'Na Central de Atendimento de cartões PJ do Itaú, após redesenhar as jornadas de contestação.',
+        pt: 'Na Central de Atendimento de cartões PJ do Itaú, depois de mexer na jornada de contestação.',
         en: 'At Itaú’s business-card call centre, after redesigning the dispute journeys.',
       },
       verified: true,
@@ -1256,8 +1260,8 @@ export const metrics = {
 export const history = {
   heading: { pt: 'Minha história no design', en: 'My history in design' } satisfies T,
   intro: {
-    pt: 'Comecei no branding, desenhando identidade e campanha, e levei esse repertório visual para dentro de produto digital.',
-    en: 'I started in branding, designing identities and campaigns, and carried that visual repertoire into digital product.',
+    pt: 'Comecei no branding, desenhando identidade e campanha, e fui levando esse repertório visual comigo para dentro do produto digital.',
+    en: 'I started out in branding, designing identities and campaigns, and carried that visual repertoire with me into digital product.',
   } satisfies T,
 
   companies: [
@@ -1265,15 +1269,15 @@ export const history = {
       name: 'Banco Itaú',
       description: {
         // Sharpened: his actual scope is cards then investments, not "crédito e atendimento".
-        pt: 'Banking em escala — jornadas de cartões PJ lançadas com a VISA e, hoje, investimentos em ativos escriturais.',
-        en: 'Banking at scale — business-card journeys launched with VISA and, currently, book-entry asset investments.',
+        pt: 'Banco em escala. Jornadas de cartões PJ lançadas com a VISA e, hoje, investimentos em ativos escriturais.',
+        en: 'Banking at scale. Business-card journeys launched with VISA and, right now, book-entry asset investments.',
       },
     },
     {
       name: 'NTT DATA',
       description: {
-        pt: 'Consultoria global japonesa — design de produto em squads de clientes enterprise.',
-        en: 'Japanese global consultancy — product design inside enterprise client squads.',
+        pt: 'Consultoria global japonesa. Design de produto dentro de squads de clientes enterprise.',
+        en: 'Japanese global consultancy. Product design inside enterprise client squads.',
       },
     },
     {
@@ -1281,22 +1285,22 @@ export const history = {
       description: {
         // Confirmed by João (2026-08-22): delivered as a project via NTT DATA, not direct
         // employment. He considers it significant work and it stays in the history list.
-        pt: 'Saúde e farmacêutica — plataforma de treinamento com consultas médicas simuladas por IA.',
-        en: 'Health and pharma — a training platform with AI-simulated medical consultations.',
+        pt: 'Saúde e farmacêutica. Plataforma de treinamento com consultas médicas simuladas por IA.',
+        en: 'Health and pharma. A training platform with AI-simulated medical consultations.',
       },
     },
     {
       name: 'Bricker',
       description: {
-        pt: 'Startup early-stage no mercado imobiliário — IA para leitura de documentos e otimização de processos.',
-        en: 'Early-stage proptech startup — AI for document reading and process optimisation.',
+        pt: 'Startup early-stage no mercado imobiliário. IA para leitura de documentos e otimização de processos.',
+        en: 'Early-stage proptech startup. AI for document reading and process optimisation.',
       },
     },
     {
       name: 'Reserva INK',
       description: {
-        pt: 'Moda e tecnologia — SaaS de print on demand para mais de 60 mil lojistas, no grupo AZZAS 2154.',
-        en: 'Fashion and tech — print-on-demand SaaS for 60,000+ sellers, part of AZZAS 2154.',
+        pt: 'Moda e tecnologia. SaaS de print on demand para mais de 60 mil lojistas, dentro do grupo AZZAS 2154.',
+        en: 'Fashion and tech. Print-on-demand SaaS for over 60,000 sellers, part of the AZZAS 2154 group.',
       },
     },
     {
@@ -1309,8 +1313,8 @@ export const history = {
     {
       name: 'ZEMA',
       description: {
-        pt: 'O maior varejo e e-commerce de Minas Gerais — jornada de compra e empréstimo pessoal.',
-        en: 'Minas Gerais’ largest retailer and e-commerce — purchase journey and personal lending.',
+        pt: 'O maior varejo e e-commerce de Minas Gerais. Jornada de compra e empréstimo pessoal.',
+        en: 'The largest retailer and e-commerce in Minas Gerais. Purchase journey and personal lending.',
       },
     },
   ],
@@ -1331,8 +1335,8 @@ export const contact = {
   } satisfies Record<Lang, string[]>,
 
   paragraph: {
-    pt: 'Aberto a conversas sobre produto, design e IA — de oportunidades a trocas rápidas.',
-    en: 'Open to conversations about product, design and AI — from opportunities to quick chats.',
+    pt: 'Estou sempre aberto para conversar sobre produto, design e IA. Pode ser uma oportunidade de trabalho ou só um papo rápido.',
+    en: 'I am always up for a conversation about product, design and AI. It can be a job opportunity or just a quick chat.',
   } satisfies T,
 
   channels: {
@@ -1364,7 +1368,7 @@ export const contact = {
 export const projectsPage = {
   heading: { pt: 'Projetos selecionados', en: 'Selected projects' } satisfies T,
   subheading: {
-    pt: 'Selecione o tipo de projeto',
+    pt: 'Escolha o tipo de projeto',
     en: 'Choose a kind of project',
   } satisfies T,
 
@@ -1382,8 +1386,8 @@ export const projectsPage = {
    * grid with no explanation reads as a page that failed to load.
    */
   empty: {
-    pt: 'Nada por aqui ainda — os projetos desta categoria estão sendo escritos.',
-    en: 'Nothing here yet — the projects in this category are still being written.',
+    pt: 'Nada por aqui ainda. Os projetos desta categoria ainda estão sendo escritos.',
+    en: 'Nothing here yet. The projects in this category are still being written.',
   } satisfies T,
 
   readCase: { pt: 'Ler o case', en: 'Read the case' } satisfies T,
@@ -1411,6 +1415,38 @@ export const casePage = {
   /* Shown when the reader arrived from the one-pager rather than from the projects index. */
   backHome: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
   backLong: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
+
+  /*
+   * The section headings, which used to be hard-coded in Portuguese inside the component. That
+   * made them the only strings on the site the language toggle could not reach: an English
+   * reader got the whole case in English under headings in Portuguese.
+   */
+  layers: {
+    sixty: { pt: 'EM 60 SEGUNDOS', en: 'IN 60 SECONDS' } satisfies T,
+    sixtyShort: { pt: 'RESULTADOS', en: 'RESULTS' } satisfies T,
+    sixMin: { pt: 'EM 6 MINUTOS', en: 'IN 6 MINUTES' } satisfies T,
+  },
+
+  headings: {
+    conflict: { pt: 'O QUE COMPLICOU', en: 'WHAT MADE IT HARD' } satisfies T,
+    tradeoff: { pt: 'O QUE ABRI MÃO', en: 'WHAT I GAVE UP' } satisfies T,
+    decision: { pt: 'O QUE EU DECIDI', en: 'WHAT I DECIDED' } satisfies T,
+    challenge: { pt: 'A parte mais difícil', en: 'The hardest part' } satisfies T,
+    contribution: { pt: 'O que eu fiz', en: 'What I did' } satisfies T,
+    gameChanger: { pt: 'O que isso destravou', en: 'What this unlocked' } satisfies T,
+  },
+
+  /** Column headers for the accessible table behind a case chart. */
+  chart: {
+    period: { pt: 'Mês', en: 'Month' } satisfies T,
+    amount: { pt: 'Chamadas', en: 'Calls' } satisfies T,
+  },
+
+  /** Appended to a gallery caption when the artwork is still waiting on an NDA review. */
+  ndaPending: {
+    pt: 'imagem pendente de avaliação de NDA',
+    en: 'image pending NDA review',
+  } satisfies T,
 };
 
 export const menu = {
@@ -1430,8 +1466,8 @@ export const menu = {
 export const modal = {
   heading: { pt: 'Vamos conversar?', en: 'Let’s talk?' } satisfies T,
   line: {
-    pt: 'Escolha o canal que preferir — respondo rápido nos três.',
-    en: 'Pick whichever channel you prefer — I reply quickly on all three.',
+    pt: 'Escolha o canal que você preferir. Eu respondo rápido nos três.',
+    en: 'Pick whichever channel you prefer. I reply quickly on all three.',
   } satisfies T,
   channels: {
     email: { pt: 'E-mail', en: 'E-mail' } satisfies T,

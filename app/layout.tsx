@@ -4,9 +4,9 @@ import { LanguageProvider } from '@/lib/language';
 import './globals.css';
 
 const SITE = 'https://joaomeloux.vercel.app';
-const TITLE = 'João V. Melo — Senior Product Designer & CX Designer';
+const TITLE = 'João V. Melo · Senior Product Designer & CX Designer';
 const DESCRIPTION =
-  'Product Designer com 9 anos de experiência, 6 deles em produtos digitais. Banking em escala, varejo de alto volume, consultoria global e startups — com foco em craft, métricas e IA.';
+  'Product Designer com 9 anos de experiência, 6 deles em produtos digitais. Já passei por grandes bancos, varejo de alto volume, consultoria global e startups. Hoje com foco em craft, métricas e IA.';
 
 /*
  * Declared explicitly rather than left to the framework default.
