@@ -93,8 +93,8 @@ export function PageFold({
     const apply = () => {
       /* The case corner is a fixed size; only the hero's peels with the scroll. */
       if (variant === 'case') return;
-      /* Hovered or mid-turn, the CSS owns the size — see hoverRef and .pulling. */
-      if (hoverRef.current || el.classList.contains(styles.pulling)) return;
+      /* Hovered, the CSS owns the size — see hoverRef. */
+      if (hoverRef.current) return;
 
       const hero = document.querySelector('header');
       if (!hero) return;
@@ -133,16 +133,6 @@ export function PageFold({
       el.style.visibility = fade < 0.05 ? 'hidden' : '';
     };
 
-    /*
-     * A turn is happening, whether the reader pulled this corner or simply scrolled. The corner
-     * pulls itself for the duration, so the gesture they DID make is the one they see.
-     */
-    const onTurn = (event: Event) => {
-      const detail = (event as CustomEvent<{ duration: number }>).detail;
-      el.classList.add(styles.pulling);
-      window.setTimeout(() => el.classList.remove(styles.pulling), detail?.duration ?? 1500);
-    };
-
     const onEnter = () => {
       hoverRef.current = true;
       el.style.removeProperty('--foldSize');
@@ -156,7 +146,6 @@ export function PageFold({
     apply();
     window.addEventListener('scroll', apply, { passive: true });
     window.addEventListener('resize', apply);
-    window.addEventListener('pageturn', onTurn);
     el.addEventListener('mouseenter', onEnter);
     el.addEventListener('mouseleave', onLeave);
     el.addEventListener('focus', onEnter);
@@ -164,7 +153,6 @@ export function PageFold({
     return () => {
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
-      window.removeEventListener('pageturn', onTurn);
       el.removeEventListener('mouseenter', onEnter);
       el.removeEventListener('mouseleave', onLeave);
       el.removeEventListener('focus', onEnter);

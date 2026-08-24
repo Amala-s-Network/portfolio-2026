@@ -111,14 +111,6 @@ export function useSectionSettle() {
         frame = 0;
       }, TURN_MS + 400);
 
-      /*
-       * The corners peel while the page turns.
-       *
-       * Broadcast rather than wired directly: there are four corners on this page, one per
-       * screen, and the hook has no business knowing which of them is currently visible. Each
-       * listens and pulls itself; the ones that are off-screen do it unseen and cost nothing.
-       */
-      window.dispatchEvent(new CustomEvent('pageturn', { detail: { duration: TURN_MS } }));
 
       const step = (now: number) => {
         const t = Math.min(1, (now - began) / TURN_MS);
