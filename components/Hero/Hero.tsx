@@ -24,6 +24,23 @@ import styles from './Hero.module.css';
 const FLIP_EVERY = 3000;
 
 /**
+ * Whether the door to the craft side is shown on the home page.
+ *
+ * OFF for now, at João's request — parked, not removed. Everything behind it is intact and
+ * working: the gate, the NieR identity preview that takes over the whole page on hover, the
+ * /craft start menu and the shooter. Flipping this back to true is the only edit needed to
+ * bring all of it back onto the front page.
+ *
+ * A flag rather than commented-out markup, because commented-out JSX stops being type-checked
+ * and stops being touched by refactors — it rots quietly and is broken by the time anyone
+ * uncomments it. This way the code stays live and only the render is gated.
+ *
+ * /craft is still reachable by URL, which is deliberate: João can keep building it and looking
+ * at it without a visitor finding it from the front page. It is noindex too.
+ */
+const SHOW_CRAFT_DOOR = false;
+
+/**
  * README "Entrance cascade": kicker → H1 → paragraph → CTA, 260ms apart, starting when the intro
  * releases scroll. (The 260×1px divider that used to sit between H1 and paragraph was removed at
  * João's request, so it is no longer a step.)
@@ -272,6 +289,7 @@ export function Hero({
               * comes from a token, so overriding the tokens changes thirty components without
               * naming one of them — see html.nierPreview in globals.css.
               */}
+            {SHOW_CRAFT_DOOR && (
             <button
               type="button"
               className={styles.unlock}
@@ -284,6 +302,7 @@ export function Hero({
               <span className={styles.unlockNano} aria-hidden="true" />
               <span className={styles.unlockLabel}>{t(craftGate.trigger)}</span>
             </button>
+            )}
           </Reveal>
         </div>
       </div>
