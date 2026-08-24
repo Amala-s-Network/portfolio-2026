@@ -250,13 +250,17 @@
   bottom: 20px;
 }
 
-@media (max-width: 768px) {
+/*
+ * The between-cases corner is REMOVED on touch, at João's instruction.
+ *
+ * On a phone it sits in the corner of a panel that is already one big link to the case page, and
+ * a thumb resting near the edge while scrolling hits it — the reader ends up on a case they
+ * never chose, which is the opposite of moving through the work. Nothing is lost: swiping
+ * onwards already does what the corner did, and the hero's corner stays, since that one is the
+ * invitation rather than a shortcut between two things.
+ */
+@media (pointer: coarse), (max-width: 768px) {
   .inCase {
-    --foldSize: clamp(44px, 6vh, 60px);
-  }
-
-  .inCase:hover,
-  .inCase:focus-visible {
-    --foldSize: clamp(44px, 6vh, 60px);
+    display: none;
   }
 }

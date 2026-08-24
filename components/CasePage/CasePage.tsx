@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
 import { useLanguage } from '@/lib/language';
 import { cases, caseDetails, casePage as copy, type T } from '@/content/copy';
 import styles from './CasePage.module.css';
@@ -27,6 +28,25 @@ function Missing({ what, ask, dark }: { what: string; ask: string; dark?: boolea
 
 export function CasePage({ slug }: { slug: string }) {
   const { t } = useLanguage();
+
+  /*
+   * Where "back" goes, decided by where the reader came from.
+   *
+   * Read in an effect rather than during render: sessionStorage does not exist on the server,
+   * and reading it while rendering would give the server one answer and the browser another —
+   * the mismatch React calls a hydration error. Defaulting to the projects index means the
+   * first paint is always the safe one, and a reader who came from the home page sees the label
+   * correct itself on the same frame the page becomes interactive.
+   */
+  const [fromHome, setFromHome] = useState(false);
+
+  useEffect(() => {
+    try {
+      setFromHome(sessionStorage.getItem('caseOrigin') === 'home');
+    } catch {
+      /* Storage refused — the projects index is the safe destination. */
+    }
+  }, []);
   const summary = cases.find((c) => c.slug === slug);
   const data = caseDetails[slug];
   if (!summary || !data) return null;
@@ -54,9 +74,9 @@ export function CasePage({ slug }: { slug: string }) {
          * menu rather than going home, so without this the only escape was the browser's own
          * back button.
          */}
-        <Link className={styles.backTop} href="/projetos">
+        <Link className={styles.backTop} href={fromHome ? '/' : '/projetos'}>
           <span className={styles.backArrow} aria-hidden="true">⇠</span>
-          {t(copy.back)}
+          {fromHome ? t(copy.backHome) : t(copy.back)}
         </Link>
 
         <div className={styles.folio}>

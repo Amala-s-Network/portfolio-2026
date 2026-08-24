@@ -71,6 +71,17 @@ export function PageFold({
 }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLButtonElement>(null);
+  /*
+   * Whether the cursor is on the corner.
+   *
+   * This exists because of a bug worth naming: the scroll handler writes --foldSize as an INLINE
+   * style, and an inline custom property beats the stylesheet's :hover rule outright. The hero's
+   * corner therefore never grew when hovered — the pull was written, and silently overruled on
+   * the next scroll event. The case corners worked only because they take no inline size at all.
+   *
+   * While hovered the inline value is removed, which hands control back to the CSS.
+   */
+  const hoverRef = useRef(false);
 
   useEffect(() => {
     const el = ref.current;
@@ -81,6 +92,8 @@ export function PageFold({
     const apply = () => {
       /* The case corner is a fixed size; only the hero's peels with the scroll. */
       if (variant === 'case') return;
+      /* Hovered, the CSS owns the size — see hoverRef. */
+      if (hoverRef.current) return;
 
       const hero = document.querySelector('header');
       if (!hero) return;
@@ -119,12 +132,30 @@ export function PageFold({
       el.style.visibility = fade < 0.05 ? 'hidden' : '';
     };
 
+    const onEnter = () => {
+      hoverRef.current = true;
+      el.style.removeProperty('--foldSize');
+      el.style.removeProperty('--lift');
+    };
+    const onLeave = () => {
+      hoverRef.current = false;
+      apply();
+    };
+
     apply();
     window.addEventListener('scroll', apply, { passive: true });
     window.addEventListener('resize', apply);
+    el.addEventListener('mouseenter', onEnter);
+    el.addEventListener('mouseleave', onLeave);
+    el.addEventListener('focus', onEnter);
+    el.addEventListener('blur', onLeave);
     return () => {
       window.removeEventListener('scroll', apply);
       window.removeEventListener('resize', apply);
+      el.removeEventListener('mouseenter', onEnter);
+      el.removeEventListener('mouseleave', onLeave);
+      el.removeEventListener('focus', onEnter);
+      el.removeEventListener('blur', onLeave);
     };
   }, [variant]);
 

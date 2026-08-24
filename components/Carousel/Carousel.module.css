@@ -176,6 +176,13 @@
   margin-top: 42px;
 }
 
+/*
+ * Primary, at João's instruction: filled in --ink with the glyph knocked out, matching the
+ * "Entrar em contato" button rather than the outline treatment they had.
+ *
+ * The disabled state keeps the fill and drops to 32% rather than reverting to an outline — an
+ * arrow that changes shape when it stops working reads as two different controls.
+ */
 .arrow {
   width: 46px;
   height: 46px;
@@ -183,9 +190,9 @@
   align-items: center;
   justify-content: center;
 
-  border: 1px solid var(--hairline-mid);
-  background: transparent;
-  color: var(--ink);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
   font-size: 17px;
 
   transition: border-color 0.45s var(--ease),
@@ -195,7 +202,8 @@
 
 .arrow:hover:not(:disabled),
 .arrow:focus-visible:not(:disabled) {
-  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
   transform: translateY(-3px);
   box-shadow: var(--shadow-button-sm);
 }

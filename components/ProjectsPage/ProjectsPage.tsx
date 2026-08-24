@@ -176,7 +176,17 @@ export function ProjectsPage() {
               return (
                 <li key={e.slug} className={styles.card}>
                   {e.href ? (
-                    <Link className={styles.cardLink} href={e.href}>
+                    <Link
+                      className={styles.cardLink}
+                      href={e.href}
+                      onClick={() => {
+                        try {
+                          sessionStorage.setItem('caseOrigin', 'projetos');
+                        } catch {
+                          /* See CasePanel — storage can be refused, the default still holds. */
+                        }
+                      }}
+                    >
                       {inner}
                     </Link>
                   ) : (

@@ -677,7 +677,17 @@
     grid-template-columns: minmax(0, 1fr);
     gap: 0;
     margin-top: 24px;
-    padding-top: 18px;
+    /* 16px from the rule to the first line, and nothing else in between. */
+    padding-top: 16px;
+  }
+
+  /*
+   * The paragraph margin below applies to BOTH columns once they stack, which put the first one
+   * 42px under the divider instead of 16. Only the first is zeroed — the second still needs its
+   * own separation from the first.
+   */
+  .deck > *:first-child {
+    margin-top: 0;
   }
 
   .paragraph {
@@ -689,7 +699,8 @@
 
   /* 24px from the paragraph, per João's spacing. */
   .cta {
-    margin-top: 32px;
+    /* Up from 32: the button follows the text it belongs to. */
+    margin-top: 24px;
   }
 
   .ctaWrap {

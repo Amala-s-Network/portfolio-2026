@@ -84,6 +84,12 @@ export function About() {
 
               {/* Painted over the photo on hover: veil, then grain, then the words. */}
               <span className={styles.veil} aria-hidden="true" />
+
+              {/*
+                * Touch only — see the CSS. A dark sphere crosses the portrait on a loop, standing
+                * in for the cursor that is not there.
+                */}
+              <span className={styles.portraitSphere} aria-hidden="true" />
               <span className={styles.portraitGrain} aria-hidden="true" />
               <span className={styles.portraitLabel}>
                 {storyCopy.open[lang].map((line, i) => (

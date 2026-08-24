@@ -1086,6 +1086,8 @@ export const casePage = {
    * find their way to the list again, which is the opposite of what the control promises.
    */
   back: { pt: 'Voltar aos projetos', en: 'Back to projects' } satisfies T,
+  /* Shown when the reader arrived from the one-pager rather than from the projects index. */
+  backHome: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
   backLong: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
 };
 

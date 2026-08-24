@@ -89,18 +89,9 @@
 }
 
 /*
- * The photograph desaturates under the cursor. Not a filter for its own sake: the veil and the
- * heavy grain that come with it are a black-and-white treatment, and leaving the skin tones in
- * underneath would make the grain read as a fault in the image rather than as a surface over it.
+ * The photograph keeps its colour, at João's instruction. The veil and grain do the work of
+ * separating the invitation from the picture without draining it.
  */
-.portraitLink img {
-  transition: filter 0.6s var(--ease);
-}
-
-.portraitLink:hover img,
-.portraitLink:focus-visible img {
-  filter: grayscale(1) contrast(1.06);
-}
 
 /* ---- the veil ---- */
 
@@ -183,22 +174,99 @@
 }
 
 /*
- * Touch has no hover, so the whole reveal would never fire — and a photograph that opens
- * something with no sign that it does is a trap. Below 768px the treatment is simply on.
+ * ---------------------------------------------------------------- touch
+ *
+ * There is no hover to reveal anything, and a photograph that opens something with no sign that
+ * it does is a trap. Rather than leaving the veil permanently on — which reads as a broken image
+ * rather than as an offer — a dark sphere crosses the portrait on a loop, the same object that
+ * lives on the headline upstairs, doing there by itself what the cursor does here.
+ *
+ * The label rides with it: visible while the sphere is over the photograph, gone while it is
+ * away, so the invitation arrives with the movement instead of sitting there permanently.
  */
-@media (pointer: coarse) {
-  .portraitLink img {
-    filter: grayscale(1) contrast(1.06);
-  }
+/*
+ * The travelling sphere, declared BEFORE the media query that turns it on.
+ *
+ * Order matters here and got me once: with this block after the query, its display: none won on
+ * source order alone and the sphere never appeared on a phone — same specificity, later rule
+ * takes it. Hidden by default because on a pointer device the cursor already is one; this is its
+ * stand-in, not a second copy.
+ */
+.portraitSphere {
+  position: absolute;
+  display: none;
+  width: 62%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(12, 11, 9, 0.72);
+  top: 19%;
+  left: 0;
+  pointer-events: none;
+  animation: spherePass 5.2s var(--ease-inout) infinite;
+}
+
+/*
+ * The width clause is not redundant: (pointer: coarse) alone does not match a desktop browser
+ * resized to a phone width, so the treatment was invisible in every test that was not on real
+ * hardware — the same trap this project has hit before.
+ */
+@media (pointer: coarse), (max-width: 768px) {
   .veil {
+    opacity: 0;
+  }
+
+  .portraitGrain {
+    opacity: 0.28;
+  }
+
+  .portraitSphere {
+    display: block;
+  }
+
+  .portraitLabel {
+    animation: labelPass 5.2s var(--ease-inout) infinite;
+  }
+}
+
+
+@keyframes spherePass {
+  0%,
+  8% {
+    transform: translateX(-70%);
+  }
+  46%,
+  58% {
+    transform: translateX(60%);
+  }
+  100% {
+    transform: translateX(190%);
+  }
+}
+
+@keyframes labelPass {
+  0%,
+  14% {
+    opacity: 0;
+  }
+  30%,
+  62% {
     opacity: 1;
   }
-  .portraitGrain {
-    opacity: 0.5;
+  82%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No crossing. The offer is simply stated and left there. */
+  .portraitSphere {
+    animation: none;
+    transform: translateX(60%);
   }
   .portraitLabel {
+    animation: none;
     opacity: 1;
-    transform: none;
   }
 }
 

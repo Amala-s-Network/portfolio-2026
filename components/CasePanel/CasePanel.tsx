@@ -153,10 +153,24 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
           <div className={styles.scrim} />
 
           {/* README §5: an absolute anchor covers the panel as the click target. */}
+          {/*
+            * The origin is recorded on the way out, not guessed on the way back.
+            *
+            * document.referrer is empty after a client-side navigation, and Next does not expose
+            * the previous route — so the only honest way to know whether the reader came from
+            * the one-pager or from the projects index is for whoever sent them to say so.
+            */}
           <Link
             className={styles.anchor}
             href={`/cases/${data.slug}`}
             aria-label={t(data.title)}
+            onClick={() => {
+              try {
+                sessionStorage.setItem('caseOrigin', 'home');
+              } catch {
+                /* Private modes can refuse storage; the fallback destination is still correct. */
+              }
+            }}
           />
 
           <div className={styles.veil} />
