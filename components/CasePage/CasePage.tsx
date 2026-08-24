@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { CaseChart } from '@/components/CaseChart/CaseChart';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
@@ -178,6 +179,13 @@ export function CasePage({ slug }: { slug: string }) {
             </div>
           ))}
         </Reveal>
+
+        {/*
+          * The series, when there is one. It sits directly under the evidence numbers because it
+          * is the same claim at a different resolution: the cards state −21%, the bars show the
+          * five months it took and let the reader do the division themselves.
+          */}
+        {data.chart && <CaseChart data={data.chart} />}
       </section>
 
       {/* ------------------------------------------------ 6 minutes */}

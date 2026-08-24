@@ -1,0 +1,195 @@
+/*
+ * The chart lives inside the 60s layer, which is the dark band — so every colour here comes from
+ * the --on-dark-* family rather than from --ink. It is the only place on the site with a chart,
+ * and it earns its place by being the proof of the number printed above it.
+ */
+
+.root {
+  margin: 76px 0 0;
+  padding-top: 40px;
+  border-top: 1px solid var(--on-dark-rule);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--on-dark-50);
+}
+
+/*
+ * The fall, printed once at the top of the chart. Computed from the series rather than typed in,
+ * so it can never drift away from the bars underneath it if a month is corrected later.
+ */
+.delta {
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-dark);
+}
+
+/* ------------------------------------------------------------- plot */
+
+.plot {
+  display: flex;
+  align-items: flex-end;
+  gap: clamp(10px, 2vw, 26px);
+
+  height: 260px;
+  margin-top: 30px;
+}
+
+.column {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/*
+ * The plotting area, and the reason this chart is correct.
+ *
+ * `flex: 1` gives it whatever is left after the month label, and `position: relative` makes that
+ * height something the bar's percentage can resolve against. The bar was previously a flex
+ * sibling of the labels, which let the container shrink it to fit — and four different values
+ * came out as four identical bars. Absolute positioning inside a resolved box removes every
+ * negotiation: the bar is the height the data says it is.
+ */
+.track {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+/*
+ * Grown with scaleY from the baseline, not with height.
+ *
+ * transform-origin: bottom is what makes it read as a bar rising out of the axis rather than as
+ * a block stretched from its centre — and scaleY stays on the compositor, so five bars animating
+ * together cost no layout passes.
+ */
+.bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: var(--h);
+
+  background: var(--on-dark);
+  opacity: 0.34;
+
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.9s var(--ease) var(--delay);
+}
+
+/* The figure rides the top of its own bar, the way the source slide sets them. */
+.value {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--h);
+
+  padding-bottom: 9px;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-dark-72);
+  text-align: center;
+
+  opacity: 0;
+  transition: opacity 0.5s var(--ease) calc(var(--delay) + 260ms);
+}
+
+.bar.on {
+  transform: scaleY(1);
+}
+
+.value.on {
+  opacity: 1;
+}
+
+/*
+ * The last bar is the argument — it is the month the number is quoted from. Full opacity marks
+ * it without needing a second colour, a legend, or a label that says "final".
+ */
+.column:last-child .bar {
+  opacity: 1;
+}
+
+.column:last-child .value {
+  color: var(--on-dark);
+}
+
+/*
+ * The month sits under the axis rule, outside the plotting track — it labels the column, not the
+ * bar, and putting it inside the track would shorten the bar it is meant to be describing.
+ */
+.label {
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--on-dark-50);
+  padding-top: 14px;
+  text-align: center;
+  border-top: 1px solid var(--on-dark-rule);
+  margin-top: 12px;
+}
+
+.note {
+  font-size: 13px;
+  line-height: var(--lh-body);
+  color: var(--on-dark-50);
+  margin-top: 22px;
+  max-width: 62ch;
+}
+
+/* The table that carries the figures for assistive tech, visually removed but still read. */
+.sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  .plot {
+    height: 190px;
+    gap: 8px;
+  }
+
+  .value {
+    font-size: 12px;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 0;
+  }
+}
+
+/*
+ * Reduced motion: the bars are already at their height, they simply do not grow into it. The
+ * chart is information, so it must never be the animation's job to make it appear.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    transform: none;
+    transition: none;
+  }
+
+  .value {
+    opacity: 1;
+    transition: none;
+  }
+}
