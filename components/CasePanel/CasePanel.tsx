@@ -77,24 +77,9 @@ export function CasePanel({ data, index, isLast, next }: CasePanelProps) {
        */
       const exit = isLast ? clamp01((vh - r.bottom) / vh) : 0;
 
-      /*
-       * DIAGONAL, hinged on the bottom-right corner — the corner the dog-ear lives on.
-       *
-       * The README's turn was translateY: the page rose straight up from below. That is a sheet
-       * being pushed, not turned. Real paper pivots about the corner you lift it by, so the
-       * motion has to carry an X component and a rotation in the plane of the page, not only
-       * depth.
-       *
-       * The three parts are doing different jobs and none is decoration. translate brings it in
-       * along the diagonal, weighted more vertically than horizontally so it still reads as
-       * arriving from below rather than sliding in from the side. rotate is the swing about the
-       * corner. rotateX is the README's original foreshortening, kept because it is what stops
-       * the whole thing looking like a flat card on a conveyor.
-       */
-      panel.style.transform =
-        `translate(${rest * 24}%, ${rest * 88 - exit * 100}%) rotate(${rest * 6}deg) rotateX(${
-          rest * -9
-        }deg) scale(${1 - rest * 0.06})`;
+      panel.style.transform = `translateY(${rest * 100 - exit * 100}%) rotateX(${
+        rest * -11
+      }deg) scale(${1 - rest * 0.05})`;
 
       /*
        * The page turning has a sound whether the reader pulled the corner or simply scrolled.
