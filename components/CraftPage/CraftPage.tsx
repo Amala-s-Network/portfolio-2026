@@ -1,8 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLanguage } from '@/lib/language';
+import { Hacking } from '@/components/Hacking/Hacking';
 import { craftGate, craftPage as copy } from '@/content/copy';
 import styles from './CraftPage.module.css';
 
@@ -23,6 +24,7 @@ import styles from './CraftPage.module.css';
 export function CraftPage() {
   const { lang, t } = useLanguage();
   const [armed, setArmed] = useState(0);
+  const [playing, setPlaying] = useState(false);
 
   /* Arrow keys move the selection, as they would with a controller. */
   useEffect(() => {
@@ -35,10 +37,24 @@ export function CraftPage() {
         e.preventDefault();
         setArmed((i) => (i - 1 + copy.options.length) % copy.options.length);
       }
+      /* Enter confirms, which for three of the four rows means nothing yet and for one is a game. */
+      if (e.key === 'Enter' && copy.options[armedRef.current].id === 'salvar') {
+        e.preventDefault();
+        setPlaying(true);
+      }
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
   }, []);
+
+  /*
+   * The key handler is bound once and would otherwise close over the first value of `armed`
+   * forever — the classic stale-closure trap. A ref tracks the live value for it to read.
+   */
+  const armedRef = useRef(0);
+  useEffect(() => {
+    armedRef.current = armed;
+  }, [armed]);
 
   const current = copy.options[armed];
 
@@ -91,7 +107,11 @@ export function CraftPage() {
                     className={`${styles.option} ${armed === i ? styles.armed : ''}`}
                     onMouseEnter={() => setArmed(i)}
                     onFocus={() => setArmed(i)}
-                    onClick={() => setArmed(i)}
+                    onClick={() => {
+                      setArmed(i);
+                      /* The fourth row is the only one that does something when confirmed. */
+                      if (option.id === 'salvar') setPlaying(true);
+                    }}
                   >
                     <span className={styles.mark} aria-hidden="true" />
                     {t(option.label)}
@@ -144,6 +164,8 @@ export function CraftPage() {
 
       {/* The credit, on the screen that does the borrowing. */}
       <p className={styles.credit}>{t(craftGate.credit)}</p>
+
+      <Hacking open={playing} onClose={() => setPlaying(false)} />
     </main>
   );
 }

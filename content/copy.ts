@@ -260,6 +260,18 @@ export const craftPage = {
         en: 'Shows everything, unfiltered.',
       } satisfies T,
     },
+    /*
+     * The fourth is not a category, and it is the only row that DOES something rather than
+     * filtering something. It sits last for that reason — a menu should not open with its joke.
+     */
+    {
+      id: 'salvar',
+      label: { pt: 'Salve o mundo', en: 'Save the world' } satisfies T,
+      hint: {
+        pt: 'Salve o mundo da ameaça alienígena.',
+        en: 'Save the world from the alien threat.',
+      } satisfies T,
+    },
   ],
 
   /* The right-hand panel while a category has nothing in it yet. */
@@ -275,6 +287,54 @@ export const craftPage = {
   },
 
   backLabel: { pt: 'VOLTAR AO PORTFÓLIO', en: 'BACK TO THE PORTFOLIO' } satisfies T,
+};
+
+/**
+ * The hacking minigame — the credits shooter, as a nod to Yoko Taro.
+ *
+ * ⚠️ Same attribution as everything else on this side: the idea is NieR: Automata's, and the
+ * credit sits on the screen rather than in a footer. This is a personal, non-commercial page.
+ *
+ * The instructions are two lines and no more. The reference teaches its shooter by handing you a
+ * ship that already fires and letting you discover the rest, and a wall of rules in front of a
+ * thirty-second game is a longer read than the game is a play.
+ */
+export const hacking = {
+  title: { pt: 'SALVE O MUNDO', en: 'SAVE THE WORLD' } satisfies T,
+  system: { pt: 'PROTOCOLO DE DEFESA', en: 'DEFENCE PROTOCOL' } satisfies T,
+
+  instructions: {
+    pt: [
+      'Use os direcionais para mover e o mouse para controlar a mira.',
+      'Salve o mundo da ameaça alienígena.',
+    ],
+    en: [
+      'Use the arrow keys to move and the mouse to aim.',
+      'Save the world from the alien threat.',
+    ],
+  } satisfies Record<Lang, string[]>,
+
+  start: { pt: 'INICIAR', en: 'START' } satisfies T,
+  retry: { pt: 'TENTAR NOVAMENTE', en: 'TRY AGAIN' } satisfies T,
+  quit: { pt: 'SAIR', en: 'QUIT' } satisfies T,
+
+  score: { pt: 'PONTOS', en: 'SCORE' } satisfies T,
+  wave: { pt: 'ONDA', en: 'WAVE' } satisfies T,
+
+  over: { pt: 'NAVE DESTRUÍDA', en: 'SHIP DESTROYED' } satisfies T,
+  /* Shown once, under the game-over line — the reference never lets a loss be only a loss. */
+  overNote: {
+    pt: 'O mundo segue ameaçado. Isso costuma acontecer.',
+    en: 'The world remains under threat. This tends to happen.',
+  } satisfies T,
+
+  legend: {
+    red: { pt: 'Três disparos para destruir.', en: 'Three shots to destroy.' } satisfies T,
+    black: {
+      pt: 'Atravessa os disparos. Desvie.',
+      en: 'Passes through your fire. Evade.',
+    } satisfies T,
+  },
 };
 
 /* ------------------------------------------------------------- story */

@@ -1,0 +1,229 @@
+/*
+ * The hacking minigame.
+ *
+ * The one screen on this site that is NOT the olive ground: the reference's shooter plays on
+ * black, and the glow the whole thing is built on only exists against it. Everything around the
+ * arena keeps the other identity, so the game reads as a window inside that system rather than
+ * as a third design.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 360;
+
+  display: flex;
+  flex-direction: column;
+  padding: 18px clamp(16px, 4vw, 48px) 14px;
+
+  background: var(--nier-bg);
+  color: var(--nier-ink);
+  font-family: var(--font-jost), system-ui, sans-serif;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+
+.open {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s var(--ease), visibility 0s;
+}
+
+/* ---- head ---- */
+
+.head {
+  flex: none;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--nier-rule);
+}
+
+.system {
+  font-size: 11px;
+  letter-spacing: 0.34em;
+  opacity: 0.6;
+}
+
+.title {
+  margin-top: 8px;
+  font-size: clamp(24px, 3.4vw, 38px);
+  font-weight: 300;
+  letter-spacing: 0.2em;
+  line-height: 1;
+  opacity: 0.78;
+}
+
+.readout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin-top: 14px;
+  font-size: 12.5px;
+  letter-spacing: 0.14em;
+}
+
+.readout b {
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.quit {
+  min-height: 32px;
+  padding: 0 14px;
+  border: 1px solid var(--nier-ink);
+  background: transparent;
+  color: var(--nier-ink);
+  font-family: inherit;
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  transition: background-color 0.16s linear, color 0.16s linear;
+}
+
+.quit:hover,
+.quit:focus-visible {
+  background: var(--nier-ink);
+  color: var(--nier-bg);
+}
+
+/* ---- arena ---- */
+
+.arena {
+  position: relative;
+  flex: 1;
+  margin: 14px 0;
+  background: #050507;
+  overflow: hidden;
+}
+
+.canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- the curtain, before and after a run ---- */
+
+.curtain {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+
+  background: rgba(5, 5, 7, 0.86);
+  color: #e6e4d8;
+}
+
+.over {
+  font-size: clamp(22px, 3vw, 32px);
+  letter-spacing: 0.22em;
+  color: #ff5238;
+}
+
+.overNote {
+  margin-top: -10px;
+  font-size: 12.5px;
+  opacity: 0.62;
+}
+
+.instructions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13.5px;
+  letter-spacing: 0.06em;
+  opacity: 0.9;
+}
+
+.legend {
+  display: flex;
+  gap: 26px;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: 11.5px;
+  opacity: 0.72;
+}
+
+.legendItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* The two enemies, drawn the same way the canvas draws them so the legend is not a lie. */
+.dotRed,
+.dotBlack {
+  width: 13px;
+  height: 13px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.dotRed {
+  background: #e6432d;
+  box-shadow: 0 0 10px rgba(255, 70, 40, 0.85);
+}
+
+.dotBlack {
+  background: #07070a;
+  border: 1.5px solid rgba(226, 226, 238, 0.85);
+  box-shadow: 0 0 8px rgba(210, 210, 225, 0.4);
+}
+
+.start {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  margin-top: 4px;
+  padding: 0 22px;
+
+  border: 0;
+  background: #e6e4d8;
+  color: #07070a;
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transition: background-color 0.16s linear, color 0.16s linear;
+}
+
+.start:hover,
+.start:focus-visible {
+  background: #ff5238;
+  color: #07070a;
+}
+
+.mark {
+  width: 9px;
+  height: 9px;
+  background: currentColor;
+  flex: none;
+}
+
+.credit {
+  flex: none;
+  font-size: 10.5px;
+  line-height: 1.5;
+  opacity: 0.6;
+  max-width: 96ch;
+}
+
+@media (max-width: 700px) {
+  .title {
+    letter-spacing: 0.14em;
+  }
+  .legend {
+    gap: 14px;
+  }
+}
