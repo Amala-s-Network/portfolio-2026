@@ -507,3 +507,110 @@ html:has(.nierSurface) body::after,
 html:has(.nierSurface) body::before {
   display: none;
 }
+
+
+/*
+ * ============================================================ NIER PREVIEW
+ *
+ * While the cursor is on "Desbloquear criatividade", the WHOLE PAGE changes identity.
+ *
+ * It is done by overriding tokens, not by restyling components, and that is only possible
+ * because every colour and every typeface on this site already comes from a variable. Thirty
+ * components change their appearance here and not one of them is mentioned by name — which also
+ * means the preview cannot drift out of sync with the site as it grows.
+ *
+ * The transition is 130ms and deliberately close to a cut. A slow fade would read as a mood
+ * changing; this is a machine switching modes, and machines do not ease.
+ */
+html.nierPreview {
+  --paper: #c3c2a5;
+  --ink: #46443b;
+  --body: #504d42;
+  --muted: #6a6656;
+  --muted-light: #6a6656;
+  --muted-lighter: #6a6656;
+
+  --hairline: rgba(70, 68, 59, 0.26);
+  --hairline-alt: rgba(70, 68, 59, 0.26);
+  --hairline-light: rgba(70, 68, 59, 0.22);
+  --hairline-mid: rgba(70, 68, 59, 0.42);
+  --hairline-mid-2: rgba(70, 68, 59, 0.34);
+  --hairline-mid-3: rgba(70, 68, 59, 0.3);
+
+  /*
+   * The green diamond goes. It is the portfolio's one spot of colour and the reference has no
+   * spot colour at all — its whole palette is one hue at different weights.
+   */
+  --accent: #46443b;
+
+  --on-dark: #c3c2a5;
+  --on-dark-72: rgba(195, 194, 165, 0.72);
+  --on-dark-50: rgba(195, 194, 165, 0.5);
+  --on-dark-rule: rgba(195, 194, 165, 0.2);
+  --on-dark-rule-2: rgba(195, 194, 165, 0.22);
+
+  --navBg: #c3c2a5;
+  --navFg: #46443b;
+  --navMuted: #6a6656;
+  --navTrack: rgba(70, 68, 59, 0.2);
+
+  /*
+   * Both faces become the geometric one. Overriding the VARIABLES rather than the rules means
+   * the display face, the text face and everything set in either change together — including
+   * components written long before this existed.
+   */
+  --font-playfair: var(--font-jost);
+  --font-archivo: var(--font-jost);
+}
+
+/*
+ * No grain, for the same reason it is off on the craft page: that interface is rendered by a
+ * machine to a screen. Grain is the texture of something printed, and this is the one moment the
+ * site is claiming not to be.
+ */
+html.nierPreview body::after,
+html.nierPreview body::before {
+  display: none;
+}
+
+html.nierPreview body,
+html.nierPreview header,
+html.nierPreview nav,
+html.nierPreview section,
+html.nierPreview h1,
+html.nierPreview h2,
+html.nierPreview h3,
+html.nierPreview p,
+html.nierPreview button,
+html.nierPreview a,
+html.nierPreview span,
+html.nierPreview div {
+  transition: background-color 0.13s linear, color 0.13s linear, border-color 0.13s linear;
+}
+
+/*
+ * The portrait becomes a pixelated sphere.
+ *
+ * Real pixelation, not a filter pretending: the image is rendered at 15px and scaled back up
+ * with nearest-neighbour sampling, so what is on screen genuinely holds fifteen pixels of
+ * information. A blur or a mosaic filter would smooth between them and read as a photograph out
+ * of focus rather than as an avatar a machine is holding at low resolution.
+ *
+ * The flip is untouched — it lives on the wrapper, so the sphere keeps turning.
+ */
+html.nierPreview [class*='Hero-module'][class*='avatar'] img {
+  width: 15px;
+  height: 15px;
+  transform: scale(3.7333);
+  transform-origin: top left;
+  image-rendering: pixelated;
+  filter: grayscale(1) contrast(1.35) sepia(0.35);
+}
+
+/* Anyone who asked for less motion still gets the change, without the transition on top of it. */
+@media (prefers-reduced-motion: reduce) {
+  html.nierPreview body,
+  html.nierPreview * {
+    transition: none;
+  }
+}

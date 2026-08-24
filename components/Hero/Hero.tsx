@@ -261,16 +261,26 @@ export function Hero({
             </Button>
 
             {/*
-              * The secondary way out of this page.
+              * The secondary way out of this page — and a window into where it goes.
               *
-              * It does not invert the document any more. Inverting everything was a bigger
-              * gesture than the button had earned and it dragged the photographs through a
-              * negative on the way — loud, and about the page rather than about where the button
-              * goes. What happens instead is that the BUTTON crosses over: the other identity
-              * assembles inside it, ground, ink and typeface at once, so the control shows you
-              * the room it opens rather than shouting about the one you are in.
+              * While the cursor is on it the WHOLE PAGE changes identity: ground, ink, both
+              * typefaces, the nav, the marquee, the portrait. It is a preview rather than an
+              * effect. A button that merely describes another room asks the reader to take its
+              * word for it; this one shows them the room and lets them decide from inside it.
+              *
+              * The switch is a class on the root element. Every colour and face on this site
+              * comes from a token, so overriding the tokens changes thirty components without
+              * naming one of them — see html.nierPreview in globals.css.
               */}
-            <button type="button" className={styles.unlock} onClick={onUnlock}>
+            <button
+              type="button"
+              className={styles.unlock}
+              onClick={onUnlock}
+              onMouseEnter={() => document.documentElement.classList.add('nierPreview')}
+              onMouseLeave={() => document.documentElement.classList.remove('nierPreview')}
+              onFocus={() => document.documentElement.classList.add('nierPreview')}
+              onBlur={() => document.documentElement.classList.remove('nierPreview')}
+            >
               <span className={styles.unlockNano} aria-hidden="true" />
               <span className={styles.unlockLabel}>{t(craftGate.trigger)}</span>
             </button>
