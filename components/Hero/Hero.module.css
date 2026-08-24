@@ -465,21 +465,22 @@
    * air that makes the row look composed rather than filled.
    */
   /*
-   * Two columns of a fixed measure, then a flexible column that holds the button at its far end.
+   * João's measurements, taken from the Figma frame: text boxes at 340px maximum, 40px between
+   * every item, the whole row packed against the 48px left margin.
    *
-   * The previous version used justify-content: space-between with an auto third column, and it
-   * fell apart exactly where there was room to. space-between divides ALL the slack between the
-   * items: at 1366 that was 239px between each, which passed; at 1920 it was 516px, and the two
-   * columns and the button ended up three unrelated objects scattered across the screen.
+   * The columns are minmax(0, 340px) rather than a flat 340px so they can give ground on a
+   * narrow window instead of forcing the row wider than the page. 340 is the ceiling he asked
+   * for, not a floor.
    *
-   * A fixed 56px gutter keeps the columns reading as a pair whatever the width, and the third
-   * column absorbs the slack instead of it being handed out as spacing. The button rides that
-   * column's right edge, so it sits on the page's right margin — the same line the nav and every
-   * section below already end on.
+   * justify-content: start is the part that matters and the part I got wrong before. With
+   * space-between the slack was divided between the items, which at 1920 put 516px between each
+   * and turned the row into three unrelated objects. Packed left, the row is the same shape on
+   * every screen and the empty space collects at the right, where it belongs.
    */
-  grid-template-columns: minmax(0, 32ch) minmax(0, 32ch) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 340px) minmax(0, 340px) auto;
+  justify-content: start;
   align-items: start;
-  gap: 56px;
+  gap: 40px;
   margin-top: 44px;
   padding-top: 22px;
   border-top: 1px solid var(--hairline);
@@ -503,8 +504,6 @@
 .ctaWrap {
   display: flex;
   align-items: flex-start;
-  /* Anchored to the page's right margin rather than floating after the text. */
-  justify-self: end;
 }
 
 .cta {
