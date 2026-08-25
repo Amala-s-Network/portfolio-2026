@@ -207,9 +207,14 @@
 }
 
 /* Numbers are looked at, not read, so they run the full width outside the measure. */
+/*
+ * auto-fit rather than a fixed three, so a case with four outcomes does not strand the fourth
+ * alone on a second row. With three items the empty tracks collapse and they still take a third
+ * each; with four they take a quarter.
+ */
 .evidence {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
   column-gap: 34px;
   row-gap: 28px;
   margin-top: 76px;

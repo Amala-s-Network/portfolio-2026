@@ -774,6 +774,19 @@ export type CaseDetail = {
  * never be mistaken for a finished one.
  */
 export const caseDetails: Record<string, CaseDetail> = {
+  /*
+   * PROVENANCE — João's written narrative (2026-08-24) plus the deck he presented in January
+   * 2026, "[ITAÚ] RECURSOS - Contestação de DESPESAS", 23 slides.
+   *
+   * Two things the deck settles that the prose did not: the pair of metrics the work was
+   * actually judged on (Contact Rate and NPS), and what happened next (Cronos, the new PJ cards
+   * platform, launching 2026).
+   *
+   * ⚠️ ONE CONFLICT, unresolved. João's prose says the legacy PJ platform is "Voxel"; slide 3
+   * says "VQ (Sistema legado do banco)". They may be the same thing under two names, and I have
+   * no way to tell from here — so the copy names neither and says "o sistema legado", which is
+   * true whichever it is. Worth one line from João before launch.
+   */
   'itau-cartoes-pj': {
     slug: 'itau-cartoes-pj',
     year: '2025-2026',
@@ -790,21 +803,21 @@ export const caseDetails: Record<string, CaseDetail> = {
       },
     },
     context: {
-      pt: 'Contestação de despesas era, fazia tempo, o principal motivo de ligação na Central de Atendimento do Itaú PJ. A gente reduziu esse volume em 21% sem escrever uma linha de código.',
-      en: 'Expense disputes had long been the single biggest reason customers called Itaú’s business-banking centre. We cut that volume by 21% without writing a line of code.',
+      pt: 'Contestação de despesas era, fazia tempo, o principal motivo de ligação na Central de Atendimento do Itaú PJ. A gente reduziu esse volume em 21% sem escrever uma linha de código, e o NPS da squad subiu junto.',
+      en: 'Expense disputes had long been the single biggest reason customers called Itaú’s business-banking centre. We cut that volume by 21% without writing a line of code, and the squad’s NPS went up with it.',
     },
 
     conflict: {
-      pt: 'A pesquisa apontava para um produto: uma versão digital da contestação dentro do site PJ. Só que o banco tinha outras prioridades naquele ciclo. A orientação que veio da gerência foi reduzir o volume de ligações em formato de MVP, sem custo de desenvolvimento e sem envolver os times técnicos. Ou seja, a experiência que a gente queria construir ficou de um lado e o que dava para entregar ficou do outro.',
-      en: 'The research pointed at a product: a digital version of the dispute flow inside the business banking site. The bank had other priorities that cycle, though. The brief that came down from management was to cut call volume as an MVP, with no development budget and no engineering teams involved. So the experience we wanted to build sat on one side and what we could actually ship sat on the other.',
+      pt: 'A pesquisa apontava para um produto: uma versão digital da contestação, dentro da nova plataforma de cartões PJ. Só que o banco tinha outras prioridades naquele ciclo. A orientação que veio da gerência foi reduzir o volume de ligações por quick-wins, sem custo de desenvolvimento e sem envolver os times técnicos. Ou seja, a experiência que a gente queria construir ficou de um lado e o que dava para entregar ficou do outro.',
+      en: 'The research pointed at a product: a digital version of the dispute flow, inside the new business-cards platform. The bank had other priorities that cycle, though. The brief that came down from management was to cut call volume through quick wins, with no development budget and no engineering teams involved. So the experience we wanted to build sat on one side and what we could actually ship sat on the other.',
     },
     tradeoff: {
-      pt: 'Abri mão de entregar interface. O visioning da experiência digital foi desenhado e ficou guardado, sem nada implementado naquele momento. O que foi para produção nessa etapa foi informação, prazo e roteiro de atendimento.',
-      en: 'I gave up shipping an interface. The visioning for the digital experience was designed and then put on the shelf, with nothing implemented at the time. What went live at that stage was information, deadlines and call scripts.',
+      pt: 'Abri mão de entregar interface. A jornada digital foi desenhada e ficou guardada para 2026, sem nada implementado naquele momento. O que foi para produção nessa etapa foi informação, prazo e roteiro de atendimento.',
+      en: 'I gave up shipping an interface. The digital journey was designed and set aside for 2026, with nothing implemented at the time. What went live at that stage was information, deadlines and call scripts.',
     },
     decision: {
-      pt: 'Fomos atrás dos 40%. O discovery mostrou que cerca de 40% de todas as ligações eram só para saber em que etapa a contestação estava e quanto tempo ainda faltava. Em vez de esperar pelo produto que resolveria tudo, a gente tratou a dúvida que respondia por quase metade do volume: deixar o prazo claro, acertar o canal de contato e dizer onde os documentos seriam pedidos e as atualizações enviadas.',
-      en: 'We went after the 40%. Discovery showed that around 40% of all calls existed only to ask what stage a dispute was at and how long was left. Instead of waiting for the product that would fix everything, we tackled the question behind almost half the volume: make the deadline clear, get the contact channel right, and say where documents would be requested and updates sent.',
+      pt: 'Fomos atrás dos 40%. Ouvindo ligações junto com o time da Central, descobrimos que cerca de 40% das chamadas eram só para saber em que etapa a contestação estava e qual o prazo da próxima. Em vez de esperar pelo produto que resolveria tudo, a gente tratou a dúvida que respondia por quase metade do volume: deixar o SLA claro, acertar o canal de contato e dizer onde os documentos seriam pedidos e as atualizações enviadas.',
+      en: 'We went after the 40%. Listening to calls alongside the call centre team, we found that around 40% of them existed only to ask what stage a dispute was at and when the next one would come. Instead of waiting for the product that would fix everything, we tackled the question behind almost half the volume: make the SLA clear, get the contact channel right, and say where documents would be requested and updates sent.',
     },
     evidence: [
       {
@@ -831,13 +844,14 @@ export const caseDetails: Record<string, CaseDetail> = {
           en: 'Where disputes sat among the reasons people called.',
         },
       },
-      /*
-       * The 40% figure is deliberately NOT a fourth card here. These three are outcomes — what
-       * changed because of the work. "40% of calls were only asking about status" is a finding,
-       * the thing that made the decision possible, and it already carries the decision paragraph
-       * above. Filing it as evidence would also leave a lone card stranded on a second row of a
-       * three-column grid, for a number that is not proof of anything having worked.
-       */
+      {
+        value: '+3',
+        label: { pt: 'JORNADAS OTIMIZADAS', en: 'JOURNEYS OPTIMISED' },
+        note: {
+          pt: 'Bloqueio temporário, segunda via e consulta de senha, que somaram ao NPS global do produto no primeiro ano de Cartões PJ.',
+          en: 'Temporary block, card replacement and PIN retrieval, which added to the product’s global NPS in the first year of business cards.',
+        },
+      },
     ],
 
     /*
@@ -845,9 +859,8 @@ export const caseDetails: Record<string, CaseDetail> = {
      *
      * João sent this as a slide image. Rebuilding it from the figures is better on every axis
      * that matters: it stays sharp at any zoom, it takes the page's own colours instead of
-     * importing another brand's, a screen reader gets a real table instead of nothing, and the
-     * −21% is verifiable on screen (2395 → 1893 is −20.96%) rather than being a claim sitting
-     * next to a picture of the same claim.
+     * importing another brand's, and the −21% is verifiable on screen (2395 → 1893 is −20.96%)
+     * rather than being a claim sitting next to a picture of the same claim.
      */
     chart: {
       title: { pt: 'Chamadas de contestação por mês', en: 'Dispute calls per month' },
@@ -873,60 +886,74 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         title: { pt: 'O problema', en: 'The problem' },
         body: {
-          pt: 'A vertente PJ do Itaú é antiga e boa parte dela ainda roda em Voxel. Quem depende desse sistema legado não recebe a experiência dos padrões atuais do banco, porque estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram até ali. Nesse cenário, Contestação de Despesas era a área mais crítica em reclamações e em ligações, com custo mensal alto e sobrecarga constante para os analistas.',
-          en: 'Itaú’s business-banking side is old, and a good part of it still runs on Voxel. Anyone who depends on that legacy system misses out on the bank’s current standards, because usability studies, design, accessibility and the JIP framework never reached it. In that setting, expense disputes were the most critical area for complaints and calls alike, with a high monthly cost and a constant load on the analysts.',
+          pt: 'Contestar uma despesa no cartão PJ dependia quase inteiramente da Central de Atendimento. Prazo, status e responsabilidade não eram claros para ninguém, e a conversa acontecia espalhada por vários canais diferentes. O tema vivia no topo dos acionamentos da Central, com volume oscilando entre 2,5 mil e 3,7 mil por mês nos dois anos anteriores.\n\nIsso batia direto em duas métricas que a squad é cobrada. Contact Rate é quanto o cliente precisa ligar, e cada ligação custa dinheiro em atendente. NPS é o quanto ele fica satisfeito com o serviço, o que mexe na relação dele com o banco inteiro. Contestação estava puxando as duas para baixo ao mesmo tempo.',
+          en: 'Disputing a charge on a business card depended almost entirely on the call centre. Deadlines, status and responsibility were unclear to everyone involved, and the conversation was scattered across several different channels. The subject sat permanently at the top of the call centre’s contact drivers, running between 2,500 and 3,700 a month over the previous two years.\n\nThat hit two metrics the squad is measured on. Contact Rate is how often a customer has to call, and every call costs money in agent time. NPS is how satisfied they are with the service, which affects their relationship with the whole bank. Disputes were dragging both down at once.',
         },
       },
       {
         title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
         body: {
-          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.',
-          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.',
+          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.\n\nBoa parte da vertente PJ ainda roda no sistema legado do banco, onde estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram. O plano combinado era resolver o máximo possível por quick-wins ali, antes de digitalizar a jornada para a plataforma nova.',
+          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.\n\nA good part of the business-banking side still runs on the bank’s legacy system, where usability studies, design, accessibility and the JIP framework never arrived. The agreed plan was to fix as much as possible there through quick wins, before digitising the journey onto the new platform.',
         },
       },
       {
         title: { pt: 'O discovery', en: 'Discovery' },
         body: {
-          pt: 'Juntamos meu time, a Central de Atendimento, o time de contestação da PF e as outras áreas envolvidas. Foram 16 semanas de sessões de Lean Inception, revisão completa dos fluxos e da esteira de contestação, benchmarks com bancos tradicionais e digitais (PJ e PF), entrevistas com usuários e uma contestação real que eu mesmo abri e acompanhei até o fim. Também mapeamos o motor de fraudes, os prazos e os SLAs do processo.',
-          en: 'We pulled together my team, the call centre, the retail-side dispute team and the other areas involved. Sixteen weeks of Lean Inception sessions, a full review of the flows and the dispute pipeline, benchmarks against traditional and digital banks (business and retail), user interviews, and a real dispute that I filed myself and followed to the end. We also mapped the fraud engine, the deadlines and the SLAs in the process.',
+          pt: 'Juntamos meu time, a Central de Atendimento, o time de contestação da PF, Operações, PRC e as coordenações responsáveis. Foram 16 semanas de sessões de Lean Inception, Matriz CSD, revisão completa dos fluxos e da esteira, entrevistas com usuários e uma contestação real que eu mesmo abri e acompanhei até o fim. Também mapeamos o motor de fraudes, os prazos e os SLAs do processo.\n\nA descoberta que orientou tudo veio de sentar com o time da Central e ouvir ligação: cerca de 40% delas eram sobre andamento. Em que etapa está e quanto falta para a próxima. Nada além disso.',
+          en: 'We pulled together my team, the call centre, the retail-side dispute team, operations, risk and the responsible coordinators. Sixteen weeks of Lean Inception sessions, a CSD matrix, a full review of the flows and the pipeline, user interviews, and a real dispute that I filed myself and followed to the end. We also mapped the fraud engine, the deadlines and the SLAs in the process.\n\nThe finding that steered everything came from sitting with the call centre team and listening to calls: around 40% of them were about progress. What stage is it at, and how long until the next one. Nothing beyond that.',
         },
       },
       {
-        title: { pt: 'O visioning que ficou guardado', en: 'The visioning that was shelved' },
+        title: { pt: 'Como o mercado contesta', en: 'How the market handles disputes' },
         body: {
-          pt: 'Antes de tocar no roteiro, construímos um visioning de como a experiência ideal funcionaria no site PJ, dentro do JIP (o Jeito Itaú de Produtar) e sobre o iDS, o design system do banco. Ele nunca foi implementado e mesmo assim cumpriu o papel dele: orientou as decisões do MVP para que continuassem valendo quando o produto digital chegasse.',
-          en: 'Before touching the script, we built a visioning of how the ideal experience would work on the business banking site, inside JIP (Itaú’s product framework) and on iDS, the bank’s design system. It was never implemented and it still did its job: it steered the MVP decisions so they would still hold when the digital product arrived.',
+          pt: 'Fiz benchmarking com 11 players, testando ou pesquisando como a contestação de compras funciona dentro dos aplicativos e sites. Concorrentes diretos e indiretos, bancos tradicionais e digitais, PF e PJ. Os cenários que mais aparecem são sempre os mesmos: perda do cartão, cartão clonado, compra feita por engano e compra cancelada.\n\nO resultado foi desconfortável e útil: todos os players usam a mesma lógica, pela fatura e/ou direto pela central e pelo SAC. Ninguém tinha resolvido isso. Isso tirou da mesa a ideia de copiar alguém e deixou claro que o ganho estava em fazer bem o que todo mundo já faz mal.',
+          en: 'I benchmarked 11 players, testing or researching how purchase disputes work inside their apps and sites. Direct and indirect competitors, traditional and digital banks, retail and business. The recurring scenarios are always the same: a lost card, a cloned card, a purchase made by mistake, and a cancelled purchase.\n\nThe result was uncomfortable and useful: every player uses the same logic, through the statement and/or straight to the call centre and customer service. Nobody had solved this. That took copying someone off the table and made it clear the gain was in doing well what everyone else does badly.',
         },
       },
       {
-        title: { pt: 'O que mudou na Central', en: 'What changed at the call centre' },
+        title: { pt: 'O que o Reclame Aqui mostrou', en: 'What Reclame Aqui showed' },
         body: {
-          pt: 'Propusemos melhorias pontuais nos scripts que os analistas usam: deixar claro o prazo e a etapa da solicitação, dizer qual canal o banco usa para falar com o cliente e apontar onde os documentos são pedidos e as atualizações enviadas. São ajustes de conversa, sem uma tela nova em nenhum deles, e foram eles que derrubaram 21% do volume ao longo dos meses.',
-          en: 'We proposed targeted changes to the scripts the analysts use: make the deadline and the stage of a request clear, say which channel the bank uses to reach the customer, and point out where documents get requested and updates sent. They are adjustments to a conversation, with no new screen anywhere in them, and they are what took 21% off the volume over the following months.',
+          pt: 'Durante o discovery acompanhei diariamente as reclamações sobre contestação de compras no Reclame Aqui. São mais de 2 mil por dia, com média de 48 horas para a empresa responder. Não é um problema do Itaú, é um problema do setor, e ler aquilo todo dia foi o que deu textura aos cenários que a gente estava tratando como categoria.',
+          en: 'Through discovery I followed the complaints about purchase disputes on Reclame Aqui daily. There are over 2,000 a day, with companies taking an average of 48 hours to reply. This is not an Itaú problem, it is an industry problem, and reading it every day is what gave texture to scenarios we had been treating as categories.',
+        },
+      },
+      {
+        title: { pt: 'As Is e To Be', en: 'As Is and To Be' },
+        body: {
+          pt: 'No fluxo que existia havia gente demais envolvida e a comunicação saía por canais diferentes a cada etapa, o que é exatamente a receita para o cliente não saber onde está. No modelo desenhado, a meta era unificar: menos pessoas no processo, mais clareza na comunicação e transparência sobre por onde ela acontece.\n\nEsse trabalho foi feito perto de todos os stakeholders responsáveis, validando diretrizes, mitigando risco e apertando a governança do processo inteiro.',
+          en: 'The flow that existed had too many people in it, and the communication came out through a different channel at each step, which is precisely the recipe for a customer not knowing where they stand. In the model we designed, the goal was to unify: fewer people in the process, more clarity in the communication, and transparency about where it happens.\n\nThat work was done close to every responsible stakeholder, validating guidelines, mitigating risk and tightening governance across the whole process.',
+        },
+      },
+      {
+        title: { pt: 'Os roteiros da Central', en: 'The call centre scripts' },
+        body: {
+          pt: 'Fui atrás das inconsistências: prazos e SLAs que não batiam entre uma etapa e outra, falta de clareza sobre em qual canal a conversa continua, onde o documento é pedido e por onde a atualização chega. São ajustes de conversa, sem uma tela nova em nenhum deles, e foram eles que derrubaram 21% do volume ao longo dos meses.\n\nOs dados dessa análise são confidenciais do cliente e não podem ser mostrados aqui.',
+          en: 'I went after the inconsistencies: deadlines and SLAs that did not match from one step to the next, no clarity about which channel the conversation continues in, where a document gets requested, and how an update arrives. They are adjustments to a conversation, with no new screen anywhere in them, and they are what took 21% off the volume over the following months.\n\nThe data behind that analysis is confidential to the client and cannot be shown here.',
         },
       },
     ],
     gameChanger: {
-      pt: 'Depois do MVP, fiquei responsável por desenhar toda a nova experiência de Contestação de Despesas da BUPJ Itaú, com previsão de implementação em 2026. Ter derrubado as ligações só com roteiro virou o argumento que justificou construir o produto de verdade. Como é informação sensível, esse material não pode ser divulgado aqui. Se quiser saber mais, é só entrar em contato.',
-      en: 'After the MVP I became responsible for designing the whole new expense-dispute experience for Itaú’s business unit, scheduled for 2026. Having brought the calls down with a script alone became the argument that justified building the real product. Since this is sensitive material it cannot be published here. If you want to know more, just get in touch.',
+      pt: 'Depois dos quick-wins, fiquei responsável por criar a versão digitalizada da jornada para o Cronos, a nova plataforma de cartões PJ do Itaú, com lançamento previsto para 2026. Ela segue as mesmas diretrizes e boas práticas da PF, com as peculiaridades que o cliente PJ exige.\n\nO desenho ataca de frente o que o discovery encontrou. Tem tracking da contestação, com resumo do andamento, porque andamento era o assunto de 40% das ligações. Tem envio de arquivo dentro do fluxo, para a solicitação parar de morrer por falta de documento. E já no MVP o portador consegue acompanhar tudo pelo App Empresas.\n\nTer derrubado as ligações só com roteiro virou o argumento que justificou construir o produto de verdade.',
+      en: 'After the quick wins, I became responsible for creating the digitised version of the journey for Cronos, Itaú’s new business-cards platform, due to launch in 2026. It follows the same guidelines and good practice as the retail side, with the particularities the business customer demands.\n\nThe design goes straight at what discovery found. It has dispute tracking, with a summary of progress, because progress was the subject of 40% of the calls. It has file upload inside the flow, so a request stops dying for want of a document. And in the MVP itself the cardholder can follow all of it through the business app.\n\nHaving brought the calls down with a script alone became the argument that justified building the real product.',
     },
 
     contribution: [
       {
-        pt: 'Conduzi o discovery e o visioning, reunindo meu time, a Central de Atendimento e o time de contestação da PF.',
-        en: 'Led discovery and visioning, bringing together my team, the call centre and the retail-side dispute team.',
+        pt: 'Conduzi o discovery e a definição da jornada de ponta a ponta, reunindo Cartões PJ, Central de Atendimento, produto PF e Operações.',
+        en: 'Led discovery and defined the journey end to end, bringing together business cards, the call centre, the retail product and operations.',
       },
       {
-        pt: 'Rodei sessões de Lean Inception, revisões de fluxo e entrevistas de UX, e abri uma contestação real para percorrer a esteira inteira.',
-        en: 'Ran Lean Inception sessions, flow reviews and UX interviews, and filed a real dispute to walk the whole pipeline.',
+        pt: 'Rodei benchmarking com 11 players, Matriz CSD, entrevistas e análise de fluxos, e abri uma contestação real para percorrer a esteira inteira.',
+        en: 'Ran benchmarking against 11 players, a CSD matrix, interviews and flow analysis, and filed a real dispute to walk the whole pipeline.',
       },
       {
-        pt: 'Propus as mudanças de script e de comunicação de prazo que responderam pelos 21%.',
-        en: 'Proposed the script and deadline-communication changes behind the 21%.',
+        pt: 'Analisei os roteiros da Central e propus as correções de prazo, SLA e canal que responderam pelos 21%.',
+        en: 'Analysed the call centre scripts and proposed the deadline, SLA and channel fixes behind the 21%.',
       },
       {
-        pt: 'Desenhei a nova experiência de contestação da BUPJ, prevista para 2026.',
-        en: 'Designed the business unit’s new dispute experience, scheduled for 2026.',
+        pt: 'Desenhei a contestação digitalizada para o Cronos, a nova plataforma de cartões PJ, prevista para 2026.',
+        en: 'Designed the digitised dispute journey for Cronos, the new business-cards platform, due in 2026.',
       },
     ],
     gallery: [
