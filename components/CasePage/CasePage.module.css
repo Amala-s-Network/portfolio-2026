@@ -1,18 +1,36 @@
 /*
- * Case page, laid out on the 6s / 60s / 6min method.
+ * A case page, set as a long read.
  *
- * The layers are visually distinct on purpose: a reader should be able to tell, without deciding
- * to, how deep they currently are. The 6s block owns the fold, the 60s block sits on a rule and
- * reads as an argument, and the 6min block is quieter and longer.
+ * The 6s / 60s / 6min method still shapes it — the opening, the argument, then the detail — but
+ * it no longer labels itself, at João's instruction: a band headed "EM 6 MINUTOS" tells the
+ * reader about the author's process at the moment they were about to start reading about the
+ * work. The structure does its job whether or not it is announced.
+ *
+ * What replaced the labels is the thing that actually helps: one measure, subheads sitting above
+ * their own paragraphs, and a single left edge running down the whole page. The detail used to
+ * be a two-column grid with a serif heading on the left and the text on the right, which left a
+ * third of the page empty beside every paragraph and read as a spec sheet rather than an
+ * article.
  */
 
 .page {
   background: var(--paper);
 }
 
-/* ---------------------------------------------------------- 6 seconds */
+/*
+ * ONE measure, shared by the argument and the long read.
+ *
+ * 68ch is the width prose wants; wider and the eye loses the line it is returning to. It is
+ * left-aligned rather than centred so the page keeps the single left edge the rest of the site
+ * is built on, and so the figures below can run wider without the text appearing to shift.
+ */
+.measure {
+  max-width: 68ch;
+}
 
-.six {
+/* ------------------------------------------------------------ opening */
+
+.open {
   min-height: calc(100vh - var(--navH));
   min-height: calc(100svh - var(--navH));
   padding: calc(var(--navH) + 72px) var(--gutter) 72px;
@@ -23,19 +41,15 @@
 }
 
 /*
- * Taken out of flow on purpose. The 6s block is a centred flex column and the whole point of it
- * is that the title, the context line and the impact number sit balanced in the fold — putting
- * the back link in that column would either shove them off centre or, with an auto margin, push
- * them to the bottom of the screen. Absolute keeps the composition and drops the link into the
- * padding that already exists above it.
- */
-/*
- * Given a body, not left as a grey line of text.
+ * Taken out of flow on purpose. The opening is a centred flex column and the whole point of it
+ * is that the title, the standfirst and the number sit balanced in the fold — putting the back
+ * link in that column would either shove them off centre or, with an auto margin, push them to
+ * the bottom of the screen. Absolute keeps the composition and drops the link into the padding
+ * that already exists above it.
  *
- * It was 14px of --muted-light with an arrow — the same weight as a caption, so it read as a
- * label rather than as the way out, and on a case page it is the ONLY way out that does not go
- * through the menu. A border and a filled hover state say "control"; the arrow that slides on
- * hover says which direction.
+ * A border and a filled hover state say "control"; the arrow that slides on hover says which
+ * direction. It was 14px of grey with an arrow, which read as a caption — and on a case page it
+ * is the only way out that does not go through the menu.
  */
 .backTop {
   position: absolute;
@@ -82,6 +96,7 @@
   display: flex;
   gap: 26px;
   align-items: baseline;
+  flex-wrap: wrap;
   font-size: 12px;
   letter-spacing: 0.12em;
   color: var(--muted-light);
@@ -103,10 +118,11 @@
   margin-top: 46px;
 }
 
-.context {
+/* The line under the headline, in the newspaper sense: what the piece is about, in one breath. */
+.standfirst {
   font-size: 21px;
   font-weight: 300;
-  line-height: var(--lh-body);
+  line-height: 1.6;
   color: var(--body);
   max-width: 640px;
   margin-top: 26px;
@@ -151,53 +167,46 @@
   margin-top: 8px;
 }
 
-/* --------------------------------------------------------- 60 seconds */
+/* ----------------------------------------------------------- argument */
 
-.sixty {
+.argue {
   background: var(--ink);
   color: var(--on-dark);
-  padding: 112px var(--gutter);
+  padding: 104px var(--gutter);
 }
 
-.layerMark {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 11.5px;
-  letter-spacing: 0.14em;
-  color: var(--on-dark-50);
-}
-
-.diamond {
-  width: 9px;
-  height: 9px;
-  background: var(--accent);
-  transform: rotate(45deg);
-  flex: none;
-}
-
+/*
+ * Stacked rather than set in three columns.
+ *
+ * Three columns made the argument look like a comparison table of equal-weight items, when it is
+ * actually a sequence: this was the bind, this is what I let go of, so this is what I chose. Read
+ * down, in one measure, it argues. Read across, it merely lists.
+ */
 .argument {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 56px;
-  margin-top: 58px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
 }
 
-.argumentHead {
+.arg {
+  padding-top: 22px;
+  border-top: 1px solid var(--on-dark-rule-2);
+}
+
+.argHead {
   font-size: 11.5px;
   letter-spacing: 0.14em;
   color: var(--on-dark-50);
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--on-dark-rule-2);
 }
 
-.argumentBody {
-  font-size: 18px;
-  line-height: var(--lh-body);
-  margin-top: 22px;
+.argBody {
+  font-size: 19px;
+  line-height: 1.65;
+  margin-top: 16px;
   color: var(--on-dark-72);
 }
 
+/* Numbers are looked at, not read, so they run the full width outside the measure. */
 .evidence {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -231,104 +240,97 @@
   padding-right: 18px;
 }
 
-/* --------------------------------------------------------- 6 minutes */
+/* ---------------------------------------------------------- long read */
 
-.sixMin {
-  padding: 112px var(--gutter) 120px;
+.read {
+  padding: 104px var(--gutter) 110px;
 }
 
-.detailGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
-  gap: 72px;
-  margin-top: 58px;
-  padding-top: 40px;
-  border-top: 1px solid var(--hairline);
+/*
+ * The rhythm of an article: a good gap before a subhead, a small one after it.
+ *
+ * That asymmetry is what makes a heading belong to the text below it rather than float between
+ * two blocks. The hairline rules that used to sit between every section are gone — they chopped
+ * a continuous read into a stack of cards.
+ */
+.chapter + .chapter {
+  margin-top: 54px;
 }
 
-.detailTitle {
+.chapterHead {
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: 27px;
+  font-size: 25px;
   font-weight: 700;
   letter-spacing: -0.02em;
+  line-height: 1.25;
   color: var(--ink);
 }
 
-.detailBody {
-  font-size: 17px;
-  line-height: var(--lh-body);
+.chapterBody {
+  font-size: 19px;
+  /* Longer lines need more leading than the site's 1.5; this is the one place that is true. */
+  line-height: 1.7;
   color: var(--body);
-  max-width: 660px;
+  margin-top: 16px;
+}
+
+.chapterBody + .chapterBody {
+  margin-top: 20px;
 }
 
 .contribution {
   list-style: none;
   padding: 0;
-  margin: 22px 0 0;
+  margin: 20px 0 0;
   display: flex;
   flex-direction: column;
   gap: 14px;
 }
 
 .contribution li {
-  font-size: 17px;
-  line-height: var(--lh-body);
+  font-size: 19px;
+  line-height: 1.65;
   color: var(--body);
-  padding-left: 22px;
+  padding-left: 24px;
   position: relative;
-  max-width: 660px;
 }
 
 .contribution li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 12px;
   width: 8px;
   height: 8px;
   background: var(--accent);
   transform: rotate(45deg);
 }
 
-/* ---- gallery ---- */
+/* ---- figures ---- */
 
+/*
+ * Figures run past the measure on purpose. A narrow column to read and a wide picture to look at
+ * is the rhythm a long read wants, and it is what stops the page being one column of grey.
+ */
 .gallery {
   display: flex;
   flex-direction: column;
-  gap: 46px;
+  gap: 52px;
   margin-top: 76px;
-}
-
-.frame {
-  aspect-ratio: 16 / 9;
-  overflow: hidden;
-  background: #f1f1f1;
-  position: relative;
-}
-
-.frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.caption {
-  font-size: 14px;
-  color: var(--muted);
-  margin-top: 14px;
+  max-width: 1100px;
 }
 
 /* ---- the missing-content notice ---- */
 
 /*
- * Rendered wherever a 60s/6min field is still null. Deliberately loud: a case page with no stated
- * conflict is not a case page, and a half-written one must never be mistaken for finished if the
- * URL gets shared.
+ * Rendered wherever a narrative field is still null. Deliberately loud: a case page with no
+ * stated conflict is not a case page, and a half-written one must never be mistaken for finished
+ * if the URL gets shared. Dev only.
  */
 .todo {
   border: 1px dashed currentColor;
   padding: 18px 20px;
+  margin-top: 16px;
   font-size: 14px;
   line-height: var(--lh-body);
   opacity: 0.68;
@@ -350,11 +352,9 @@
   justify-content: space-between;
   align-items: center;
   gap: 26px;
-  padding: 40px var(--gutter) 96px;
+  padding: 40px 0 96px;
   border-top: 1px solid var(--hairline);
   margin: 0 var(--gutter);
-  padding-left: 0;
-  padding-right: 0;
   flex-wrap: wrap;
 }
 
@@ -377,18 +377,13 @@
 }
 
 @media (max-width: 1000px) {
-  .argument,
   .evidence {
     grid-template-columns: minmax(0, 1fr);
     gap: 34px;
   }
-  .detailGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
-  }
 }
 
-/* Mobile: single column throughout, and the 6s block stops reserving a full viewport. */
+/* Mobile: the opening stops reserving a full viewport, and everything steps down a size. */
 @media (max-width: 768px) {
   /*
    * Back in the flow on mobile.
@@ -404,48 +399,66 @@
     margin-bottom: 24px;
   }
 
-  .six {
+  .open {
     min-height: 0;
     padding: calc(var(--navH) + 24px) var(--gutter) 40px;
   }
+
+  .folio {
+    gap: 8px 18px;
+  }
+
+  .folioSpacer {
+    margin-left: 0;
+  }
+
   .title {
     font-size: 32px;
     margin-top: 28px;
     max-width: none;
   }
-  .context {
-    font-size: 16px;
+
+  .standfirst {
+    font-size: 17px;
     margin-top: 18px;
   }
+
   .impact {
     padding-top: 36px;
     gap: 16px;
   }
+
   .impactValue {
     font-size: 56px;
   }
-  .sixty,
-  .sixMin {
+
+  .argue,
+  .read {
     padding: 56px var(--gutter);
   }
-  .argument,
-  .evidence,
-  .detailGrid {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 24px;
+
+  .argument {
+    gap: 34px;
   }
-  .argumentBody {
-    font-size: 16px;
+
+  .argBody {
+    font-size: 16.5px;
   }
-  .detailTitle {
-    font-size: 22px;
+
+  .chapter + .chapter {
+    margin-top: 40px;
   }
-  .detailBody,
+
+  .chapterHead {
+    font-size: 21px;
+  }
+
+  .chapterBody,
   .contribution li {
-    font-size: 15px;
+    font-size: 16.5px;
   }
+
   .pageFoot {
     padding: 28px 0 56px;
-    margin: 0 var(--gutter);
   }
 }

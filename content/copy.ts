@@ -649,6 +649,25 @@ export const projects: Project[] = [
 /* ------------------------------------------------------- case pages */
 
 export type CaseMedia = {
+  /**
+   * How this figure moves, if it does.
+   *
+   *   still    a photograph or screen (the default)
+   *   video    an mp4/webm, played muted and looped
+   *   frames   a sequence of stills played as a flipbook
+   *
+   * "frames" exists because a GIF cannot be paused, carries no alpha worth having, and weighs
+   * several times what the same frames weigh as WebP. Given the raw frames or a screen recording
+   * this renders better than a GIF would and can be stopped, which prefers-reduced-motion and
+   * WCAG 2.2.2 both require of anything that moves for more than five seconds.
+   */
+  kind?: 'still' | 'video' | 'frames';
+  /** For kind: 'video' — the still shown before it plays, and under reduced motion. */
+  poster?: string;
+  /** For kind: 'frames' — the stills, in order. */
+  frames?: string[];
+  /** Milliseconds per frame. Defaults to 400. */
+  frameMs?: number;
   /** null until real artwork exists; falls back to the generated placeholder. */
   src: string | null;
   caption: T;
@@ -1781,10 +1800,21 @@ export const casePage = {
    * made them the only strings on the site the language toggle could not reach: an English
    * reader got the whole case in English under headings in Portuguese.
    */
-  layers: {
-    sixty: { pt: 'EM 60 SEGUNDOS', en: 'IN 60 SECONDS' } satisfies T,
-    sixtyShort: { pt: 'RESULTADOS', en: 'RESULTS' } satisfies T,
-    sixMin: { pt: 'EM 6 MINUTOS', en: 'IN 6 MINUTES' } satisfies T,
+  /*
+   * The 6s / 60s / 6min method still shapes this page: what the reader meets first, what the
+   * argument is, and what the detail is. João's note is that it must stop announcing itself.
+   * A band headed "EM 60 SEGUNDOS" tells the reader about the author's process at the moment
+   * they were about to start reading about the work, and the structure does its job whether or
+   * not it is labelled.
+   *
+   * What replaces it is furniture for the reader instead of for the author: how long this is.
+   */
+  readingTime: { pt: 'min de leitura', en: 'min read' } satisfies T,
+
+  /* Controls on a case's moving figures. */
+  media: {
+    play: { pt: 'Reproduzir', en: 'Play' } satisfies T,
+    pause: { pt: 'Pausar', en: 'Pause' } satisfies T,
   },
 
   headings: {
