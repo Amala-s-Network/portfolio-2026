@@ -483,22 +483,39 @@ export type Case = {
 };
 
 /**
- * PROPOSED. The prototype shipped four "Nome do case / Empresa" placeholders. These four are
- * drawn from the strongest, best-evidenced work in his CV and LinkedIn — but João has not yet
- * confirmed which projects he wants as the headline cases, and none of them have photography.
- * Every number below traces to a source document.
+ * The four headline cases, in the order João set on 2026-08-25:
+ * Aparência de Loja, Contestação de Despesas, EMS, Escrituração.
+ *
+ * The two after them (Imagens de Vitrine and Bricker) keep their pages and their place in the
+ * projects index. They are out of the home page's four, not out of the site.
  */
 export const cases: Case[] = [
   {
-    slug: 'itau-cartoes-pj',
-    categories: ['produtos'],
+    slug: 'reserva-ink-aparencia-de-loja',
+    categories: ['produtos', 'interfaces'],
     /*
-     * PLACEHOLDER, for the turn test only. This is a stock forest, not João's work — it is here
-     * so the sheet lifts to reveal the same picture the fold has been showing all along, which
-     * is the behaviour being tested. It must be replaced with the real case photography before
-     * launch (README "Open items" #1).
+     * The forest moved here with the running order.
+     *
+     * It is still a stock placeholder rather than João's work, and it has to be the FIRST case's
+     * photograph specifically: the home page's fixed underlay uses the same file, and the first
+     * panel pins its picture over that underlay so the sheet lifts off one continuous image. Give
+     * the first case a different photo and the two stop matching mid-turn.
      */
     photo: '/cases/floresta.webp',
+    title: {
+      pt: 'Aparência de loja para 60 mil lojistas',
+      en: 'Storefront appearance for 60k sellers',
+    },
+    company: { pt: 'Reserva INK · AZZAS 2154', en: 'Reserva INK · AZZAS 2154' },
+    description: {
+      pt: 'Configurar a loja era a maior fonte de tickets do produto, a ponto de ter lojista com tema de Natal no Dia dos Namorados. Reescrevi o fluxo: os tickets caíram 87% e a satisfação chegou a 90%.',
+      en: 'Setting up a store was the product’s biggest source of tickets, to the point of sellers still running a Christmas theme on Valentine’s Day. I rewrote the flow: tickets fell 87% and satisfaction reached 90%.',
+    },
+  },
+  {
+    slug: 'itau-cartoes-pj',
+    categories: ['produtos'],
+    photo: null,
     title: {
       pt: 'Contestação de despesas em cartões PJ',
       en: 'Expense disputes for business cards',
@@ -516,18 +533,37 @@ export const cases: Case[] = [
     },
   },
   {
-    slug: 'reserva-ink-aparencia-de-loja',
+    slug: 'ems-simulador-visitas',
     categories: ['produtos', 'interfaces'],
-    title: {
-      pt: 'Aparência de loja para 60 mil lojistas',
-      en: 'Storefront appearance for 60k sellers',
-    },
-    company: { pt: 'Reserva INK · AZZAS 2154', en: 'Reserva INK · AZZAS 2154' },
-    description: {
-      pt: 'A configuração da loja era a maior fonte de tickets do produto inteiro. Mexi no onboarding e na personalização para tirar a fricção do caminho: o CSAT subiu 90% e as reclamações caíram 87%.',
-      en: 'Setting up a store was the biggest source of support tickets in the whole product. I reworked onboarding and customisation to take the friction out: CSAT went up 90% and complaints dropped 87%.',
-    },
     photo: null,
+    title: {
+      pt: 'Simulador de visitas médicas com IA',
+      en: 'AI simulator for medical sales visits',
+    },
+    company: { pt: 'EMS Saúde · via NTT DATA', en: 'EMS Saúde · via NTT DATA' },
+    description: {
+      pt: 'Um propagandista aprende apanhando na frente do médico. Criamos personas sintéticas a partir de pesquisa de campo, para que ele possa treinar a conversa difícil antes que ela custe caro.',
+      en: 'A pharma rep learns by getting it wrong in front of a doctor. We built synthetic personas out of field research, so they can practise the hard conversation before it gets expensive.',
+    },
+  },
+  {
+    /*
+     * ⚠️ SCAFFOLD. João asked for this fourth slot in the running order and said the case is
+     * still to be produced. Everything below traces to his CV; the narrative fields are null on
+     * purpose, so the page tells him what to write instead of pretending to be finished.
+     */
+    slug: 'itau-escrituracao',
+    categories: ['produtos'],
+    photo: null,
+    title: {
+      pt: 'Escrituração de ativos e investimentos',
+      en: 'Book-entry assets and investments',
+    },
+    company: { pt: 'Itaú Unibanco · via NTT DATA', en: 'Itaú Unibanco · via NTT DATA' },
+    description: {
+      pt: 'O trabalho que estou fazendo agora: as jornadas de ativos escriturais e investimentos dentro do Itaú. O case completo vem quando o projeto permitir.',
+      en: 'What I am working on right now: the book-entry asset and investment journeys inside Itaú. The full case comes when the project allows it.',
+    },
   },
   {
     slug: 'reserva-ink-imagens-de-vitrine',
@@ -538,8 +574,8 @@ export const cases: Case[] = [
     },
     company: { pt: 'Reserva INK · AZZAS 2154', en: 'Reserva INK · AZZAS 2154' },
     description: {
-      pt: 'Reescrevi a ferramenta de personalização de vitrine para um fluxo de dois cliques. Ficou 95% mais rápida, com 99% de satisfação e 60% menos tempo e custo de criação para 92% dos lojistas.',
-      en: 'I rebuilt the showcase customisation tool into a two-click flow. It came out 95% faster, with 99% satisfaction and 60% less creation time and cost for 92% of sellers.',
+      pt: 'Para montar a vitrine, o lojista tinha que sair da plataforma e se virar no Canva ou no Photoshop. Trouxe isso para dentro do produto: 92% dos usuários adotaram e quase 99% dos retornos foram positivos.',
+      en: 'To build a storefront image, sellers had to leave the platform and fend for themselves in Canva or Photoshop. I brought it inside the product: 92% of users adopted it and nearly 99% of the feedback was positive.',
     },
     photo: null,
   },
@@ -559,6 +595,11 @@ export const cases: Case[] = [
   },
 ];
 
+/**
+ * The four the home page argues with. The rest keep their pages and their place in the index.
+ */
+export const featuredCases = cases.slice(0, 4);
+
 /* ----------------------------------------------------------- carousel */
 
 export type Project = {
@@ -575,20 +616,6 @@ export type Project = {
  * documents. Confirm with João; replace or reorder freely.
  */
 export const projects: Project[] = [
-  {
-    slug: 'ems-saude',
-    categories: ['produtos'],
-    name: { pt: 'Treinamento de propagandistas com IA', en: 'AI-driven rep training' },
-    company: { pt: 'EMS Saúde', en: 'EMS Saúde' },
-    image: null,
-  },
-  {
-    slug: 'itau-investimentos',
-    categories: ['produtos'],
-    name: { pt: 'Ativos escriturais e investimentos', en: 'Book-entry assets and investments' },
-    company: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
-    image: null,
-  },
   {
     slug: 'zema-emprestimo-pessoal',
     categories: ['produtos', 'interfaces'],
@@ -648,7 +675,24 @@ export type CaseChart = {
   title: T;
   /** Where the figures came from. A chart without a provenance line is decoration. */
   note: T;
-  points: { label: string; value: number }[];
+  /** What the values are, for the readout under the plot: "chamadas por mês". */
+  unit: T;
+  /**
+   * Printed instead of the fall computed from the first and last bars.
+   *
+   * Only for series whose bars are summaries of something wider. INK's tickets were measured as
+   * two ranges (70–80 a week down to 8–9), so the bars are midpoints and computing from them
+   * would put 89% on screen next to João's 87%. Where the bars ARE the figures, leave this out
+   * and let the chart do the division, which is the whole reason it exists.
+   */
+  delta?: string;
+  points: {
+    /** The short axis label. */
+    label: string;
+    /** Spoken and shown in the readout. Falls back to `label`. */
+    full?: T;
+    value: number;
+  }[];
 };
 
 /**
@@ -792,12 +836,13 @@ export const caseDetails: Record<string, CaseDetail> = {
         pt: 'Fonte: relatório de volume da Central de Atendimento, de agosto a dezembro de 2025.',
         en: 'Source: the call centre volume report, August to December 2025.',
       },
+      unit: { pt: 'chamadas no mês', en: 'calls that month' },
       points: [
-        { label: '08/25', value: 2395 },
-        { label: '09/25', value: 2366 },
-        { label: '10/25', value: 2300 },
-        { label: '11/25', value: 2232 },
-        { label: '12/25', value: 1893 },
+        { label: '08/25', full: { pt: 'Agosto de 2025', en: 'August 2025' }, value: 2395 },
+        { label: '09/25', full: { pt: 'Setembro de 2025', en: 'September 2025' }, value: 2366 },
+        { label: '10/25', full: { pt: 'Outubro de 2025', en: 'October 2025' }, value: 2300 },
+        { label: '11/25', full: { pt: 'Novembro de 2025', en: 'November 2025' }, value: 2232 },
+        { label: '12/25', full: { pt: 'Dezembro de 2025', en: 'December 2025' }, value: 1893 },
       ],
     },
 
@@ -881,44 +926,91 @@ export const caseDetails: Record<string, CaseDetail> = {
     slug: 'reserva-ink-aparencia-de-loja',
     year: '2023-2024',
     role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
-    duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
+    /* The project, not the tenure. He was at INK for a year and four months; this took four weeks. */
+    duration: { pt: '4 semanas', en: '4 weeks' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
 
+    /*
+     * ⚠️ CORRECTED 2026-08-25. This said "+90% de CSAT", which read as a 90% increase. João's
+     * own write-up is clearer: CSAT went up 40%, landing at a 90% satisfaction average among the
+     * users interviewed on the new version. A 90% rise and a 90% level are very different claims,
+     * and the wrong one was the flattering one. The metrics section carried the same error.
+     */
     impact: {
-      value: '+90%',
-      label: { pt: 'AUMENTO DE CSAT', en: 'CSAT INCREASE' },
+      value: '−87%',
+      label: { pt: 'TICKETS DE RECLAMAÇÃO', en: 'COMPLAINT TICKETS' },
       note: {
-        pt: 'Na configuração de aparência de loja.',
-        en: 'On store appearance configuration.',
+        pt: 'De 70 a 80 por semana para cerca de 8 a 9, o que dá uma economia estimada de R$ 3 mil por mês.',
+        en: 'From 70 to 80 a week down to around 8 or 9, an estimated saving of R$3,000 a month.',
       },
     },
     context: {
-      pt: 'A configuração de loja era a maior fonte de tickets do produto e acabou virando o fluxo com o melhor CSAT de todos.',
-      en: 'Setting up a store was the product’s biggest source of tickets, and it ended up becoming the flow with the best CSAT of all.',
+      pt: 'Configurar a aparência da loja era a maior fonte de reclamação do produto. Teve lojista que passou o Dia dos Namorados com o tema de Natal no ar porque não conseguia trocar.',
+      en: 'Setting up a store’s appearance was the product’s biggest source of complaints. Some sellers spent Valentine’s Day with a Christmas theme still live, because they could not work out how to change it.',
     },
 
-    conflict: null,
-    tradeoff: null,
-    decision: null,
+    conflict: {
+      pt: 'A INK nasceu como startup early stage, chamada Touts, e cresceu rápido. Para ganhar tração, boa parte das funcionalidades foi construída em formato de MVP, e a Aparência de Loja foi uma delas. O problema é que ela não era um canto qualquer do produto: era onde o lojista define cor, fonte, banner e tudo que comunica quem ele é. A velocidade que fez a plataforma existir foi a mesma que deixou a área mais estratégica dela confusa.',
+      en: 'INK started life as an early-stage startup called Touts, and it grew fast. To gain traction, a good part of the product was built as an MVP, and Store Appearance was one of those parts. The trouble is that it was not just any corner of the product: it is where a seller sets colour, typeface, banner and everything that says who they are. The speed that made the platform exist is the same speed that left its most strategic area confusing.',
+    },
+    tradeoff: {
+      pt: 'Abri mão de reconstruir a ferramenta inteira. Dava para argumentar por uma refatoração completa, e teria sido a resposta bonita, mas eram 4 semanas e mais de 60 mil lojistas já usando aquilo todo dia. Trabalhei dentro da estrutura que existia e concentrei o esforço na clareza do fluxo, na previsibilidade do resultado e no controle que faltava.',
+      en: 'I gave up rebuilding the whole tool. There was a case to be made for a full refactor, and it would have been the pretty answer, but we had four weeks and more than 60,000 sellers already using it every day. I worked inside the structure that was there and put the effort into clarity of flow, predictability of the result, and the control that was missing.',
+    },
+    decision: {
+      pt: 'Deixei o suporte escolher o que arrumar primeiro. Os tickets de reclamação diziam, com nome e sobrenome, onde o fluxo quebrava, então a fila de prioridade veio deles e não da minha opinião sobre o que estava feio. Depois de meses de discovery, a proposta nova ficou em cima de três coisas: clareza, agilidade e controle.',
+      en: 'I let support decide what to fix first. The complaint tickets said, in plain words, where the flow was breaking, so the priority queue came from them rather than from my opinion about what looked bad. After months of discovery, the new proposal stood on three things: clarity, speed and control.',
+    },
     evidence: [
-      {
-        value: '+90%',
-        label: { pt: 'CSAT', en: 'CSAT' },
-        note: { pt: 'Na configuração de aparência de loja.', en: 'On store appearance configuration.' },
-      },
       {
         value: '−87%',
         label: { pt: 'TICKETS DE RECLAMAÇÃO', en: 'COMPLAINT TICKETS' },
-        note: { pt: 'Nos fluxos de configuração de loja.', en: 'Across the store configuration flows.' },
+        note: {
+          pt: 'De 70 a 80 por semana para 8 a 9, cerca de R$ 3 mil por mês em custo de suporte.',
+          en: 'From 70 to 80 a week to 8 or 9, roughly R$3,000 a month in support cost.',
+        },
       },
       {
-        value: '60k+',
-        label: { pt: 'LOJISTAS NA PLATAFORMA', en: 'SELLERS ON THE PLATFORM' },
-        note: { pt: 'O tamanho da base ativa que a mudança alcançou.', en: 'The size of the active base the change reached.' },
+        value: '+40%',
+        label: { pt: 'AUMENTO DE CSAT', en: 'CSAT INCREASE' },
+        note: {
+          pt: 'Chegando a 90% de satisfação média entre os lojistas entrevistados na versão nova.',
+          en: 'Reaching a 90% satisfaction average among the sellers interviewed on the new version.',
+        },
+      },
+      {
+        value: '−75%',
+        label: { pt: 'TEMPO DE CONFIGURAÇÃO', en: 'SETUP TIME' },
+        note: {
+          pt: 'Tempo que voltou para campanha e venda, o que puxou retenção, receita e LTV para cima.',
+          en: 'Time that went back into campaigns and selling, which pulled retention, revenue and LTV up.',
+        },
       },
     ],
 
-    challenge: null,
+    chart: {
+      title: { pt: 'Tickets de reclamação por semana', en: 'Complaint tickets per week' },
+      /*
+       * The bars are the midpoints of two ranges João measured, so the delta is stated rather
+       * than computed from them: 70–80 down to 8–9 is his 87%, and a chart that arrived at 89%
+       * on its own would be quietly arguing with the number printed beside it.
+       */
+      delta: '−87%',
+      note: {
+        pt: 'Média antes e depois do redesenho. O intervalo medido foi de 70 a 80 tickets por semana antes, e de 8 a 9 depois.',
+        en: 'Average before and after the redesign. The measured range was 70 to 80 tickets a week before, and 8 to 9 after.',
+      },
+      unit: { pt: 'tickets por semana', en: 'tickets a week' },
+      points: [
+        { label: 'antes', full: { pt: 'Antes do redesenho', en: 'Before the redesign' }, value: 75 },
+        { label: 'depois', full: { pt: 'Depois do redesenho', en: 'After the redesign' }, value: 9 },
+      ],
+    },
+
+    challenge: {
+      pt: 'Mexer numa peça que já estava embaixo dos pés de 60 mil pessoas. Qualquer mudança na Aparência de Loja aparece na vitrine de alguém no mesmo dia, então não existia a opção de quebrar e consertar depois. E o prazo era de 4 semanas, o que tirou da mesa qualquer solução que dependesse de reconstruir a base.',
+      en: 'Changing a piece that was already under 60,000 people’s feet. Any change to Store Appearance shows up in somebody’s storefront the same day, so breaking it and fixing it later was never an option. And the deadline was four weeks, which took every rebuild-the-foundations answer off the table.',
+    },
     detail: [
       {
         title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
@@ -928,29 +1020,60 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
       },
       {
+        title: { pt: 'O que a ferramenta deveria ser', en: 'What the tool was meant to be' },
+        body: {
+          pt: 'Desde o começo, a Aparência de Loja foi pensada como a base da identidade de cada lojista dentro da plataforma. Era por ali que o criador definia cores, fontes, banners e os elementos visuais que dizem quem ele é e como quer ser percebido. Com o crescimento do produto e a complexidade que foi se acumulando, essa experiência foi ficando confusa e passou a gerar frustração, erro e retrabalho.',
+          en: 'From the start, Store Appearance was meant to be the foundation of each seller’s identity inside the platform. It was where a creator set the colours, typefaces, banners and visual elements that say who they are and how they want to be seen. As the product grew and complexity piled up, that experience got muddier and started producing frustration, mistakes and rework.',
+        },
+      },
+      {
         title: { pt: 'A evidência veio do suporte', en: 'The evidence came from support' },
         body: {
-          pt: 'Os tickets de reclamação foram a fonte principal, porque os motivos apontavam direto para onde o fluxo quebrava. Junto com entrevistas de UX com lojistas e testes de usabilidade, eles deram o mapa do que precisava mudar.',
-          en: 'Complaint tickets were the main source, because the reasons pointed straight at where the flow was breaking. Together with UX interviews with sellers and usability testing, they gave us the map of what had to change.',
+          pt: 'Os tickets de reclamação foram a fonte principal, porque os motivos apontavam direto para onde o fluxo quebrava. Junto com entrevistas de UX com lojistas e testes de usabilidade, eles deram o mapa do que precisava mudar. Foram meses de discovery antes de qualquer tela nova.',
+          en: 'Complaint tickets were the main source, because the reasons pointed straight at where the flow was breaking. Together with UX interviews with sellers and usability testing, they gave us the map of what had to change. It was months of discovery before any new screen existed.',
+        },
+      },
+      {
+        title: { pt: 'O que a mudança destravou', en: 'What the change freed up' },
+        body: {
+          pt: 'O tempo médio de configuração caiu mais de 75%. Isso devolveu horas para o lojista, que passou a gastá-las em campanha e venda em vez de brigar com o painel. Retenção e receita subiram junto, e foi por aí que o LTV cresceu, tanto para o lojista quanto para a própria INK.',
+          en: 'Average setup time fell by more than 75%. That handed hours back to the seller, who started spending them on campaigns and selling instead of fighting the panel. Retention and revenue rose with it, and that is how LTV grew, both for the seller and for INK itself.',
+        },
+      },
+      {
+        title: { pt: 'Como foi construído', en: 'How it was built' },
+        body: {
+          pt: 'Quatro semanas de projeto, em Figma, Miro e FigJam, num modelo POD/SaaS. Discovery, proposta de interface, validação com lojistas e handoff, sem parar a operação em nenhum momento.',
+          en: 'A four-week project, in Figma, Miro and FigJam, on a POD/SaaS model. Discovery, interface proposal, validation with sellers and handoff, without stopping the operation at any point.',
         },
       },
     ],
-    gameChanger: null,
+    gameChanger: {
+      pt: 'A Aparência de Loja deixou de ser uma configuração técnica que o lojista adiava e voltou a ser o que sempre deveria ter sido: o lugar onde a marca dele ganha forma. Fortalecer isso melhorou a experiência de compra da ponta e apoiou o crescimento dos negócios dentro da plataforma, e é por isso que um trabalho de quatro semanas mexeu em LTV.',
+      en: 'Store Appearance stopped being a technical setting sellers put off and went back to being what it always should have been: the place where their brand takes shape. Strengthening that improved the shopping experience at the other end and supported the growth of the businesses on the platform, which is why four weeks of work moved LTV.',
+    },
 
     contribution: [
       {
-        pt: 'Reescrevi o fluxo de configuração de aparência, reduzindo a fricção do onboarding.',
-        en: 'Rebuilt the appearance configuration flow, cutting onboarding friction.',
+        pt: 'Reescrevi o fluxo de configuração de aparência em cima de clareza, agilidade e controle.',
+        en: 'Rewrote the appearance configuration flow around clarity, speed and control.',
+      },
+      {
+        pt: 'Usei os tickets de suporte como fonte primária de pesquisa, junto com entrevistas de UX e testes de usabilidade.',
+        en: 'Used support tickets as the primary research source, alongside UX interviews and usability testing.',
       },
       {
         pt: 'Elevei o nível de design da plataforma e reduzi o custo operacional de suporte.',
-        en: 'Raised the platform’s design standard and lowered support cost.',
+        en: 'Raised the platform’s design standard and lowered its support cost.',
       },
     ],
     gallery: [
       {
         src: null,
-        caption: { pt: 'Fluxo de configuração de aparência.', en: 'The appearance configuration flow.' },
+        caption: {
+          pt: 'Fluxo de configuração de aparência da loja.',
+          en: 'The store appearance configuration flow.',
+        },
         confidential: true,
       },
     ],
@@ -960,44 +1083,65 @@ export const caseDetails: Record<string, CaseDetail> = {
     slug: 'reserva-ink-imagens-de-vitrine',
     year: '2023-2024',
     role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
-    duration: { pt: '1 ano e 4 meses', en: '1 year 4 months' },
+    duration: { pt: '4 semanas', en: '4 weeks' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
 
     impact: {
-      value: '99%',
-      label: { pt: 'SATISFAÇÃO', en: 'SATISFACTION' },
+      value: '92%',
+      label: { pt: 'DOS USUÁRIOS ADOTARAM', en: 'OF USERS ADOPTED IT' },
       note: {
-        pt: 'Entre mais de 60 mil empreendedores ativos.',
-        en: 'Across 60,000+ active sellers.',
+        pt: 'Numa base de mais de 60 mil lojistas, com quase 99% de retornos positivos.',
+        en: 'Across a base of more than 60,000 sellers, with nearly 99% positive feedback.',
       },
     },
     context: {
-      pt: 'Criar uma imagem de vitrine passou a custar dois cliques em vez de uma tarde.',
-      en: 'Producing a showcase image went from an afternoon’s work to two clicks.',
+      pt: 'Para montar a imagem de vitrine, o lojista tinha que sair da plataforma e se virar no Canva, no Place-it ou no Photoshop. Trouxe esse momento para dentro do produto.',
+      en: 'To put together a storefront image, sellers had to leave the platform and fend for themselves in Canva, Place-it or Photoshop. I brought that moment inside the product.',
     },
 
-    conflict: null,
-    tradeoff: null,
-    decision: null,
+    conflict: {
+      pt: 'A imagem de vitrine decide se o produto vende. Ela é o que forma a percepção de valor e o que empurra a decisão de compra, e mesmo assim esse momento acontecia fora da plataforma. Quem já sabia usar ferramenta de design se virava bem; quem não sabia, e era a maioria, ficava travado num passo que era obrigatório para vender qualquer coisa.',
+      en: 'The storefront image decides whether a product sells. It is what shapes the sense of value and what pushes the decision to buy, and yet that moment happened outside the platform. Sellers who already knew design tools got by fine; the ones who did not, and that was most of them, got stuck on a step that was mandatory to sell anything at all.',
+    },
+    tradeoff: {
+      pt: 'Abri mão de fazer um editor. Um editor completo, com camadas e liberdade total, resolveria mais casos e teria sido a peça mais impressionante de mostrar. Também levaria meses e devolveria para o lojista exatamente o problema que ele já tinha no Photoshop. Entreguei um caminho estreito com mockups prontos, fundo e elementos, e mais nada.',
+      en: 'I gave up building an editor. A full editor, with layers and total freedom, would have covered more cases and been the more impressive thing to show. It would also have taken months and handed the seller back exactly the problem they already had in Photoshop. I shipped a narrow path with ready-made mockups, backgrounds and elements, and nothing else.',
+    },
+    decision: {
+      pt: 'Otimizei para quem nunca abriu uma ferramenta de design. O alcance da mudança dependia de funcionar para quem não tem repertório visual, então acessibilidade e facilidade de uso entraram como requisito desde o começo. É isso que explica os 92% de adoção: a ferramenta não pediu nada que o lojista já não soubesse fazer.',
+      en: 'I optimised for people who have never opened a design tool. The reach of the change depended on it working for people with no visual training, so accessibility and ease of use went in as requirements from the start. That is what explains the 92% adoption: the tool never asked the seller for anything they did not already know how to do.',
+    },
     evidence: [
       {
+        value: '92%',
+        label: { pt: 'DE ADOÇÃO', en: 'ADOPTION' },
+        note: {
+          pt: 'Dos usuários da plataforma passaram a usar a ferramenta nativa.',
+          en: 'Of platform users moved onto the native tool.',
+        },
+      },
+      {
         value: '99%',
-        label: { pt: 'SATISFAÇÃO', en: 'SATISFACTION' },
-        note: { pt: 'Na ferramenta de personalização de vitrine.', en: 'On the showcase customisation tool.' },
+        label: { pt: 'DE RETORNOS POSITIVOS', en: 'POSITIVE FEEDBACK' },
+        note: {
+          pt: 'Medido por NPS e por pesquisa qualitativa depois do lançamento.',
+          en: 'Measured through NPS and qualitative research after launch.',
+        },
       },
       {
-        value: '95%',
-        label: { pt: 'MAIS RÁPIDO', en: 'FASTER' },
-        note: { pt: 'Que o processo anterior. O fluxo inteiro caiu para dois cliques.', en: 'Than the previous process. The whole flow dropped to two clicks.' },
-      },
-      {
-        value: '−60%',
-        label: { pt: 'TEMPO E CUSTO', en: 'TIME AND COST' },
-        note: { pt: 'De criação de produto, para 92% dos usuários.', en: 'Of product creation, for 92% of users.' },
+        value: '15 min → 2 cliques',
+        label: { pt: 'TEMPO DE CRIAÇÃO', en: 'CREATION TIME' },
+        note: {
+          pt: 'O que levava de 10 a 15 minutos em ferramenta externa virou alguns cliques dentro do produto.',
+          en: 'What took 10 to 15 minutes in an external tool became a few clicks inside the product.',
+        },
       },
     ],
 
-    challenge: null,
+    challenge: {
+      pt: 'Fazer uma ferramenta de imagem para gente que não é designer, sem transformar isso num editor. Toda decisão foi sobre o que tirar: cada controle a mais dava poder para uma minoria e assustava a maioria, e a maioria era exatamente quem eu precisava atender.',
+      en: 'Building an image tool for people who are not designers, without turning it into an editor. Every decision was about what to remove: each extra control gave power to a minority and scared off the majority, and the majority was exactly who I needed to serve.',
+    },
     detail: [
       {
         title: { pt: 'Por que isso importava', en: 'Why it mattered' },
@@ -1007,19 +1151,40 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
       },
       {
-        title: { pt: 'Acessibilidade como requisito de negócio', en: 'Accessibility as a business requirement' },
+        title: { pt: 'O que estava quebrado', en: 'What was broken' },
         body: {
-          pt: 'O alcance da mudança dependia de funcionar para quem não tem repertório visual. Por isso acessibilidade e facilidade de uso entraram como requisito desde o começo, e é isso que explica os 92% de cobertura.',
-          en: 'The reach of the change depended on it working for people with no visual training. That is why accessibility and ease of use went in as a requirement from the start, and it is what explains the 92% coverage.',
+          pt: 'O processo acontecia em Canva, Place-it ou Photoshop, fora do produto. Isso fragmentava a experiência, alongava o tempo de criação e deixava as lojas visualmente inconsistentes entre si. Muita gente esbarrava na parte técnica, o que virava fricção no fluxo de trabalho e mais acionamento de suporte sobre mockup.',
+          en: 'The process happened in Canva, Place-it or Photoshop, outside the product. That fragmented the experience, stretched creation time and left stores visually inconsistent with one another. Plenty of people hit the technical wall, which turned into friction in the workflow and more support requests about mockups.',
+        },
+      },
+      {
+        title: { pt: 'O que foi construído', en: 'What was built' },
+        body: {
+          pt: 'Uma ferramenta nativa de criação de imagens de vitrine, dentro da própria plataforma. O lojista escolhe um mockup pronto, personaliza o fundo e aplica elementos visuais, sem sair do produto em nenhum momento. A adoção foi rápida e ampla.',
+          en: 'A native storefront image tool, inside the platform itself. The seller picks a ready-made mockup, customises the background and applies visual elements, without leaving the product at any point. Adoption was fast and broad.',
+        },
+      },
+      {
+        title: { pt: 'Como foi construído', en: 'How it was built' },
+        body: {
+          pt: 'Quatro semanas, em Figma, Miro e Photoshop, num modelo POD/SaaS. Benchmark, definição do caminho mínimo, protótipo, validação com lojistas e handoff.',
+          en: 'Four weeks, in Figma, Miro and Photoshop, on a POD/SaaS model. Benchmarking, defining the minimum path, prototype, validation with sellers and handoff.',
         },
       },
     ],
-    gameChanger: null,
+    gameChanger: {
+      pt: 'A criação da imagem deixou de ser um recurso à parte e virou parte do fluxo de criar e vender. Isso mudou quem consegue montar uma loja profissional na plataforma: deixou de ser só quem já tinha repertório de design e passou a incluir quem estava começando. Para uma plataforma que vive de quantos lojistas conseguem vender, essa é a métrica que importa.',
+      en: 'Making the image stopped being a separate feature and became part of the flow of creating and selling. That changed who can put together a professional store on the platform: it went from only the people who already had design skills to including the ones just starting out. For a platform that lives on how many sellers manage to sell, that is the metric that counts.',
+    },
 
     contribution: [
       {
-        pt: 'Redesenhei a ferramenta de personalização de imagens de vitrine para um fluxo de dois cliques.',
-        en: 'Redesigned the showcase image customisation tool into a two-click flow.',
+        pt: 'Desenhei a ferramenta nativa de criação de imagens de vitrine, do benchmark ao handoff.',
+        en: 'Designed the native storefront image tool, from benchmarking through to handoff.',
+      },
+      {
+        pt: 'Defini o caminho mínimo, com mockups prontos, fundo e elementos, e cortei o resto.',
+        en: 'Defined the minimum path, with ready-made mockups, backgrounds and elements, and cut the rest.',
       },
       {
         pt: 'Medi tempo e custo de criação antes e depois, para sustentar o resultado com dados.',
@@ -1029,7 +1194,10 @@ export const caseDetails: Record<string, CaseDetail> = {
     gallery: [
       {
         src: null,
-        caption: { pt: 'Ferramenta de personalização de vitrine.', en: 'The showcase customisation tool.' },
+        caption: {
+          pt: 'Ferramenta nativa de criação de imagens de vitrine.',
+          en: 'The native storefront image tool.',
+        },
         confidential: true,
       },
     ],
@@ -1117,6 +1285,193 @@ export const caseDetails: Record<string, CaseDetail> = {
         confidential: true,
       },
     ],
+  },
+
+  /*
+   * PROVENANCE — written from the deck João supplied on 2026-08-25,
+   * "[SEMANA DA IA] SLIDES - Assistente de Visitas médicas", 24 slides.
+   *
+   * The deck's own results slide is headed "Resultados esperados", so there are no measured
+   * outcomes yet and none are invented here. The one hard fact it does carry is that the
+   * navigable prototype was approved at the first presentation with no structural changes, and
+   * that is what the headline number says.
+   */
+  'ems-simulador-visitas': {
+    slug: 'ems-simulador-visitas',
+    year: '2025',
+    role: { pt: 'Product Designer', en: 'Product Designer' },
+    duration: { pt: '5 etapas, do campo ao protótipo', en: '5 stages, from field to prototype' },
+    team: {
+      pt: 'EMS Saúde · time Tech e Digital Experience da NTT DATA',
+      en: 'EMS Saúde · NTT DATA Tech and Digital Experience team',
+    },
+
+    impact: {
+      value: '0',
+      label: { pt: 'AJUSTES DE ESTRUTURA', en: 'STRUCTURAL CHANGES' },
+      note: {
+        pt: 'O protótipo navegável foi aprovado já na primeira apresentação, sem mexer na estrutura.',
+        en: 'The navigable prototype was approved at the first presentation, with the structure untouched.',
+      },
+    },
+    context: {
+      pt: 'Um propagandista aprende apanhando na frente do médico. Criamos personas sintéticas a partir de pesquisa de campo, para ele treinar a conversa difícil antes que ela custe caro.',
+      en: 'A pharma rep learns by getting it wrong in front of a doctor. We built synthetic personas out of field research, so they could practise the hard conversation before it got expensive.',
+    },
+
+    conflict: {
+      pt: 'A primeira versão da simulação tinha o problema clássico de IA conversacional: as personas eram genéricas, as conversas saíam artificiais e não havia critério nenhum para dizer se o treino tinha funcionado. Dava para melhorar o prompt e fingir que resolveu. Só que o buraco não estava no texto, estava embaixo dele: faltava base comportamental.',
+      en: 'The first version of the simulation had the classic conversational-AI problem: the personas were generic, the conversations came out artificial, and there was no criterion at all for saying whether the training had worked. We could have polished the prompt and pretended that fixed it. But the hole was not in the writing, it was underneath it: there was no behavioural base.',
+    },
+    tradeoff: {
+      pt: 'Abri mão de começar pela interface. O caminho rápido era desenhar as telas do chat, que era o que todo mundo conseguia visualizar, e deixar o conteúdo para depois. Passamos as primeiras semanas em campo e em análise qualitativa, sem nada bonito para mostrar, porque uma tela de chat impecável em cima de uma persona genérica continua sendo uma persona genérica.',
+      en: 'I gave up starting with the interface. The fast route was to draw the chat screens, which was the part everyone could picture, and leave the content for later. We spent the first weeks in the field and in qualitative analysis with nothing pretty to show, because a flawless chat screen on top of a generic persona is still a generic persona.',
+    },
+    decision: {
+      pt: 'Construímos as personas a partir do que os propagandistas contaram, não do que o marketing imaginava. Elas descrevem formas reais de comportamento médico: nível de abertura ao diálogo, exigência técnica, tolerância à abordagem comercial e critério de decisão. Não são perfis de público-alvo, são perfis de comportamento, e é isso que dá à simulação alguém para ser.',
+      en: 'We built the personas out of what the reps told us, rather than what marketing imagined. They describe real forms of medical behaviour: how open someone is to a conversation, how technically demanding they are, how much of a commercial pitch they will tolerate, and what they decide on. They are behaviour profiles rather than audience profiles, and that is what gives the simulation somebody to be.',
+    },
+    evidence: [
+      {
+        value: '0',
+        label: { pt: 'AJUSTES DE ESTRUTURA', en: 'STRUCTURAL CHANGES' },
+        note: {
+          pt: 'O protótipo navegável passou na primeira apresentação para o time da EMS.',
+          en: 'The navigable prototype passed at the first presentation to the EMS team.',
+        },
+      },
+      {
+        value: '9',
+        label: { pt: 'FRENTES DE UX', en: 'UX WORKSTREAMS' },
+        note: {
+          pt: 'Da consolidação da pesquisa ao copywriting da interface, passando por objeções, personas e cenários.',
+          en: 'From consolidating the research to writing the interface, by way of objections, personas and scenarios.',
+        },
+      },
+      {
+        value: '4',
+        label: { pt: 'EIXOS POR PERSONA', en: 'AXES PER PERSONA' },
+        note: {
+          pt: 'Características profissionais, aspectos comportamentais, postura na visita e padrões de reação.',
+          en: 'Professional traits, behavioural aspects, posture during the visit, and reaction patterns.',
+        },
+      },
+    ],
+
+    challenge: {
+      pt: 'Transformar relato de campo em regra de comportamento. Um propagandista sabe perfeitamente quando o médico começou a perder o interesse, mas não sabe descrever isso como um critério. Tirar a estrutura de dentro da história contada, sem achatar a história, foi a parte que deu trabalho de verdade.',
+      en: 'Turning field stories into rules of behaviour. A rep knows exactly when a doctor started losing interest, but cannot describe that as a criterion. Pulling the structure out of the story without flattening the story was the part that took real work.',
+    },
+    detail: [
+      {
+        title: { pt: 'O desafio', en: 'The brief' },
+        body: {
+          pt: 'Criar uma experiência de simulação com IA capaz de reproduzir interações médicas reais, gerar aprendizado prático e simular comportamento clínico autêntico. O trabalho foi feito para a EMS Saúde, conduzido pelo time de Tech e Digital Experience da NTT DATA.',
+          en: 'Build an AI simulation able to reproduce real medical interactions, produce practical learning and simulate authentic clinical behaviour. The work was done for EMS Saúde, led by NTT DATA’s Tech and Digital Experience team.',
+        },
+      },
+      {
+        title: { pt: 'A pesquisa com propagandistas', en: 'Research with the reps' },
+        body: {
+          pt: 'Investigamos como a visita médica acontece na prática: a dinâmica real da conversa, os momentos em que o médico resiste, as perguntas que sempre aparecem e o que faz uma abordagem ser aceita ou recusada. A análise qualitativa depois organizou esses relatos em três dimensões, e foi dali que saíram os padrões.',
+          en: 'We looked at how a medical visit actually goes: the real rhythm of the conversation, the moments a doctor pushes back, the questions that always come up, and what makes an approach land or fail. The qualitative analysis then organised those accounts along three dimensions, and that is where the patterns came from.',
+        },
+      },
+      {
+        title: { pt: 'As personas sintéticas', en: 'The synthetic personas' },
+        body: {
+          pt: 'Cada persona reúne características profissionais, aspectos comportamentais, postura durante a visita e padrões de reação. Juntos, esses quatro eixos definem nível de abertura ao diálogo, exigência técnica, tolerância à abordagem comercial e critérios de decisão. Um workshop com o time detalhou os perfis, discutiu situações reais de visita e validou as objeções levantadas.',
+          en: 'Each persona brings together professional traits, behavioural aspects, posture during the visit and reaction patterns. Together those four axes set how open the doctor is to conversation, how technically demanding they are, how much commercial framing they will take, and what they decide on. A workshop with the team fleshed out the profiles, worked through real visit situations and validated the objections we had gathered.',
+        },
+      },
+      {
+        title: { pt: 'Como a plataforma foi construída', en: 'How the platform was built' },
+        body: {
+          pt: 'Benchmark em aplicações de saúde no Mobbin, no brandbook da EMS, em referências de chat e fluxo conversacional no Dribbble e em outros players do segmento. Antes de desenhar: mapeamento do user journey com base no refinamento técnico, antecipação de casos de uso, telas de erro, estado vazio e feedback, e o fluxo completo da simulação. Tablet como dispositivo principal, e mobile first para facilitar o desenvolvimento.',
+          en: 'Benchmarking against health apps on Mobbin, the EMS brandbook, chat and conversational-flow references on Dribbble, and other players in the sector. Before drawing anything: mapping the user journey off the technical refinement, anticipating use cases, error screens, empty states and feedback, and the full simulation flow. Tablet as the primary device, and mobile first to make development easier.',
+        },
+      },
+      {
+        title: { pt: 'Meu papel dentro do time', en: 'My part inside the team' },
+        body: {
+          pt: 'O time reunia UX writing, product design, quatro project leaders e direção de design. Eu peguei a ponte entre a pesquisa e o produto: consolidar o que veio do campo, virar isso em perfis e cenários, e desenhar a experiência que os usa.',
+          en: 'The team brought together UX writing, product design, four project leaders and design direction. I took the bridge between the research and the product: consolidating what came out of the field, turning it into profiles and scenarios, and designing the experience that uses them.',
+        },
+      },
+    ],
+    gameChanger: {
+      pt: 'A base comportamental é o que fica. Ela vale para qualquer simulação que a EMS quiser montar depois, com outro produto ou outra especialidade, porque descreve como o médico se comporta e não o que aquele remédio faz. O simulador é o primeiro uso dela, e provavelmente não vai ser o último.',
+      en: 'The behavioural base is the part that lasts. It works for any simulation EMS wants to build later, with a different product or a different speciality, because it describes how a doctor behaves rather than what one drug does. The simulator is the first use of it, and probably not the last.',
+    },
+
+    contribution: [
+      {
+        pt: 'Consolidei e analisei a pesquisa de campo com propagandistas, identificando os padrões de interação médica.',
+        en: 'Consolidated and analysed the field research with reps, identifying the patterns in medical interaction.',
+      },
+      {
+        pt: 'Mapeei objeções e reações e construí os perfis médicos, as personas sintéticas que sustentam a simulação.',
+        en: 'Mapped objections and reactions and built the medical profiles, the synthetic personas the simulation rests on.',
+      },
+      {
+        pt: 'Organizei o conteúdo clínico, defini a linguagem médica e criei os cenários de simulação.',
+        en: 'Organised the clinical content, defined the medical language and created the simulation scenarios.',
+      },
+      {
+        pt: 'Desenhei a plataforma, do benchmark ao protótipo em alta fidelidade, e escrevi o copy da interface.',
+        en: 'Designed the platform, from benchmarking to the high-fidelity prototype, and wrote the interface copy.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: {
+          pt: 'A simulação de visita médica, com a persona sintética do outro lado da conversa.',
+          en: 'The medical visit simulation, with the synthetic persona on the other side of the conversation.',
+        },
+        confidential: true,
+      },
+    ],
+  },
+
+  /*
+   * ⚠️ SCAFFOLD, 2026-08-25. João asked for this fourth slot and said the case is still to be
+   * produced. Everything present traces to his CV; every narrative field is null on purpose, so
+   * the page prompts him for what to write rather than reading as a finished case. The `impact`
+   * block carries no metric because there is no measured outcome yet, and inventing one on a
+   * project that is still running would be the worst possible place to guess.
+   */
+  'itau-escrituracao': {
+    slug: 'itau-escrituracao',
+    year: '2026',
+    role: { pt: 'Product Designer', en: 'Product Designer' },
+    duration: { pt: 'Em andamento', en: 'In progress' },
+    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+
+    impact: {
+      value: '2026',
+      label: { pt: 'EM ANDAMENTO', en: 'IN PROGRESS' },
+      note: {
+        pt: 'O case completo entra assim que o projeto permitir publicar.',
+        en: 'The full case goes up as soon as the project allows it to be published.',
+      },
+    },
+    context: {
+      pt: 'As jornadas de ativos escriturais e investimentos dentro do Itaú. É o que estou fazendo agora, e por enquanto é o que dá para contar.',
+      en: 'The book-entry asset and investment journeys inside Itaú. It is what I am working on right now, and for the moment it is as much as I can say.',
+    },
+
+    conflict: null,
+    tradeoff: null,
+    decision: null,
+    evidence: [],
+
+    challenge: null,
+    detail: [],
+    gameChanger: null,
+
+    contribution: [],
+    gallery: [],
   },
 };
 
@@ -1214,11 +1569,16 @@ export const metrics = {
 
   items: [
     {
+      /*
+       * ⚠️ CORRECTED 2026-08-25. This read "+90%", which says CSAT rose by ninety per cent.
+       * João's own write-up says it rose by 40%, landing AT a 90% satisfaction average. The
+       * level and the increase are different claims and the wrong one was the flattering one.
+       */
       label: { pt: 'AUMENTO DE CSAT', en: 'CSAT INCREASE' },
-      value: '+90%',
+      value: '+40%',
       note: {
-        pt: 'Depois que eu redesenhei a configuração de aparência de loja na Reserva INK.',
-        en: 'After I redesigned the storefront appearance settings at Reserva INK.',
+        pt: 'Chegando a 90% de satisfação na configuração de aparência de loja da Reserva INK.',
+        en: 'Reaching 90% satisfaction on Reserva INK’s storefront appearance settings.',
       },
       verified: true,
     },
@@ -1436,10 +1796,15 @@ export const casePage = {
     gameChanger: { pt: 'O que isso destravou', en: 'What this unlocked' } satisfies T,
   },
 
-  /** Column headers for the accessible table behind a case chart. */
+  /** The chart's own furniture: the readout line, and what a bar announces. */
   chart: {
-    period: { pt: 'Mês', en: 'Month' } satisfies T,
-    amount: { pt: 'Chamadas', en: 'Calls' } satisfies T,
+    start: { pt: 'ponto de partida', en: 'starting point' } satisfies T,
+    below: { pt: 'abaixo do início', en: 'below the start' } satisfies T,
+    above: { pt: 'acima do início', en: 'above the start' } satisfies T,
+    hint: {
+      pt: 'Passe o mouse ou use as setas para percorrer.',
+      en: 'Hover, or use the arrow keys to step through.',
+    } satisfies T,
   },
 
   /** Appended to a gallery caption when the artwork is still waiting on an NDA review. */

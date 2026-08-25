@@ -1,7 +1,7 @@
 /*
- * The chart lives inside the 60s layer, which is the dark band — so every colour here comes from
+ * The chart lives inside the 60s layer, which is the dark band, so every colour here comes from
  * the --on-dark-* family rather than from --ink. It is the only place on the site with a chart,
- * and it earns its place by being the proof of the number printed above it.
+ * and it earns that by being the proof of the number printed above it.
  */
 
 .root {
@@ -24,10 +24,6 @@
   color: var(--on-dark-50);
 }
 
-/*
- * The fall, printed once at the top of the chart. Computed from the series rather than typed in,
- * so it can never drift away from the bars underneath it if a month is corrected later.
- */
 .delta {
   font-size: 15px;
   font-variant-numeric: tabular-nums;
@@ -37,57 +33,139 @@
 /* ------------------------------------------------------------- plot */
 
 .plot {
+  position: relative;
+  height: 280px;
+  margin-top: 34px;
+}
+
+/*
+ * The starting value, held across the whole width.
+ *
+ * Its `bottom` is a percentage of .plot, and every bar's height is a percentage of the same box,
+ * which is what keeps the line and the bar tops on one scale. Drawn with a gradient rather than
+ * a dashed border, because dashed borders render as squares at some zoom levels and as smears at
+ * others, and this line has to look deliberate at every one of them.
+ */
+.refLine {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+
+  background-image: linear-gradient(
+    to right,
+    var(--on-dark-rule) 0 6px,
+    transparent 6px 12px
+  );
+  background-size: 12px 1px;
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.8s var(--ease) 0.15s;
+}
+
+.refLine.on {
+  transform: scaleX(1);
+}
+
+.refTag {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-dark-50);
+}
+
+/* The ground the bars stand on, drawn in from the left as the plot arrives. */
+.axis {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--on-dark-rule);
+
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease);
+}
+
+.axis.on {
+  transform: scaleX(1);
+}
+
+.cols {
   display: flex;
   align-items: flex-end;
   gap: clamp(10px, 2vw, 26px);
-
-  height: 260px;
-  margin-top: 30px;
+  height: 100%;
 }
 
-.column {
+/*
+ * A column is a button covering its full height, not just the bar.
+ *
+ * Making only the bar clickable would mean the shortest month had the smallest target, which is
+ * backwards: the whole point of the last column is that it is the short one. Full height also
+ * clears the 32px floor at every width without a min-height fudge.
+ */
+.col {
+  position: relative;
   flex: 1;
   min-width: 0;
   height: 100%;
-  display: flex;
-  flex-direction: column;
+
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.col:focus-visible {
+  outline: 1px solid var(--on-dark-50);
+  outline-offset: 3px;
 }
 
 /*
- * The plotting area, and the reason this chart is correct.
+ * Grown with scaleY from the baseline rather than with height.
  *
- * `flex: 1` gives it whatever is left after the month label, and `position: relative` makes that
- * height something the bar's percentage can resolve against. The bar was previously a flex
- * sibling of the labels, which let the container shrink it to fit — and four different values
- * came out as four identical bars. Absolute positioning inside a resolved box removes every
- * negotiation: the bar is the height the data says it is.
- */
-.track {
-  position: relative;
-  flex: 1;
-  min-height: 0;
-}
-
-/*
- * Grown with scaleY from the baseline, not with height.
- *
- * transform-origin: bottom is what makes it read as a bar rising out of the axis rather than as
- * a block stretched from its centre — and scaleY stays on the compositor, so five bars animating
- * together cost no layout passes.
+ * transform-origin: bottom is what makes it read as a bar rising out of the axis instead of a
+ * block stretched from its centre, and scaleY stays on the compositor, so the whole series can
+ * animate together without a single layout pass.
  */
 .bar {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: var(--h);
 
   background: var(--on-dark);
-  opacity: 0.34;
+  opacity: 0.26;
 
   transform: scaleY(0);
   transform-origin: bottom;
-  transition: transform 0.9s var(--ease) var(--delay);
+  transition: transform 0.9s var(--ease) var(--delay), opacity 0.25s linear;
+}
+
+.bar.on {
+  transform: scaleY(1);
+}
+
+/* The selected column takes the ink; the rest step back so the comparison has a subject. */
+.colOn .bar {
+  opacity: 1;
+}
+
+.col:last-child .bar {
+  opacity: 0.55;
+}
+
+.colOn:last-child .bar {
+  opacity: 1;
 }
 
 /* The figure rides the top of its own bar, the way the source slide sets them. */
@@ -95,101 +173,200 @@
   position: absolute;
   left: 0;
   right: 0;
-  bottom: var(--h);
 
   padding-bottom: 9px;
   font-size: 14px;
   font-variant-numeric: tabular-nums;
-  color: var(--on-dark-72);
+  color: var(--on-dark-50);
   text-align: center;
 
   opacity: 0;
-  transition: opacity 0.5s var(--ease) calc(var(--delay) + 260ms);
-}
-
-.bar.on {
-  transform: scaleY(1);
+  transition: opacity 0.5s var(--ease) calc(var(--delay) + 300ms), color 0.25s linear;
 }
 
 .value.on {
   opacity: 1;
 }
 
-/*
- * The last bar is the argument — it is the month the number is quoted from. Full opacity marks
- * it without needing a second colour, a legend, or a label that says "final".
- */
-.column:last-child .bar {
-  opacity: 1;
+.colOn .value {
+  color: var(--on-dark);
 }
 
-.column:last-child .value {
+/* ---- the drop bracket ---- */
+
+/*
+ * The distance between where the series started and where it ended, drawn on the last column.
+ * A vertical rule with a cap at each end: the reader can see the fall as a length instead of
+ * inferring it from two bars at opposite ends of the plot.
+ */
+.drop {
+  position: absolute;
+  left: 50%;
+  width: 1px;
+  background: var(--on-dark-50);
+
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.6s var(--ease) 1s;
+}
+
+.drop.on {
+  transform: scaleY(1);
+}
+
+.drop::before,
+.drop::after {
+  content: '';
+  position: absolute;
+  left: -4px;
+  width: 9px;
+  height: 1px;
+  background: var(--on-dark-50);
+}
+
+.drop::before {
+  top: 0;
+}
+
+.drop::after {
+  bottom: 0;
+}
+
+.dropTag {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+
+  font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.04em;
+  color: var(--on-dark);
+  white-space: nowrap;
+}
+
+/* ---- labels and readout ---- */
+
+.labels {
+  display: flex;
+  gap: clamp(10px, 2vw, 26px);
+  margin-top: 12px;
+}
+
+.label {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+
+  font-size: 12.5px;
+  letter-spacing: 0.04em;
+  color: var(--on-dark-50);
+  transition: color 0.25s linear;
+}
+
+.labelOn {
   color: var(--on-dark);
 }
 
 /*
- * The month sits under the axis rule, outside the plotting track — it labels the column, not the
- * bar, and putting it inside the track would shorten the bar it is meant to be describing.
+ * One line that answers "which one am I looking at". A number sitting on a bar cannot also carry
+ * its month and its unit without the plot turning into a paragraph, so the detail lives here and
+ * changes as the reader moves.
  */
-.label {
+.readout {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+
+  margin-top: 26px;
+  padding-top: 16px;
+  border-top: 1px solid var(--on-dark-rule);
+  min-height: 44px;
+}
+
+.readoutName {
+  font-size: 14px;
+  color: var(--on-dark);
+}
+
+.readoutValue {
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+  color: var(--on-dark-72);
+}
+
+.readoutRel {
   font-size: 12.5px;
   letter-spacing: 0.04em;
   color: var(--on-dark-50);
-  padding-top: 14px;
-  text-align: center;
-  border-top: 1px solid var(--on-dark-rule);
-  margin-top: 12px;
+  margin-left: auto;
 }
 
 .note {
   font-size: 13px;
   line-height: var(--lh-body);
   color: var(--on-dark-50);
-  margin-top: 22px;
+  margin-top: 14px;
   max-width: 62ch;
 }
 
-/* The table that carries the figures for assistive tech, visually removed but still read. */
-.sr {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
+.hint {
+  opacity: 0.75;
 }
+
+/* ---- narrow ---- */
 
 @media (max-width: 720px) {
   .plot {
-    height: 190px;
+    height: 200px;
+  }
+
+  .cols,
+  .labels {
     gap: 8px;
   }
 
   .value {
     font-size: 12px;
+    padding-bottom: 7px;
   }
 
   .label {
     font-size: 11px;
     letter-spacing: 0;
   }
+
+  /* At this width the tag would sit on top of the bar beside it. */
+  .dropTag {
+    display: none;
+  }
+
+  .readoutRel {
+    margin-left: 0;
+  }
 }
 
 /*
- * Reduced motion: the bars are already at their height, they simply do not grow into it. The
- * chart is information, so it must never be the animation's job to make it appear.
+ * Reduced motion: everything is already at its final size, it simply does not travel there. The
+ * chart carries information, so appearing must never be the animation's job.
  */
 @media (prefers-reduced-motion: reduce) {
-  .bar {
+  .bar,
+  .value,
+  .drop,
+  .refLine,
+  .axis {
     transform: none;
+    opacity: 1;
     transition: none;
   }
 
-  .value {
+  .bar {
+    opacity: 0.26;
+  }
+
+  .colOn .bar {
     opacity: 1;
-    transition: none;
   }
 }

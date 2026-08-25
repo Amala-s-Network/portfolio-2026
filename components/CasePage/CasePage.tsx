@@ -170,15 +170,22 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
         </Reveal>
 
-        <Reveal on={sixtyIn} order={2} className={styles.evidence}>
-          {data.evidence.map((e, i) => (
-            <div key={i}>
-              <div className={styles.evidenceValue}>{e.value}</div>
-              <div className={styles.evidenceLabel}>{t(e.label)}</div>
-              <div className={styles.evidenceNote}>{t(e.note)}</div>
-            </div>
-          ))}
-        </Reveal>
+        {/*
+          * Dropped entirely when there is nothing to put in it. The grid carries a rule and its
+          * own padding, so an empty one renders as a bordered strip of nothing — which is
+          * exactly what the case still waiting to be written was showing.
+          */}
+        {data.evidence.length > 0 && (
+          <Reveal on={sixtyIn} order={2} className={styles.evidence}>
+            {data.evidence.map((e, i) => (
+              <div key={i}>
+                <div className={styles.evidenceValue}>{e.value}</div>
+                <div className={styles.evidenceLabel}>{t(e.label)}</div>
+                <div className={styles.evidenceNote}>{t(e.note)}</div>
+              </div>
+            ))}
+          </Reveal>
+        )}
 
         {/*
           * The series, when there is one. It sits directly under the evidence numbers because it
@@ -224,14 +231,23 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
         ))}
 
-        <div className={styles.detailGrid}>
-          <p className={styles.detailTitle}>{t(copy.headings.contribution)}</p>
-          <ul className={styles.contribution}>
-            {data.contribution.map((c, i) => (
-              <li key={i}>{t(c)}</li>
-            ))}
-          </ul>
-        </div>
+        {(SHOW_PROMPTS || data.contribution.length > 0) && (
+          <div className={styles.detailGrid}>
+            <p className={styles.detailTitle}>{t(copy.headings.contribution)}</p>
+            {data.contribution.length > 0 ? (
+              <ul className={styles.contribution}>
+                {data.contribution.map((c, i) => (
+                  <li key={i}>{t(c)}</li>
+                ))}
+              </ul>
+            ) : (
+              <Missing
+                what="o meu papel"
+                ask="O que foi seu, em primeira pessoa? Três ou quatro linhas, cada uma começando com um verbo: mapeei, propus, desenhei, medi."
+              />
+            )}
+          </div>
+        )}
 
         {(SHOW_PROMPTS || data.gameChanger) && (
           <div className={styles.detailGrid}>
@@ -249,20 +265,22 @@ export function CasePage({ slug }: { slug: string }) {
           </div>
         )}
 
-        <Reveal on={sixMinIn} order={1} className={styles.gallery}>
-          {data.gallery.map((g, i) => (
-            <figure key={i} style={{ margin: 0 }}>
-              <div className={styles.frame}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.src ?? `/placeholders/cases/${slug}.svg`} alt="" aria-hidden="true" />
-              </div>
-              <figcaption className={styles.caption}>
-                {t(g.caption)}
-                {g.confidential && !g.src && ` · ${t(copy.ndaPending)}`}
-              </figcaption>
-            </figure>
-          ))}
-        </Reveal>
+        {data.gallery.length > 0 && (
+          <Reveal on={sixMinIn} order={1} className={styles.gallery}>
+            {data.gallery.map((g, i) => (
+              <figure key={i} style={{ margin: 0 }}>
+                <div className={styles.frame}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={g.src ?? `/placeholders/cases/${slug}.svg`} alt="" aria-hidden="true" />
+                </div>
+                <figcaption className={styles.caption}>
+                  {t(g.caption)}
+                  {g.confidential && !g.src && ` · ${t(copy.ndaPending)}`}
+                </figcaption>
+              </figure>
+            ))}
+          </Reveal>
+        )}
       </section>
 
       <footer className={styles.pageFoot}>

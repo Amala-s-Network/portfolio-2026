@@ -17,7 +17,7 @@ import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Intro } from '@/components/Intro/Intro';
 import { PageFold } from '@/components/PageFold/PageFold';
 import { useSectionSettle } from '@/hooks/useSectionSettle';
-import { cases } from '@/content/copy';
+import { featuredCases } from '@/content/copy';
 
 /**
  * Whether "Outros projetos" and its nav entry are shown.
@@ -113,12 +113,12 @@ export default function Page() {
         <Hero onContact={openContact} onUnlock={openGate} started={introDone} />
 
         {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
-        {cases.map((c, i) => (
+        {featuredCases.map((c, i) => (
           <CasePanel
             key={c.slug}
             data={c}
             index={i}
-            isLast={i === cases.length - 1}
+            isLast={i === featuredCases.length - 1}
             /* Only the first rises over the static photograph behind the header. */
             pinned={i === 0}
           />
