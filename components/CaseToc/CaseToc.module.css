@@ -20,10 +20,11 @@
 
 .sticky {
   /*
-   * Runs to the right edge of the grid, at João's instruction. It was capped at 300px on the
-   * theory that a long rule under a short label looks adrift — the answer to that is to anchor
-   * the far end rather than to stop short of it, so each row carries a marker on the right and
-   * the rule spans between two things instead of trailing off.
+   * Flush to the right gutter, in a rail of its own.
+   *
+   * The rail is what lets the content beside it run the full width of the page: an index that
+   * filled the whole right half left the card bands trapped at sentence width underneath it.
+   * Each row still carries a marker on the far end so the rule spans between two things.
    */
   position: sticky;
   /* Clear of the fixed nav, and a little breathing room under it. */

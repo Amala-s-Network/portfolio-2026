@@ -15,17 +15,29 @@
 
 .page {
   background: var(--paper);
+
+  /*
+   * The reading measure, in pixels rather than in ch.
+   *
+   * ch resolves against the font of whatever element carries it, so moving the cap off the
+   * container and onto the paragraphs quietly widened them: 68ch against 16px was 623px, and the
+   * same 68ch against the paragraph's own 19px came out at 740px, which measures 79 characters a
+   * line. Anything past about 75 makes the eye lose the line it is returning to. 640px measures
+   * 68, which is where it was before and where it should be.
+   */
+  --measure: 640px;
 }
 
 /*
- * ONE measure, shared by the argument and the long read.
+ * The content column of the long read. NOT a measure any more.
  *
- * 68ch is the width prose wants; wider and the eye loses the line it is returning to. It is
- * left-aligned rather than centred so the page keeps the single left edge the rest of the site
- * is built on, and so the figures below can run wider without the text appearing to shift.
+ * The cap moved off this box and onto the prose elements inside it, so that a paragraph still
+ * breaks at 68ch — the width prose wants, beyond which the eye loses the line it is returning
+ * to — while a band of cards can run the full width of the column. Capping the container made
+ * every block the width of a sentence, including the ones that are not sentences.
  */
 .measure {
-  max-width: 68ch;
+  min-width: 0;
 }
 
 /* ------------------------------------------------------------ opening */
@@ -258,14 +270,20 @@
 }
 
 /*
- * The measure, and the index beside it. `start` on the second track rather than a fixed width so
- * the index never squeezes the thing it serves; below 1100px CaseToc hides itself and this
- * collapses to one column on its own.
+ * Content column first, index rail second.
+ *
+ * It was the other way round — prose in a 68ch track and the index filling everything left of
+ * the margin — and that gave the index the whole right half of the page for the height of six
+ * rows, with the cards trapped at sentence width underneath it. Flipping it puts the index in a
+ * narrow rail flush to the right gutter and hands the rest back to the content, so a band of
+ * cards can run to the end of the grid without ever colliding with a sticky sidebar.
+ *
+ * Below 1100px CaseToc hides itself and this collapses to one column.
  */
 .readGrid {
   display: grid;
-  grid-template-columns: minmax(0, 68ch) minmax(0, 1fr);
-  gap: clamp(48px, 7vw, 112px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  gap: clamp(40px, 5vw, 96px);
   align-items: start;
 }
 
@@ -295,6 +313,7 @@
 }
 
 .chapterHead {
+  max-width: var(--measure);
   font-family: var(--font-playfair), Georgia, serif;
   font-size: 25px;
   font-weight: 700;
@@ -304,6 +323,7 @@
 }
 
 .chapterBody {
+  max-width: var(--measure);
   font-size: 19px;
   /* Longer lines need more leading than the site's 1.5; this is the one place that is true. */
   line-height: 1.7;
@@ -316,6 +336,7 @@
 }
 
 .contribution {
+  max-width: var(--measure);
   list-style: none;
   padding: 0;
   margin: 20px 0 0;
@@ -533,13 +554,14 @@
 
   display: grid;
   /*
-   * Two across inside the measure, not as many as will fit.
+   * One row, filling the column, whatever the count.
    *
-   * auto-fit at 200px gave three columns in a 68ch measure, which stranded a fourth card alone
-   * on a second row and squeezed each one to about fourteen characters a line. At 280px the
-   * measure takes exactly two, so four points land as a clean 2x2 and a pair lands as a row.
+   * auto-fit sizes the track count from the container and then collapses the empty ones, so two
+   * points take half the width each and four take a quarter — and nothing is ever stranded alone
+   * on a second row. 200px is the floor that still fits four across at 1366, which is the width
+   * that decides this.
    */
-  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 1px;
   background: var(--hairline);
   border: 1px solid var(--hairline);
