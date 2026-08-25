@@ -176,16 +176,18 @@
 }
 
 /*
- * Stacked rather than set in three columns.
+ * Three columns across, not one narrow one down.
  *
- * Three columns made the argument look like a comparison table of equal-weight items, when it is
- * actually a sequence: this was the bind, this is what I let go of, so this is what I chose. Read
- * down, in one measure, it argues. Read across, it merely lists.
+ * Stacking it inside the reading measure left two thirds of a black band empty beside every
+ * paragraph, which is worse than the fragmentation it was meant to fix. Side by side, the three
+ * parts also read as what they are: one glance takes in the bind, the sacrifice and the call
+ * together, which is the whole point of putting them next to each other.
  */
 .argument {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 48px;
+  align-items: start;
 }
 
 .arg {
@@ -200,10 +202,14 @@
 }
 
 .argBody {
-  font-size: 19px;
+  font-size: 17px;
   line-height: 1.65;
   margin-top: 16px;
   color: var(--on-dark-72);
+}
+
+.argBody + .argBody {
+  margin-top: 14px;
 }
 
 /* Numbers are looked at, not read, so they run the full width outside the measure. */
@@ -249,6 +255,32 @@
 
 .read {
   padding: 104px var(--gutter) 110px;
+}
+
+/*
+ * The measure, and the index beside it. `start` on the second track rather than a fixed width so
+ * the index never squeezes the thing it serves; below 1100px CaseToc hides itself and this
+ * collapses to one column on its own.
+ */
+.readGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 68ch) minmax(0, 1fr);
+  gap: clamp(48px, 7vw, 112px);
+  align-items: start;
+}
+
+@media (max-width: 1099px) {
+  .readGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/*
+ * Jumping from the index must not park a heading underneath the fixed nav. This is the whole
+ * reason scroll-margin exists, and forgetting it is the classic way an anchor link looks broken.
+ */
+.chapter {
+  scroll-margin-top: calc(var(--navH) + 28px);
 }
 
 /*
@@ -381,6 +413,22 @@
   --ax: -5px;
 }
 
+/*
+ * The argument collapses well before the evidence does. Three columns of prose need real width;
+ * at 1000px they were 86px each on a phone, which is a column of single words. The numbers can
+ * live in narrower tracks because they are numbers.
+ */
+@media (max-width: 900px) {
+  .argument {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+  }
+
+  .argBody {
+    font-size: 17px;
+  }
+}
+
 @media (max-width: 1000px) {
   .evidence {
     grid-template-columns: minmax(0, 1fr);
@@ -465,5 +513,102 @@
 
   .pageFoot {
     padding: 28px 0 56px;
+  }
+}
+
+/* ---------------------------------------------------- point blocks */
+
+/*
+ * The band that breaks the grey.
+ *
+ * Some of what a case has to say is genuinely a list of four things, and setting it as another
+ * paragraph makes the reader do the structuring work the author already did. Cards run ACROSS
+ * the page rather than down it, which is what makes them read as one idea in four parts instead
+ * of four more paragraphs.
+ */
+.cards {
+  list-style: none;
+  margin: 30px 0 0;
+  padding: 0;
+
+  display: grid;
+  /*
+   * Two across inside the measure, not as many as will fit.
+   *
+   * auto-fit at 200px gave three columns in a 68ch measure, which stranded a fourth card alone
+   * on a second row and squeezed each one to about fourteen characters a line. At 280px the
+   * measure takes exactly two, so four points land as a clean 2x2 and a pair lands as a row.
+   */
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+
+.cards .point {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px 20px 24px;
+  background: var(--paper);
+}
+
+.pointNum {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.pointTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.pointBody {
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--body);
+}
+
+/*
+ * Principles carry no body, so they are a ruled list rather than cards: five boxes each holding
+ * a single line would be a lot of furniture around not much text.
+ */
+.principles {
+  list-style: none;
+  margin: 26px 0 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.principles .point {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.principles .pointTitle {
+  font-weight: 400;
+  font-size: 17px;
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .cards {
+    margin-top: 24px;
+  }
+
+  .cards .point {
+    padding: 18px 16px 20px;
+  }
+
+  .pointTitle,
+  .principles .pointTitle {
+    font-size: 15.5px;
   }
 }

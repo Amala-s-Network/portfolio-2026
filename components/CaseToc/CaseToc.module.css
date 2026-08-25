@@ -1,0 +1,86 @@
+/*
+ * The index sits in the column beside the reading measure, which was empty before it existed.
+ * It is quiet by design: numbered, small, hairline-ruled, and the active row is the only thing
+ * in it carrying full ink.
+ */
+
+.root {
+  display: none;
+}
+
+/*
+ * Only where there is genuinely room for a second column. Below this the article uses the whole
+ * width and a sticky index would be taking space from the thing it is meant to serve.
+ */
+@media (min-width: 1100px) {
+  .root {
+    display: block;
+  }
+}
+
+.sticky {
+  /*
+   * Capped, because the track it sits in grows to whatever is left of the page. At 1920 that is
+   * over a thousand pixels, and an underline running that far beneath a fourteen-pixel label
+   * reads as a rule across the page rather than as a list item.
+   */
+  max-width: 300px;
+  position: sticky;
+  /* Clear of the fixed nav, and a little breathing room under it. */
+  top: calc(var(--navH) + 40px);
+}
+
+.head {
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.link {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+
+  /* WCAG 2.2 target size, to João's 32px floor. */
+  min-height: 34px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--hairline);
+
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--muted-light);
+  transition: color 0.3s var(--ease);
+}
+
+.link:hover,
+.link:focus-visible {
+  color: var(--ink);
+}
+
+/* The one row carrying full ink: where the reader currently is. */
+.on {
+  color: var(--ink);
+}
+
+.num {
+  flex: none;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .link {
+    transition: none;
+  }
+}

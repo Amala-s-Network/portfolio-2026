@@ -566,6 +566,24 @@ export const cases: Case[] = [
     },
   },
   {
+    /*
+     * Placed after the featured four on purpose: João set that running order and did not say
+     * where this one goes. It has a page and a place in the index; one word moves it up.
+     */
+    slug: 'itau-cartao-adicional',
+    categories: ['produtos', 'interfaces'],
+    photo: null,
+    title: {
+      pt: 'Cartão adicional de volta ao atendimento',
+      en: 'Additional cards, back where people are served',
+    },
+    company: { pt: 'Itaú Unibanco · via NTT DATA', en: 'Itaú Unibanco · via NTT DATA' },
+    description: {
+      pt: 'A migração deixou a contratação só no app, e quem mais contrata tem mais de 40 anos e queria resolver com o gerente. Uma jornada só, rodando nos dois sistemas dos canais assistidos.',
+      en: 'The migration left applications in the app alone, and the people who apply most are over 40 and wanted to sort it out with their manager. One journey, running in both assisted-channel systems.',
+    },
+  },
+  {
     slug: 'reserva-ink-imagens-de-vitrine',
     categories: ['interfaces', 'produtos'],
     title: {
@@ -678,7 +696,19 @@ export type CaseMedia = {
   confidential?: boolean;
 };
 
-export type CaseSection = { title: T; body: T };
+export type CaseSection = {
+  title: T;
+  body: T;
+  /**
+   * An optional breakdown, drawn as a band across the page after the prose.
+   *
+   * This exists for diagramação: eight paragraphs of grey in a row is where a reader gives up,
+   * and some of what a case has to say is genuinely a list of four things rather than a
+   * paragraph pretending to be one. Items with a body render as numbered cards; items without
+   * one render as a compact ruled list, which is the right shape for a set of principles.
+   */
+  points?: { title: T; body?: T }[];
+};
 export type Outcome = { value: string; label: T; note: T };
 
 /**
@@ -887,52 +917,40 @@ export const caseDetails: Record<string, CaseDetail> = {
     },
     detail: [
       {
-        title: { pt: 'O problema', en: 'The problem' },
+        title: { pt: 'O cenário', en: 'The setting' },
         body: {
-          pt: 'Contestar uma despesa no cartão PJ dependia quase inteiramente da Central de Atendimento. Prazo, status e responsabilidade não eram claros para ninguém, e a conversa acontecia espalhada por vários canais diferentes. O tema vivia no topo dos acionamentos da Central, com volume oscilando entre 2,5 mil e 3,7 mil por mês nos dois anos anteriores.\n\nIsso batia direto em duas métricas que a squad é cobrada. Contact Rate é quanto o cliente precisa ligar, e cada ligação custa dinheiro em atendente. NPS é o quanto ele fica satisfeito com o serviço, o que mexe na relação dele com o banco inteiro. Contestação estava puxando as duas para baixo ao mesmo tempo.',
-          en: 'Disputing a charge on a business card depended almost entirely on the call centre. Deadlines, status and responsibility were unclear to everyone involved, and the conversation was scattered across several different channels. The subject sat permanently at the top of the call centre’s contact drivers, running between 2,500 and 3,700 a month over the previous two years.\n\nThat hit two metrics the squad is measured on. Contact Rate is how often a customer has to call, and every call costs money in agent time. NPS is how satisfied they are with the service, which affects their relationship with the whole bank. Disputes were dragging both down at once.',
+          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.\n\nContestar uma despesa no cartão PJ dependia quase inteiramente da Central de Atendimento. Prazo, status e responsabilidade não eram claros para ninguém, e a conversa acontecia espalhada por vários canais diferentes. O tema vivia no topo dos acionamentos, com volume oscilando entre 2,5 mil e 3,7 mil por mês nos dois anos anteriores, puxando para baixo as duas métricas pelas quais a squad responde.\n\nTudo isso rodava no VQ, o sistema legado do banco, onde estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram. O plano combinado era resolver o máximo possível por quick-wins dentro dele, antes de digitalizar a jornada para a plataforma nova.',
+          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.\n\nDisputing a charge on a business card depended almost entirely on the call centre. Deadlines, status and responsibility were unclear to everyone involved, and the conversation was scattered across several different channels. The subject sat permanently at the top of the contact drivers, running between 2,500 and 3,700 a month over the previous two years, dragging down both of the metrics the squad answers for.\n\nAll of it ran on VQ, the bank’s legacy system, where usability studies, design, accessibility and the JIP framework never arrived. The agreed plan was to fix as much as possible inside it through quick wins, before digitising the journey onto the new platform.',
         },
-      },
-      {
-        title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
-        body: {
-          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.\n\nContestação de despesas rodava no VQ, o sistema legado do banco, onde estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram. O plano combinado era resolver o máximo possível por quick-wins dentro dele, antes de digitalizar a jornada para a plataforma nova.',
-          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.\n\nExpense disputes ran on VQ, the bank’s legacy system, where usability studies, design, accessibility and the JIP framework never arrived. The agreed plan was to fix as much as possible inside it through quick wins, before digitising the journey onto the new platform.',
-        },
+        points: [
+          {
+            title: { pt: 'Contact Rate', en: 'Contact rate' },
+            body: {
+              pt: 'Quanto o cliente precisa ligar. Cada ligação custa dinheiro em tempo de atendente.',
+              en: 'How often a customer has to call. Every call costs money in agent time.',
+            },
+          },
+          {
+            title: { pt: 'NPS', en: 'NPS' },
+            body: {
+              pt: 'O quanto ele fica satisfeito com o serviço, o que mexe na relação dele com o banco inteiro.',
+              en: 'How satisfied they are with the service, which affects their relationship with the whole bank.',
+            },
+          },
+        ],
       },
       {
         title: { pt: 'O discovery', en: 'Discovery' },
         body: {
-          pt: 'Juntamos meu time, a Central de Atendimento, o time de contestação da PF, Operações, PRC e as coordenações responsáveis. Foram 16 semanas de sessões de Lean Inception, Matriz CSD, revisão completa dos fluxos e da esteira, entrevistas com usuários e uma contestação real que eu mesmo abri e acompanhei até o fim. Também mapeamos o motor de fraudes, os prazos e os SLAs do processo.\n\nA descoberta que orientou tudo veio de sentar com o time da Central e ouvir ligação: cerca de 40% delas eram sobre andamento. Em que etapa está e quanto falta para a próxima. Nada além disso.',
-          en: 'We pulled together my team, the call centre, the retail-side dispute team, operations, risk and the responsible coordinators. Sixteen weeks of Lean Inception sessions, a CSD matrix, a full review of the flows and the pipeline, user interviews, and a real dispute that I filed myself and followed to the end. We also mapped the fraud engine, the deadlines and the SLAs in the process.\n\nThe finding that steered everything came from sitting with the call centre team and listening to calls: around 40% of them were about progress. What stage is it at, and how long until the next one. Nothing beyond that.',
+          pt: 'Juntamos meu time, a Central de Atendimento, o time de contestação da PF, Operações, PRC e as coordenações responsáveis. Foram 16 semanas de sessões de Lean Inception, Matriz CSD, revisão completa dos fluxos e da esteira, entrevistas com usuários e uma contestação real que eu mesmo abri e acompanhei até o fim. Também mapeamos o motor de fraudes, os prazos e os SLAs do processo.\n\nA descoberta que orientou tudo veio de sentar com o time da Central e ouvir ligação: cerca de 40% delas eram sobre andamento. Em que etapa está e quanto falta para a próxima. Nada além disso.\n\nEm paralelo, fiz benchmarking com 11 players, testando ou pesquisando como a contestação funciona dentro dos aplicativos e sites. Concorrentes diretos e indiretos, bancos tradicionais e digitais, PF e PJ. Os cenários que mais aparecem são sempre os mesmos: perda do cartão, cartão clonado, compra feita por engano e compra cancelada. O resultado foi desconfortável e útil, porque todos os players usam a mesma lógica, pela fatura e/ou direto pela central e pelo SAC. Ninguém tinha resolvido isso, o que tirou da mesa a ideia de copiar alguém.\n\nAcompanhei também, todo dia, as reclamações sobre contestação de compras no Reclame Aqui. São mais de 2 mil por dia, com média de 48 horas para a empresa responder. Não é um problema do Itaú, é um problema do setor, e ler aquilo diariamente foi o que deu textura aos cenários que a gente estava tratando como categoria.',
+          en: 'We pulled together my team, the call centre, the retail-side dispute team, operations, risk and the responsible coordinators. Sixteen weeks of Lean Inception sessions, a CSD matrix, a full review of the flows and the pipeline, user interviews, and a real dispute that I filed myself and followed to the end. We also mapped the fraud engine, the deadlines and the SLAs in the process.\n\nThe finding that steered everything came from sitting with the call centre team and listening to calls: around 40% of them were about progress. What stage is it at, and how long until the next one. Nothing beyond that.\n\nAlongside that I benchmarked 11 players, testing or researching how disputes work inside their apps and sites. Direct and indirect competitors, traditional and digital banks, retail and business. The recurring scenarios are always the same: a lost card, a cloned card, a purchase made by mistake, and a cancelled purchase. The result was uncomfortable and useful, because every player uses the same logic, through the statement and/or straight to the call centre and customer service. Nobody had solved this, which took copying someone off the table.\n\nI also followed the complaints about purchase disputes on Reclame Aqui every day. There are over 2,000 a day, with companies taking an average of 48 hours to reply. This is not an Itaú problem, it is an industry problem, and reading it daily is what gave texture to scenarios we had been treating as categories.',
         },
       },
       {
-        title: { pt: 'Como o mercado contesta', en: 'How the market handles disputes' },
+        title: { pt: 'O que a gente mudou', en: 'What we changed' },
         body: {
-          pt: 'Fiz benchmarking com 11 players, testando ou pesquisando como a contestação de compras funciona dentro dos aplicativos e sites. Concorrentes diretos e indiretos, bancos tradicionais e digitais, PF e PJ. Os cenários que mais aparecem são sempre os mesmos: perda do cartão, cartão clonado, compra feita por engano e compra cancelada.\n\nO resultado foi desconfortável e útil: todos os players usam a mesma lógica, pela fatura e/ou direto pela central e pelo SAC. Ninguém tinha resolvido isso. Isso tirou da mesa a ideia de copiar alguém e deixou claro que o ganho estava em fazer bem o que todo mundo já faz mal.',
-          en: 'I benchmarked 11 players, testing or researching how purchase disputes work inside their apps and sites. Direct and indirect competitors, traditional and digital banks, retail and business. The recurring scenarios are always the same: a lost card, a cloned card, a purchase made by mistake, and a cancelled purchase.\n\nThe result was uncomfortable and useful: every player uses the same logic, through the statement and/or straight to the call centre and customer service. Nobody had solved this. That took copying someone off the table and made it clear the gain was in doing well what everyone else does badly.',
-        },
-      },
-      {
-        title: { pt: 'O que o Reclame Aqui mostrou', en: 'What Reclame Aqui showed' },
-        body: {
-          pt: 'Durante o discovery acompanhei diariamente as reclamações sobre contestação de compras no Reclame Aqui. São mais de 2 mil por dia, com média de 48 horas para a empresa responder. Não é um problema do Itaú, é um problema do setor, e ler aquilo todo dia foi o que deu textura aos cenários que a gente estava tratando como categoria.',
-          en: 'Through discovery I followed the complaints about purchase disputes on Reclame Aqui daily. There are over 2,000 a day, with companies taking an average of 48 hours to reply. This is not an Itaú problem, it is an industry problem, and reading it every day is what gave texture to scenarios we had been treating as categories.',
-        },
-      },
-      {
-        title: { pt: 'As Is e To Be', en: 'As Is and To Be' },
-        body: {
-          pt: 'No fluxo que existia havia gente demais envolvida e a comunicação saía por canais diferentes a cada etapa, o que é exatamente a receita para o cliente não saber onde está. No modelo desenhado, a meta era unificar: menos pessoas no processo, mais clareza na comunicação e transparência sobre por onde ela acontece.\n\nEsse trabalho foi feito perto de todos os stakeholders responsáveis, validando diretrizes, mitigando risco e apertando a governança do processo inteiro.',
-          en: 'The flow that existed had too many people in it, and the communication came out through a different channel at each step, which is precisely the recipe for a customer not knowing where they stand. In the model we designed, the goal was to unify: fewer people in the process, more clarity in the communication, and transparency about where it happens.\n\nThat work was done close to every responsible stakeholder, validating guidelines, mitigating risk and tightening governance across the whole process.',
-        },
-      },
-      {
-        title: { pt: 'Os roteiros da Central', en: 'The call centre scripts' },
-        body: {
-          pt: 'Fui atrás das inconsistências: prazos e SLAs que não batiam entre uma etapa e outra, falta de clareza sobre em qual canal a conversa continua, onde o documento é pedido e por onde a atualização chega. São ajustes de conversa, sem uma tela nova em nenhum deles, e foram eles que derrubaram 21% do volume ao longo dos meses.\n\nOs dados dessa análise são confidenciais do cliente e não podem ser mostrados aqui.',
-          en: 'I went after the inconsistencies: deadlines and SLAs that did not match from one step to the next, no clarity about which channel the conversation continues in, where a document gets requested, and how an update arrives. They are adjustments to a conversation, with no new screen anywhere in them, and they are what took 21% off the volume over the following months.\n\nThe data behind that analysis is confidential to the client and cannot be shown here.',
+          pt: 'No fluxo que existia havia gente demais envolvida e a comunicação saía por canais diferentes a cada etapa, que é exatamente a receita para o cliente não saber onde está. No modelo que desenhamos, a meta era unificar: menos pessoas no processo, mais clareza na comunicação e transparência sobre por onde ela acontece. Esse trabalho foi feito perto de todos os stakeholders responsáveis, validando diretrizes, mitigando risco e apertando a governança do processo inteiro.\n\nDepois disso fui atrás das inconsistências nos roteiros da Central: prazos e SLAs que não batiam entre uma etapa e outra, falta de clareza sobre em qual canal a conversa continua, onde o documento é pedido e por onde a atualização chega. São ajustes de conversa, sem uma tela nova em nenhum deles, e foram eles que derrubaram 21% do volume ao longo dos meses. Os dados dessa análise são confidenciais do cliente e não podem ser mostrados aqui.',
+          en: 'The flow that existed had too many people in it, and the communication came out through a different channel at each step, which is precisely the recipe for a customer not knowing where they stand. In the model we designed, the goal was to unify: fewer people in the process, more clarity in the communication, and transparency about where it happens. That work was done close to every responsible stakeholder, validating guidelines, mitigating risk and tightening governance across the whole process.\n\nAfter that I went after the inconsistencies in the call centre scripts: deadlines and SLAs that did not match from one step to the next, no clarity about which channel the conversation continues in, where a document gets requested, and how an update arrives. They are adjustments to a conversation, with no new screen anywhere in them, and they are what took 21% off the volume over the following months. The data behind that analysis is confidential to the client and cannot be shown here.',
         },
       },
     ],
@@ -1522,6 +1540,151 @@ export const caseDetails: Record<string, CaseDetail> = {
     contribution: [],
     gallery: [],
   },
+
+  /*
+   * PROVENANCE — written from the narrative João sent on 2026-08-25.
+   *
+   * ⚠️ TWO THINGS TO CHECK.
+   *
+   * `tradeoff` is my reading, not his words. His text says the solution had to work in two
+   * different systems and that "apesar das particularidades de cada canal, a lógica de
+   * contratação deveria ser a mesma" — which IS a trade-off, and the one that shows judgement,
+   * so it is written out rather than left null. If the sacrifice was actually something else,
+   * it is one paragraph to replace.
+   *
+   * No outcome metric was supplied. The headline number says what the solution is rather than
+   * what it moved, because inventing a conversion figure on a journey about restoring a sales
+   * channel would be inventing exactly the thing the case is meant to prove.
+   */
+  'itau-cartao-adicional': {
+    slug: 'itau-cartao-adicional',
+    year: '2025-2026',
+    role: { pt: 'Product Designer', en: 'Product Designer' },
+    duration: { pt: 'Discovery e definição da jornada', en: 'Discovery and journey definition' },
+    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+
+    impact: {
+      value: '2',
+      label: { pt: 'CANAIS ASSISTIDOS', en: 'ASSISTED CHANNELS' },
+      note: {
+        pt: 'Agência e central de atendimento, dois sistemas diferentes, com a mesma lógica de contratação nos dois.',
+        en: 'Branch and call centre, two different systems, running the same contracting logic in both.',
+      },
+    },
+    context: {
+      pt: 'A migração para a nova arquitetura tirou a contratação de cartão adicional dos canais assistidos e deixou tudo no aplicativo. Quem mais contrata esse produto tem mais de 40 anos e esperava resolver na conversa com o gerente.',
+      en: 'Migrating to the new architecture took additional-card applications out of the assisted channels and left them in the app alone. The people who most often apply are over 40, and they expected to sort it out in the conversation with their manager.',
+    },
+
+    conflict: {
+      pt: 'O cartão adicional deixa o titular dividir parte do limite com outra pessoa, um filho, o cônjuge, um familiar. Quem pede é o próprio titular, e ao olhar o perfil de quem contrata encontramos uma predominância clara de clientes acima dos 40 anos, acostumados a fazer isso com apoio de um gerente de agência ou de um operador da central, esperando concluir tudo durante o atendimento.\n\nCom a jornada só no aplicativo, o cliente começava o processo em um canal e tinha que terminar sozinho em outro. Gerente e operador perdiam a capacidade de finalizar uma solicitação que antes resolviam ali mesmo. A ruptura acontecia antes da conclusão, e justamente nos canais responsáveis pela maior parte das vendas de cartão adicional.',
+      en: 'An additional card lets the main holder share part of their limit with someone else: a child, a partner, a relative. The holder makes the request, and looking at who actually applies we found a clear majority of customers over 40, used to doing this with help from a branch manager or a call centre operator, expecting to finish it during that conversation.\n\nWith the journey living only in the app, the customer started the process in one channel and had to finish it alone in another. Managers and operators lost the ability to complete a request they used to resolve on the spot. The break happened before completion, and in exactly the channels responsible for most additional-card sales.',
+    },
+    tradeoff: {
+      pt: 'Abri mão de otimizar cada canal para o que ele tem de particular. A solução precisava rodar em dois sistemas diferentes, um usado pelos operadores da central e outro pelos gerentes de agência, e a tentação era desenhar duas jornadas sob medida. Uma lógica de contratação só, reaproveitável nas duas plataformas, custa alguma elegância em cada uma delas e paga isso com regra de produto aplicada do mesmo jeito nos dois lugares.',
+      en: 'I gave up optimising each channel for what makes it particular. The solution had to run in two different systems, one used by call centre operators and another by branch managers, and the temptation was to design two bespoke journeys. A single contracting logic, reusable across both platforms, costs some elegance in each one and pays for it with the product rules being applied the same way in both places.',
+    },
+    decision: {
+      pt: 'O sistema decide, o atendente não interpreta. A jornada envolvia regras de elegibilidade, integrações e cenários que precisavam funcionar de forma coordenada, e a escolha foi fazer o sistema apresentar apenas os caminhos possíveis para cada cliente em vez de pedir que gerente ou operador lesse critério e decidisse.\n\nIsso tornou o momento da validação uma decisão de design, não de engenharia. Validar tarde deixaria o cliente avançar com uma opção que não estava disponível para ele, então definimos em que ponto da jornada a elegibilidade é checada e quais opções de cartão podem aparecer a partir do retorno da API.',
+      en: 'The system decides; the person serving the customer does not interpret. The journey involved eligibility rules, integrations and scenarios that had to work in a coordinated way, and the call was to have the system show only the routes available to each customer rather than asking a manager or operator to read criteria and decide.\n\nThat made the moment of validation a design decision rather than an engineering one. Validating late would let a customer advance with an option that was not available to them, so we defined at which point in the journey eligibility gets checked and which card options can appear off the back of the API response.',
+    },
+    evidence: [],
+
+    challenge: {
+      pt: 'À primeira vista, o projeto parecia ser só a reconstrução de uma funcionalidade na arquitetura nova. Conforme o discovery avançou, ficou claro que o desafio ia além de levar a contratação de volta aos canais assistidos: era coordenar regras de elegibilidade, integrações e cenários que precisavam funcionar juntos, em dois sistemas diferentes, sem transferir nenhuma dessa complexidade para quem está atendendo o cliente.',
+      en: 'At first glance the project looked like rebuilding a feature on the new architecture. As discovery went on it became clear the challenge went beyond bringing applications back to the assisted channels: it was coordinating eligibility rules, integrations and scenarios that had to work together, across two different systems, without handing any of that complexity to the person serving the customer.',
+    },
+    detail: [
+      {
+        title: { pt: 'Onde a jornada quebrava', en: 'Where the journey broke' },
+        body: {
+          pt: 'Durante a migração para a nova arquitetura, a contratação de cartão adicional deixou de estar disponível nos principais canais assistidos e ficou acessível apenas pelo aplicativo. Na prática, isso criou quatro problemas encadeados.',
+          en: 'During the migration to the new architecture, additional-card applications stopped being available in the main assisted channels and remained reachable only through the app. In practice that created four problems, one leading into the next.',
+        },
+        points: [
+          {
+            title: { pt: 'Exclusivo no app', en: 'App only' },
+            body: {
+              pt: 'A contratação do cartão adicional não estava disponível nos canais assistidos.',
+              en: 'Applying for an additional card was not available in the assisted channels.',
+            },
+          },
+          {
+            title: { pt: 'Mudança de canal', en: 'Switching channel' },
+            body: {
+              pt: 'O cliente começava o processo no atendimento e precisava terminá-lo sozinho no aplicativo.',
+              en: 'The customer started the process in a conversation and had to finish it alone in the app.',
+            },
+          },
+          {
+            title: { pt: 'Perda de autonomia', en: 'Loss of autonomy' },
+            body: {
+              pt: 'Gerentes e operadores não conseguiam finalizar a contratação no canal em que o cliente buscou atendimento.',
+              en: 'Managers and operators could not complete an application in the channel where the customer came for help.',
+            },
+          },
+          {
+            title: { pt: 'Impacto no negócio', en: 'Business impact' },
+            body: {
+              pt: 'A mudança de canal criava um ponto de ruptura antes da conclusão, nos canais que mais vendem cartão adicional.',
+              en: 'Switching channel created a breaking point before completion, in the channels that sell the most additional cards.',
+            },
+          },
+        ],
+      },
+      {
+        title: { pt: 'O desafio', en: 'The challenge' },
+        body: {
+          pt: 'A jornada envolvia diferentes regras de elegibilidade, integrações e cenários que precisavam funcionar de forma coordenada. O sistema deveria lidar com essas regras e apresentar apenas os caminhos possíveis para cada cliente, evitando que gerentes e operadores tivessem que interpretar critério ou tomar decisão que dava para automatizar.\n\nHavia ainda um segundo desafio: a solução precisava funcionar em dois sistemas diferentes, um usado pelos operadores das centrais e outro pelos gerentes de agência. Apesar das particularidades de cada canal, a lógica de contratação deveria ser a mesma, garantindo que as regras do produto fossem aplicadas de forma consistente.\n\nA partir desse entendimento, definimos os princípios que passaram a orientar as decisões de design ao longo do projeto.',
+          en: 'The journey involved different eligibility rules, integrations and scenarios that had to work in a coordinated way. The system was meant to handle those rules and present only the routes available to each customer, so managers and operators never had to interpret criteria or make a decision that could be automated.\n\nThere was a second challenge: the solution had to work in two different systems, one used by call centre operators and another by branch managers. Despite what makes each channel particular, the contracting logic had to be the same, so the product rules would be applied consistently.\n\nOut of that understanding we set the principles that steered the design decisions through the rest of the project.',
+        },
+        points: [
+          { title: { pt: 'Concluir toda a jornada no mesmo canal', en: 'Finish the whole journey in one channel' } },
+          { title: { pt: 'Criar uma solução reutilizável entre plataformas', en: 'Build a solution reusable across platforms' } },
+          { title: { pt: 'Garantir consistência entre os canais', en: 'Keep the channels consistent with each other' } },
+          { title: { pt: 'Respeitar as regras de elegibilidade', en: 'Respect the eligibility rules' } },
+          { title: { pt: 'Simplificar a experiência de quem atende', en: 'Simplify the experience of the person serving' } },
+        ],
+      },
+      {
+        title: { pt: 'O discovery', en: 'Discovery' },
+        body: {
+          pt: 'O primeiro passo foi entender como a contratação funcionava antes da migração. Analisei a jornada no sistema legado e no aplicativo, além das regras de negócio, critérios de elegibilidade e integrações que precisavam ser considerados na arquitetura nova.\n\nNo caminho, encontrei duas coisas que mudaram o projeto. Algumas regras tinham interpretações diferentes entre as áreas envolvidas, e parte dos cenários previstos ainda não era suportada pelas novas APIs. A elegibilidade foi o exemplo mais claro: precisávamos definir em que momento da jornada o cliente é validado e quais opções de cartão podem ser apresentadas a partir do retorno da API. Isso impacta o fluxo inteiro, porque uma validação tardia deixaria o cliente avançar com uma opção que não estava disponível para contratação.\n\nOrganizei esse conhecimento em fluxos, mapas de elegibilidade e diagramas, que viraram a base das discussões com produto, engenharia, arquitetura, operações e jurídico. Foi a partir desse alinhamento que conseguimos definir quais decisões seriam assumidas pelo sistema e estruturar a jornada considerando tanto as regras do produto quanto as limitações técnicas que existiam.',
+          en: 'The first step was understanding how applications worked before the migration. I went through the journey in the legacy system and in the app, along with the business rules, eligibility criteria and integrations that had to be accounted for on the new architecture.\n\nAlong the way I found two things that changed the project. Some rules were being read differently by different areas, and part of the expected scenarios was not yet supported by the new APIs. Eligibility was the clearest example: we had to decide at which point in the journey the customer gets validated and which card options can be shown off the back of the API response. That shapes the entire flow, because validating late would let a customer advance with an option that was not available to them.\n\nI organised all of it into flows, eligibility maps and diagrams, which became the basis for the discussions with product, engineering, architecture, operations and legal. It was out of that alignment that we could decide which calls the system would take on, and structure the journey around both the product rules and the technical limits that existed.',
+        },
+      },
+    ],
+    gameChanger: null,
+
+    contribution: [
+      {
+        pt: 'Analisei a jornada no sistema legado e no aplicativo, junto com regras de negócio, elegibilidade e integrações.',
+        en: 'Went through the journey in the legacy system and the app, alongside the business rules, eligibility and integrations.',
+      },
+      {
+        pt: 'Organizei fluxos, mapas de elegibilidade e diagramas que viraram a base das discussões com produto, engenharia, arquitetura, operações e jurídico.',
+        en: 'Organised flows, eligibility maps and diagrams that became the basis for discussion with product, engineering, architecture, operations and legal.',
+      },
+      {
+        pt: 'Defini os princípios de design da jornada e quais decisões passariam a ser assumidas pelo sistema.',
+        en: 'Set the journey’s design principles and which decisions the system would take on.',
+      },
+      {
+        pt: 'Estruturei uma jornada só, reaproveitável nos dois sistemas dos canais assistidos.',
+        en: 'Structured a single journey, reusable across both assisted-channel systems.',
+      },
+    ],
+    gallery: [
+      {
+        src: null,
+        caption: {
+          pt: 'A contratação de cartão adicional dentro do canal assistido, com as opções filtradas pela elegibilidade do cliente.',
+          en: 'The additional-card application inside the assisted channel, with options filtered by the customer’s eligibility.',
+        },
+        confidential: true,
+      },
+    ],
+  },
 };
 
 export const caseLabels = {
@@ -1848,12 +2011,18 @@ export const casePage = {
   },
 
   headings: {
-    conflict: { pt: 'O QUE COMPLICOU', en: 'WHAT MADE IT HARD' } satisfies T,
+    conflict: { pt: 'O PROBLEMA', en: 'THE PROBLEM' } satisfies T,
     tradeoff: { pt: 'O QUE ABRI MÃO', en: 'WHAT I GAVE UP' } satisfies T,
     decision: { pt: 'O QUE EU DECIDI', en: 'WHAT I DECIDED' } satisfies T,
     challenge: { pt: 'A parte mais difícil', en: 'The hardest part' } satisfies T,
     contribution: { pt: 'O que eu fiz', en: 'What I did' } satisfies T,
     gameChanger: { pt: 'O que isso destravou', en: 'What this unlocked' } satisfies T,
+  },
+
+  /** The topic index that rides alongside the long read. */
+  toc: {
+    label: { pt: 'Neste case', en: 'In this case' } satisfies T,
+    top: { pt: 'Voltar ao topo', en: 'Back to the top' } satisfies T,
   },
 
   /** The chart's own furniture: the readout line, and what a bar announces. */

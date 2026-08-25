@@ -4,10 +4,11 @@ import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { CaseChart } from '@/components/CaseChart/CaseChart';
 import { CaseFigure } from '@/components/CaseFigure/CaseFigure';
+import { CaseToc, type TocItem } from '@/components/CaseToc/CaseToc';
 import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
-import { cases, caseDetails, casePage as copy, type T } from '@/content/copy';
+import { cases, caseDetails, casePage as copy, type CaseSection, type T } from '@/content/copy';
 import styles from './CasePage.module.css';
 
 /**
@@ -101,13 +102,39 @@ export function CasePage({ slug }: { slug: string }) {
    * about to start reading about the work — and the structure does its job whether or not it is
    * labelled.
    */
-  const chapters: { key: string; heading: string; body: string }[] = [
-    ...(line(data.challenge)
-      ? [{ key: 'challenge', heading: t(copy.headings.challenge), body: line(data.challenge)! }]
-      : []),
-    ...data.detail.map((d, i) => ({ key: `d${i}`, heading: t(d.title), body: t(d.body) })),
+  type Chapter = { key: string; heading: string; body: string; points?: CaseSection['points'] };
+
+  const details: Chapter[] = data.detail.map((d, i) => ({
+    key: `d${i}`,
+    heading: t(d.title),
+    body: t(d.body),
+    points: d.points,
+  }));
+
+  const challenge = line(data.challenge)
+    ? [{ key: 'challenge', heading: t(copy.headings.challenge), body: line(data.challenge)! }]
+    : [];
+
+  /*
+   * The hardest part sits SECOND, after the opening context, rather than first.
+   *
+   * Leading with "the hardest part" asks the reader to weigh a difficulty before they know what
+   * the work was — so it read as a complaint rather than as a measure of the problem. One
+   * chapter later, it lands.
+   */
+  const chapters: Chapter[] = [
+    ...details.slice(0, 1),
+    ...challenge,
+    ...details.slice(1),
     ...(line(data.gameChanger)
       ? [{ key: 'game', heading: t(copy.headings.gameChanger), body: line(data.gameChanger)! }]
+      : []),
+  ];
+
+  const toc: TocItem[] = [
+    ...chapters.map((c) => ({ id: `c-${c.key}`, label: c.heading })),
+    ...(data.contribution.length > 0
+      ? [{ id: 'c-role', label: t(copy.headings.contribution) }]
       : []),
   ];
 
@@ -169,48 +196,46 @@ export function CasePage({ slug }: { slug: string }) {
       {/* ------------------------------------------------ argument */}
       {showArgue && (
       <section ref={argueRef} className={styles.argue}>
-        <div className={styles.measure}>
-          <Reveal on={argueIn} order={0} className={styles.argument} hidden={!showArgument}>
-            <div className={styles.arg}>
-              <p className={styles.argHead}>{t(copy.headings.conflict)}</p>
-              {line(data.conflict) ? (
-                <p className={styles.argBody}>{line(data.conflict)}</p>
-              ) : (
-                <Missing
-                  dark
-                  what="o conflito"
-                  ask="Quais duas forças não podiam vencer ao mesmo tempo? Ex.: velocidade de entrega contra profundidade de pesquisa; consistência com o design system contra a necessidade específica desta jornada."
-                />
-              )}
-            </div>
+        <Reveal on={argueIn} order={0} className={styles.argument} hidden={!showArgument}>
+          <div className={styles.arg}>
+            <p className={styles.argHead}>{t(copy.headings.conflict)}</p>
+            {line(data.conflict) ? (
+              <p className={styles.argBody}>{line(data.conflict)}</p>
+            ) : (
+              <Missing
+                dark
+                what="o conflito"
+                ask="Quais duas forças não podiam vencer ao mesmo tempo? Ex.: velocidade de entrega contra profundidade de pesquisa; consistência com o design system contra a necessidade específica desta jornada."
+              />
+            )}
+          </div>
 
-            <div className={styles.arg}>
-              <p className={styles.argHead}>{t(copy.headings.tradeoff)}</p>
-              {line(data.tradeoff) ? (
-                <p className={styles.argBody}>{line(data.tradeoff)}</p>
-              ) : (
-                <Missing
-                  dark
-                  what="o trade-off"
-                  ask="O que foi deliberadamente sacrificado para resolver o conflito? Esta é a parte que separa senior de pleno. Sem ela, o case vira lista de entregas."
-                />
-              )}
-            </div>
+          <div className={styles.arg}>
+            <p className={styles.argHead}>{t(copy.headings.tradeoff)}</p>
+            {line(data.tradeoff) ? (
+              <p className={styles.argBody}>{line(data.tradeoff)}</p>
+            ) : (
+              <Missing
+                dark
+                what="o trade-off"
+                ask="O que foi deliberadamente sacrificado para resolver o conflito? Esta é a parte que separa senior de pleno. Sem ela, o case vira lista de entregas."
+              />
+            )}
+          </div>
 
-            <div className={styles.arg}>
-              <p className={styles.argHead}>{t(copy.headings.decision)}</p>
-              {line(data.decision) ? (
-                <p className={styles.argBody}>{line(data.decision)}</p>
-              ) : (
-                <Missing
-                  dark
-                  what="a decisão"
-                  ask="Qual foi a escolha feita, e por quê? Uma frase da qual alguém possa discordar. Sem uma alternativa descartada, não houve escolha."
-                />
-              )}
-            </div>
-          </Reveal>
-        </div>
+          <div className={styles.arg}>
+            <p className={styles.argHead}>{t(copy.headings.decision)}</p>
+            {line(data.decision) ? (
+              <p className={styles.argBody}>{line(data.decision)}</p>
+            ) : (
+              <Missing
+                dark
+                what="a decisão"
+                ask="Qual foi a escolha feita, e por quê? Uma frase da qual alguém possa discordar. Sem uma alternativa descartada, não houve escolha."
+              />
+            )}
+          </div>
+        </Reveal>
 
         {/*
           * Numbers and the chart run the full width, outside the reading measure. They are looked
@@ -234,40 +259,66 @@ export function CasePage({ slug }: { slug: string }) {
 
       {/* ------------------------------------------------ long read */}
       <section ref={readRef} className={styles.read}>
-        <div className={styles.measure}>
-          {chapters.map((c) => (
-            <div key={c.key} className={styles.chapter}>
-              <h2 className={styles.chapterHead}>{c.heading}</h2>
-              {/*
-                * Split on blank lines so a long chapter can be several paragraphs. Most are one
-                * today; a wall of eight lines is where a reader gives up, and the copy can be
-                * broken up without touching this component.
-                */}
-              {c.body.split(/\n{2,}/).map((para, i) => (
-                <p key={i} className={styles.chapterBody}>
-                  {para}
-                </p>
-              ))}
-            </div>
-          ))}
+        {/*
+          * Two columns: the reading measure, and the index beside it. The index is the answer to
+          * a column of paper sitting empty next to every paragraph — it carries how much of this
+          * there is and where the reader currently is, which a scrollbar cannot say.
+          */}
+        <div className={styles.readGrid}>
+          <div className={styles.measure}>
+            {chapters.map((c) => (
+              <section key={c.key} id={`c-${c.key}`} className={styles.chapter}>
+                <h2 className={styles.chapterHead}>{c.heading}</h2>
+                {/*
+                  * Split on blank lines so a chapter can be several paragraphs. A wall of eight
+                  * lines is where a reader gives up, and the copy can be broken up without
+                  * touching this component.
+                  */}
+                {c.body.split(/\n{2,}/).map((para, i) => (
+                  <p key={i} className={styles.chapterBody}>
+                    {para}
+                  </p>
+                ))}
 
-          {(SHOW_PROMPTS || data.contribution.length > 0) && (
-            <div className={styles.chapter}>
-              <h2 className={styles.chapterHead}>{t(copy.headings.contribution)}</h2>
-              {data.contribution.length > 0 ? (
-                <ul className={styles.contribution}>
-                  {data.contribution.map((c, i) => (
-                    <li key={i}>{t(c)}</li>
-                  ))}
-                </ul>
-              ) : (
-                <Missing
-                  what="o meu papel"
-                  ask="O que foi seu, em primeira pessoa? Três ou quatro linhas, cada uma começando com um verbo: mapeei, propus, desenhei, medi."
-                />
-              )}
-            </div>
-          )}
+                {c.points && c.points.length > 0 && (
+                  /*
+                   * Items WITH a body become numbered cards laid across the page; items without
+                   * one become a compact ruled list, which is the shape a set of principles
+                   * wants. One field decides it, so the copy chooses its own diagram.
+                   */
+                  <ul className={c.points.some((pt) => pt.body) ? styles.cards : styles.principles}>
+                    {c.points.map((pt, i) => (
+                      <li key={i} className={styles.point}>
+                        <span className={styles.pointNum}>{String(i + 1).padStart(2, '0')}</span>
+                        <span className={styles.pointTitle}>{t(pt.title)}</span>
+                        {pt.body && <span className={styles.pointBody}>{t(pt.body)}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </section>
+            ))}
+
+            {(SHOW_PROMPTS || data.contribution.length > 0) && (
+              <section id="c-role" className={styles.chapter}>
+                <h2 className={styles.chapterHead}>{t(copy.headings.contribution)}</h2>
+                {data.contribution.length > 0 ? (
+                  <ul className={styles.contribution}>
+                    {data.contribution.map((c, i) => (
+                      <li key={i}>{t(c)}</li>
+                    ))}
+                  </ul>
+                ) : (
+                  <Missing
+                    what="o meu papel"
+                    ask="O que foi seu, em primeira pessoa? Três ou quatro linhas, cada uma começando com um verbo: mapeei, propus, desenhei, medi."
+                  />
+                )}
+              </section>
+            )}
+          </div>
+
+          <CaseToc items={toc} />
         </div>
 
         {data.gallery.length > 0 && (
