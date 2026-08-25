@@ -441,3 +441,112 @@
     padding: 15px 15px 17px;
   }
 }
+
+/* ------------------------------------------------------------- craft */
+
+/*
+ * Text on the left, margin on the right — the shape of a printed page.
+ *
+ * The margin only exists when the chapter has something to put in it. An empty column beside
+ * every paragraph is the thing that made this read as a template, so a chapter with neither a
+ * pulled line nor a figure simply takes the whole width.
+ */
+.chapterGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 280px);
+  gap: clamp(32px, 3.6vw, 76px);
+  align-items: start;
+}
+
+.margin {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(24px, 3vh, 40px);
+  padding-top: 4px;
+}
+
+/*
+ * The pulled line, set the way a newspaper sets one: serif, large, hanging off a heavy rule.
+ * It is a sentence already in the body — the point is to give the eye somewhere to land on a
+ * page of grey, not to add anything new.
+ */
+.quote {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(19px, 1.5vw, 27px);
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+
+  padding-top: 18px;
+  border-top: 3px solid var(--ink);
+}
+
+/*
+ * The dropped capital.
+ *
+ * The oldest trick in the trade and still the one that most reliably says "this is an article and
+ * it starts here". Three lines deep, serif, tight against the text — and only on the first
+ * paragraph of a chapter, because a page with several is a page with none.
+ */
+.flow > .chapterBody:first-child::first-letter {
+  float: left;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 3.1em;
+  line-height: 0.82;
+  padding: 0.06em 0.1em 0 0;
+  color: var(--ink);
+}
+
+/*
+ * A mark before a chapter heading. Small, drawn, and the same on every spread, so it reads as
+ * the paper's own furniture rather than as decoration invented per page.
+ */
+.chapterHead::before {
+  content: '';
+  display: block;
+  width: 26px;
+  height: 3px;
+  background: var(--ink);
+  margin-bottom: clamp(12px, 1.6vh, 20px);
+}
+
+.spreadHead::before {
+  content: '';
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  transform: rotate(45deg);
+  margin-right: 12px;
+  vertical-align: middle;
+}
+
+/* The argument's three parts are numbered, the way a leader column numbers its points. */
+.arg {
+  counter-increment: argpart;
+  position: relative;
+}
+
+.argument {
+  counter-reset: argpart;
+}
+
+.argHead::before {
+  content: counter(argpart, decimal-leading-zero);
+  margin-right: 12px;
+  opacity: 0.55;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .chapterGrid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+
+  .flow > .chapterBody:first-child::first-letter {
+    font-size: 2.8em;
+  }
+}

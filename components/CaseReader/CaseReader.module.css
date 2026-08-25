@@ -403,17 +403,70 @@
 
 /* ------------------------------------------------------------- narrow */
 
+/*
+ * Below 900 the piece stands back up.
+ *
+ * A phone is not a broadsheet: turned sideways a chapter either shrinks to unreadable type or
+ * scrolls inside a page the reader is being told to swipe, which is two gestures on two axes for
+ * one piece of text. Here the track becomes a column, the box stops being fixed, the document
+ * scrolls again, and the spreads are simply sections — each still fading in as it arrives.
+ */
 @media (max-width: 900px) {
+  .root {
+    position: static;
+    overflow: visible;
+    height: auto;
+  }
+
+  .track {
+    display: block;
+    height: auto;
+    transform: none;
+    transition: none;
+  }
+
+  .sheet {
+    width: auto;
+    height: auto;
+    min-height: 0;
+  }
+
+  .sheetScroll {
+    height: auto;
+    overflow: visible;
+  }
+
   /* The masthead line and the section name are the first things to go when width runs out. */
   .folio,
   .here {
     display: none;
   }
 
+  /* The frame stops being a frame: the way out rides in the flow, the pager is gone. */
+  .back {
+    position: static;
+    margin: 20px var(--gutter) 0;
+  }
+
+  .tocButton,
+  .progress {
+    display: none;
+  }
+
   .sheetInner {
-    /* Tighter still on a phone, where a spread that scrolls needs every line it can get. */
-    padding: 62px var(--gutter) 78px;
+    min-height: 0;
+    padding: 46px var(--gutter) 54px;
     justify-content: flex-start;
+  }
+
+  /* One rule between sections, which is all a vertical read needs to say "next". */
+  .sheet + .sheet .sheetInner {
+    border-top: 1px solid var(--hairline);
+  }
+
+  .dark + .sheet .sheetInner,
+  .dark .sheetInner {
+    border-top: 0;
   }
 
   .back,

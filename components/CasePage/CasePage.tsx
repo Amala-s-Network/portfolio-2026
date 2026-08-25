@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { CaseChart } from '@/components/CaseChart/CaseChart';
 import { CaseFigure } from '@/components/CaseFigure/CaseFigure';
+import { CaseMark } from '@/components/CaseMark/CaseMark';
 import { CaseReader, type ReaderPage } from '@/components/CaseReader/CaseReader';
 import { useLanguage } from '@/lib/language';
 import { cases, caseDetails, casePage as copy, type CaseSection, type T } from '@/content/copy';
@@ -76,13 +77,22 @@ export function CasePage({ slug }: { slug: string }) {
   const hasArgument = Boolean(data.conflict || data.tradeoff || data.decision);
   const showArgument = SHOW_PROMPTS || hasArgument;
 
-  type Chapter = { key: string; heading: string; body: string; points?: CaseSection['points'] };
+  type Chapter = {
+    key: string;
+    heading: string;
+    body: string;
+    points?: CaseSection['points'];
+    quote?: CaseSection['quote'];
+    mark?: CaseSection['mark'];
+  };
 
   const details: Chapter[] = data.detail.map((d, i) => ({
     key: `d${i}`,
     heading: t(d.title),
     body: t(d.body),
     points: d.points,
+    quote: d.quote,
+    mark: d.mark,
   }));
 
   const challenge = line(data.challenge)
@@ -227,16 +237,31 @@ export function CasePage({ slug }: { slug: string }) {
           <h2 className={styles.chapterHead}>{c.heading}</h2>
 
           {/*
-            * The columns of a newspaper page. Text flows down one and into the next, which is how
-            * a spread holds four paragraphs in the height of a screen without either shrinking
-            * the type or asking the reader to scroll inside a page they are meant to turn.
+            * Text on the left, the margin on the right — the shape of a printed page. The margin
+            * carries whatever this chapter has that is not prose: a line worth setting large, or
+            * a figure that draws what the paragraph is describing. With neither, the text takes
+            * the whole width and there is no empty column to explain.
             */}
-          <div className={styles.flow}>
-            {c.body.split(/\n{2,}/).map((para, i) => (
-              <p key={i} className={styles.chapterBody}>
-                {para}
-              </p>
-            ))}
+          <div className={c.quote || c.mark ? styles.chapterGrid : undefined}>
+            {/*
+              * The columns of a newspaper page. Text flows down one and into the next, which is
+              * how a spread holds four paragraphs in the height of a screen without shrinking the
+              * type or asking the reader to scroll a page they are meant to turn.
+              */}
+            <div className={styles.flow}>
+              {c.body.split(/\n{2,}/).map((para, i) => (
+                <p key={i} className={styles.chapterBody}>
+                  {para}
+                </p>
+              ))}
+            </div>
+
+            {(c.quote || c.mark) && (
+              <aside className={styles.margin}>
+                {c.quote && <p className={styles.quote}>{t(c.quote)}</p>}
+                {c.mark && <CaseMark spec={c.mark} />}
+              </aside>
+            )}
           </div>
 
           {c.points && c.points.length > 0 && (

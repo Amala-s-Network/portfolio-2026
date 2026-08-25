@@ -54,6 +54,24 @@ export function CaseReader({
   const [index, setIndex] = useState(0);
   const [tocOpen, setTocOpen] = useState(false);
 
+  /*
+   * Below this the piece is read the way everything else on the site is: top to bottom.
+   *
+   * A phone is not a broadsheet. Turned sideways, a chapter either shrinks to unreadable type or
+   * scrolls inside a page the reader is being told to swipe — two gestures on two axes for one
+   * piece of text. Read after mount rather than during render, because the server has no viewport
+   * and a layout that changes on hydration is a jump on the first frame.
+   */
+  const [sideways, setSideways] = useState(true);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 901px)');
+    const sync = () => setSideways(mq.matches);
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
+  }, []);
+
   const turning = useRef(false);
   const wheelAcc = useRef(0);
   const touchX = useRef<number | null>(null);
@@ -85,6 +103,7 @@ export function CaseReader({
 
   /* Keys. Left and right are the spread; Home and End are the ends of the piece. */
   useEffect(() => {
+    if (!sideways) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
       const tag = (e.target as HTMLElement)?.tagName;
@@ -110,7 +129,7 @@ export function CaseReader({
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [go, count]);
+  }, [go, count, sideways]);
 
   /*
    * The handlers above are bound once and would otherwise close over the first value of `index`
@@ -124,7 +143,7 @@ export function CaseReader({
   /* Wheel and trackpad. Either axis turns the page, because a mouse only has one. */
   useEffect(() => {
     const el = root.current;
-    if (!el) return;
+    if (!el || !sideways) return;
 
     const onWheel = (e: WheelEvent) => {
       /* A page whose content is taller than the spread scrolls itself first. */
@@ -149,12 +168,12 @@ export function CaseReader({
 
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
-  }, [go]);
+  }, [go, sideways]);
 
   /* Swipe. */
   useEffect(() => {
     const el = root.current;
-    if (!el) return;
+    if (!el || !sideways) return;
 
     const start = (e: TouchEvent) => {
       touchX.current = e.touches[0]?.clientX ?? null;
@@ -184,19 +203,20 @@ export function CaseReader({
       el.removeEventListener('touchstart', start);
       el.removeEventListener('touchend', end);
     };
-  }, [go]);
+  }, [go, sideways]);
 
   /*
    * The reader owns the viewport while it is mounted, so the document behind it must not scroll.
    * Restored on unmount, which matters because the home page underneath very much does scroll.
    */
   useEffect(() => {
+    if (!sideways) return;
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => {
       document.body.style.overflow = prev;
     };
-  }, []);
+  }, [sideways]);
 
   const current = pages[index];
 
@@ -237,11 +257,11 @@ export function CaseReader({
           <section
             key={p.id}
             id={p.id}
-            className={`${styles.sheet} ${i === index ? styles.on : ''} ${p.tone === 'dark' ? styles.dark : ''}`}
+            className={`${styles.sheet} ${!sideways || i === index ? styles.on : ''} ${p.tone === 'dark' ? styles.dark : ''}`}
             aria-label={`${i + 1}. ${p.label}`}
-            aria-hidden={i !== index}
-            /* Keeps the spreads nobody can see out of the tab order. */
-            inert={i !== index ? true : undefined}
+            aria-hidden={sideways && i !== index}
+            /* Only sideways, where the other spreads are genuinely off screen. */
+            inert={sideways && i !== index ? true : undefined}
           >
             <div className={styles.sheetScroll}>
               <div className={styles.sheetInner}>{p.node}</div>

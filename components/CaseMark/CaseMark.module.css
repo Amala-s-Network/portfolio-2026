@@ -1,0 +1,44 @@
+/*
+ * A drawn figure sits in the margin of a spread, not in the text.
+ *
+ * It is a plate: framed on one side by a rule, captioned underneath, and coloured by whatever it
+ * inherits — so the same mark reads on paper and on the dark band without a second palette.
+ */
+
+.root {
+  margin: 0;
+  padding-top: 18px;
+  border-top: 1px solid currentColor;
+  /* The rule belongs to the frame, not to the ink; the drawing itself is at full strength. */
+  border-color: color-mix(in srgb, currentColor 18%, transparent);
+}
+
+.plate {
+  display: block;
+  max-width: 220px;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.caption {
+  margin-top: 14px;
+  max-width: 30ch;
+  font-size: 12.5px;
+  line-height: 1.5;
+  opacity: 0.68;
+}
+
+@media (max-width: 900px) {
+  .plate {
+    max-width: 180px;
+  }
+
+  .caption {
+    font-size: 12px;
+  }
+}
