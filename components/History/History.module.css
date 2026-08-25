@@ -161,3 +161,24 @@
     font-size: 15px;
   }
 }
+
+/* ------------------------------------------------------- wide screens */
+
+/*
+ * Above 1600px the headlines keep growing (they are clamped against vw) while the body sizes,
+ * being fixed px, stay where 1366 put them. The result is a page whose reading sizes shrink in
+ * relation to everything around them. These are the same values one step up.
+ */
+@media (min-width: 1600px) {
+  .intro {
+    font-size: 22px;
+  }
+
+  .name {
+    font-size: 29px;
+  }
+
+  .description {
+    font-size: 17.5px;
+  }
+}

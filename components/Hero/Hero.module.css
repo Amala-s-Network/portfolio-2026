@@ -896,3 +896,37 @@
     margin-top: 16px;
   }
 }
+
+/* ------------------------------------------------------- wide screens */
+
+/*
+ * Above 1600px the headlines keep growing (they are clamped against vw) while the body sizes,
+ * being fixed px, stay where 1366 put them. The result is a page whose reading sizes shrink in
+ * relation to everything around them. These are the same values one step up.
+ */
+@media (min-width: 1600px) {
+  .kicker {
+    font-size: 15px;
+  }
+
+  .paragraph {
+    font-size: 17.5px;
+  }
+
+  /*
+   * 440px columns, not the 400 João set at 1366.
+   *
+   * The two columns of the deck have to end level — the newspaper structure is a pair, and one
+   * full column beside a short one reads as a paragraph and a leftover. They balance at 400px
+   * only at 15.5px type; at the larger size the first column takes one extra line and the pair
+   * comes apart. 440 is the width at which both land on the same count again, measured in both
+   * languages.
+   */
+  .deck {
+    grid-template-columns: minmax(0, 440px) minmax(0, 440px) auto;
+  }
+
+  .unlock {
+    font-size: 15px;
+  }
+}

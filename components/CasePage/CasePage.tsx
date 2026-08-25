@@ -31,9 +31,17 @@ function Missing({ what, ask, dark }: { what: string; ask: string; dark?: boolea
   );
 }
 
-/** Roughly 200 words a minute, the figure newspapers use, floored at one. */
+/**
+ * How long this takes to read.
+ *
+ * 160 words a minute, not the 200 a newspaper assumes. That figure is for skimming English news
+ * prose; this is considered reading, in Portuguese, about work the reader is deciding something
+ * from. 200 was making the longest case here look like a four-minute skim.
+ *
+ * A case can override it outright when the estimate does not match what the page actually is.
+ */
 function readingMinutes(words: number) {
-  return Math.max(1, Math.round(words / 200));
+  return Math.max(1, Math.round(words / 160));
 }
 
 export function CasePage({ slug }: { slug: string }) {
@@ -148,6 +156,8 @@ export function CasePage({ slug }: { slug: string }) {
       .trim()
       .split(/\s+/).length;
 
+  const minutes = data.readTime ?? readingMinutes(words);
+
   return (
     <article className={styles.page}>
       {/* ------------------------------------------------- opening */}
@@ -172,7 +182,7 @@ export function CasePage({ slug }: { slug: string }) {
           <span>{data.year}</span>
           {/* Furniture for the reader, in place of furniture for the author. */}
           <span className={styles.folioSpacer}>
-            {readingMinutes(words)} {t(copy.readingTime)}
+            {minutes} {t(minutes === 1 ? copy.readingTimeOne : copy.readingTime)}
           </span>
         </Reveal>
 

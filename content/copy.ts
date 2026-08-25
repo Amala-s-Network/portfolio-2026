@@ -520,7 +520,7 @@ export const cases: Case[] = [
       pt: 'Contestação de despesas em cartões PJ',
       en: 'Expense disputes for business cards',
     },
-    company: { pt: 'Itaú Unibanco · via NTT DATA', en: 'Itaú Unibanco · via NTT DATA' },
+    company: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
     /*
      * Corrected against the narrative João sent. This line used to say the dispute flow "moved
      * from the phone into the app" — it did not. There was no development budget: what shipped
@@ -540,7 +540,7 @@ export const cases: Case[] = [
       pt: 'Simulador de visitas médicas com IA',
       en: 'AI simulator for medical sales visits',
     },
-    company: { pt: 'EMS Saúde · via NTT DATA', en: 'EMS Saúde · via NTT DATA' },
+    company: { pt: 'EMS Saúde', en: 'EMS Saúde' },
     description: {
       pt: 'Um propagandista aprende apanhando na frente do médico. Criamos personas sintéticas a partir de pesquisa de campo, para que ele possa treinar a conversa difícil antes que ela custe caro.',
       en: 'A pharma rep learns by getting it wrong in front of a doctor. We built synthetic personas out of field research, so they can practise the hard conversation before it gets expensive.',
@@ -559,7 +559,7 @@ export const cases: Case[] = [
       pt: 'Escrituração de ativos e investimentos',
       en: 'Book-entry assets and investments',
     },
-    company: { pt: 'Itaú Unibanco · via NTT DATA', en: 'Itaú Unibanco · via NTT DATA' },
+    company: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
     description: {
       pt: 'O trabalho que estou fazendo agora: as jornadas de ativos escriturais e investimentos dentro do Itaú. O case completo vem quando o projeto permitir.',
       en: 'What I am working on right now: the book-entry asset and investment journeys inside Itaú. The full case comes when the project allows it.',
@@ -577,7 +577,7 @@ export const cases: Case[] = [
       pt: 'Cartão adicional de volta ao atendimento',
       en: 'Additional cards, back where people are served',
     },
-    company: { pt: 'Itaú Unibanco · via NTT DATA', en: 'Itaú Unibanco · via NTT DATA' },
+    company: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
     description: {
       pt: 'A migração deixou a contratação só no app, e quem mais contrata tem mais de 40 anos e queria resolver com o gerente. Uma jornada só, rodando nos dois sistemas dos canais assistidos.',
       en: 'The migration left applications in the app alone, and the people who apply most are over 40 and wanted to sort it out with their manager. One journey, running in both assisted-channel systems.',
@@ -786,6 +786,8 @@ export type CaseDetail = {
   evidence: Outcome[];
   /** Optional: the series behind the headline number, when one was measured over time. */
   chart?: CaseChart;
+  /** Optional: overrides the estimate counted from the words on the page. */
+  readTime?: number;
 
   /** ---- 6 minutes ---- */
   /** The single hardest thing about the work. */
@@ -827,7 +829,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     year: '2025-2026',
     role: { pt: 'CX Designer / Product Designer', en: 'CX Designer / Product Designer' },
     duration: { pt: '11 meses', en: '11 months' },
-    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+    team: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
 
     impact: {
       value: '−21%',
@@ -1520,7 +1522,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     year: '2026',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     duration: { pt: 'Em andamento', en: 'In progress' },
-    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+    team: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
 
     impact: {
       value: '2026',
@@ -1568,7 +1570,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     year: '2025-2026',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     duration: { pt: 'Discovery e definição da jornada', en: 'Discovery and journey definition' },
-    team: { pt: 'Itaú Unibanco, via NTT DATA', en: 'Itaú Unibanco, via NTT DATA' },
+    team: { pt: 'Itaú Unibanco', en: 'Itaú Unibanco' },
 
     impact: {
       value: '2',
@@ -2009,7 +2011,9 @@ export const casePage = {
    *
    * What replaces it is furniture for the reader instead of for the author: how long this is.
    */
-  readingTime: { pt: 'min de leitura', en: 'min read' } satisfies T,
+  readingTime: { pt: 'minutos de leitura', en: 'minutes to read' } satisfies T,
+  /* A one-minute case is a real case here, and "1 minutos de leitura" is not Portuguese. */
+  readingTimeOne: { pt: 'minuto de leitura', en: 'minute to read' } satisfies T,
 
   /* Controls on a case's moving figures. */
   media: {
