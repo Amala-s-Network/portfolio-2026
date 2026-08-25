@@ -782,10 +782,8 @@ export const caseDetails: Record<string, CaseDetail> = {
    * actually judged on (Contact Rate and NPS), and what happened next (Cronos, the new PJ cards
    * platform, launching 2026).
    *
-   * ⚠️ ONE CONFLICT, unresolved. João's prose says the legacy PJ platform is "Voxel"; slide 3
-   * says "VQ (Sistema legado do banco)". They may be the same thing under two names, and I have
-   * no way to tell from here — so the copy names neither and says "o sistema legado", which is
-   * true whichever it is. Worth one line from João before launch.
+   * RESOLVED 2026-08-25. His prose said "Voxel" and slide 3 said "VQ"; João confirms the system
+   * is VQ, and that it is what expense disputes run on. The copy names it.
    */
   'itau-cartoes-pj': {
     slug: 'itau-cartoes-pj',
@@ -829,6 +827,11 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
       },
       {
+        /*
+         * Monthly, confirmed by João 2026-08-25. The deck's sentence reads as a total for the
+         * August-to-December window and his prose says "por mês"; he settled it. Left here
+         * because the ambiguity is in the source document and will be asked again otherwise.
+         */
         value: 'R$ 7,2 mil',
         label: { pt: 'ECONOMIA MENSAL', en: 'MONTHLY SAVING' },
         note: {
@@ -893,8 +896,8 @@ export const caseDetails: Record<string, CaseDetail> = {
       {
         title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
         body: {
-          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.\n\nBoa parte da vertente PJ ainda roda no sistema legado do banco, onde estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram. O plano combinado era resolver o máximo possível por quick-wins ali, antes de digitalizar a jornada para a plataforma nova.',
-          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.\n\nA good part of the business-banking side still runs on the bank’s legacy system, where usability studies, design, accessibility and the JIP framework never arrived. The agreed plan was to fix as much as possible there through quick wins, before digitising the journey onto the new platform.',
+          pt: 'O Itaú é um dos maiores bancos da América Latina e tem um dos maiores times de design do continente. Atuei pela NTT DATA no time de cartões da comunidade PJ durante o lançamento de um produto novo em parceria com a VISA. Eram cinco jornadas críticas, e contestação era de longe a mais cara delas.\n\nContestação de despesas rodava no VQ, o sistema legado do banco, onde estudos de usabilidade, design, acessibilidade e o JIP nunca chegaram. O plano combinado era resolver o máximo possível por quick-wins dentro dele, antes de digitalizar a jornada para a plataforma nova.',
+          en: 'Itaú is one of Latin America’s largest banks, with one of the continent’s largest design teams. I worked through NTT DATA on the business-card team during the launch of a new product built with VISA. There were five critical journeys, and disputes was by far the most expensive of them.\n\nExpense disputes ran on VQ, the bank’s legacy system, where usability studies, design, accessibility and the JIP framework never arrived. The agreed plan was to fix as much as possible inside it through quick wins, before digitising the journey onto the new platform.',
         },
       },
       {
