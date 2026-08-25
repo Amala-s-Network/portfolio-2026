@@ -286,7 +286,11 @@ export function CasePage({ slug }: { slug: string }) {
                    * one become a compact ruled list, which is the shape a set of principles
                    * wants. One field decides it, so the copy chooses its own diagram.
                    */
-                  <ul className={c.points.some((pt) => pt.body) ? styles.cards : styles.principles}>
+                  <ul
+                    className={c.points.some((pt) => pt.body) ? styles.cards : styles.principles}
+                    /* The count, so the band can cap itself at a card's width per item. */
+                    style={{ ['--n' as string]: c.points.length }}
+                  >
                     {c.points.map((pt, i) => (
                       <li key={i} className={styles.point}>
                         <span className={styles.pointNum}>{String(i + 1).padStart(2, '0')}</span>

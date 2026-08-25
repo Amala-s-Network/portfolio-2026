@@ -98,16 +98,20 @@
   margin-left: auto;
   padding-left: 20px;
   font-size: 13px;
-  opacity: 0;
-  transform: translateX(-4px);
-  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+  /*
+   * Fixed on every row, at João's instruction. It was appearing on hover and on the active row
+   * only, which made the far end of the rule blink in and out as the reader moved down the page
+   * — the anchor it exists to be has to be there all the time to work. It still takes its row's
+   * colour, so the active one is the only one at full ink, and it nudges on hover to say the row
+   * is a control.
+   */
+  transform: translateX(0);
+  transition: transform 0.3s var(--ease);
 }
 
 .link:hover .mark,
-.link:focus-visible .mark,
-.on .mark {
-  opacity: 1;
-  transform: none;
+.link:focus-visible .mark {
+  transform: translateX(3px);
 }
 
 @media (prefers-reduced-motion: reduce) {

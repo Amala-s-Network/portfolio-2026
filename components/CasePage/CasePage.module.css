@@ -25,7 +25,7 @@
    * line. Anything past about 75 makes the eye lose the line it is returning to. 640px measures
    * 68, which is where it was before and where it should be.
    */
-  --measure: 520px;
+  --measure: 1000px;
 }
 
 /*
@@ -555,13 +555,15 @@
 
   display: grid;
   /*
-   * One row, filling the column, whatever the count.
+   * Cards keep a card's size instead of stretching to whatever is left.
    *
-   * auto-fit sizes the track count from the container and then collapses the empty ones, so two
-   * points take half the width each and four take a quarter — and nothing is ever stranded alone
-   * on a second row. 200px is the floor that still fits four across at 1366, which is the width
-   * that decides this.
+   * Letting them fill the column meant a pair sprawled to 705px each with one line of text in
+   * them, which is a band with two words in it rather than two cards. The band is capped at
+   * 360px per item, passed in as --n by the component, so two points make a 720px band and four
+   * make a wider one. 200px stays the track floor because it is what still fits four across at
+   * 1366 without stranding one on a second row.
    */
+  max-width: calc(var(--n, 2) * 360px);
   grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
   gap: 1px;
   background: var(--hairline);
@@ -601,6 +603,12 @@
  * a single line would be a lot of furniture around not much text.
  */
 .principles {
+  /*
+   * Held to the reading measure. It is a list of sentences, so it belongs to the text rather than
+   * to the diagram band beside it — running it the full width of the column left each rule
+   * trailing hundreds of pixels past the last word on it.
+   */
+  max-width: var(--measure);
   list-style: none;
   margin: 26px 0 0;
   padding: 0;
