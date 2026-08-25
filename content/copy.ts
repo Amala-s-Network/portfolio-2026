@@ -2028,11 +2028,17 @@ export const casePage = {
     challenge: { pt: 'A parte mais difícil', en: 'The hardest part' } satisfies T,
     contribution: { pt: 'O que eu fiz', en: 'What I did' } satisfies T,
     gameChanger: { pt: 'O que isso destravou', en: 'What this unlocked' } satisfies T,
+    opening: { pt: 'Abertura', en: 'Opening' } satisfies T,
+    results: { pt: 'Os números', en: 'The numbers' } satisfies T,
+    gallery: { pt: 'As telas', en: 'The screens' } satisfies T,
   },
 
   /** The topic index that rides alongside the long read. */
   toc: {
-    label: { pt: 'Neste case', en: 'In this case' } satisfies T,
+    label: { pt: 'Tópicos', en: 'Topics' } satisfies T,
+    close: { pt: 'Fechar os tópicos', en: 'Close the topics' } satisfies T,
+    previous: { pt: 'Página anterior', en: 'Previous page' } satisfies T,
+    next: { pt: 'Próxima página', en: 'Next page' } satisfies T,
     top: { pt: 'Voltar ao topo', en: 'Back to the top' } satisfies T,
   },
 

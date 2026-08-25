@@ -34,9 +34,15 @@
 
 .plot {
   position: relative;
-  /* Taller at João's request. The bars were already wide; what they wanted was more room up. */
-  height: 360px;
-  margin-top: 34px;
+  /*
+   * Sized against the height it is given, not a fixed 360.
+   *
+   * The chart now lives on a spread that cannot scroll, so a fixed plot height is a plot that
+   * overflows the page on a 768px screen. 34vh keeps it as tall as João asked for wherever there
+   * is room and gives ground where there is not.
+   */
+  height: clamp(190px, 34vh, 360px);
+  margin-top: clamp(20px, 3vh, 34px);
 }
 
 /*
@@ -325,7 +331,7 @@
 
 @media (max-width: 720px) {
   .plot {
-    height: 240px;
+    height: clamp(170px, 28vh, 240px);
   }
 
   /*
@@ -387,5 +393,24 @@
 
   .colOn .bar {
     opacity: 1;
+  }
+}
+
+/* On a spread that cannot scroll, the furniture under the plot is what gives ground first. */
+@media (max-height: 820px) {
+  .root {
+    margin-top: 0;
+    padding-top: 26px;
+  }
+
+  .readout {
+    margin-top: 16px;
+    padding-top: 12px;
+    min-height: 0;
+  }
+
+  .note {
+    margin-top: 10px;
+    font-size: 12px;
   }
 }

@@ -1,157 +1,50 @@
 /*
- * A case page, set as a long read.
+ * The contents of a spread. The frame around it — the way out, the index, the progress — belongs
+ * to CaseReader; everything here is what sits inside one turned page.
  *
- * The 6s / 60s / 6min method still shapes it — the opening, the argument, then the detail — but
- * it no longer labels itself, at João's instruction: a band headed "EM 6 MINUTOS" tells the
- * reader about the author's process at the moment they were about to start reading about the
- * work. The structure does its job whether or not it is announced.
- *
- * What replaced the labels is the thing that actually helps: one measure, subheads sitting above
- * their own paragraphs, and a single left edge running down the whole page. The detail used to
- * be a two-column grid with a serif heading on the left and the text on the right, which left a
- * third of the page empty beside every paragraph and read as a spec sheet rather than an
- * article.
+ * The 6s / 60s / 6min method still shapes the sequence and still does not announce itself. What
+ * changed is the axis. A newspaper is turned rather than scrolled, so each block of the argument
+ * is now one spread, and the structure the method describes is the structure the reader
+ * physically moves through.
  */
-
-.page {
-  background: var(--paper);
-
-  /*
-   * The reading measure, in pixels rather than in ch.
-   *
-   * ch resolves against the font of whatever element carries it, so moving the cap off the
-   * container and onto the paragraphs quietly widened them: 68ch against 16px was 623px, and the
-   * same 68ch against the paragraph's own 19px came out at 740px, which measures 79 characters a
-   * line. Anything past about 75 makes the eye lose the line it is returning to. 640px measures
-   * 68, which is where it was before and where it should be.
-   */
-  --measure: 1000px;
-}
-
-/*
- * The content column of the long read. NOT a measure any more.
- *
- * The cap moved off this box and onto the prose elements inside it, so that a paragraph still
- * breaks at 68ch — the width prose wants, beyond which the eye loses the line it is returning
- * to — while a band of cards can run the full width of the column. Capping the container made
- * every block the width of a sentence, including the ones that are not sentences.
- */
-.measure {
-  min-width: 0;
-}
 
 /* ------------------------------------------------------------ opening */
 
-.open {
-  min-height: calc(100vh - var(--navH));
-  min-height: calc(100svh - var(--navH));
-  padding: calc(var(--navH) + 104px) var(--gutter) 72px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  position: relative;
-}
-
-/*
- * Taken out of flow on purpose. The opening is a centred flex column and the whole point of it
- * is that the title, the standfirst and the number sit balanced in the fold — putting the back
- * link in that column would either shove them off centre or, with an auto margin, push them to
- * the bottom of the screen. Absolute keeps the composition and drops the link into the padding
- * that already exists above it.
- *
- * A border and a filled hover state say "control"; the arrow that slides on hover says which
- * direction. It was 14px of grey with an arrow, which read as a caption — and on a case page it
- * is the only way out that does not go through the menu.
- */
-.backTop {
-  position: absolute;
-  top: calc(var(--navH) + 22px);
-  left: var(--gutter);
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-
-  /* WCAG 2.2 target size, to João's 32px floor. */
-  min-height: 38px;
-  padding: 0 18px;
-
-  border: 1px solid var(--hairline-mid);
-  font-size: 14px;
-  color: var(--ink);
-  background: transparent;
-  --ax: 0px;
-
-  transition: background-color 0.4s var(--ease), border-color 0.4s var(--ease),
-    color 0.4s var(--ease);
-}
-
-.backTop:hover,
-.backTop:focus-visible {
-  background: var(--ink);
-  border-color: var(--ink);
-  color: var(--paper);
-  --ax: -5px;
-}
-
-.backArrow {
-  transform: translateX(var(--ax));
-  transition: transform 0.45s var(--ease);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .backArrow {
-    transition: none;
-  }
-}
-
-.folio {
-  display: flex;
-  gap: 26px;
-  align-items: baseline;
-  flex-wrap: wrap;
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  color: var(--muted-light);
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.folioSpacer {
-  margin-left: auto;
+.opening {
+  max-width: 1100px;
 }
 
 .title {
-  font-size: clamp(46px, 5.2vw, 78px);
+  font-size: clamp(38px, 5vw, 82px);
   font-weight: 700;
   line-height: 1.02;
   letter-spacing: -0.03em;
   color: var(--ink);
-  max-width: 16ch;
-  margin-top: 46px;
+  max-width: 15ch;
 }
 
 /* The line under the headline, in the newspaper sense: what the piece is about, in one breath. */
 .standfirst {
-  font-size: 21px;
+  font-size: clamp(17px, 1.35vw, 23px);
   font-weight: 300;
-  line-height: 1.6;
+  line-height: 1.55;
   color: var(--body);
-  max-width: 640px;
-  margin-top: 26px;
+  max-width: 60ch;
+  margin-top: clamp(18px, 2.4vh, 30px);
 }
 
-/* The headline number — the thing a six-second reader actually takes away. */
 .impact {
-  margin-top: auto;
-  padding-top: 58px;
   display: flex;
   align-items: flex-end;
   gap: 26px;
   flex-wrap: wrap;
+  margin-top: clamp(28px, 5vh, 64px);
+  padding-top: clamp(20px, 3vh, 40px);
+  border-top: 1px solid var(--hairline);
 }
 
 .impactValue {
-  font-size: clamp(64px, 8vw, 128px);
+  font-size: clamp(52px, 6.6vw, 122px);
   font-weight: 300;
   line-height: 0.9;
   letter-spacing: -0.04em;
@@ -175,35 +68,29 @@
   font-size: 15px;
   line-height: var(--lh-body);
   color: var(--body);
-  max-width: 340px;
+  max-width: 44ch;
   margin-top: 8px;
 }
 
 /* ----------------------------------------------------------- argument */
 
 .argue {
-  background: var(--ink);
-  color: var(--on-dark);
-  padding: 104px var(--gutter);
+  width: 100%;
 }
 
 /*
- * Three columns across, not one narrow one down.
- *
- * Stacking it inside the reading measure left two thirds of a black band empty beside every
- * paragraph, which is worse than the fragmentation it was meant to fix. Side by side, the three
- * parts also read as what they are: one glance takes in the bind, the sacrifice and the call
- * together, which is the whole point of putting them next to each other.
+ * Three columns across. One glance takes in the bind, the sacrifice and the call together, which
+ * is the whole reason for putting them beside each other rather than one after another.
  */
 .argument {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 48px;
+  gap: clamp(28px, 3.4vw, 64px);
   align-items: start;
 }
 
 .arg {
-  padding-top: 22px;
+  padding-top: 20px;
   border-top: 1px solid var(--on-dark-rule-2);
 }
 
@@ -214,182 +101,274 @@
 }
 
 .argBody {
-  font-size: 17px;
-  line-height: 1.65;
-  margin-top: 16px;
+  font-size: clamp(15px, 1.05vw, 18px);
+  line-height: 1.62;
+  margin-top: 15px;
   color: var(--on-dark-72);
 }
 
 .argBody + .argBody {
-  margin-top: 14px;
+  margin-top: 13px;
 }
 
-/* Numbers are looked at, not read, so they run the full width outside the measure. */
+/* ------------------------------------------------------------ numbers */
+
+.numbers {
+  width: 100%;
+}
+
+/*
+ * Numbers beside the chart, not above it.
+ *
+ * Stacked, this spread ran 347px past the bottom of a 768px screen, and a spread that has to be
+ * scrolled is not a page you turn. Side by side they both fit, and the arrangement is the more
+ * honest one anyway: the cards state the outcome and the chart is the working behind one of them.
+ */
+@media (min-width: 1100px) {
+  .numbersGrid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(36px, 4vw, 80px);
+    align-items: start;
+    margin-top: clamp(20px, 3vh, 40px);
+  }
+
+  .numbersGrid .evidence {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 0;
+  }
+
+  .numbersGrid > :global(figure) {
+    margin-top: 0;
+  }
+}
+
+.spreadHead {
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--on-dark-50);
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--on-dark-rule-2);
+}
+
 /*
  * auto-fit rather than a fixed three, so a case with four outcomes does not strand the fourth
- * alone on a second row. With three items the empty tracks collapse and they still take a third
- * each; with four they take a quarter.
+ * alone on a second row: the empty tracks collapse and the items share the width evenly.
  */
 .evidence {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
   column-gap: 34px;
-  row-gap: 28px;
-  margin-top: 76px;
-  padding-top: 40px;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  row-gap: 26px;
+  margin-top: clamp(24px, 4vh, 48px);
 }
 
 .evidenceValue {
-  font-size: clamp(36px, 3.6vw, 54px);
+  font-size: clamp(32px, 3.2vw, 52px);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  color: var(--on-dark);
 }
 
 .evidenceLabel {
   font-size: 11.5px;
   letter-spacing: 0.12em;
   color: var(--on-dark-50);
-  margin-top: 14px;
+  margin-top: 12px;
 }
 
 .evidenceNote {
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: var(--lh-body);
   color: var(--on-dark-72);
-  margin-top: 10px;
+  margin-top: 9px;
   padding-right: 18px;
 }
 
-/* ---------------------------------------------------------- long read */
+/* ------------------------------------------------------------ chapter */
 
-.read {
-  padding: 104px var(--gutter) 110px;
-}
-
-/*
- * Content column first, index rail second.
- *
- * It was the other way round — prose in a 68ch track and the index filling everything left of
- * the margin — and that gave the index the whole right half of the page for the height of six
- * rows, with the cards trapped at sentence width underneath it. Flipping it puts the index in a
- * narrow rail flush to the right gutter and hands the rest back to the content, so a band of
- * cards can run to the end of the grid without ever colliding with a sticky sidebar.
- *
- * Below 1100px CaseToc hides itself and this collapses to one column.
- */
-.readGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
-  gap: clamp(40px, 5vw, 96px);
-  align-items: start;
-}
-
-@media (max-width: 1099px) {
-  .readGrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-}
-
-/*
- * Jumping from the index must not park a heading underneath the fixed nav. This is the whole
- * reason scroll-margin exists, and forgetting it is the classic way an anchor link looks broken.
- */
 .chapter {
-  scroll-margin-top: calc(var(--navH) + 28px);
-}
-
-/*
- * The rhythm of an article: a good gap before a subhead, a small one after it.
- *
- * That asymmetry is what makes a heading belong to the text below it rather than float between
- * two blocks. The hairline rules that used to sit between every section are gone — they chopped
- * a continuous read into a stack of cards.
- */
-.chapter + .chapter {
-  margin-top: 54px;
+  width: 100%;
 }
 
 .chapterHead {
-  max-width: var(--measure);
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: 25px;
+  font-size: clamp(24px, 2.1vw, 38px);
   font-weight: 700;
   letter-spacing: -0.02em;
-  line-height: 1.25;
+  line-height: 1.2;
   color: var(--ink);
+  max-width: 24ch;
+}
+
+/*
+ * The columns of a newspaper page.
+ *
+ * This is the whole reason the piece can be turned rather than scrolled: text that would run to
+ * two screens vertically fits one spread when it flows down a column and into the next. The
+ * count is fixed per breakpoint rather than driven by column-width, because a spread has to be
+ * predictable — the same chapter must occupy the same number of columns every time it is turned
+ * to, not reflow into a different shape as the scrollbar appears.
+ */
+.flow {
+  margin-top: clamp(18px, 2.6vh, 32px);
+  columns: 2;
+  column-gap: clamp(32px, 3.4vw, 72px);
+  column-rule: 1px solid var(--hairline);
 }
 
 .chapterBody {
-  max-width: var(--measure);
-  font-size: 19px;
-  /* Longer lines need more leading than the site's 1.5; this is the one place that is true. */
-  line-height: 1.7;
+  font-size: clamp(15.5px, 1.05vw, 19px);
+  line-height: 1.68;
   color: var(--body);
-  margin-top: 16px;
+  /* A paragraph broken across a column break loses its first line to the top of the next one. */
+  break-inside: avoid;
 }
 
 .chapterBody + .chapterBody {
-  margin-top: 20px;
+  margin-top: 17px;
 }
 
 .contribution {
-  max-width: var(--measure);
   list-style: none;
   padding: 0;
-  margin: 20px 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  margin: clamp(18px, 2.6vh, 32px) 0 0;
+
+  columns: 2;
+  column-gap: clamp(32px, 3.4vw, 72px);
 }
 
 .contribution li {
-  font-size: 19px;
-  line-height: 1.65;
+  font-size: clamp(15.5px, 1.05vw, 19px);
+  line-height: 1.6;
   color: var(--body);
   padding-left: 24px;
   position: relative;
+  break-inside: avoid;
+}
+
+.contribution li + li {
+  margin-top: 16px;
 }
 
 .contribution li::before {
   content: '';
   position: absolute;
   left: 0;
-  top: 12px;
+  top: 11px;
   width: 8px;
   height: 8px;
   background: var(--accent);
   transform: rotate(45deg);
 }
 
-/* ---- figures ---- */
+/* ------------------------------------------------------- point blocks */
 
 /*
- * Figures run past the measure on purpose. A narrow column to read and a wide picture to look at
- * is the rhythm a long read wants, and it is what stops the page being one column of grey.
+ * The band that breaks the grey. Some of what a case has to say is genuinely a list of four
+ * things, and setting it as another paragraph makes the reader do the structuring the author
+ * already did.
  */
-.gallery {
-  display: flex;
-  flex-direction: column;
-  gap: 52px;
-  margin-top: 76px;
-  max-width: 1100px;
+.cards {
+  list-style: none;
+  margin: clamp(20px, 3vh, 36px) 0 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
 }
 
-/* ---- the missing-content notice ---- */
+.cards .point {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 18px 20px;
+  background: var(--paper);
+}
+
+.pointNum {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--accent);
+}
+
+.pointTitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.pointBody {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--body);
+}
+
+/* Principles carry no body, so a ruled list is the right shape rather than five boxes. */
+.principles {
+  list-style: none;
+  margin: clamp(18px, 2.6vh, 30px) 0 0;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+
+  columns: 2;
+  column-gap: clamp(32px, 3.4vw, 72px);
+}
+
+.principles .point {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--hairline);
+  break-inside: avoid;
+}
+
+.principles .pointTitle {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* ------------------------------------------------------------ gallery */
+
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
+  gap: clamp(28px, 3vw, 56px);
+  width: 100%;
+  align-items: start;
+}
 
 /*
- * Rendered wherever a narrative field is still null. Deliberately loud: a case page with no
- * stated conflict is not a case page, and a half-written one must never be mistaken for finished
- * if the URL gets shared. Dev only.
+ * A 16:9 figure at the full width of a 1366 spread is 714px tall, which does not fit in the
+ * 524px a spread has. Capping the figure's WIDTH rather than the frame's height keeps the ratio
+ * honest and lets the picture shrink to whatever the page can actually hold.
+ */
+.gallery figure {
+  max-width: calc((100vh - 400px) * 16 / 9);
+}
+
+/* -------------------------------------------- the missing-content note */
+
+/*
+ * Rendered wherever a narrative field is still null. Deliberately loud: a case with no stated
+ * conflict is not a case, and a half-written one must never be mistaken for finished if the URL
+ * gets shared. Dev only.
  */
 .todo {
   border: 1px dashed currentColor;
-  padding: 18px 20px;
-  margin-top: 16px;
-  font-size: 14px;
+  padding: 16px 18px;
+  margin-top: 15px;
+  font-size: 13.5px;
   line-height: var(--lh-body);
   opacity: 0.68;
 }
@@ -403,243 +382,62 @@
   margin-bottom: 8px;
 }
 
-/* ---- footer nav ---- */
-
-.pageFoot {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 26px;
-  padding: 40px 0 96px;
-  border-top: 1px solid var(--hairline);
-  margin: 0 var(--gutter);
-  flex-wrap: wrap;
-}
-
-.backLink {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 17px;
-  color: var(--ink);
-  --ax: 0px;
-}
-
-.backLink span[aria-hidden] {
-  transform: translateX(var(--ax));
-  transition: transform 0.45s var(--ease);
-}
-
-.backLink:hover span[aria-hidden] {
-  --ax: -5px;
-}
+/* ------------------------------------------------------ 1920 and wider */
 
 /*
- * The argument collapses well before the evidence does. Three columns of prose need real width;
- * at 1000px they were 86px each on a phone, which is a column of single words. The numbers can
- * live in narrower tracks because they are numbers.
+ * A third column. At 1366 and 1440 two columns give a measure of roughly 60 characters; at 1920
+ * two would give 90, which is past where the eye keeps its place. Three brings it back to 58.
+ */
+@media (min-width: 1600px) {
+  .flow,
+  .contribution,
+  .principles {
+    columns: 3;
+  }
+
+  .impactNote {
+    font-size: 16px;
+  }
+
+  .evidenceNote {
+    font-size: 14.5px;
+  }
+}
+
+/* ------------------------------------------------------------- narrow */
+
+/*
+ * One column below 900px. Columns need width before they need anything else: two columns at 360
+ * would measure about twenty characters a line, which is a word and a half.
  */
 @media (max-width: 900px) {
   .argument {
     grid-template-columns: minmax(0, 1fr);
-    gap: 34px;
+    gap: 26px;
   }
 
-  .argBody {
-    font-size: 17px;
+  .flow,
+  .contribution,
+  .principles {
+    columns: 1;
+    column-rule: 0;
   }
-}
 
-@media (max-width: 1000px) {
   .evidence {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 34px;
-  }
-}
-
-/* Mobile: the opening stops reserving a full viewport, and everything steps down a size. */
-@media (max-width: 768px) {
-  /*
-   * Back in the flow on mobile.
-   *
-   * Absolute positioning exists on desktop to protect the centred fold; here the block no longer
-   * reserves a viewport (min-height: 0) so there is no composition to protect — and the link was
-   * landing in the same 18px the folio starts on, printing "Voltar" straight through "Itaú
-   * Unibanco · via NTT DATA". In flow it simply cannot collide with what follows it.
-   */
-  .backTop {
-    position: static;
-    font-size: 13px;
-    /* The same breathing room the desktop composition has between the control and the folio. */
-    margin-bottom: 56px;
-  }
-
-  .open {
-    min-height: 0;
-    padding: calc(var(--navH) + 24px) var(--gutter) 40px;
-  }
-
-  .folio {
-    gap: 8px 18px;
-  }
-
-  .folioSpacer {
-    margin-left: 0;
+    grid-template-columns: repeat(auto-fit, minmax(min(150px, 100%), 1fr));
+    column-gap: 24px;
+    row-gap: 22px;
   }
 
   .title {
-    font-size: 32px;
-    margin-top: 28px;
     max-width: none;
   }
 
-  .standfirst {
-    font-size: 17px;
-    margin-top: 18px;
-  }
-
   .impact {
-    padding-top: 36px;
     gap: 16px;
   }
 
-  .impactValue {
-    font-size: 56px;
-  }
-
-  .argue,
-  .read {
-    padding: 56px var(--gutter);
-  }
-
-  .argument {
-    gap: 34px;
-  }
-
-  .argBody {
-    font-size: 16.5px;
-  }
-
-  .chapter + .chapter {
-    margin-top: 40px;
-  }
-
-  .chapterHead {
-    font-size: 21px;
-  }
-
-  .chapterBody,
-  .contribution li {
-    font-size: 16.5px;
-  }
-
-  .pageFoot {
-    padding: 28px 0 56px;
-  }
-}
-
-/* ---------------------------------------------------- point blocks */
-
-/*
- * The band that breaks the grey.
- *
- * Some of what a case has to say is genuinely a list of four things, and setting it as another
- * paragraph makes the reader do the structuring work the author already did. Cards run ACROSS
- * the page rather than down it, which is what makes them read as one idea in four parts instead
- * of four more paragraphs.
- */
-.cards {
-  list-style: none;
-  margin: 30px 0 0;
-  padding: 0;
-
-  display: grid;
-  /*
-   * Cards keep a card's size instead of stretching to whatever is left.
-   *
-   * Letting them fill the column meant a pair sprawled to 705px each with one line of text in
-   * them, which is a band with two words in it rather than two cards. The band is capped at
-   * 360px per item, passed in as --n by the component, so two points make a 720px band and four
-   * make a wider one. 200px stays the track floor because it is what still fits four across at
-   * 1366 without stranding one on a second row.
-   */
-  max-width: calc(var(--n, 2) * 360px);
-  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
-  gap: 1px;
-  background: var(--hairline);
-  border: 1px solid var(--hairline);
-}
-
-.cards .point {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 22px 20px 24px;
-  background: var(--paper);
-}
-
-.pointNum {
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  font-variant-numeric: tabular-nums;
-  color: var(--accent);
-}
-
-.pointTitle {
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--ink);
-}
-
-.pointBody {
-  font-size: 14.5px;
-  line-height: 1.55;
-  color: var(--body);
-}
-
-/*
- * Principles carry no body, so they are a ruled list rather than cards: five boxes each holding
- * a single line would be a lot of furniture around not much text.
- */
-.principles {
-  /*
-   * Held to the reading measure. It is a list of sentences, so it belongs to the text rather than
-   * to the diagram band beside it — running it the full width of the column left each rule
-   * trailing hundreds of pixels past the last word on it.
-   */
-  max-width: var(--measure);
-  list-style: none;
-  margin: 26px 0 0;
-  padding: 0;
-  border-top: 1px solid var(--hairline);
-}
-
-.principles .point {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--hairline);
-}
-
-.principles .pointTitle {
-  font-weight: 400;
-  font-size: 17px;
-  color: var(--ink);
-}
-
-@media (max-width: 768px) {
-  .cards {
-    margin-top: 24px;
-  }
-
   .cards .point {
-    padding: 18px 16px 20px;
-  }
-
-  .pointTitle,
-  .principles .pointTitle {
-    font-size: 15.5px;
+    padding: 15px 15px 17px;
   }
 }
