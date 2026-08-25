@@ -34,7 +34,8 @@
 
 .plot {
   position: relative;
-  height: 280px;
+  /* Taller at João's request. The bars were already wide; what they wanted was more room up. */
+  height: 360px;
   margin-top: 34px;
 }
 
@@ -258,10 +259,15 @@
   min-width: 0;
   text-align: center;
 
-  font-size: 12.5px;
-  letter-spacing: 0.04em;
+  font-size: 13px;
+  letter-spacing: 0.03em;
   color: var(--on-dark-50);
   transition: color 0.25s linear;
+}
+
+/* One of these shows at a time; the media query below does the swapping. */
+.labelShort {
+  display: none;
 }
 
 .labelOn {
@@ -319,7 +325,20 @@
 
 @media (max-width: 720px) {
   .plot {
-    height: 200px;
+    height: 240px;
+  }
+
+  /*
+   * Five written-out months will not fit across a phone, so the short form takes over. Done in
+   * CSS rather than by reading matchMedia in JS: the server has no viewport, and a label that
+   * changes after hydration is a layout shift on the first frame.
+   */
+  .labelFull {
+    display: none;
+  }
+
+  .labelShort {
+    display: inline;
   }
 
   .cols,

@@ -204,7 +204,13 @@ export function CaseChart({ data }: { data: ChartData }) {
       <div className={styles.labels} aria-hidden="true">
         {points.map((p, i) => (
           <span key={p.label} className={`${styles.label} ${i === active ? styles.labelOn : ''}`}>
-            {p.label}
+            {/*
+              * Two labels, one shown at a time by CSS rather than by a matchMedia read. The
+              * written-out month is what the axis wants where there is room for it; at phone
+              * widths five of them would either wrap or collide, so the short form takes over.
+              */}
+            <span className={styles.labelFull}>{p.full ? t(p.full) : p.label}</span>
+            <span className={styles.labelShort}>{p.label}</span>
           </span>
         ))}
       </div>

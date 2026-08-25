@@ -95,6 +95,9 @@ export function CaseToc({ items }: { items: TocItem[] }) {
               >
                 <span className={styles.num}>{String(i + 1).padStart(2, '0')}</span>
                 <span>{it.label}</span>
+                <span className={styles.mark} aria-hidden="true">
+                  →
+                </span>
               </a>
             </li>
           ))}

@@ -20,11 +20,11 @@
 
 .sticky {
   /*
-   * Capped, because the track it sits in grows to whatever is left of the page. At 1920 that is
-   * over a thousand pixels, and an underline running that far beneath a fourteen-pixel label
-   * reads as a rule across the page rather than as a list item.
+   * Runs to the right edge of the grid, at João's instruction. It was capped at 300px on the
+   * theory that a long rule under a short label looks adrift — the answer to that is to anchor
+   * the far end rather than to stop short of it, so each row carries a marker on the right and
+   * the rule spans between two things instead of trailing off.
    */
-  max-width: 300px;
   position: sticky;
   /* Clear of the fixed nav, and a little breathing room under it. */
   top: calc(var(--navH) + 40px);
@@ -49,6 +49,7 @@
   display: flex;
   gap: 12px;
   align-items: baseline;
+  justify-content: flex-start;
 
   /* WCAG 2.2 target size, to João's 32px floor. */
   min-height: 34px;
@@ -81,6 +82,35 @@
 
 @media (prefers-reduced-motion: reduce) {
   .link {
+    transition: none;
+  }
+}
+
+/*
+ * The far end of the rule.
+ *
+ * With the index running the full width of its track, every row is a long hairline with text on
+ * the left and nothing on the right. The marker gives the rule a second anchor, and it moves on
+ * hover so the row also says it is a control.
+ */
+.mark {
+  margin-left: auto;
+  padding-left: 20px;
+  font-size: 13px;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+}
+
+.link:hover .mark,
+.link:focus-visible .mark,
+.on .mark {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mark {
     transition: none;
   }
 }

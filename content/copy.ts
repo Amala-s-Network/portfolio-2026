@@ -736,9 +736,16 @@ export type CaseChart = {
    */
   delta?: string;
   points: {
-    /** The short axis label. */
+    /**
+     * The SHORT form: the axis label below about 720px, and the fallback when `full` is
+     * missing. Left untranslated because "08/25" is the same in both languages.
+     */
     label: string;
-    /** Spoken and shown in the readout. Falls back to `label`. */
+    /**
+     * The written-out form: the axis label at normal widths, the readout, and what a bar
+     * announces. A month has a name, and a chart with room for it has no reason to make the
+     * reader decode a number.
+     */
     full?: T;
     value: number;
   }[];
@@ -903,11 +910,11 @@ export const caseDetails: Record<string, CaseDetail> = {
       },
       unit: { pt: 'chamadas no mês', en: 'calls that month' },
       points: [
-        { label: '08/25', full: { pt: 'Agosto de 2025', en: 'August 2025' }, value: 2395 },
-        { label: '09/25', full: { pt: 'Setembro de 2025', en: 'September 2025' }, value: 2366 },
-        { label: '10/25', full: { pt: 'Outubro de 2025', en: 'October 2025' }, value: 2300 },
-        { label: '11/25', full: { pt: 'Novembro de 2025', en: 'November 2025' }, value: 2232 },
-        { label: '12/25', full: { pt: 'Dezembro de 2025', en: 'December 2025' }, value: 1893 },
+        { label: '08/25', full: { pt: 'Agosto / 2025', en: 'August / 2025' }, value: 2395 },
+        { label: '09/25', full: { pt: 'Setembro / 2025', en: 'September / 2025' }, value: 2366 },
+        { label: '10/25', full: { pt: 'Outubro / 2025', en: 'October / 2025' }, value: 2300 },
+        { label: '11/25', full: { pt: 'Novembro / 2025', en: 'November / 2025' }, value: 2232 },
+        { label: '12/25', full: { pt: 'Dezembro / 2025', en: 'December / 2025' }, value: 1893 },
       ],
     },
 
