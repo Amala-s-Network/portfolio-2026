@@ -25,7 +25,7 @@
    * line. Anything past about 75 makes the eye lose the line it is returning to. 640px measures
    * 68, which is where it was before and where it should be.
    */
-  --measure: 640px;
+  --measure: 520px;
 }
 
 /*
@@ -45,7 +45,7 @@
 .open {
   min-height: calc(100vh - var(--navH));
   min-height: calc(100svh - var(--navH));
-  padding: calc(var(--navH) + 72px) var(--gutter) 72px;
+  padding: calc(var(--navH) + 104px) var(--gutter) 72px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -470,7 +470,8 @@
   .backTop {
     position: static;
     font-size: 13px;
-    margin-bottom: 24px;
+    /* The same breathing room the desktop composition has between the control and the folio. */
+    margin-bottom: 56px;
   }
 
   .open {
