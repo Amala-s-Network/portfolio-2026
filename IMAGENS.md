@@ -103,3 +103,50 @@ sozinha para quem tem `prefers-reduced-motion` ligado no sistema.
 Vale conferir o que pode ser publicado: as telas do Itaú e da EMS são interface real de cliente.
 Hoje as legendas dessas figuras saem marcadas como pendentes de avaliação de NDA, e é você quem
 tira essa marca.
+
+---
+
+# As pranchas dentro do case
+
+Cada folha de capítulo do case agora tem uma **prancha**: um quadro de imagem ao lado do texto,
+com fio, granulado e legenda. Enquanto o arquivo real não existe, ela aparece como um quadro
+tracejado com marca de registro no canto — lê como imagem ainda não impressa, que é o que é.
+
+Em desenvolvimento, cada prancha mostra embaixo a **orientação da foto**: o que precisa estar no
+quadro, em detalhe suficiente para alguém ir lá e tirar. Isso não vai para o ar.
+
+## Onde os arquivos entram
+
+```
+public/cases/<slug>/prancha-01.webp
+public/cases/<slug>/prancha-02.webp
+public/cases/<slug>/prancha-03.webp
+```
+
+Depois é uma linha em `content/copy.ts`, no `plate` da seção: troca `src: null` pelo caminho.
+Me avisa que eu ligo.
+
+## Proporções
+
+A prancha aceita `4:3` (padrão), `16:9`, `3:4` e `1:1`. O corte é `cover` e a altura tem teto,
+então:
+
+- **Tela de produto inteira** → `4:3`, e deixe respiro nas bordas, porque o corte come as pontas.
+- **Fluxo, board de Miro, tela larga** → `16:9`.
+- **Celular, tela vertical** → `3:4`.
+- **Detalhe de componente** → `1:1`.
+
+## O que funciona bem numa prancha
+
+Pensando em quem lê: um recrutador passa por essas folhas rápido, e a imagem é o que segura o
+olho. Vale mais uma imagem que **mostra o problema** do que uma que mostra a interface bonita.
+
+- **Antes e depois** na mesma moldura. Duas capturas do mesmo enquadramento, uma na folha do
+  problema e outra na folha da solução, é a coisa mais forte que um case pode ter.
+- **Artefato de processo**: árvore de oportunidades, matriz de priorização, mapa de fluxo,
+  wireframe. Mostra como você pensa, não só o que você entregou.
+- **A tela em uso**, com dado plausível dentro. Tela vazia não conta história.
+- **O quadro branco / o Miro bagunçado**. Recrutador reconhece trabalho real.
+
+Evite: mockup de celular flutuando em fundo colorido sem contexto, e captura com dado de cliente
+legível. Se tiver dado sensível, desfoque antes de mandar.

@@ -42,3 +42,31 @@
     font-size: 12px;
   }
 }
+
+/* Side by side, for a mark that sits at the foot of a column rather than out in the margin. */
+.compact {
+  display: grid;
+  grid-template-columns: minmax(0, 130px) minmax(0, 1fr);
+  gap: clamp(16px, 1.6vw, 26px);
+  align-items: center;
+}
+
+.compact .plate {
+  max-width: 130px;
+}
+
+.compact .caption {
+  margin-top: 0;
+  max-width: 44ch;
+}
+
+@media (max-width: 900px) {
+  .compact {
+    grid-template-columns: minmax(0, 104px) minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .compact .plate {
+    max-width: 104px;
+  }
+}

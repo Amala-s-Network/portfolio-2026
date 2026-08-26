@@ -712,6 +712,23 @@ export type CaseMarkSpec = {
   caption: T;
 };
 
+/**
+ * A picture on a spread.
+ *
+ * A stakeholder deck is half pictures, and a case page that is only prose is that deck with the
+ * slides taken out. `brief` is the shot list: it names what belongs in the frame, shows only in
+ * development, and is what turns "add images" into something anyone can actually go and do.
+ */
+export type CasePlateSpec = {
+  /** null until the real artwork exists; the case's generated placeholder stands in. */
+  src: string | null;
+  ratio?: '4:3' | '16:9' | '3:4' | '1:1';
+  caption: T;
+  /** DEV ONLY. What picture goes here, in enough detail to go and take it. */
+  brief?: T;
+  confidential?: boolean;
+};
+
 export type CaseSection = {
   title: T;
   body: T;
@@ -728,6 +745,8 @@ export type CaseSection = {
   quote?: T;
   /** A drawn figure for this section, when what it says is a shape. */
   mark?: CaseMarkSpec;
+  /** The picture that belongs beside this section. */
+  plate?: CasePlateSpec;
 };
 export type Outcome = { value: string; label: T; note: T };
 
@@ -1049,7 +1068,7 @@ export const caseDetails: Record<string, CaseDetail> = {
   'reserva-ink-aparencia-de-loja': {
     slug: 'reserva-ink-aparencia-de-loja',
     year: '2023-2024',
-    role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
+    role: { pt: 'Product Designer', en: 'Product Designer' },
     /* The project, not the tenure. He was at INK for a year and four months; this took four weeks. */
     duration: { pt: '4 semanas', en: '4 weeks' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
@@ -1137,42 +1156,74 @@ export const caseDetails: Record<string, CaseDetail> = {
     },
     detail: [
       {
-        title: { pt: 'Onde isso aconteceu', en: 'Where this happened' },
+        title: { pt: 'O produto e o problema', en: 'The product and the problem' },
         body: {
-          pt: 'A INK é a plataforma de print on demand da Reserva, parte do grupo AZZAS 2154, o maior grupo de vestuário da América Latina. Mais de 60 mil empreendedores usam a plataforma para montar e operar as próprias lojas.',
-          en: 'INK is Reserva’s print-on-demand platform, part of AZZAS 2154, the largest apparel group in Latin America. Over 60,000 entrepreneurs use it to build and run their own stores.',
+          pt: 'A INK é a plataforma de print on demand da Reserva, parte do grupo AZZAS 2154, e mais de 60 mil empreendedores usam ela para montar e operar as próprias lojas. A Aparência de Loja é onde cada um define cor, fonte, banner e tudo que diz quem ele é: era para ser a base da identidade do lojista dentro da plataforma.\n\nCom o crescimento do produto e a complexidade acumulada, essa experiência foi ficando confusa e passou a gerar frustração, erro e retrabalho. Existiam várias formas diferentes de fazer a mesma coisa, informação jogada na tela e ícones que não instruíam ninguém, o que atrapalhava principalmente quem estava começando.',
+          en: 'INK is Reserva’s print-on-demand platform, part of the AZZAS 2154 group, and more than 60,000 entrepreneurs use it to build and run their own stores. Store Appearance is where each of them sets colour, typeface, banner and everything that says who they are: it was meant to be the foundation of a seller’s identity on the platform.\n\nAs the product grew and complexity piled up, that experience got muddier and started producing frustration, mistakes and rework. There were several different ways to do the same thing, information dumped on the screen, and icons that instructed nobody, which hurt the people just starting out most of all.',
         },
-      },
-      {
-        title: { pt: 'O que a ferramenta deveria ser', en: 'What the tool was meant to be' },
-        body: {
-          pt: 'Desde o começo, a Aparência de Loja foi pensada como a base da identidade de cada lojista dentro da plataforma. Era por ali que o criador definia cores, fontes, banners e os elementos visuais que dizem quem ele é e como quer ser percebido. Com o crescimento do produto e a complexidade que foi se acumulando, essa experiência foi ficando confusa e passou a gerar frustração, erro e retrabalho.',
-          en: 'From the start, Store Appearance was meant to be the foundation of each seller’s identity inside the platform. It was where a creator set the colours, typefaces, banners and visual elements that say who they are and how they want to be seen. As the product grew and complexity piled up, that experience got muddier and started producing frustration, mistakes and rework.',
-        },
-      },
-      {
-        title: { pt: 'A evidência veio do suporte', en: 'The evidence came from support' },
         quote: {
-          pt: 'Os motivos dos tickets apontavam direto para onde o fluxo quebrava.',
-          en: 'The reasons on the tickets pointed straight at where the flow was breaking.',
+          pt: 'Teve lojista que passou o Dia dos Namorados com o tema de Natal no ar.',
+          en: 'Some sellers spent Valentine’s Day with a Christmas theme still live.',
         },
-        body: {
-          pt: 'Os tickets de reclamação foram a fonte principal, porque os motivos apontavam direto para onde o fluxo quebrava. Junto com entrevistas de UX com lojistas e testes de usabilidade, eles deram o mapa do que precisava mudar. Foram meses de discovery antes de qualquer tela nova.',
-          en: 'Complaint tickets were the main source, because the reasons pointed straight at where the flow was breaking. Together with UX interviews with sellers and usability testing, they gave us the map of what had to change. It was months of discovery before any new screen existed.',
+        plate: {
+          src: null,
+          ratio: '4:3',
+          caption: {
+            pt: 'A configuração de aparência antes do redesenho.',
+            en: 'Appearance settings before the redesign.',
+          },
+          brief: {
+            pt: 'Captura da tela antiga de Aparência de Loja, inteira, com a barra lateral visível. É o "antes" do case, então vale mostrar a bagunça: muitos campos, ícones sem rótulo.',
+            en: 'A full screenshot of the old Store Appearance screen, sidebar included. It is the case’s "before", so the mess is the point: too many fields, unlabelled icons.',
+          },
+          confidential: true,
         },
       },
       {
-        title: { pt: 'O que a mudança destravou', en: 'What the change freed up' },
+        title: { pt: 'O discovery', en: 'Discovery' },
         body: {
-          pt: 'O tempo médio de configuração caiu mais de 75%. Isso devolveu horas para o lojista, que passou a gastá-las em campanha e venda em vez de brigar com o painel. Retenção e receita subiram junto, e foi por aí que o LTV cresceu, tanto para o lojista quanto para a própria INK.',
-          en: 'Average setup time fell by more than 75%. That handed hours back to the seller, who started spending them on campaigns and selling instead of fighting the panel. Retention and revenue rose with it, and that is how LTV grew, both for the seller and for INK itself.',
+          pt: 'Os tickets de reclamação foram a fonte principal, porque os motivos apontavam direto para onde o fluxo quebrava. Junto com entrevistas de UX, testes de usabilidade, análises de Clarity e formulários, ao longo de quase um ano, eles deram o mapa do que precisava mudar.\n\nO efeito não parava na tela. Quem não conseguia configurar deixava de usar, e isso batia direto no onboarding e na retenção de quem tinha acabado de chegar. O problema tinha cara de usabilidade e conta de negócio.',
+          en: 'Complaint tickets were the main source, because the reasons pointed straight at where the flow was breaking. Alongside UX interviews, usability testing, Clarity analysis and forms, gathered over nearly a year, they gave us the map of what had to change.\n\nThe effect did not stop at the screen. Anyone who could not set their store up stopped using it, and that hit onboarding and the retention of people who had only just arrived. The problem looked like usability and read like a business account.',
+        },
+        mark: {
+          kind: 'share',
+          value: 87,
+          caption: {
+            pt: 'Oitenta e sete em cada cem tickets de reclamação deixaram de existir.',
+            en: 'Eighty-seven in every hundred complaint tickets stopped existing.',
+          },
+        },
+        plate: {
+          src: null,
+          ratio: '4:3',
+          caption: {
+            pt: 'Os artefatos do discovery: árvore de oportunidades e priorização.',
+            en: 'The discovery artefacts: opportunity tree and prioritisation.',
+          },
+          brief: {
+            pt: 'Um quadro do Miro ou FigJam com a árvore de oportunidades, a matriz de priorização ou o mapa de fluxo. Pode estar desfocado onde houver dado de cliente.',
+            en: 'A Miro or FigJam board showing the opportunity tree, the prioritisation matrix or the flow map. Blur anything carrying client data.',
+          },
         },
       },
       {
-        title: { pt: 'Como foi construído', en: 'How it was built' },
+        title: { pt: 'O que mudou', en: 'What changed' },
         body: {
-          pt: 'Quatro semanas de projeto, em Figma, Miro e FigJam, num modelo POD/SaaS. Discovery, proposta de interface, validação com lojistas e handoff, sem parar a operação em nenhum momento.',
-          en: 'A four-week project, in Figma, Miro and FigJam, on a POD/SaaS model. Discovery, interface proposal, validation with sellers and handoff, without stopping the operation at any point.',
+          pt: 'Foram quatro semanas em Figma, Miro e FigJam, num modelo POD/SaaS: discovery, proposta de interface, validação com lojistas e handoff, sem parar a operação em nenhum momento. A proposta nova ficou em cima de três coisas, clareza, agilidade e controle, e trabalhei dentro da estrutura que já existia em vez de pedir uma refatoração que não caberia no prazo.\n\nO tempo médio de configuração caiu mais de 75%, o que devolveu horas para o lojista gastar em campanha e venda em vez de brigar com o painel. Retenção e receita subiram junto, e foi por aí que o LTV cresceu, para o lojista e para a própria INK.',
+          en: 'Four weeks in Figma, Miro and FigJam, on a POD/SaaS model: discovery, interface proposal, validation with sellers and handoff, without stopping the operation at any point. The new proposal stood on three things, clarity, speed and control, and I worked inside the structure that was already there rather than asking for a refactor that would never fit the deadline.\n\nAverage setup time fell by more than 75%, handing hours back to sellers to spend on campaigns and selling instead of fighting the panel. Retention and revenue rose with it, and that is how LTV grew, for the seller and for INK itself.',
+        },
+        plate: {
+          src: null,
+          ratio: '4:3',
+          caption: {
+            pt: 'A configuração de aparência depois, no fluxo novo.',
+            en: 'Appearance settings after, in the new flow.',
+          },
+          brief: {
+            pt: 'A mesma tela do primeiro plate, agora na versão nova, no mesmo enquadramento. Duas capturas iguais lado a lado são o que faz um "antes e depois" funcionar.',
+            en: 'The same screen as the first plate, now in the new version, framed identically. Two matching captures are what makes a before-and-after work.',
+          },
+          confidential: true,
         },
       },
     ],
@@ -1210,7 +1261,7 @@ export const caseDetails: Record<string, CaseDetail> = {
   'reserva-ink-imagens-de-vitrine': {
     slug: 'reserva-ink-imagens-de-vitrine',
     year: '2023-2024',
-    role: { pt: 'Product Designer Pleno', en: 'Product Designer' },
+    role: { pt: 'Product Designer', en: 'Product Designer' },
     duration: { pt: '4 semanas', en: '4 weeks' },
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
 

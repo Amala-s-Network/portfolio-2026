@@ -550,3 +550,152 @@
     font-size: 2.8em;
   }
 }
+
+/* --------------------------------------------- a spread with a picture */
+
+/*
+ * Text on the left, the plate on the right. This is the shape of a page in a stakeholder deck,
+ * and it is what the case was missing: the reader gets the argument and the artefact in one look
+ * instead of paragraphs followed, eventually, by a gallery.
+ */
+.split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  gap: clamp(30px, 3.2vw, 68px);
+  align-items: start;
+  margin-top: clamp(14px, 2vh, 26px);
+}
+
+.splitText {
+  min-width: 0;
+}
+
+.splitAside {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(20px, 2.6vh, 34px);
+}
+
+/* Two movements on one spread need a rule between them, or they read as one long chapter. */
+.movement + .movement {
+  margin-top: clamp(22px, 3vh, 36px);
+}
+
+.movementRule {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin: clamp(20px, 2.6vh, 32px) 0 0;
+}
+
+/*
+ * The running head, the way a deck numbers its sections: 01/03 and the name of the movement.
+ * It is the one piece of furniture that tells the reader how much of this there is.
+ */
+.eyebrow {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.eyebrowNum {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/*
+ * Inside the split the text has half the page, so one column at 1366 and two only where there is
+ * genuinely width for them. Columns narrower than about 300px stop helping and start hyphenating.
+ */
+.split .flow {
+  columns: 1;
+  column-rule: 0;
+}
+
+/*
+ * Two columns as soon as the text half is wide enough to hold them.
+ *
+ * With three movements on one spread, a single column ran 149px past the bottom at 1366x768 — and
+ * a spread that overflows is a page you cannot turn. Two columns halve that height, and at about
+ * 300px each they still measure roughly forty characters, which is what a newspaper column is.
+ */
+@media (min-width: 1200px) {
+  .split .flow {
+    columns: 2;
+    column-gap: clamp(24px, 2vw, 40px);
+    column-rule: 1px solid var(--hairline);
+  }
+}
+
+.split .quote {
+  margin-top: clamp(18px, 2.4vh, 28px);
+}
+
+@media (max-width: 1099px) {
+  .split {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 28px;
+  }
+}
+
+/* The closing spread: the hardest part beside what it unlocked. */
+.closing {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(340px, 100%), 1fr));
+  gap: clamp(32px, 4vw, 80px);
+  align-items: start;
+}
+
+/*
+ * Short screens take the type down a step inside a split.
+ *
+ * A spread at 1366x768 has about 520px of content height, and the split hands half the width to
+ * the picture — so the same paragraph that reads comfortably at 19px on a tall screen runs off
+ * the bottom here. This is the one place where the height of the viewport, not its width, decides
+ * the size of the type.
+ */
+@media (max-height: 820px) {
+  .split .chapterBody {
+    font-size: 16px;
+    line-height: 1.58;
+  }
+
+  .split .chapterBody + .chapterBody {
+    margin-top: 13px;
+  }
+
+  .split .chapterHead {
+    font-size: 22px;
+  }
+
+  .split .quote {
+    font-size: 18px;
+    padding-top: 14px;
+  }
+
+  .closing .chapterBody {
+    font-size: 16.5px;
+    line-height: 1.6;
+  }
+}
+
+/* A drawn figure at the foot of the text it belongs to, laid across rather than stacked. */
+.markRow {
+  margin-top: clamp(18px, 2.4vh, 28px);
+  padding-top: clamp(14px, 2vh, 22px);
+  border-top: 1px solid var(--hairline);
+}
+
+@media (max-height: 820px) {
+  .markRow {
+    margin-top: 14px;
+    padding-top: 12px;
+  }
+}

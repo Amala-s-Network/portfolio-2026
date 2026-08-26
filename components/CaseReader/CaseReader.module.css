@@ -170,10 +170,18 @@
   flex-direction: column;
   justify-content: center;
 
-  /* The entrance, per spread. */
+  /*
+   * The entrance, and the parallax.
+   *
+   * The track slides the whole page; the content inside it lags behind by --d screens' worth of a
+   * nudge and settles a beat later. That lag is the difference between a slide deck advancing and
+   * paper being laid down — without it every spread arrives at exactly the same instant as its own
+   * edges, which is what reads as mechanical.
+   */
   opacity: 0;
-  transform: translateY(14px);
-  transition: opacity 0.6s var(--ease) 0.12s, transform 0.7s var(--ease) 0.12s;
+  transform: translate3d(calc(var(--d, 0) * 56px), 16px, 0);
+  transition: opacity 0.55s var(--ease) 0.1s,
+    transform 0.86s cubic-bezier(0.16, 0.84, 0.24, 1) 0.06s;
 }
 
 .on .sheetInner {
@@ -457,6 +465,8 @@
     min-height: 0;
     padding: 46px var(--gutter) 54px;
     justify-content: flex-start;
+    /* No track to lag behind when the piece is read top to bottom. */
+    transform: translateY(16px);
   }
 
   /* One rule between sections, which is all a vertical read needs to say "next". */

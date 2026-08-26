@@ -258,6 +258,8 @@ export function CaseReader({
             key={p.id}
             id={p.id}
             className={`${styles.sheet} ${!sideways || i === index ? styles.on : ''} ${p.tone === 'dark' ? styles.dark : ''}`}
+            /* Distance from the spread in view, so the content can trail the page it rides on. */
+            style={{ ['--d' as string]: i - index }}
             aria-label={`${i + 1}. ${p.label}`}
             aria-hidden={sideways && i !== index}
             /* Only sideways, where the other spreads are genuinely off screen. */

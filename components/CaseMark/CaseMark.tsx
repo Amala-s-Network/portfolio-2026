@@ -16,11 +16,15 @@ import styles from './CaseMark.module.css';
  * on and works on paper and on the dark band without a second palette. No images, no icon font,
  * nothing to load.
  */
-export function CaseMark({ spec }: { spec: CaseMarkSpec }) {
+export function CaseMark({ spec, compact }: { spec: CaseMarkSpec; compact?: boolean }) {
   const { t } = useLanguage();
 
+  /*
+   * `compact` lays the drawing beside its caption instead of above it. Stacked, a mark at the
+   * foot of a column is about 230px tall, and a spread at 1366x768 does not have 230px to spare.
+   */
   return (
-    <figure className={styles.root}>
+    <figure className={`${styles.root} ${compact ? styles.compact : ''}`}>
       <div className={styles.plate}>{draw(spec)}</div>
       <figcaption className={styles.caption}>{t(spec.caption)}</figcaption>
     </figure>

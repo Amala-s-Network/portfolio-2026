@@ -1,0 +1,145 @@
+/*
+ * A plate: the picture on a spread, framed the way a printed page frames one.
+ *
+ * The frame is a hairline with a margin of paper inside it, which is what makes a screenshot look
+ * placed rather than pasted. The grain runs over the picture as well as under it, so the image is
+ * printed on the same stock as the type beside it.
+ */
+
+.root {
+  margin: 0;
+  min-width: 0;
+}
+
+.frame {
+  position: relative;
+  overflow: hidden;
+  /*
+   * Capped against the height it is given. A 4:3 plate in a 600px column is 450px tall, which on
+   * its own nearly fills the 524px a spread has at 1366x768 — the picture would push the page it
+   * illustrates off the bottom. The crop is `cover`, so what it loses is edge rather than subject.
+   */
+  max-height: min(46vh, 460px);
+  background: color-mix(in srgb, currentColor 5%, transparent);
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  padding: clamp(8px, 0.9vw, 16px);
+}
+
+.frame[data-ratio='4:3'] {
+  aspect-ratio: 4 / 3;
+}
+
+.frame[data-ratio='16:9'] {
+  aspect-ratio: 16 / 9;
+}
+
+.frame[data-ratio='3:4'] {
+  aspect-ratio: 3 / 4;
+}
+
+.frame[data-ratio='1:1'] {
+  aspect-ratio: 1 / 1;
+}
+
+.img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * The tooth of the paper, over the picture.
+ *
+ * multiply on light stock and screen on dark: multiply alone does nothing on ink, which is why
+ * the dark spreads looked untouched the first time the grain went in. Both layers are declared
+ * and the blend mode is what decides which one shows.
+ */
+.grain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--grain-tile);
+  background-size: var(--grain-size) var(--grain-size);
+  opacity: var(--grain-opacity);
+  mix-blend-mode: multiply;
+}
+
+/*
+ * A corner mark on a plate still waiting for its picture. A registration mark, the thing a
+ * printer leaves on a page that has not been trimmed — it says "reserved" without a sentence.
+ */
+.corner {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 22px;
+  height: 22px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  opacity: 0.35;
+}
+
+.pending .frame {
+  border-style: dashed;
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+
+.captionText {
+  font-size: 12.5px;
+  line-height: 1.5;
+  opacity: 0.7;
+  max-width: 46ch;
+}
+
+.flag {
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border: 1px solid currentColor;
+  opacity: 0.5;
+  white-space: nowrap;
+}
+
+/* Development only: the shot list, for whoever is supplying the picture. */
+.brief {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px dashed currentColor;
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: 0.62;
+}
+
+.briefTag {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+@media (max-width: 900px) {
+  .captionText {
+    font-size: 12px;
+  }
+}
+
+/*
+ * The grain is a still texture, so it survives reduced motion untouched — but a browser that has
+ * been told to reduce data or motion has no reason to composite a blend mode over every picture.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .grain {
+    opacity: calc(var(--grain-opacity) * 0.7);
+  }
+}

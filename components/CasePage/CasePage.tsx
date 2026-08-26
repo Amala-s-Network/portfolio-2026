@@ -4,9 +4,17 @@ import { useEffect, useState } from 'react';
 import { CaseChart } from '@/components/CaseChart/CaseChart';
 import { CaseFigure } from '@/components/CaseFigure/CaseFigure';
 import { CaseMark } from '@/components/CaseMark/CaseMark';
+import { CasePlate } from '@/components/CasePlate/CasePlate';
 import { CaseReader, type ReaderPage } from '@/components/CaseReader/CaseReader';
 import { useLanguage } from '@/lib/language';
-import { cases, caseDetails, casePage as copy, type CaseSection, type T } from '@/content/copy';
+import {
+  cases,
+  caseDetails,
+  casePage as copy,
+  type CasePlateSpec,
+  type CaseSection,
+  type T,
+} from '@/content/copy';
 import styles from './CasePage.module.css';
 
 /**
@@ -84,6 +92,7 @@ export function CasePage({ slug }: { slug: string }) {
     points?: CaseSection['points'];
     quote?: CaseSection['quote'];
     mark?: CaseSection['mark'];
+    plate?: CaseSection['plate'];
   };
 
   const details: Chapter[] = data.detail.map((d, i) => ({
@@ -93,6 +102,7 @@ export function CasePage({ slug }: { slug: string }) {
     points: d.points,
     quote: d.quote,
     mark: d.mark,
+    plate: d.plate,
   }));
 
   const challenge = line(data.challenge)
@@ -100,17 +110,14 @@ export function CasePage({ slug }: { slug: string }) {
     : [];
 
   /*
-   * The hardest part sits SECOND, after the opening context. Leading with it asks the reader to
-   * weigh a difficulty before they know what the work was.
+   * The chapter block is the detail sections and nothing else.
+   *
+   * The hardest part and what it unlocked used to be chapters too, which pushed a case to five or
+   * seven of them and, once they were gathered into three spreads, put three movements on a page
+   * that has 520px of height at 1366x768. They are still in the piece — they close it, on a
+   * spread of their own — but the chapter block is now exactly what the copy is written as.
    */
-  const chapters: Chapter[] = [
-    ...details.slice(0, 1),
-    ...challenge,
-    ...details.slice(1),
-    ...(line(data.gameChanger)
-      ? [{ key: 'game', heading: t(copy.headings.gameChanger), body: line(data.gameChanger)! }]
-      : []),
-  ];
+  const chapters: Chapter[] = details;
 
   const words =
     [t(data.context), ...chapters.map((c) => c.body), ...data.contribution.map((c) => t(c))]
@@ -228,56 +235,144 @@ export function CasePage({ slug }: { slug: string }) {
     });
   }
 
-  for (const c of chapters) {
+  /*
+   * Chapters, gathered into at most three spreads.
+   *
+   * One chapter per spread gave the Itaú case ten pages and INK twelve, which is a lot of turning
+   * for what is one argument in three movements — João's note was to get pages four through
+   * eleven down to three. Chunked, each spread carries a movement rather than a paragraph, and
+   * there is room beside the text for the thing every stakeholder deck has and this did not: a
+   * picture.
+   */
+  const MAX_CHAPTER_SPREADS = 3;
+  const perSpread = Math.ceil(chapters.length / MAX_CHAPTER_SPREADS) || 1;
+  const groups: Chapter[][] = [];
+  for (let i = 0; i < chapters.length; i += perSpread) groups.push(chapters.slice(i, i + perSpread));
+
+  groups.forEach((group, gi) => {
+    /*
+     * The plate for this spread: the first one the copy supplies, or a reserved frame naming what
+     * belongs in it. Every content spread gets one either way — a deck with a slide missing still
+     * shows the slide.
+     */
+    const plate: CasePlateSpec = group.find((c) => c.plate)?.plate ?? {
+      src: null,
+      ratio: '4:3',
+      caption: { pt: group[0].heading, en: group[0].heading },
+      brief: {
+        pt: 'Uma tela, um fluxo ou um artefato desta etapa. Ver IMAGENS.md para formato e peso.',
+        en: 'A screen, a flow or an artefact from this stage. See IMAGENS.md for format and weight.',
+      },
+    };
+
     pages.push({
-      id: `p-${c.key}`,
-      label: c.heading,
+      id: `p-g${gi}`,
+      label: group.map((c) => c.heading).join(' · '),
       node: (
         <div className={styles.chapter}>
-          <h2 className={styles.chapterHead}>{c.heading}</h2>
+          <p className={styles.eyebrow}>
+            <span className={styles.eyebrowNum}>
+              {String(gi + 1).padStart(2, '0')}/{String(groups.length).padStart(2, '0')}
+            </span>
+            {group[0].heading}
+          </p>
 
-          {/*
-            * Text on the left, the margin on the right — the shape of a printed page. The margin
-            * carries whatever this chapter has that is not prose: a line worth setting large, or
-            * a figure that draws what the paragraph is describing. With neither, the text takes
-            * the whole width and there is no empty column to explain.
-            */}
-          <div className={c.quote || c.mark ? styles.chapterGrid : undefined}>
-            {/*
-              * The columns of a newspaper page. Text flows down one and into the next, which is
-              * how a spread holds four paragraphs in the height of a screen without shrinking the
-              * type or asking the reader to scroll a page they are meant to turn.
-              */}
-            <div className={styles.flow}>
-              {c.body.split(/\n{2,}/).map((para, i) => (
-                <p key={i} className={styles.chapterBody}>
-                  {para}
-                </p>
+          {/* Text on the left, the picture on the right. The shape of a page in a deck. */}
+          <div className={styles.split}>
+            <div className={styles.splitText}>
+              {group.map((c, ci) => (
+                <section key={c.key} className={styles.movement}>
+                  <h2 className={styles.chapterHead}>{c.heading}</h2>
+
+                  <div className={styles.flow}>
+                    {c.body.split(/\n{2,}/).map((para, i) => (
+                      <p key={i} className={styles.chapterBody}>
+                        {para}
+                      </p>
+                    ))}
+                  </div>
+
+                  {c.quote && <p className={styles.quote}>{t(c.quote)}</p>}
+
+                  {c.mark && (
+                    <div className={styles.markRow}>
+                      <CaseMark spec={c.mark} compact />
+                    </div>
+                  )}
+
+                  {c.points && c.points.length > 0 && (
+                    <ul
+                      className={c.points.some((pt) => pt.body) ? styles.cards : styles.principles}
+                      style={{ ['--n' as string]: c.points.length }}
+                    >
+                      {c.points.map((pt, i) => (
+                        <li key={i} className={styles.point}>
+                          <span className={styles.pointNum}>{String(i + 1).padStart(2, '0')}</span>
+                          <span className={styles.pointTitle}>{t(pt.title)}</span>
+                          {pt.body && <span className={styles.pointBody}>{t(pt.body)}</span>}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+
+                  {ci < group.length - 1 && <hr className={styles.movementRule} />}
+                </section>
               ))}
             </div>
 
-            {(c.quote || c.mark) && (
-              <aside className={styles.margin}>
-                {c.quote && <p className={styles.quote}>{t(c.quote)}</p>}
-                {c.mark && <CaseMark spec={c.mark} />}
-              </aside>
-            )}
+            {/*
+              * The aside holds the picture and nothing else.
+              *
+              * A drawn figure stacked under a plate made the column 600px tall against the 520 a
+              * spread has at 1366x768. The figure belongs to the paragraph anyway — it draws what
+              * the sentence is describing — so it sits at the foot of the text instead.
+              */}
+            <aside className={styles.splitAside}>
+              <CasePlate spec={plate} slug={slug} />
+            </aside>
           </div>
+        </div>
+      ),
+    });
+  });
 
-          {c.points && c.points.length > 0 && (
-            <ul
-              className={c.points.some((pt) => pt.body) ? styles.cards : styles.principles}
-              style={{ ['--n' as string]: c.points.length }}
-            >
-              {c.points.map((pt, i) => (
-                <li key={i} className={styles.point}>
-                  <span className={styles.pointNum}>{String(i + 1).padStart(2, '0')}</span>
-                  <span className={styles.pointTitle}>{t(pt.title)}</span>
-                  {pt.body && <span className={styles.pointBody}>{t(pt.body)}</span>}
-                </li>
-              ))}
-            </ul>
-          )}
+  if (challenge.length > 0 || line(data.gameChanger) || SHOW_PROMPTS) {
+    pages.push({
+      id: 'p-close',
+      label: t(copy.headings.gameChanger),
+      node: (
+        <div className={styles.chapter}>
+          <div className={styles.closing}>
+            <section>
+              <h2 className={styles.chapterHead}>{t(copy.headings.challenge)}</h2>
+              {line(data.challenge) ? (
+                <p className={styles.chapterBody}>{line(data.challenge)}</p>
+              ) : (
+                <Missing
+                  what="o principal desafio"
+                  ask="Qual foi a coisa mais difícil deste trabalho? O obstáculo, não o objetivo."
+                />
+              )}
+            </section>
+
+            <section>
+              <h2 className={styles.chapterHead}>{t(copy.headings.gameChanger)}</h2>
+              {line(data.gameChanger) ? (
+                line(data.gameChanger)!
+                  .split(/\n{2,}/)
+                  .map((para, i) => (
+                    <p key={i} className={styles.chapterBody}>
+                      {para}
+                    </p>
+                  ))
+              ) : (
+                <Missing
+                  what="o que mudou o jogo"
+                  ask="O que este trabalho destravou além da métrica?"
+                />
+              )}
+            </section>
+          </div>
         </div>
       ),
     });
