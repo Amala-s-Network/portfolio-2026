@@ -8,11 +8,19 @@
  * photograph, a title, and a link into the case.
  */
 
+/*
+ * A full screen each, as they always were.
+ *
+ * Losing the page-turn does not mean losing the scale: the photograph is the case, and shrinking
+ * these to 640px turned four full-bleed pictures into four cards. 100svh rather than 100vh so a
+ * phone's collapsing address bar cannot make the section taller than the screen it is meant to
+ * fill.
+ */
 .section {
   position: relative;
   background: var(--paper);
-  /* Tall enough to hold the page, short enough that four of them are not four screens of scroll. */
-  min-height: min(76vh, 640px);
+  height: 100vh;
+  height: 100svh;
   display: flex;
 }
 
@@ -30,7 +38,7 @@
   --ctaY: 10px;
 
   position: relative;
-  min-height: inherit;
+  width: 100%;
   height: 100%;
 
   display: flex;
@@ -173,14 +181,12 @@
 /*
  * ------------------------------------------------------------------ mobile
  *
- * The page-turn itself is kept — it is the reason this design exists, and it is transform-only
- * so it costs nothing extra on a phone. Only the panel's internal composition changes: the
- * Figma frame (112:25) sets 24px padding, a 20px title and 14px body.
+ * The panel's internal composition changes here: the Figma frame (112:25) sets 24px padding, a
+ * 20px title and 14px body. The height does not — 110vh was scroll headroom the page-turn needed
+ * to complete, and with no turn left it was simply a section 78px taller than the screen it is
+ * meant to fill.
  */
 @media (max-width: 768px) {
-  .section {
-    height: 110vh;
-  }
 
   .panel {
     padding: 88px var(--gutter) 32px;
