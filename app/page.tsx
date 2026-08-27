@@ -15,8 +15,6 @@ import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { CraftGate } from '@/components/CraftGate/CraftGate';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Intro } from '@/components/Intro/Intro';
-import { PageFold } from '@/components/PageFold/PageFold';
-import { useSectionSettle } from '@/hooks/useSectionSettle';
 import { featuredCases } from '@/content/copy';
 
 /**
@@ -48,9 +46,6 @@ export default function Page() {
   /* The door to the craft side; see components/CraftGate. */
   const [gateOpen, setGateOpen] = useState(false);
 
-  /* Pulls the page onto a section edge once the reader stops, so nobody parks mid-turn. */
-  useSectionSettle();
-
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
   const openContact = useCallback(() => setContactOpen(true), []);
   const closeContact = useCallback(() => setContactOpen(false), []);
@@ -59,33 +54,9 @@ export default function Page() {
   const closeGate = useCallback(() => setGateOpen(false), []);
   const handleFooterRise = useCallback((up: boolean) => setFooterUp(up), []);
 
-  /*
-   * The fold is a shortcut, not a gate.
-   *
-   * It used to hold the page still and play a 1.9s animated lift on click, and that machinery is
-   * gone. Scroll was already the mechanism — the sheet's position has always been a function of
-   * the offset — so locking it meant building a second, slower way to do the same thing, and
-   * every bug in this feature lived in the seam between the two. Clicking now scrolls, the sheet
-   * lifts because it is scrolling, and there is one mechanism instead of three phases.
-   */
-  const turnPage = useCallback(() => {
-    const first = document.querySelector('main > section');
-    first?.scrollIntoView({
-      behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth',
-      block: 'start',
-    });
-  }, []);
-
   return (
     <>
       <Intro onDone={handleIntroDone} />
-
-      {/*
-        * The case photograph, behind the sheet from the very first frame. It is what shows
-        * through the fold and what the page lifts to reveal — one continuous picture, not two
-        * copies that have to be made to match.
-        */}
-      <div className={styles.underlay} aria-hidden="true" />
 
       {/*
         * WCAG 2.4.1 — a way past the nav for keyboard and switch users. Visually hidden until
@@ -112,16 +83,9 @@ export default function Page() {
           */}
         <Hero onContact={openContact} onUnlock={openGate} started={introDone} />
 
-        {/* Cases 01–04. Panels stack by ascending z-index so each covers the previous. */}
-        {featuredCases.map((c, i) => (
-          <CasePanel
-            key={c.slug}
-            data={c}
-            index={i}
-            isLast={i === featuredCases.length - 1}
-            /* Only the first rises over the static photograph behind the header. */
-            pinned={i === 0}
-          />
+        {/* Cases 01–04, as plain sections. The page-turn is gone at João’s instruction. */}
+        {featuredCases.map((c) => (
+          <CasePanel key={c.slug} data={c} />
         ))}
 
         {SHOW_PROJECTS && <Carousel />}
@@ -133,13 +97,6 @@ export default function Page() {
         <History />
         <Footer onContact={openContact} onRiseChange={handleFooterRise} />
       </main>
-
-      {/*
-        * The dog-ear. It belongs to the first screen rather than to any section, so it is a
-        * sibling of <main> — fixed to the viewport corner, fading out as the first case takes
-        * the screen.
-        */}
-      <PageFold onEnter={turnPage} />
 
       {/* Suppressed while the footer is up, per README. */}
       <BackToTop suppressed={footerUp} />

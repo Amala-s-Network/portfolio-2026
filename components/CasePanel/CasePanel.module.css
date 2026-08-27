@@ -1,74 +1,27 @@
-/* README §5 "Cases 01–04 (the page-turn)" */
-
 /*
- * 100vh, down from the README's 130vh — a deliberate deviation, at João's request.
+ * A case on the home page, as a plain section.
  *
- * The reveal completes over 58% of a screen, so at 130vh each panel finished arriving and then
- * sat perfectly still for the remaining 72vh before the next one began. That dead stretch is
- * what made moving between cases feel long: most of the scrolling was spent on nothing
- * happening. At 100vh a case costs one screen of scroll — moderate travel, then the panel pulls
- * the screen and holds it, which is what João asked for.
- *
- * The 0.58 reveal window itself is untouched: it is the shape of the turn, and shortening it
- * would make the page snap rather than turn.
+ * This used to be README §5: a fixed stage, a panel translated and rotated by the scroll offset,
+ * four of them stacked by z-index so each turned over the last, with a rustle at every arrival.
+ * João asked for the portfolio to scroll normally, so all of that is gone — including the
+ * dog-ear, the scroll settle and the sound. What is left is what a reader sees anyway: a
+ * photograph, a title, and a link into the case.
  */
+
 .section {
-  height: 100vh;
-  background: var(--paper);
   position: relative;
+  background: var(--paper);
+  /* Tall enough to hold the page, short enough that four of them are not four screens of scroll. */
+  min-height: min(76vh, 640px);
+  display: flex;
 }
 
-/*
- * The stage is fixed so the panel stays put while the section scrolls past it — that difference
- * between a fixed panel and a moving section is what produces the turn.
- */
-/*
- * The stage is a full-viewport fixed box that exists for the whole page, so it must not take
- * pointer events by default.
- *
- * This was a real bug: with `pointer-events: auto` all four stages sat on top of the hero from
- * first paint at z-index 20–23, and elementFromPoint over the hero CTA returned the stage, not
- * the button. Nothing in the hero could be hovered or clicked — no avatar flip, no button hover,
- * and the contact modal never opened. The README only calls out releasing pointer events *after*
- * a section has passed; the same problem exists before it arrives.
- */
+/* Kept as the positioning context the photograph and the scrims are absolute against. */
 .stage {
-  position: fixed;
-  inset: 0;
-  perspective: 1500px;
-  perspective-origin: 50% 100%;
+  position: relative;
+  flex: 1;
+  min-width: 0;
   overflow: hidden;
-  pointer-events: none;
-}
-
-/*
- * The PANEL takes pointer events, not the stage. This is geometric rather than threshold-based,
- * and that distinction was a real bug.
- *
- * The stage is a full-viewport fixed box; the panel inside it is translated down by the scroll
- * maths. Gating the stage on a progress threshold meant that as soon as a section edged into
- * view — p > 0.02 — the whole viewport became interactive, even though the panel itself was
- * still translated 91% off the bottom of the screen.
- *
- * That fired at scrollY 0 on taller viewports: the hero caps at 800px, so on a 910px screen the
- * first case section starts at 861px, already inside the fold, giving p = 0.09. The stage went
- * live and swallowed every pointer event on the hero — no sphere, no avatar flip. On a 768px
- * screen the section starts exactly at the fold, p = 0, and nothing broke. Hence "works on the
- * notebook, not on the desktop".
- *
- * Hit-testing respects transforms, so putting pointer-events on the panel means only the area it
- * actually occupies responds. No threshold to tune, and it cannot drift with viewport height.
- */
-.panel {
-  pointer-events: auto;
-}
-
-/*
- * Once the section has fully passed, the stage is hidden outright — belt and braces alongside
- * the pointer-events release above.
- */
-.stageHidden {
-  visibility: hidden;
 }
 
 .panel {
@@ -76,30 +29,25 @@
   --ctaOp: 0;
   --ctaY: 10px;
 
-  position: absolute;
-  inset: 0;
-  transform-origin: 50% 100%;
-  /* Starting pose; the scroll handler takes over from the first frame. */
-  transform: translateY(100%);
+  position: relative;
+  min-height: inherit;
+  height: 100%;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  /* README §5: padding 116px 56px 64px. */
-  padding: 116px 56px 64px;
+  padding: clamp(40px, 6vh, 72px) clamp(24px, 4vw, 56px);
 
   overflow: hidden;
   color: var(--on-dark);
-  box-shadow: var(--shadow-panel);
 }
 
 /* ---- photo + scrim ---- */
 
 .photoFrame {
   position: absolute;
-  /* inset: -8% 0 gives the parallax headroom so no edge shows as the photo drifts. */
-  inset: -8% 0;
+  inset: 0;
   overflow: hidden;
 }
 
@@ -110,14 +58,6 @@
   display: block;
 }
 
-/*
- * The pinned frame takes the viewport's own crop — inset: 0, not -8% — so it matches the static
- * copy behind the first screen exactly. The parallax headroom is not needed here because the
- * photograph does not drift: it is counter-translated to stay still.
- */
-.photoPinned {
-  inset: 0;
-}
 
 .scrim {
   position: absolute;

@@ -11,17 +11,5 @@
  * 94% cut for an image nobody will inspect at full resolution. 2560 covers a 1920 screen with
  * room for a denser display without shipping five thousand pixels of width to do it.
  */
-.underlay {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
+/* The fixed case photograph lived here for the page-turn. Removed with it. */
 
-  background-color: var(--ink);
-  background-image: image-set(
-    url('/cases/floresta.webp') type('image/webp'),
-    url('/cases/floresta.jpg') type('image/jpeg')
-  );
-  background-size: cover;
-  background-position: center;
-}
