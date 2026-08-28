@@ -2,14 +2,16 @@
 
 import Link from 'next/link';
 import { useLanguage } from '@/lib/language';
-import { caseLabels, type Case } from '@/content/copy';
+import { caseLabels, inProductionCases, type Case } from '@/content/copy';
 import styles from './CasePanel.module.css';
 
 type CasePanelProps = {
   data: Case;
+  /** Called instead of navigating, when this case is still being produced. */
+  onInProduction?: () => void;
 };
 
-export function CasePanel({ data }: CasePanelProps) {
+export function CasePanel({ data, onInProduction }: CasePanelProps) {
   const { t } = useLanguage();
   /*
    * No scroll effect, no page-turn, no sound.
@@ -53,7 +55,19 @@ export function CasePanel({ data }: CasePanelProps) {
             className={styles.anchor}
             href={`/cases/${data.slug}`}
             aria-label={t(data.title)}
-            onClick={() => {
+            onClick={(e) => {
+              /*
+               * A case whose screens are not ready says so instead of opening.
+               *
+               * preventDefault rather than dropping the link: it stays a real anchor, so it keeps
+               * its keyboard focus, its accessible name and its right-click, and a reader who
+               * opens it in a new tab still gets the page. Only the ordinary click is intercepted.
+               */
+              if (onInProduction && inProductionCases.includes(data.slug as never)) {
+                e.preventDefault();
+                onInProduction();
+                return;
+              }
               try {
                 sessionStorage.setItem('caseOrigin', 'home');
               } catch {

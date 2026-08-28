@@ -1,0 +1,132 @@
+/*
+ * The "not yet" notice. Paper, a rule, one sentence and one way out — the same stock as the rest
+ * of the site, so it reads as part of the paper rather than as a browser alert.
+ */
+
+.root {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  background: rgba(20, 18, 15, 0.42);
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.32s var(--ease), visibility 0s linear 0.32s;
+}
+
+.on {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.32s var(--ease), visibility 0s;
+}
+
+.panel {
+  position: relative;
+  width: min(460px, 100%);
+
+  background: var(--paper);
+  padding: clamp(28px, 4vw, 44px);
+  border: 1px solid var(--hairline-mid);
+
+  transform: translateY(10px) scale(0.985);
+  transition: transform 0.4s var(--ease);
+}
+
+.on .panel {
+  transform: none;
+}
+
+/* The rule that opens every heading on this site. */
+.mark {
+  width: 26px;
+  height: 3px;
+  background: var(--ink);
+  margin-bottom: 18px;
+}
+
+.heading {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(24px, 2.4vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink);
+}
+
+.body {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--body);
+  max-width: 42ch;
+}
+
+.confirm {
+  margin-top: 26px;
+  min-height: 42px;
+  padding: 0 24px;
+
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font: inherit;
+  font-size: 14.5px;
+  cursor: pointer;
+
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.confirm:hover,
+.confirm:focus-visible {
+  background: transparent;
+  color: var(--ink);
+}
+
+/*
+ * The X, at the top right where a reader's hand already goes. 40px square rather than the size of
+ * the glyph inside it, which is the difference between a target and a decoration.
+ */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 0;
+  background: transparent;
+  color: var(--muted-light);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+
+  transition: color 0.3s var(--ease);
+}
+
+.close:hover,
+.close:focus-visible {
+  color: var(--ink);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root,
+  .panel,
+  .confirm,
+  .close {
+    transition: opacity 0.2s linear;
+  }
+
+  .panel {
+    transform: none;
+  }
+}

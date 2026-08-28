@@ -7,6 +7,7 @@ import { CasePanel } from '@/components/CasePanel/CasePanel';
 import { Carousel } from '@/components/Carousel/Carousel';
 import { About } from '@/components/About/About';
 import { Services } from '@/components/Services/Services';
+import { Testimonials } from '@/components/Testimonials/Testimonials';
 import { Metrics } from '@/components/Metrics/Metrics';
 import { History } from '@/components/History/History';
 import { Footer } from '@/components/Footer/Footer';
@@ -14,6 +15,7 @@ import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { CraftGate } from '@/components/CraftGate/CraftGate';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
+import { InProduction } from '@/components/InProduction/InProduction';
 import { Intro } from '@/components/Intro/Intro';
 import { featuredCases } from '@/content/copy';
 
@@ -45,6 +47,8 @@ export default function Page() {
   const [introDone, setIntroDone] = useState(false);
   /* The door to the craft side; see components/CraftGate. */
   const [gateOpen, setGateOpen] = useState(false);
+  /* Shown when a reader opens a case whose screens are not ready yet. */
+  const [productionOpen, setProductionOpen] = useState(false);
 
   const handleIntroDone = useCallback(() => setIntroDone(true), []);
   const openContact = useCallback(() => setContactOpen(true), []);
@@ -85,7 +89,7 @@ export default function Page() {
 
         {/* Cases 01–04, as plain sections. The page-turn is gone at João’s instruction. */}
         {featuredCases.map((c) => (
-          <CasePanel key={c.slug} data={c} />
+          <CasePanel key={c.slug} data={c} onInProduction={() => setProductionOpen(true)} />
         ))}
 
         {SHOW_PROJECTS && <Carousel />}
@@ -95,6 +99,8 @@ export default function Page() {
         <Services />
         <Metrics />
         <History />
+        {/* What people who worked with him say, straight after where he has worked. */}
+        <Testimonials />
         <Footer onContact={openContact} onRiseChange={handleFooterRise} />
       </main>
 
@@ -104,6 +110,7 @@ export default function Page() {
       <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
       <ContactModal open={contactOpen} onClose={closeContact} />
       <CraftGate open={gateOpen} onClose={closeGate} />
+      <InProduction open={productionOpen} onClose={() => setProductionOpen(false)} />
     </>
   );
 }

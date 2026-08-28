@@ -1,0 +1,155 @@
+/*
+ * The wall of recommendations, under the history.
+ *
+ * It reads as the letters page of the paper: many short pieces, each signed, set close together
+ * so the volume is the argument. One at a time in a carousel would say the opposite.
+ */
+
+.root {
+  padding: clamp(72px, 10vh, 132px) var(--gutter) clamp(80px, 12vh, 150px);
+  background: var(--paper);
+}
+
+.heading {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(30px, 3.6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  color: var(--ink);
+  max-width: 20ch;
+}
+
+.intro {
+  margin-top: 18px;
+  font-size: clamp(15px, 1.1vw, 18px);
+  line-height: 1.6;
+  color: var(--muted-light);
+  max-width: 58ch;
+  padding-bottom: clamp(28px, 4vh, 48px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+/*
+ * Columns, not a grid.
+ *
+ * The recommendations run from four lines to twenty. A grid would stretch the short ones to the
+ * height of the tallest in their row and leave a ragged edge under every one; columns let each
+ * card keep its own height and the wall stay dense, which is what a letters page looks like.
+ */
+.wall {
+  margin-top: clamp(28px, 4vh, 48px);
+  columns: 3;
+  column-gap: clamp(20px, 2vw, 34px);
+}
+
+.card {
+  break-inside: avoid;
+  margin: 0 0 clamp(20px, 2vw, 34px);
+  padding: clamp(20px, 1.8vw, 30px);
+
+  background: color-mix(in srgb, var(--ink) 3%, var(--paper));
+  border: 1px solid var(--hairline);
+}
+
+.quote {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--body);
+}
+
+.quote p + p {
+  margin-top: 12px;
+}
+
+/*
+ * The opening quotation mark, hung in the margin.
+ *
+ * Set as a background rather than in the text so it never pushes the first line: a hanging quote
+ * that shifts the paragraph it opens is worse than no hanging quote.
+ */
+.quote p:first-child::before {
+  content: '“';
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 2.4em;
+  line-height: 0;
+  vertical-align: -0.32em;
+  margin-right: 4px;
+  color: var(--ink);
+  opacity: 0.28;
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
+}
+
+.face,
+.faceless {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+.faceless {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+
+.whoText {
+  min-width: 0;
+}
+
+.name {
+  display: block;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.role {
+  display: block;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--muted-light);
+  margin-top: 3px;
+}
+
+/* How they know him. Without it a recommendation is an opinion; with it, it is evidence. */
+.relation {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-light);
+  opacity: 0.8;
+  margin-top: 4px;
+}
+
+@media (max-width: 1200px) {
+  .wall {
+    columns: 2;
+  }
+}
+
+@media (max-width: 768px) {
+  .wall {
+    columns: 1;
+  }
+
+  .quote {
+    font-size: 14.5px;
+  }
+}

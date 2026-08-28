@@ -493,15 +493,8 @@ export const cases: Case[] = [
   {
     slug: 'reserva-ink-aparencia-de-loja',
     categories: ['produtos', 'interfaces'],
-    /*
-     * The forest moved here with the running order.
-     *
-     * It is still a stock placeholder rather than João's work, and it has to be the FIRST case's
-     * photograph specifically: the home page's fixed underlay uses the same file, and the first
-     * panel pins its picture over that underlay so the sheet lifts off one continuous image. Give
-     * the first case a different photo and the two stop matching mid-turn.
-     */
-    photo: '/cases/floresta.webp',
+    /* João's own cover, supplied 2026-08-27. The stock forest is gone from the site. */
+    photo: '/cases/reserva-ink-aparencia-de-loja.webp',
     title: {
       pt: 'Aparência de loja para 60 mil lojistas',
       en: 'Storefront appearance for 60k sellers',
@@ -515,7 +508,7 @@ export const cases: Case[] = [
   {
     slug: 'itau-cartoes-pj',
     categories: ['produtos'],
-    photo: null,
+    photo: '/cases/itau-cartoes-pj.webp',
     title: {
       pt: 'Contestação de despesas em cartões PJ',
       en: 'Expense disputes for business cards',
@@ -535,7 +528,7 @@ export const cases: Case[] = [
   {
     slug: 'ems-simulador-visitas',
     categories: ['produtos', 'interfaces'],
-    photo: null,
+    photo: '/cases/ems-simulador-visitas.webp',
     title: {
       pt: 'Simulador de visitas médicas com IA',
       en: 'AI simulator for medical sales visits',
@@ -614,9 +607,22 @@ export const cases: Case[] = [
 ];
 
 /**
- * The four the home page argues with. The rest keep their pages and their place in the index.
+ * Cases still being produced.
+ *
+ * Escrituração is hidden at João's instruction — hidden, not removed: the entry, the page and the
+ * scaffolded copy all stay, and taking the slug out of this set brings it straight back.
+ *
+ * The other two are written but their screens are not ready, so clicking them opens a notice
+ * instead of a half-finished page. A case with nothing to look at is worse than a case that says
+ * "not yet".
  */
-export const featuredCases = cases.slice(0, 4);
+export const hiddenCases = ['itau-escrituracao'] as const;
+export const inProductionCases = ['itau-cartoes-pj', 'ems-simulador-visitas'] as const;
+
+/** The cases the home page argues with, minus whatever is still hidden. */
+export const featuredCases = cases
+  .filter((c) => !hiddenCases.includes(c.slug as (typeof hiddenCases)[number]))
+  .slice(0, 4);
 
 /* ----------------------------------------------------------- carousel */
 
@@ -1166,17 +1172,12 @@ export const caseDetails: Record<string, CaseDetail> = {
           en: 'Some sellers spent Valentine’s Day with a Christmas theme still live.',
         },
         plate: {
-          src: null,
+          src: '/cases/reserva-ink-aparencia-de-loja/antes.webp',
           ratio: '4:3',
           caption: {
-            pt: 'A configuração de aparência antes do redesenho.',
-            en: 'Appearance settings before the redesign.',
+            pt: 'A tela de Aparência de Loja antes do redesenho, com os campos como o lojista os encontrava.',
+            en: 'The Store Appearance screen before the redesign, with the fields as a seller found them.',
           },
-          brief: {
-            pt: 'Captura da tela antiga de Aparência de Loja, inteira, com a barra lateral visível. É o "antes" do case, então vale mostrar a bagunça: muitos campos, ícones sem rótulo.',
-            en: 'A full screenshot of the old Store Appearance screen, sidebar included. It is the case’s "before", so the mess is the point: too many fields, unlabelled icons.',
-          },
-          confidential: true,
         },
       },
       {
@@ -1194,15 +1195,11 @@ export const caseDetails: Record<string, CaseDetail> = {
           },
         },
         plate: {
-          src: null,
+          src: '/cases/reserva-ink-aparencia-de-loja/discovery.webp',
           ratio: '4:3',
           caption: {
-            pt: 'Os artefatos do discovery: árvore de oportunidades e priorização.',
-            en: 'The discovery artefacts: opportunity tree and prioritisation.',
-          },
-          brief: {
-            pt: 'Um quadro do Miro ou FigJam com a árvore de oportunidades, a matriz de priorização ou o mapa de fluxo. Pode estar desfocado onde houver dado de cliente.',
-            en: 'A Miro or FigJam board showing the opportunity tree, the prioritisation matrix or the flow map. Blur anything carrying client data.',
+            pt: 'O quadro do discovery: benchmarks, fluxos e as anotações que saíram dos tickets.',
+            en: 'The discovery board: benchmarks, flows and the notes that came out of the tickets.',
           },
         },
       },
@@ -1213,17 +1210,12 @@ export const caseDetails: Record<string, CaseDetail> = {
           en: 'Four weeks in Figma, Miro and FigJam, on a POD/SaaS model: discovery, interface proposal, validation with sellers and handoff, without stopping the operation at any point. The new proposal stood on three things, clarity, speed and control, and I worked inside the structure that was already there rather than asking for a refactor that would never fit the deadline.\n\nAverage setup time fell by more than 75%, handing hours back to sellers to spend on campaigns and selling instead of fighting the panel. Retention and revenue rose with it, and that is how LTV grew, for the seller and for INK itself.',
         },
         plate: {
-          src: null,
+          src: '/cases/reserva-ink-aparencia-de-loja/wireframe.webp',
           ratio: '4:3',
           caption: {
-            pt: 'A configuração de aparência depois, no fluxo novo.',
-            en: 'Appearance settings after, in the new flow.',
+            pt: 'O fluxo novo em wireframe, desenhado dentro da estrutura que já existia.',
+            en: 'The new flow in wireframe, drawn inside the structure that was already there.',
           },
-          brief: {
-            pt: 'A mesma tela do primeiro plate, agora na versão nova, no mesmo enquadramento. Duas capturas iguais lado a lado são o que faz um "antes e depois" funcionar.',
-            en: 'The same screen as the first plate, now in the new version, framed identically. Two matching captures are what makes a before-and-after work.',
-          },
-          confidential: true,
         },
       },
     ],
@@ -1248,12 +1240,18 @@ export const caseDetails: Record<string, CaseDetail> = {
     ],
     gallery: [
       {
-        src: null,
+        src: '/cases/reserva-ink-aparencia-de-loja/device.webp',
         caption: {
-          pt: 'Fluxo de configuração de aparência da loja.',
-          en: 'The store appearance configuration flow.',
+          pt: 'A loja publicada, montada no fluxo novo.',
+          en: 'A published store, built in the new flow.',
         },
-        confidential: true,
+      },
+      {
+        src: '/cases/reserva-ink-aparencia-de-loja/loja-final.webp',
+        caption: {
+          pt: 'A vitrine que o lojista monta a partir das opções de aparência.',
+          en: 'The storefront a seller builds out of the appearance options.',
+        },
       },
     ],
   },
@@ -2040,6 +2038,124 @@ export const history = {
   ],
 };
 
+/* ------------------------------------------------------- testimonials */
+
+/**
+ * What people who worked with him say.
+ *
+ * ⚠️ EVERY WORD HERE IS SOMEONE ELSE'S. These are LinkedIn recommendations, transcribed from the
+ * screenshots João supplied on 2026-08-27, in the original Portuguese. They are not translated
+ * and not edited: a recommendation is a quotation, and rewriting one — even to tidy a comma —
+ * turns a thing somebody said into a thing the site says about itself.
+ *
+ * The English side therefore carries the same Portuguese text. The section heading and the
+ * relationship labels around them are ours and are translated.
+ */
+export type Testimonial = {
+  name: string;
+  role: T;
+  /** How they know him, from the line LinkedIn prints above each recommendation. */
+  relation: T;
+  photo: string | null;
+  quote: string;
+};
+
+export const testimonials = {
+  heading: {
+    pt: 'O que as pessoas acham sobre trabalhar comigo?',
+    en: 'What do people say about working with me?',
+  } satisfies T,
+  intro: {
+    pt: 'Recomendações do LinkedIn, no português em que foram escritas. Não mexi em nenhuma palavra.',
+    en: 'LinkedIn recommendations, in the Portuguese they were written in. I have not touched a word.',
+  } satisfies T,
+
+  items: [
+    {
+      name: 'Ricardo Filho',
+      role: {
+        pt: 'Content Designer · Content Strategy, Content Systems & Conversational AI',
+        en: 'Content Designer · Content Strategy, Content Systems & Conversational AI',
+      },
+      relation: { pt: 'Trabalhamos na mesma equipe', en: 'We worked on the same team' },
+      photo: '/pessoas/ricardo-filho.webp',
+      quote:
+        'Trabalhar com o João na comunidade de Cartões PJ foi uma experiência extremamente positiva de aprendizado contínuo.\n\nSempre me chamou a atenção sua maturidade de design e o fato de ir além da execução, fundamentando suas decisões em princípios de experiência, dados e em um entendimento profundo do problema. O João vai além das telas, conectando muito bem as necessidades das pessoas usuárias aos objetivos do negócio e contribuindo para soluções mais consistentes, estratégicas e impecáveis.\n\nÉ um profissional colaborativo, responsável e que eleva o nível das discussões e entregas do time. Recomendo fortemente seu trabalho.',
+    },
+    {
+      name: 'Domênica Sgarzi',
+      role: {
+        pt: 'Product Designer UX/UI · AI-Driven Design, Continuous Discovery, Design System',
+        en: 'Product Designer UX/UI · AI-Driven Design, Continuous Discovery, Design System',
+      },
+      relation: { pt: 'Supervisionava João diretamente', en: 'Managed João directly' },
+      photo: '/pessoas/domenica-sgarzi.webp',
+      quote:
+        'João é uma pessoa extremamente interessada e sempre aberto a feedbacks, o que demonstra sua vontade constante de crescer e se desenvolver. Trabalhar com ele é um prazer, pois sua gentileza e disposição tornam o ambiente colaborativo e produtivo.\n\nJoão tem uma habilidade excepcional para defender design junto aos stakeholders, além de ser altamente competente na criação de telas. Ele aprende rapidamente e sua organização na documentação é notável, sempre garantindo que tudo esteja bem estruturado e acessível para o time. Seu compromisso com a evolução do time de design e com a consistência do produto é inspirador.\n\nEle tem um futuro brilhante pela frente e tenho certeza de que continuará fazendo a diferença por onde passar!',
+    },
+    {
+      name: 'Aline Costa',
+      role: {
+        pt: 'Product Designer · Design System, Product Discovery',
+        en: 'Product Designer · Design System, Product Discovery',
+      },
+      relation: { pt: 'Supervisionava João diretamente', en: 'Managed João directly' },
+      photo: '/pessoas/aline-costa.webp',
+      quote:
+        'João Vitor é um profissional dedicado e esforçado, sempre demonstrou um alto nível de organização, o que o torna um excelente UX/UI Designer. Acompanho o trabalho dele e percebo sua carreira sempre está em evolução, aperfeiçoando suas habilidades e mantendo sempre o foco na qualidade da entrega. Além disso, sua empatia com a equipe é admirável, criando um ambiente colaborativo e motivador. Recomendo João sem hesitação para qualquer desafio profissional que exija comprometimento, organização e talento no design.',
+    },
+    {
+      name: 'Karina Miranda',
+      role: { pt: 'Graduada em administração', en: 'Business administration graduate' },
+      relation: {
+        pt: 'Trabalhamos juntos, em equipes diferentes',
+        en: 'We worked together, on different teams',
+      },
+      photo: '/pessoas/karina-miranda.webp',
+      quote:
+        'Trabalhar com o João na Reserva INK foi uma experiência incrível. Ele sempre se destacou como um designer de produto super comprometido, indo além para entregar o melhor resultado.\n\nJoão não trabalhou no desenvolvimento de features impressionantes, mas também teve um papel fundamental em ajudar todas as áreas da empresa a trazer clientes mais capacitados. Sua capacidade de entender as necessidades do time e traduzir isso em soluções práticas fez toda a diferença para nós.\n\nAlém de suas habilidades técnicas, o João é uma pessoa maravilhosa de se ter por perto. Sempre disposto a ajudar e compartilhar suas ideias, ele realmente traz uma energia positiva para o ambiente de trabalho.\n\nRecomendo o João de coração. Qualquer equipe terá muita sorte em tê-lo!',
+    },
+    {
+      name: 'Karine Vieira',
+      role: { pt: 'Software Engineer @ Linkana · Ruby, Rails', en: 'Software Engineer @ Linkana · Ruby, Rails' },
+      relation: { pt: 'Trabalhamos na mesma equipe', en: 'We worked on the same team' },
+      photo: '/pessoas/karine-vieira.webp',
+      quote:
+        'Trabalhar com o João foi uma experiência incrível. Como designer, ele sempre se destacou pela sua criatividade, atenção aos detalhes e comprometimento com a qualidade. João é proativo e está sempre disposto a colaborar com a equipe, oferecendo insights valiosos que elevam a qualidade dos projetos. Além disso, ele é extremamente acessível e paciente, sempre pronto para ajudar a esclarecer dúvidas e compartilhar conhecimento. Sua dedicação e profissionalismo são inspirações no ambiente de trabalho, e foi um grande privilégio trabalhar ao lado dele.',
+    },
+    {
+      name: 'João Alves',
+      role: {
+        pt: 'Specialist Software Engineer · Ruby and Rails Developer',
+        en: 'Specialist Software Engineer · Ruby and Rails Developer',
+      },
+      relation: { pt: 'Trabalhamos na mesma equipe', en: 'We worked on the same team' },
+      photo: '/pessoas/joao-alves.webp',
+      quote:
+        'João sempre entregou seus trabalhos com excelência, cuidando para que cada detalhe fosse levado em consideração e garantindo que os resultados estivessem sempre no mais alto nível.\n\nOutro ponto que vale destacar é a sua capacidade de lidar com feedbacks e buscar sempre melhorar. Ele está sempre aberto a novas ideias, sabe ouvir e transformar o que precisa ser ajustado em algo ainda melhor. Sem contar a paixão pelo design, que fica evidente em cada projeto que ele toca.\n\nResumindo, trabalhar com o João foi uma experiência incrível e foi um prazer ter ficado no mesmo time com ele.',
+    },
+    {
+      name: 'Rodrigo Lucas Pinto da Silva',
+      role: { pt: 'Desenvolvedor Fullstack · Ruby on Rails, Javascript', en: 'Fullstack Developer · Ruby on Rails, Javascript' },
+      relation: { pt: 'Trabalhamos na mesma equipe', en: 'We worked on the same team' },
+      photo: '/pessoas/rodrigo-lucas.webp',
+      quote:
+        'Trabalhar com o João se mostrou uma excelente experiência a se ter em um time de Tecnologia. Ele é um profissional extremamente organizado, responsável e atencioso, sempre buscando alinhar sua criatividade e resiliência para enfrentar qualquer desafio que possa surgir.\n\nTer o João na equipe é garantir que o trabalho em conjunto resultará em benefícios tanto nas entregas quanto nos aprendizados do time.\n\nFico muito feliz por ter tido a oportunidade de trabalhar com ele e o recomendo a todos como um excelente profissional.',
+    },
+    {
+      name: 'Matheus Oros',
+      role: { pt: 'Data Analyst · SQL, Python, Excel', en: 'Data Analyst · SQL, Python, Excel' },
+      relation: {
+        pt: 'Trabalhamos juntos, em equipes diferentes',
+        en: 'We worked together, on different teams',
+      },
+      photo: '/pessoas/matheus-oros.webp',
+      quote:
+        'Trabalhei com o João na Reserva INK e ele sempre se mostrou um profissional muito interessado em entender o modelo de negócio, trazendo ótimas ideias para a mesa. Embora não tenhamos trabalhado nas mesmas squads, as trocas e dinâmicas em grupo sempre foram muito ricas e produtivas. João tem uma capacidade incrível de colaborar, além de sempre buscar continuamente se aprimorar, mantendo uma visão estratégica e inovadora. Estar na INK desperta em todos nós um espírito empreendedor, algo que João certamente levará consigo como uma experiência valiosa. Tenho certeza de que ele será uma adição valiosa para qualquer equipe!',
+    },
+  ] satisfies Testimonial[],
+};
+
 /* ------------------------------------------------------- footer/contact */
 
 export const contact = {
@@ -2197,6 +2313,22 @@ export const casePage = {
     pt: 'imagem pendente de avaliação de NDA',
     en: 'image pending NDA review',
   } satisfies T,
+};
+
+/**
+ * The notice a reader meets on a case whose screens are not ready.
+ *
+ * Deliberately short and deliberately not an apology. It says what is true, offers the one thing
+ * that helps — come back — and gets out of the way.
+ */
+export const inProduction = {
+  heading: { pt: 'Case em produção', en: 'Case in production' } satisfies T,
+  body: {
+    pt: 'Este case está sendo montado agora. Aguarde mais um pouco que ele entra completo, com as telas e os números.',
+    en: 'This case is being put together right now. Give it a little longer and it goes up in full, with the screens and the numbers.',
+  } satisfies T,
+  confirm: { pt: 'Entendi', en: 'Got it' } satisfies T,
+  close: { pt: 'Fechar', en: 'Close' } satisfies T,
 };
 
 export const menu = {

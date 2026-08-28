@@ -8,8 +8,7 @@ import { Reveal } from '@/components/Reveal/Reveal';
 import { useReveal } from '@/hooks/useReveal';
 import { useParallax } from '@/hooks/useParallax';
 import { useLanguage } from '@/lib/language';
-import { StoryModal } from '@/components/StoryModal/StoryModal';
-import { about as copy, story as storyCopy, links } from '@/content/copy';
+import { about as copy, links } from '@/content/copy';
 import portrait from '@/public/retrato.webp';
 import styles from './About.module.css';
 
@@ -19,7 +18,6 @@ export function About() {
   const portraitImgRef = useRef<HTMLImageElement>(null);
   const revealed = useReveal(sectionRef);
   const [copied, setCopied] = useState(false);
-  const [storyOpen, setStoryOpen] = useState(false);
   const resetRef = useRef<number | undefined>(undefined);
 
   // README "Parallax": the portrait carries 46px.
@@ -69,36 +67,20 @@ export function About() {
             * one row down in the metadata and loses nothing by not being here.
             */}
           <span className={styles.portraitStage}>
-            <button
-              type="button"
-              className={styles.portraitLink}
-              onClick={() => setStoryOpen(true)}
-            >
-              <Image
-                ref={portraitImgRef}
-                src={portrait}
-                alt="Retrato de João Vitor Melo"
-                width={470}
-                height={470}
-              />
-
-              {/* Painted over the photo on hover: veil, then grain, then the words. */}
-              <span className={styles.veil} aria-hidden="true" />
-
-              {/*
-                * Touch only — see the CSS. A dark sphere crosses the portrait on a loop, standing
-                * in for the cursor that is not there.
-                */}
-              <span className={styles.portraitSphere} aria-hidden="true" />
-              <span className={styles.portraitGrain} aria-hidden="true" />
-              <span className={styles.portraitLabel}>
-                {storyCopy.open[lang].map((line, i) => (
-                  <span key={i} className={i === 0 ? styles.labelQuestion : styles.labelAction}>
-                    {line}
-                  </span>
-                ))}
-              </span>
-            </button>
+            {/*
+              * A photograph, and nothing more for now.
+              *
+              * It used to open the story modal on click. João asked for that modal to come out,
+              * so the veil, the question and the button went with it: a control that opens
+              * nothing is worse than no control. StoryModal is still in the repo, unreferenced.
+              */}
+            <Image
+              ref={portraitImgRef}
+              src={portrait}
+              alt="Retrato de João Vitor Melo"
+              width={470}
+              height={470}
+            />
           </span>
 
           <span className={styles.caption}>
@@ -141,8 +123,6 @@ export function About() {
           {copied ? t(copy.copyEmail) : links.email}
         </button>
       </Reveal>
-
-      <StoryModal open={storyOpen} onClose={() => setStoryOpen(false)} />
     </section>
   );
 }
