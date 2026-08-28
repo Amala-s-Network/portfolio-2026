@@ -1,0 +1,161 @@
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { useLanguage } from '@/lib/language';
+import { caseProto as copy, type CaseProtoSpec } from '@/content/copy';
+import styles from './CaseProto.module.css';
+
+const STEP_MS = 2600;
+
+/**
+ * The prototype, played back.
+ *
+ * Pulled out of Figma through the MCP: the flow map on that page is sixty frames across a board
+ * twenty-one thousand pixels wide, and generating sixty screens as components would be a great
+ * deal of code that nobody reads and nothing maintains. What the reader wants is the flow, so
+ * what got built in code is the PLAYER — the frames are the designer's own, exported at source.
+ *
+ * It advances on its own because a prototype that needs to be clicked to prove it exists is a
+ * prototype most readers never see. It stops the moment anyone touches it, because a thing that
+ * keeps moving while you are trying to look at one step of it is worse than one that never moved.
+ */
+export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
+  const { t } = useLanguage();
+  const [i, setI] = useState(0);
+  const [playing, setPlaying] = useState(true);
+  const root = useRef<HTMLElement>(null);
+
+  const steps = spec.steps;
+  const count = steps.length;
+
+  /*
+   * Reduced motion never autoplays, and neither does a player that is off screen: a loop running
+   * in a section nobody has scrolled to is work done for no one, on every device that has to do
+   * it. Both are read here rather than in CSS because both decide whether a timer starts at all.
+   */
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false);
+  }, []);
+
+  useEffect(() => {
+    if (!playing || count < 2) return;
+    const el = root.current;
+
+    const tick = () => {
+      const seen = el ? el.getBoundingClientRect().top < window.innerHeight && el.getBoundingClientRect().bottom > 0 : true;
+      if (seen) setI((n) => (n + 1) % count);
+    };
+
+    const id = window.setInterval(tick, STEP_MS);
+    return () => window.clearInterval(id);
+  }, [playing, count]);
+
+  const go = (n: number) => {
+    setPlaying(false);
+    setI(((n % count) + count) % count);
+  };
+
+  const current = steps[i];
+
+  return (
+    <section ref={root} className={styles.root} aria-label={t(copy.label)}>
+      <div className={styles.head}>
+        <p className={styles.kicker}>{t(copy.label)}</p>
+        <h2 className={styles.heading}>{t(spec.heading)}</h2>
+        <p className={styles.note}>{t(spec.note)}</p>
+      </div>
+
+      <div className={styles.stage}>
+        {/*
+          * Every frame is mounted and stacked; only the current one is opaque. Swapping a single
+          * src would flash white on each step while the next image decodes — cross-fading between
+          * two already-decoded layers is the difference between a prototype and a slideshow.
+          */}
+        <div className={styles.screen}>
+          {steps.map((s, n) => (
+            /* eslint-disable-next-line @next/next/no-img-element */
+            <img
+              key={s.src}
+              className={`${styles.frame} ${n === i ? styles.frameOn : ''}`}
+              src={s.src}
+              alt=""
+              aria-hidden="true"
+              loading={n === 0 ? 'eager' : 'lazy'}
+            />
+          ))}
+          <span className={styles.grain} aria-hidden="true" />
+        </div>
+
+        <div className={styles.rail}>
+          <p className={styles.stepName} aria-live="polite">
+            <span className={styles.stepNum}>
+              {String(i + 1).padStart(2, '0')}/{String(count).padStart(2, '0')}
+            </span>
+            {t(current.label)}
+          </p>
+
+          <ol className={styles.dots}>
+            {steps.map((s, n) => (
+              <li key={s.src}>
+                <button
+                  type="button"
+                  className={`${styles.dot} ${n === i ? styles.dotOn : ''}`}
+                  onClick={() => go(n)}
+                  aria-current={n === i ? 'true' : undefined}
+                  aria-label={`${n + 1}. ${t(s.label)}`}
+                >
+                  <span className={styles.dotMark} aria-hidden="true" />
+                </button>
+              </li>
+            ))}
+          </ol>
+
+          <div className={styles.controls}>
+            <button
+              type="button"
+              className={styles.ctl}
+              onClick={() => go(i - 1)}
+              aria-label={t(copy.previous)}
+            >
+              <span aria-hidden="true">←</span>
+            </button>
+
+            <button
+              type="button"
+              className={styles.ctl}
+              onClick={() => setPlaying((p) => !p)}
+              aria-label={playing ? t(copy.pause) : t(copy.play)}
+            >
+              <span className={playing ? styles.iconPause : styles.iconPlay} aria-hidden="true" />
+            </button>
+
+            <button
+              type="button"
+              className={styles.ctl}
+              onClick={() => go(i + 1)}
+              aria-label={t(copy.next)}
+            >
+              <span aria-hidden="true">→</span>
+            </button>
+          </div>
+
+          {/*
+            * The whole board, in the rail rather than under the player.
+            *
+            * Below the stage it added 230px to a spread that has 584px of content height at
+            * 1440x900, and this spread cannot scroll — it is a page you turn. Beside the
+            * controls it costs nothing: the rail was the shorter of the two columns anyway.
+            */}
+          {spec.map && (
+            <figure className={styles.map}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={spec.map} alt="" aria-hidden="true" loading="lazy" />
+              <figcaption>{t(copy.mapCaption)}</figcaption>
+            </figure>
+          )}
+        </div>
+      </div>
+
+    </section>
+  );
+}

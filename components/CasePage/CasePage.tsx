@@ -5,11 +5,14 @@ import { CaseChart } from '@/components/CaseChart/CaseChart';
 import { CaseFigure } from '@/components/CaseFigure/CaseFigure';
 import { CaseMark } from '@/components/CaseMark/CaseMark';
 import { CasePlate } from '@/components/CasePlate/CasePlate';
+import { CaseProto } from '@/components/CaseProto/CaseProto';
 import { CaseReader, type ReaderPage } from '@/components/CaseReader/CaseReader';
 import { useLanguage } from '@/lib/language';
 import {
   cases,
   caseDetails,
+  caseFull,
+  caseProto,
   casePage as copy,
   type CasePlateSpec,
   type CaseSection,
@@ -127,6 +130,23 @@ export function CasePage({ slug }: { slug: string }) {
 
   const minutes = data.readTime ?? readingMinutes(words);
 
+  /*
+   * The notice that this page is the short version, at both ends of the case.
+   *
+   * At the top it sets expectations before anyone decides how much to trust the page; at the foot
+   * it catches the reader who got through it and wants more. A disclaimer that appears once always
+   * appears in the wrong place for somebody.
+   */
+  const fullStudy = data.pdf ? (
+    <div className={styles.full}>
+      <p className={styles.fullLine}>{t(caseFull.line)}</p>
+      <a className={styles.fullAction} href={data.pdf} download>
+        {t(caseFull.action)}
+        <span className={styles.fullWeight}>{t(caseFull.weight)}</span>
+      </a>
+    </div>
+  ) : null;
+
   /* ------------------------------------------------------- the spreads */
 
   const pages: ReaderPage[] = [];
@@ -147,6 +167,8 @@ export function CasePage({ slug }: { slug: string }) {
             <span className={styles.impactNote}>{t(data.impact.note)}</span>
           </span>
         </div>
+
+        {fullStudy}
       </div>
     ),
   });
@@ -399,6 +421,26 @@ export function CasePage({ slug }: { slug: string }) {
           )}
         </div>
       ),
+    });
+  }
+
+  if (data.proto) {
+    pages.push({
+      id: 'p-proto',
+      label: t(caseProto.label),
+      node: (
+        <div className={styles.chapter}>
+          <CaseProto spec={data.proto} />
+        </div>
+      ),
+    });
+  }
+
+  if (fullStudy) {
+    pages.push({
+      id: 'p-full',
+      label: t(caseFull.action),
+      node: <div className={styles.closingFull}>{fullStudy}</div>,
     });
   }
 

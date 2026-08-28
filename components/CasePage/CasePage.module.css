@@ -699,3 +699,83 @@
     padding-top: 12px;
   }
 }
+
+/* ------------------------------------------- the short-version notice */
+
+/*
+ * The disclaimer, at both ends of the case.
+ *
+ * A rule above it and a filled control: it has to read as an offer rather than as fine print,
+ * because it is the one thing on the page that leads somewhere the page cannot go.
+ */
+.full {
+  margin-top: clamp(24px, 3.5vh, 44px);
+  padding-top: clamp(18px, 2.4vh, 26px);
+  border-top: 1px solid var(--hairline);
+
+  display: flex;
+  align-items: center;
+  gap: clamp(16px, 2vw, 34px);
+  flex-wrap: wrap;
+}
+
+.fullLine {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--muted-light);
+  max-width: 46ch;
+  flex: 1 1 260px;
+}
+
+.fullAction {
+  flex: none;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+
+  min-height: 42px;
+  padding: 11px 20px;
+
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--paper);
+  font-size: 14.5px;
+
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.fullAction:hover,
+.fullAction:focus-visible {
+  background: transparent;
+  color: var(--ink);
+}
+
+/* Stated, because a 20MB download that starts without warning is a rude surprise. */
+.fullWeight {
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  opacity: 0.7;
+}
+
+/* The closing spread is the notice on its own, centred, with nothing else competing. */
+.closingFull {
+  width: 100%;
+  max-width: 720px;
+}
+
+.closingFull .full {
+  margin-top: 0;
+  border-top: 0;
+  padding-top: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 22px;
+}
+
+.closingFull .fullLine {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(21px, 2vw, 32px);
+  line-height: 1.25;
+  color: var(--ink);
+  max-width: 24ch;
+}

@@ -20,12 +20,8 @@
   max-width: 20ch;
 }
 
-.intro {
-  margin-top: 18px;
-  font-size: clamp(15px, 1.1vw, 18px);
-  line-height: 1.6;
-  color: var(--muted-light);
-  max-width: 58ch;
+/* The heading carries the rule on its own now; the standfirst came out at João's request. */
+.heading {
   padding-bottom: clamp(28px, 4vh, 48px);
   border-bottom: 1px solid var(--hairline);
 }

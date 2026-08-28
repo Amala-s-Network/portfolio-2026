@@ -735,6 +735,22 @@ export type CasePlateSpec = {
   confidential?: boolean;
 };
 
+/**
+ * A prototype, played back frame by frame.
+ *
+ * The frames are exported from the designer's own Figma file rather than rebuilt: the flow on
+ * that board is sixty screens across twenty-one thousand pixels, and reproducing them as
+ * components would be a great deal of code that nobody reads and nothing maintains. What is built
+ * in code is the player.
+ */
+export type CaseProtoSpec = {
+  heading: T;
+  note: T;
+  steps: { src: string; label: T }[];
+  /** The whole board, small, under the player: how much there is behind the frames above. */
+  map?: string;
+};
+
 export type CaseSection = {
   title: T;
   body: T;
@@ -833,6 +849,10 @@ export type CaseDetail = {
   chart?: CaseChart;
   /** Optional: overrides the estimate counted from the words on the page. */
   readTime?: number;
+  /** The full study, when there is one to download. */
+  pdf?: string;
+  /** The navigable prototype, played back at the end of the case. */
+  proto?: CaseProtoSpec;
 
   /** ---- 6 minutes ---- */
   /** The single hardest thing about the work. */
@@ -1073,6 +1093,28 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'reserva-ink-aparencia-de-loja': {
     slug: 'reserva-ink-aparencia-de-loja',
+    pdf: '/cases/reserva-ink-aparencia-de-loja/case-completo.pdf',
+    proto: {
+      heading: {
+        pt: 'O fluxo, do jeito que o lojista percorre',
+        en: 'The flow, the way a seller walks it',
+      },
+      note: {
+        pt: 'Oito telas do protótipo navegável, exportadas do Figma. O fluxo roda sozinho e para assim que você toca nele.',
+        en: 'Eight screens from the navigable prototype, exported from Figma. It plays on its own and stops the moment you touch it.',
+      },
+      map: '/cases/reserva-ink-aparencia-de-loja/proto/mapa.webp',
+      steps: [
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/01.webp', label: { pt: 'Aparência de Loja, como o lojista encontra', en: 'Store Appearance, as a seller finds it' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/02.webp', label: { pt: 'Cores da marca e página inicial', en: 'Brand colours and home page' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/03.webp', label: { pt: 'Cadastro de banner, no modal', en: 'Adding a banner, in the modal' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/04.webp', label: { pt: 'Mini banner, o mesmo caminho', en: 'Mini banner, the same path' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/05.webp', label: { pt: 'Ícone de destaque', en: 'Highlight icon' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/06.webp', label: { pt: 'A pré-visualização da loja', en: 'The store preview' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/07.webp', label: { pt: 'A mesma configuração no mobile', en: 'The same setup on mobile' } },
+        { src: '/cases/reserva-ink-aparencia-de-loja/proto/08.webp', label: { pt: 'A loja pronta, salva e publicada', en: 'The store finished, saved and published' } },
+      ],
+    },
     year: '2023-2024',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     /* The project, not the tenure. He was at INK for a year and four months; this took four weeks. */
@@ -2065,11 +2107,6 @@ export const testimonials = {
     pt: 'O que as pessoas acham sobre trabalhar comigo?',
     en: 'What do people say about working with me?',
   } satisfies T,
-  intro: {
-    pt: 'Recomendações do LinkedIn, no português em que foram escritas. Não mexi em nenhuma palavra.',
-    en: 'LinkedIn recommendations, in the Portuguese they were written in. I have not touched a word.',
-  } satisfies T,
-
   items: [
     {
       name: 'Ricardo Filho',
@@ -2329,6 +2366,35 @@ export const inProduction = {
   } satisfies T,
   confirm: { pt: 'Entendi', en: 'Got it' } satisfies T,
   close: { pt: 'Fechar', en: 'Close' } satisfies T,
+};
+
+/**
+ * The notice that this page is the short version.
+ *
+ * It sits at both ends of the case on purpose. At the top it sets expectations before anyone
+ * decides how much to trust the page; at the bottom it catches the reader who got through it and
+ * wants more. A disclaimer that only appears once always appears in the wrong place for somebody.
+ */
+export const caseFull = {
+  line: {
+    pt: 'Esta é uma versão resumida deste case. Para ver o estudo completo, baixe o arquivo em PDF.',
+    en: 'This is a short version of the case. For the full study, download the PDF.',
+  } satisfies T,
+  action: { pt: 'Baixar o case em PDF', en: 'Download the case as a PDF' } satisfies T,
+  /** Stated because a 20MB download that starts without warning is a rude surprise. */
+  weight: { pt: 'PDF · 20 MB', en: 'PDF · 20 MB' } satisfies T,
+};
+
+export const caseProto = {
+  label: { pt: 'Protótipo navegável', en: 'Interactive prototype' } satisfies T,
+  play: { pt: 'Reproduzir o fluxo', en: 'Play the flow' } satisfies T,
+  pause: { pt: 'Pausar o fluxo', en: 'Pause the flow' } satisfies T,
+  previous: { pt: 'Tela anterior', en: 'Previous screen' } satisfies T,
+  next: { pt: 'Próxima tela', en: 'Next screen' } satisfies T,
+  mapCaption: {
+    pt: 'O mapa de interações completo: 60 telas, entre desktop, mobile, modais e popovers.',
+    en: 'The full interaction map: 60 screens across desktop, mobile, modals and popovers.',
+  } satisfies T,
 };
 
 export const menu = {

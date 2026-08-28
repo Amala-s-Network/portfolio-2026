@@ -28,16 +28,12 @@ export function Testimonials() {
         {t(copy.heading)}
       </Reveal>
 
-      <Reveal on={shown} order={1} as="p" className={styles.intro}>
-        {t(copy.intro)}
-      </Reveal>
-
       {/*
         * A masonry column layout rather than a grid: the recommendations are wildly different
         * lengths, and a grid would either stretch the short ones or leave a ragged bottom edge
         * under every row. Columns let each card be its own height and the wall stay dense.
         */}
-      <Reveal on={shown} order={2} className={styles.wall}>
+      <Reveal on={shown} order={1} className={styles.wall}>
         {copy.items.map((item) => (
           <figure key={item.name} className={styles.card}>
             <blockquote className={styles.quote}>
