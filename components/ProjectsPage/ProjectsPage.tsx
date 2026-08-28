@@ -7,6 +7,7 @@ import { useReveal } from '@/hooks/useReveal';
 import { useLanguage } from '@/lib/language';
 import {
   cases,
+  isHidden,
   projects,
   caseDetails,
   projectsPage as copy,
@@ -50,7 +51,8 @@ export function ProjectsPage() {
 
   const all: Entry[] = useMemo(
     () => [
-      ...cases.map((c) => ({
+      /* A hidden case has no route, so it must not appear here offering to go to one. */
+      ...cases.filter((c) => !isHidden(c.slug)).map((c) => ({
         slug: c.slug,
         categories: c.categories,
         company: c.company,

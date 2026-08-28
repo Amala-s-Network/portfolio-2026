@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { CaseShell } from '@/components/CaseShell/CaseShell';
 import { CasePage } from '@/components/CasePage/CasePage';
-import { cases, caseDetails } from '@/content/copy';
+import { cases, caseDetails, isHidden } from '@/content/copy';
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -15,7 +15,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   const { slug } = await params;
   const summary = cases.find((c) => c.slug === slug);
   const detail = caseDetails[slug];
-  if (!summary || !detail) return {};
+  if (!summary || !detail || isHidden(slug)) return {};
 
   const title = `${summary.title.pt} · João V. Melo`;
   const description = detail.context.pt;
@@ -30,7 +30,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
 
 export default async function Page({ params }: Params) {
   const { slug } = await params;
-  if (!caseDetails[slug]) notFound();
+  if (!caseDetails[slug] || isHidden(slug)) notFound();
 
   return (
     <CaseShell>

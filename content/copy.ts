@@ -617,6 +617,9 @@ export const cases: Case[] = [
  * "not yet".
  */
 export const hiddenCases = ['itau-escrituracao'] as const;
+
+/** True for a case that must not be reachable: no route, no card, no index entry. */
+export const isHidden = (slug: string) => (hiddenCases as readonly string[]).includes(slug);
 export const inProductionCases = ['itau-cartoes-pj', 'ems-simulador-visitas'] as const;
 
 /** The cases the home page argues with, minus whatever is still hidden. */
