@@ -1,110 +1,13 @@
 /*
- * The wall of recommendations, under the history.
+ * The recommendations, on one moving row.
  *
- * It reads as the letters page of the paper: many short pieces, each signed, set close together
- * so the volume is the argument. One at a time in a carousel would say the opposite.
+ * It reads as the letters page of the paper: many short pieces, each signed, several on screen at
+ * once so the volume is the argument. A carousel showing one at a time would say the opposite.
  */
 
 .root {
   padding: clamp(72px, 10vh, 132px) var(--gutter) clamp(80px, 12vh, 150px);
   background: var(--paper);
-}
-
-.heading {
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(30px, 3.6vw, 56px);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.06;
-  color: var(--ink);
-  max-width: 20ch;
-}
-
-/* The rule belongs to the head now, which holds the title and the pause control together. */
-
-/*
- * Two rows, travelling in opposite directions.
- *
- * The argument in this section is the volume: eight people, across four disciplines, saying the
- * same kinds of things without being asked. A carousel that shows one card at a time hides
- * exactly that. Opposite directions also stop the wall reading as a single conveyor belt, which
- * is what one row always looks like.
- *
- * Each row holds its content twice and slides by half its own width, so the second copy arrives
- * where the first leaves. There is no seam to hide because nothing ever ends.
- */
-.wall {
-  margin-top: clamp(28px, 4vh, 48px);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(16px, 2vw, 28px);
-
-  /* The rows are wider than the page; this is what keeps the page itself from scrolling. */
-  overflow: hidden;
-
-  /* Faded at both edges, so a card enters and leaves rather than being cut by the viewport. */
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
-}
-
-.row {
-  display: flex;
-  width: max-content;
-  gap: clamp(16px, 2vw, 28px);
-  animation: marchLeft 64s linear infinite;
-}
-
-.rowBack {
-  animation-name: marchRight;
-  animation-duration: 78s;
-}
-
-/* Paused by the control, and by a pointer resting on the row. */
-.row[data-running='false'],
-.row:hover,
-.row:focus-within {
-  animation-play-state: paused;
-}
-
-.track {
-  display: flex;
-  gap: clamp(16px, 2vw, 28px);
-  flex: none;
-}
-
-@keyframes marchLeft {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    /* Half the track plus the gap that sits between the two copies. */
-    transform: translate3d(calc(-50% - clamp(8px, 1vw, 14px)), 0, 0);
-  }
-}
-
-@keyframes marchRight {
-  from {
-    transform: translate3d(calc(-50% - clamp(8px, 1vw, 14px)), 0, 0);
-  }
-  to {
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/*
- * Still under reduced motion, and reachable: with the animation off the rows would simply sit
- * with half their content off screen, so the wall becomes something the reader can drag.
- */
-@media (prefers-reduced-motion: reduce) {
-  .row {
-    animation: none;
-  }
-
-  .wall {
-    overflow-x: auto;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
 }
 
 /* ---- the head, with its control ---- */
@@ -119,12 +22,23 @@
   border-bottom: 1px solid var(--hairline);
 }
 
+.heading {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(30px, 3.6vw, 56px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  color: var(--ink);
+  max-width: 20ch;
+}
+
 .toggle {
   flex: none;
   display: inline-flex;
   align-items: center;
   gap: 10px;
 
+  /* WCAG 2.2 target size, to João's 32px floor. */
   min-height: 38px;
   padding: 0 18px;
 
@@ -163,34 +77,122 @@
   clip-path: polygon(0 0, 34% 0, 34% 100%, 0 100%, 0 0, 66% 0, 100% 0, 100% 100%, 66% 100%, 66% 0);
 }
 
-.card {
-  /* A fixed measure: in a moving row a card cannot size itself off its own text. */
+/* ------------------------------------------------------------- the row */
+
+.wall {
+  margin-top: clamp(28px, 4vh, 48px);
+
+  /* The row is wider than the page; this is what stops the page itself scrolling sideways. */
+  overflow: hidden;
+
+  /* Faded at both edges, so a card enters and leaves rather than being cut by the viewport. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+/*
+ * One row, travelling left.
+ *
+ * It holds its content twice and slides by half its own width, so the second copy arrives exactly
+ * where the first leaves. There is no seam to hide because nothing ever ends.
+ */
+.row {
+  display: flex;
+  width: max-content;
+  gap: clamp(16px, 2vw, 28px);
+  animation: marchLeft 78s linear infinite;
+}
+
+/* Paused by the control, and by a pointer resting on the row. */
+.row[data-running='false'],
+.row:hover,
+.row:focus-within {
+  animation-play-state: paused;
+}
+
+.track {
+  display: flex;
+  gap: clamp(16px, 2vw, 28px);
   flex: none;
-  width: clamp(290px, 27vw, 400px);
-  align-self: flex-start;
+}
+
+@keyframes marchLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* Half the track, plus the gap that sits between the two copies. */
+    transform: translate3d(calc(-50% - clamp(8px, 1vw, 14px)), 0, 0);
+  }
+}
+
+/*
+ * Still under reduced motion, and still reachable: with the animation off the row would simply
+ * sit with half its content off screen, so the wall becomes something the reader can drag.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    animation: none;
+  }
+
+  .wall {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ------------------------------------------------------------ the card */
+
+/*
+ * Every card the same size, at João's instruction.
+ *
+ * In a moving row a card cannot size itself off its own text: eight different heights sliding
+ * past is a ragged edge rather than a rhythm. So the box is fixed, and the quote lives in a
+ * flexible area that fades where it runs out of room.
+ *
+ * ⚠️ These run from about ninety words to a hundred and fifty, so the longest do not fit whole.
+ * They dissolve at the foot rather than stopping mid-letter, and the full text stays in the DOM
+ * for a screen reader — but a sighted reader loses the tail of the longest few. The honest fixes
+ * are an excerpt João picks himself, or a control that opens the whole thing.
+ */
+.card {
+  flex: none;
+  width: clamp(290px, 26vw, 380px);
+  height: clamp(470px, 60vh, 600px);
+
+  display: flex;
+  flex-direction: column;
   margin: 0;
-  padding: clamp(20px, 1.8vw, 30px);
+  padding: clamp(20px, 1.8vw, 28px);
 
   background: color-mix(in srgb, var(--ink) 3%, var(--paper));
   border: 1px solid var(--hairline);
 }
 
 .quote {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   margin: 0;
-  font-size: 15px;
-  line-height: 1.6;
+  font-size: 14.5px;
+  line-height: 1.58;
   color: var(--body);
+
+  /* Text that does not fit dissolves rather than being cut through a line of type. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 78%, transparent 100%);
 }
 
 .quote p + p {
-  margin-top: 12px;
+  margin-top: 11px;
 }
 
 /*
  * The opening quotation mark, hung in the margin.
  *
- * Set as a background rather than in the text so it never pushes the first line: a hanging quote
- * that shifts the paragraph it opens is worse than no hanging quote.
+ * Set with a negative baseline shift rather than as its own element so it never pushes the first
+ * line: a hanging quote that shifts the paragraph it opens is worse than no hanging quote.
  */
 .quote p:first-child::before {
   content: '“';
@@ -207,7 +209,8 @@
   display: flex;
   align-items: center;
   gap: 13px;
-  margin-top: 20px;
+  /* Pinned to the foot, so the names sit on one line across the row however long a quote runs. */
+  margin-top: auto;
   padding-top: 16px;
   border-top: 1px solid var(--hairline);
 }
@@ -261,18 +264,13 @@
   margin-top: 4px;
 }
 
-@media (max-width: 1200px) {
-  .wall {
-    columns: 2;
-  }
-}
-
 @media (max-width: 768px) {
-  .wall {
-    columns: 1;
+  .card {
+    width: min(300px, 82vw);
+    height: clamp(420px, 62vh, 520px);
   }
 
   .quote {
-    font-size: 14.5px;
+    font-size: 14px;
   }
 }
