@@ -1,10 +1,13 @@
 /*
  * The blocks a case is built from, set for a vertical document.
  *
+ * The hierarchy is the reference's; every value is the portfolio's own. The title keeps the same
+ * face, weight and tracking the case pages have always used, the pulled line hangs off the same
+ * 3px rule, lists carry the same accent diamond, and the figures are set in the same light weight
+ * as the metrics band on the one-pager.
+ *
  * The grid tokens — --measure and --wide — come down from CaseDoc, so a paragraph and a picture
- * on this page are measured against the same numbers the margin and the rules are. Type holds to
- * the measure; pictures, numbers and the chart are allowed the wider column; nothing fills the
- * page.
+ * are measured against the same numbers the margin and the rules are.
  */
 
 /* ------------------------------------------------------------ the opening */
@@ -14,33 +17,28 @@
 }
 
 /*
- * The title, set in caps.
- *
- * Playfair rather than the display grotesque of the reference: this is still the site whose home
- * page opens in Playfair, and swapping the face on the case pages alone would read as two sites.
- * What is carried across is the scale and the leading — 1.02 on four lines of caps is what makes
- * a title an event rather than a heading.
+ * The case title exactly as it has always been set: the global heading face at 700, 1.02 leading,
+ * -0.03em, over about fifteen characters. No text-transform — the caps in the reference are its
+ * identity, not ours.
  */
 .title {
   margin: 0;
-  max-width: 14ch;
+  max-width: 15ch;
 
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(36px, 4.6vw, 76px);
+  font-size: clamp(38px, 5vw, 82px);
   font-weight: 700;
   line-height: 1.02;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
+  letter-spacing: -0.03em;
   color: var(--ink);
 }
 
-/* ---- the masthead line ---- */
+/* ---- the masthead line: what the folio used to carry, now under the title ---- */
 
 .meta {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(24px, 3.6vw, 64px);
-  margin: clamp(34px, 5vh, 58px) 0 0;
+  margin: clamp(30px, 4.4vh, 52px) 0 0;
 }
 
 .metaItem {
@@ -49,20 +47,18 @@
 
 .metaLabel {
   margin: 0;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-light);
 }
 
 .metaValue {
   margin: 9px 0 0;
-  font-size: 12.5px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  font-variant-numeric: tabular-nums;
+  font-size: 15px;
+  line-height: var(--lh-body);
   color: var(--ink);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ------------------------------------------------------------- the prose */
@@ -71,45 +67,76 @@
   max-width: var(--measure);
 }
 
+/*
+ * The body size is set from the measure, not carried over from the spread.
+ *
+ * The old page ran 15.5px because it flowed down two 300px columns. One 623px column at that
+ * size is a 78-character line, which is outside the range typography has agreed on. Same face,
+ * same colour, same leading — the size is the one thing the new layout gets to decide.
+ */
 .flow p {
   margin: 0;
-  font-size: 17px;
-  line-height: 1.72;
+  font-size: clamp(16px, 1.15vw, 17.5px);
+  line-height: 1.68;
   color: var(--body);
 }
 
 .flow p + p {
-  margin-top: 1.1em;
+  margin-top: 17px;
+}
+
+/* The line under a heading, in the newspaper sense: what the part is about, in one breath. */
+.flowLead p {
+  font-size: clamp(17px, 1.35vw, 23px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--body);
 }
 
 /*
- * The first paragraph of a part, set one step up.
+ * The dropped capital.
  *
- * A standfirst, in the newspaper sense: it is read at a different speed from the paragraphs under
- * it, so it is set at a different size. Nothing else on the page changes size.
+ * The oldest trick in the trade and still the one that most reliably says "this is an article and
+ * it starts here". Three lines deep, serif, tight against the text — and only on the first
+ * paragraph of a chapter, because a page with several is a page with none.
  */
-.flowLead p {
-  font-size: 19px;
-  line-height: 1.62;
+.flowDrop > p:first-child::first-letter {
+  float: left;
+  font-family: var(--font-playfair), Georgia, serif;
+  font-weight: 700;
+  font-size: 3.1em;
+  line-height: 0.82;
+  padding: 0.06em 0.1em 0 0;
   color: var(--ink);
 }
 
-/* A line worth setting large, pulled out of the body. Newspapers have always done this. */
+/*
+ * The pulled line, set the way a newspaper sets one: serif, large, hanging off a heavy rule.
+ * It is a sentence already in the body — the point is to give the eye somewhere to land on a
+ * page of grey, not to add anything new.
+ */
 .pull {
   margin: clamp(28px, 3.8vh, 46px) 0 0;
-  padding-left: clamp(18px, 1.8vw, 26px);
-  border-left: 2px solid var(--ink);
   max-width: var(--measure);
 
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(19px, 1.6vw, 25px);
-  font-weight: 500;
-  line-height: 1.34;
+  font-size: clamp(19px, 1.5vw, 27px);
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
   color: var(--ink);
+
+  padding-top: 18px;
+  border-top: 3px solid var(--ink);
 }
 
 /* --------------------------------------------------------- a ruled aside */
 
+/*
+ * The shape a case uses for what is true but is not the argument: how something was measured,
+ * what the hardest part was, what it unlocked. The same hairline box the point cards are drawn
+ * in, with the same small label above a rule.
+ */
 .note {
   margin-top: clamp(28px, 3.8vh, 46px);
   padding: clamp(20px, 2.2vw, 30px);
@@ -117,12 +144,17 @@
   border: 1px solid var(--hairline);
 }
 
+/* A box that opens a part has nothing above it to be spaced from. */
+.note:first-child {
+  margin-top: 0;
+}
+
 .noteLabel {
   margin: 0 0 clamp(16px, 2.2vh, 24px);
-  padding-bottom: clamp(12px, 1.6vh, 17px);
+  padding-bottom: 18px;
   border-bottom: 1px solid var(--hairline);
 
-  font-size: 10.5px;
+  font-size: 11.5px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted-light);
@@ -130,21 +162,16 @@
 
 .noteBody p {
   margin: 0;
-  font-size: 16px;
-  line-height: 1.7;
+  font-size: clamp(15.5px, 1.05vw, 17px);
+  line-height: 1.68;
   color: var(--body);
 }
 
-/*
- * Inside a box, a second paragraph is a second point rather than a continuation, so it gets a
- * rule instead of an indent. This is the one place on the page where paragraphs are divided.
- */
 .noteBody .flow p + p {
-  margin-top: clamp(16px, 2vh, 22px);
-  padding-top: clamp(16px, 2vh, 22px);
-  border-top: 1px solid var(--hairline);
+  margin-top: 17px;
 }
 
+/* What was his, on the site's own diamond. */
 .contribution {
   list-style: none;
   margin: 0;
@@ -152,73 +179,97 @@
 }
 
 .contribution li {
-  font-size: 16px;
-  line-height: 1.7;
+  position: relative;
+  padding-left: 24px;
+  font-size: clamp(15.5px, 1.05vw, 17px);
+  line-height: 1.6;
   color: var(--body);
 }
 
 .contribution li + li {
-  margin-top: 11px;
+  margin-top: 16px;
 }
 
-/* ------------------------------------------------------- a stepped list */
+.contribution li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  transform: rotate(45deg);
+}
+
+/* ------------------------------------------------------- point blocks */
 
 /*
- * A sequence, drawn the way a journey is drawn on a slide: an open square per stage, joined by a
- * line. Four stages set as four paragraphs is a wall; set as this, the reader sees the shape
- * before reading a word of it.
+ * The band that breaks the grey. Some of what a case has to say is genuinely a list of four
+ * things, and setting it as another paragraph makes the reader do the structuring the author
+ * already did.
  */
-.steps {
-  position: relative;
+.cards {
   list-style: none;
-  margin: clamp(28px, 3.8vh, 46px) 0 0;
-  padding: 0 0 0 26px;
+  margin: clamp(24px, 3.4vh, 40px) 0 0;
+  padding: 0;
   max-width: var(--measure);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
 }
 
-.steps::before {
-  content: '';
-  position: absolute;
-  left: 3px;
-  top: 7px;
-  bottom: 7px;
-  width: 1px;
-  background: var(--hairline-mid);
-}
-
-.step {
-  position: relative;
-  padding-bottom: clamp(15px, 2vh, 22px);
-}
-
-.step:last-child {
-  padding-bottom: 0;
-}
-
-.step::before {
-  content: '';
-  position: absolute;
-  left: -26px;
-  top: 6px;
-  width: 7px;
-  height: 7px;
+.cards .point {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 18px 18px 20px;
   background: var(--paper);
-  border: 1px solid var(--ink);
 }
 
-.stepTitle {
-  display: block;
-  font-size: 16px;
-  line-height: 1.5;
+.pointNum {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-light);
+}
+
+.pointTitle {
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.3;
   color: var(--ink);
 }
 
-.stepBody {
-  display: block;
-  margin-top: 6px;
-  font-size: 14.5px;
-  line-height: 1.62;
-  color: var(--muted-light);
+.pointBody {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--body);
+}
+
+/* Principles carry no body, so a ruled list is the right shape rather than five boxes. */
+.principles {
+  list-style: none;
+  margin: clamp(24px, 3.4vh, 40px) 0 0;
+  padding: 0;
+  max-width: var(--measure);
+  border-top: 1px solid var(--hairline);
+}
+
+.principles .point {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.principles .pointTitle {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--ink);
 }
 
 /* A drawn figure belongs to the paragraph above it, so it sits at the foot of the text. */
@@ -232,9 +283,10 @@
 /*
  * A numbered picture.
  *
- * The number and the name sit above the frame and the caption sits under it, which is how a
- * figure has been labelled in print for two hundred years — and it means a reader can refer to
- * "plate 02" instead of "the second picture down".
+ * The number and the name sit above the frame and the caption under it, which is how a figure has
+ * been labelled in print for two hundred years — and it means a reader can refer to "plate 02"
+ * instead of "the second picture down". The frame itself belongs to CasePlate; a second box
+ * around it would be one border too many.
  */
 .plate {
   margin-top: clamp(30px, 4.2vh, 50px);
@@ -244,11 +296,11 @@
 .plateHead {
   display: flex;
   align-items: baseline;
-  gap: 16px;
+  gap: 14px;
   margin: 0 0 14px;
 
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-light);
 }
@@ -259,25 +311,18 @@
   font-variant-numeric: tabular-nums;
 }
 
-.plateBox {
-  padding: clamp(16px, 2vw, 26px);
-  border: 1px solid var(--hairline);
-}
-
 /* ---------------------------------------------------------- the numbers */
 
 /*
- * A grid, not a flex row.
- *
- * Three figures set as flex items with a wide gap needed 854px inside a 790px column and wrapped
- * two-and-one, which reads as a mistake rather than as a row. As tracks they share whatever width
- * there is and stay on one line, and a case with four figures gets four narrower ones.
+ * auto-fit rather than a fixed three, so a case with four outcomes does not strand the fourth
+ * alone on a second row: the empty tracks collapse and the items share the width evenly.
  */
 .numbers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 165px), 1fr));
-  gap: clamp(26px, 3.2vw, 48px);
-  margin-top: clamp(32px, 4.4vh, 52px);
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  column-gap: 34px;
+  row-gap: 26px;
+  margin-top: clamp(24px, 4vh, 48px);
   max-width: var(--wide);
 }
 
@@ -285,64 +330,49 @@
   min-width: 0;
 }
 
+/* The light weight the metrics band uses. A figure this size does not need to be bold as well. */
 .numberValue {
   display: block;
-  font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(34px, 3.4vw, 54px);
-  font-weight: 700;
+  font-size: clamp(32px, 3.2vw, 52px);
+  font-weight: 300;
   line-height: 1;
-  letter-spacing: -0.02em;
-  color: var(--ink);
+  letter-spacing: -0.03em;
   font-variant-numeric: tabular-nums;
+  color: var(--ink);
 }
 
 .numberLabel {
   display: block;
-  margin-top: 14px;
-  font-size: 10.5px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
+  margin-top: 12px;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
   color: var(--muted-light);
 }
 
 .numberNote {
   display: block;
-  margin-top: 8px;
-  font-size: 13px;
-  line-height: 1.55;
-  color: var(--muted-light);
+  margin-top: 9px;
+  font-size: 13.5px;
+  line-height: var(--lh-body);
+  color: var(--body);
+  padding-right: 18px;
 }
 
-/*
- * The chart, on paper.
- *
- * It was drawn for a black spread and takes its colours from the --on-dark family. There is no
- * black spread any more, so the family is remapped here onto ink and paper rather than the
- * component being forked — same chart, same contrast, this page's palette.
- */
-.chartOnPaper {
-  --on-dark: var(--ink);
-  --on-dark-72: var(--body);
-  --on-dark-50: var(--muted-light);
-  --on-dark-rule: var(--hairline);
-  --on-dark-rule-2: var(--hairline-mid);
-
-  margin-top: clamp(34px, 4.6vh, 56px);
-  max-width: var(--wide);
-}
-
-/*
- * The prototype player.
- *
- * Held to the same right edge as the plates and the chart. Left to itself it takes the whole of
- * the body column, which is 270px wider than everything above it, and one block breaking the
- * right edge is enough to lose the alignment the whole page is built on.
- */
-.proto {
+.chart {
+  margin-top: clamp(30px, 4.4vh, 54px);
   max-width: var(--wide);
 }
 
 /* ---------------------------------------------------------- the screens */
+
+/*
+ * The prototype player, held to the same right edge as the plates and the chart. Left to itself
+ * it takes the whole body column, which is 270px wider than everything above it, and one block
+ * breaking the right edge is enough to lose the alignment the page is built on.
+ */
+.proto {
+  max-width: var(--wide);
+}
 
 .gallery {
   display: grid;
@@ -368,7 +398,7 @@
 .fullLine {
   margin: 0;
   font-size: 14px;
-  line-height: 1.55;
+  line-height: var(--lh-body);
   color: var(--muted-light);
   max-width: 46ch;
   flex: 1 1 260px;
@@ -446,25 +476,12 @@
 /* --------------------------------------------------------- narrow pages */
 
 @media (max-width: 768px) {
-  .flow p {
-    font-size: 16px;
-    line-height: 1.68;
-  }
-
-  .flowLead p {
-    font-size: 17.5px;
-  }
-
   .meta {
     gap: 22px 32px;
-    margin-top: 30px;
+    margin-top: 28px;
   }
 
   .numbers {
-    gap: 26px 32px;
-  }
-
-  .number {
-    min-width: 128px;
+    column-gap: 24px;
   }
 }

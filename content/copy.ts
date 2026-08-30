@@ -2357,6 +2357,12 @@ export const casePage = {
     context: { pt: 'Contexto', en: 'Context' } satisfies T,
     /* Named for what the box answers, not for the field it comes from. */
     howMeasured: { pt: 'Como medimos', en: 'How we measured it' } satisfies T,
+    /*
+     * The part that follows the figures: how they were measured, what the hardest part was, and
+     * what the work unlocked. It exists so the ink band can end at the chart — three ruled boxes
+     * inside it made 1713px of solid black, and nothing on the one-pager runs past 832.
+     */
+    behind: { pt: 'Por trás do número', en: 'Behind the number' } satisfies T,
     conflict: { pt: 'O problema', en: 'The problem' } satisfies T,
     tradeoff: { pt: 'O que abri mão', en: 'What I gave up' } satisfies T,
     decision: { pt: 'O que eu decidi', en: 'What I decided' } satisfies T,

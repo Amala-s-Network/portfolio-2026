@@ -10,17 +10,25 @@ import styles from './CaseDoc.module.css';
 
 export type DocSection = {
   id: string;
-  /** What the index calls this part, and what the rail prints. */
+  /** What the index calls this part, and what the margin prints. */
   label: string;
   /**
-   * A rail line of its own, instead of the numbered one.
+   * A margin line of its own, instead of the numbered one.
    *
-   * The opening uses it to print the company: on a printed page the first thing in the margin is
-   * who the work was for, not "section one".
+   * The opening uses it to print the company: the first thing in the margin of a case is who the
+   * work was for, not "section one".
    */
   rail?: string;
   /** Kept out of the running number. The opening and the closing are not chapters. */
   unnumbered?: boolean;
+  /**
+   * A part that runs on ink instead of paper.
+   *
+   * The site's own device, not the reference's — Metrics, History and the footer all do this on
+   * the one-pager. It carries the results, which is where it earns its place: the page turns
+   * dark exactly where the argument stops and the proof starts.
+   */
+  tone?: 'dark';
   node: React.ReactNode;
 };
 
@@ -32,9 +40,8 @@ export type DocSection = {
  * rule between them. Everything the reader needs is where a document keeps it, in the flow, and
  * the only furniture that follows them down the page is the way out and the index.
  *
- * The wide right-hand emptiness is deliberate, and is most of what makes this read as printed
- * rather than as a web page: the measure stays at a readable 620-odd pixels however wide the
- * screen gets, instead of stretching to fill it.
+ * The structure comes from the reference João sent; every value in it — the type, the rules, the
+ * diamond, the ink band, the buttons — is the portfolio's own.
  */
 export function CaseDoc({
   sections,
@@ -98,32 +105,18 @@ export function CaseDoc({
     return () => document.removeEventListener('keydown', onKey);
   }, [tocOpen]);
 
-  /* The running number covers the numbered parts only, so the opening does not eat "001". */
+  /* The running number covers the numbered parts only, so the opening does not eat "01". */
   let counter = 0;
   const numbers = sections.map((s) => (s.unnumbered || s.rail ? null : ++counter));
 
   return (
     <div className={styles.root}>
       {/*
-       * Register marks at the corners of the sheet.
-       *
-       * Printer's furniture, and the cheapest possible way to say that this page is a printed
-       * object. Fixed to the viewport, sitting inside the gutter so they never meet the nav or
-       * the back-to-top, and gone on a phone where there is no margin to spare.
-       */}
-      <div className={styles.corners} aria-hidden="true">
-        <Cross />
-        <Cross />
-        <Cross />
-        <Cross />
-      </div>
-
-      {/*
-       * The way out and the index, docked together at the foot.
+       * The way out and the index, at the foot.
        *
        * At the foot rather than the head because the top-left of this page is where the case
        * announces itself, and a floating "back" landing on the company and the title is the one
-       * place it must not be.
+       * place it must not be. Both wear the same bordered button the reader used.
        */}
       <div className={styles.dock}>
         <Link className={styles.back} href={backHref}>
@@ -147,14 +140,7 @@ export function CaseDoc({
 
       <article className={styles.doc}>
         {sections.map((s, i) => (
-          <Part
-            key={s.id}
-            section={s}
-            number={numbers[i]}
-            total={counter}
-            first={i === 0}
-            index={i}
-          />
+          <Part key={s.id} section={s} number={numbers[i]} total={counter} first={i === 0} />
         ))}
       </article>
 
@@ -181,6 +167,9 @@ export function CaseDoc({
                   {numbers[i] ? String(numbers[i]).padStart(2, '0') : '—'}
                 </span>
                 <span className={styles.tocLabel}>{s.label}</span>
+                <span className={styles.tocMark} aria-hidden="true">
+                  &#8594;
+                </span>
               </a>
             </li>
           ))}
@@ -210,13 +199,11 @@ function Part({
   number,
   total,
   first,
-  index,
 }: {
   section: DocSection;
   number: number | null;
   total: number;
   first: boolean;
-  index: number;
 }) {
   const ref = useRef<HTMLElement>(null);
   const shown = useReveal(ref);
@@ -226,8 +213,7 @@ function Part({
       ref={ref}
       id={section.id}
       className={styles.part}
-      /* Moves the register mark down the margin, so the right-hand side is not a rhythm. */
-      data-beat={index % 3}
+      data-tone={section.tone}
       aria-label={section.label}
     >
       {!first && <span className={styles.rule} aria-hidden="true" />}
@@ -237,10 +223,7 @@ function Part({
           <p className={styles.railLabel}>
             {number ? (
               <>
-                <span className={styles.railNum}>{String(number).padStart(3, '0')}</span>
-                <span className={styles.railDash} aria-hidden="true">
-                  {'—'}
-                </span>
+                <span className={styles.railNum}>{String(number).padStart(2, '0')}</span>{' '}
                 {section.label}
               </>
             ) : (
@@ -251,8 +234,7 @@ function Part({
 
         {number ? (
           <span className={styles.railOf} aria-hidden="true">
-            {'/ '}
-            {String(total).padStart(3, '0')}
+            {String(number).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
         ) : null}
       </Reveal>
@@ -260,30 +242,6 @@ function Part({
       <Reveal on={shown} order={1} className={styles.body}>
         {section.node}
       </Reveal>
-
-      <span className={styles.reg} aria-hidden="true">
-        <Bracket />
-      </span>
     </section>
-  );
-}
-
-function Cross() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true">
-      <path d="M6.5 0V13M0 6.5H13" stroke="currentColor" strokeWidth="1" />
-    </svg>
-  );
-}
-
-function Bracket() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path
-        d="M.5 4.5V.5h4M11.5.5h4v4M15.5 11.5v4h-4M4.5 15.5h-4v-4"
-        stroke="currentColor"
-        strokeWidth="1"
-      />
-    </svg>
   );
 }

@@ -15,11 +15,12 @@
   position: relative;
   overflow: hidden;
   /*
-   * Capped against the height it is given. A 4:3 plate in a 600px column is 450px tall, which on
-   * its own nearly fills the 524px a spread has at 1366x768 — the picture would push the page it
-   * illustrates off the bottom. The crop is `cover`, so what it loses is edge rather than subject.
+   * Capped against the height it is given, generously: the page scrolls now, so a plate no longer
+   * has to fit inside whatever a spread had left. The old cap was 46vh, set when it did, and it
+   * crops a 4:3 plate in a 790px column by a third. The crop is `cover`, so what it loses is edge
+   * rather than subject.
    */
-  max-height: min(46vh, 460px);
+  max-height: min(74vh, 720px);
   background: color-mix(in srgb, currentColor 5%, transparent);
   border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
   padding: clamp(8px, 0.9vw, 16px);

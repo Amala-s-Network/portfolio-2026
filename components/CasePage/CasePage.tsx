@@ -51,9 +51,13 @@ function readingMinutes(words: number) {
 }
 
 /** A paragraph run, split on blank lines the way the copy is written. */
-function Flow({ text, lead }: { text: string; lead?: boolean }) {
+function Flow({ text, lead, drop }: { text: string; lead?: boolean; drop?: boolean }) {
   return (
-    <div className={`${styles.flow} ${lead ? styles.flowLead : ''}`}>
+    <div
+      className={[styles.flow, lead ? styles.flowLead : '', drop ? styles.flowDrop : '']
+        .filter(Boolean)
+        .join(' ')}
+    >
       {text.split(/\n{2,}/).map((para, i) => (
         <p key={i}>{para}</p>
       ))}
@@ -162,9 +166,7 @@ export function CasePage({ slug }: { slug: string }) {
           <span className={styles.plateNum}>{String(n).padStart(2, '0')}</span>{' '}
           {label}
         </p>
-        <div className={styles.plateBox}>
-          <CasePlate spec={spec} slug={slug} />
-        </div>
+        <CasePlate spec={spec} slug={slug} />
       </div>
     );
   };
@@ -285,19 +287,25 @@ export function CasePage({ slug }: { slug: string }) {
       label: heading,
       node: (
         <>
-          <Flow text={t(d.body)} />
+          <Flow drop text={t(d.body)} />
 
           {d.quote && <p className={styles.pull}>{t(d.quote)}</p>}
 
+          {/*
+           * Items with a body render as numbered cards; items without one render as a compact
+           * ruled list, which is the right shape for a set of principles. Both are the case
+           * page's own blocks, carried over unchanged.
+           */}
           {d.points && d.points.length > 0 && (
-            <ol className={styles.steps}>
+            <ul className={d.points.some((pt) => pt.body) ? styles.cards : styles.principles}>
               {d.points.map((pt, pi) => (
-                <li key={pi} className={styles.step}>
-                  <span className={styles.stepTitle}>{t(pt.title)}</span>
-                  {pt.body && <span className={styles.stepBody}>{t(pt.body)}</span>}
+                <li key={pi} className={styles.point}>
+                  <span className={styles.pointNum}>{String(pi + 1).padStart(2, '0')}</span>
+                  <span className={styles.pointTitle}>{t(pt.title)}</span>
+                  {pt.body && <span className={styles.pointBody}>{t(pt.body)}</span>}
                 </li>
               ))}
-            </ol>
+            </ul>
           )}
 
           {d.mark && (
@@ -333,13 +341,18 @@ export function CasePage({ slug }: { slug: string }) {
 
   /* ---- the proof ---- */
 
-  const hasProof =
-    outcomes.length > 0 || data.chart || line(data.challenge) || line(data.gameChanger);
-
-  if (hasProof || SHOW_PROMPTS) {
+  if (outcomes.length > 0 || data.chart) {
     sections.push({
       id: 'resultado',
       label: t(copy.headings.results),
+      /*
+       * The proof runs on ink.
+       *
+       * The site's own band — Metrics, History and the footer are all bands like this on the
+       * one-pager — and the reason the chart needs no help here: it was drawn in the --on-dark
+       * family from the start, for a spread that was exactly this colour.
+       */
+      tone: 'dark',
       node: (
         <>
           <Flow lead text={t(data.impact.note)} />
@@ -354,18 +367,30 @@ export function CasePage({ slug }: { slug: string }) {
             ))}
           </div>
 
-          {/*
-           * The chart is drawn in the --on-dark family, because it was built for a black spread.
-           * There is no black spread any more, so the tokens are remapped onto paper here rather
-           * than the component being forked: one wrapper, and the same chart takes this page's
-           * ink at the same contrast.
-           */}
           {data.chart && (
-            <div className={styles.chartOnPaper}>
+            <div className={styles.chart}>
               <CaseChart data={data.chart} />
             </div>
           )}
 
+        </>
+      ),
+    });
+  }
+
+  /*
+   * What sits behind the figures, back on paper.
+   *
+   * These three were inside the band to begin with, and three ruled boxes of prose on ink came
+   * to 1713px of solid black — nothing on the one-pager runs past 832. The band now ends where
+   * the chart does, which is also where the proof ends.
+   */
+  if (data.chart || line(data.challenge) || line(data.gameChanger) || SHOW_PROMPTS) {
+    sections.push({
+      id: 'por-tras',
+      label: t(copy.headings.behind),
+      node: (
+        <>
           {data.chart && (
             <Note label={t(copy.headings.howMeasured)}>
               <p>{t(data.chart.note)}</p>
