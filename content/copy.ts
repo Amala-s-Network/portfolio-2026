@@ -145,6 +145,8 @@ export const services = {
     pt: 'Trabalho por projeto, sozinho ou junto com o time que já está lá. O escopo depende do que está faltando. Às vezes é o produto inteiro, às vezes é só aquela pergunta que ninguém teve tempo de fazer.',
     en: 'I work by project, on my own or alongside the team that is already there. The scope depends on what is missing. Sometimes it is the whole product, sometimes it is just the question nobody has had time to ask.',
   } satisfies T,
+  pause: { pt: 'Pausar', en: 'Pause' } satisfies T,
+  play: { pt: 'Retomar', en: 'Resume' } satisfies T,
 
   items: [
     {
@@ -2027,9 +2029,21 @@ export const history = {
     en: 'I started out in branding, designing identities and campaigns, and carried that visual repertoire with me into digital product.',
   } satisfies T,
 
+  /*
+   * The period beside each name.
+   *
+   * A history without dates is a list of logos: a reader cannot tell a year from four, or which
+   * of these overlapped. Two of them do overlap — Canva ran alongside ZEMA and INK — and that is
+   * the kind of thing the dates say and prose does not.
+   *
+   * Most are a plain string because a year range reads the same in both languages. EMS is not a
+   * range: it was a project delivered through NTT DATA rather than a post, so it carries a phrase
+   * and gets translated.
+   */
   companies: [
     {
       name: 'Banco Itaú',
+      period: '2025-2026',
       description: {
         // Sharpened: his actual scope is cards then investments, not "crédito e atendimento".
         pt: 'Banco em escala. Jornadas de cartões PJ lançadas com a VISA e, hoje, investimentos em ativos escriturais.',
@@ -2038,6 +2052,7 @@ export const history = {
     },
     {
       name: 'NTT DATA',
+      period: '2025-2026',
       description: {
         pt: 'Consultoria global japonesa. Design de produto dentro de squads de clientes enterprise.',
         en: 'Japanese global consultancy. Product design inside enterprise client squads.',
@@ -2045,6 +2060,7 @@ export const history = {
     },
     {
       name: 'EMS Saúde',
+      period: { pt: 'Projeto de referência com IA, via NTT DATA', en: 'Reference AI project, through NTT DATA' } satisfies T,
       description: {
         // Confirmed by João (2026-08-22): delivered as a project via NTT DATA, not direct
         // employment. He considers it significant work and it stays in the history list.
@@ -2054,6 +2070,7 @@ export const history = {
     },
     {
       name: 'Bricker',
+      period: '2024-2025',
       description: {
         pt: 'Startup early-stage no mercado imobiliário. IA para leitura de documentos e otimização de processos.',
         en: 'Early-stage proptech startup. AI for document reading and process optimisation.',
@@ -2061,6 +2078,7 @@ export const history = {
     },
     {
       name: 'Reserva INK',
+      period: '2023-2024',
       description: {
         pt: 'Moda e tecnologia. SaaS de print on demand para mais de 60 mil lojistas, dentro do grupo AZZAS 2154.',
         en: 'Fashion and tech. Print-on-demand SaaS for over 60,000 sellers, part of the AZZAS 2154 group.',
@@ -2068,6 +2086,7 @@ export const history = {
     },
     {
       name: 'Canva',
+      period: '2021-2024',
       description: {
         pt: 'Um dos 300 primeiros Canva Creators oficiais do Brasil, aprovado pelo time de Sydney.',
         en: 'One of Brazil’s first 300 official Canva Creators, approved by the Sydney team.',
@@ -2075,6 +2094,7 @@ export const history = {
     },
     {
       name: 'ZEMA',
+      period: '2021-2023',
       description: {
         pt: 'O maior varejo e e-commerce de Minas Gerais. Jornada de compra e empréstimo pessoal.',
         en: 'The largest retailer and e-commerce in Minas Gerais. Purchase journey and personal lending.',
@@ -2110,6 +2130,10 @@ export const testimonials = {
     pt: 'O que as pessoas acham sobre trabalhar comigo?',
     en: 'What do people say about working with me?',
   } satisfies T,
+  /* The wall moves, so it needs a control that stops it — see WCAG 2.2.2. */
+  pause: { pt: 'Pausar', en: 'Pause' } satisfies T,
+  play: { pt: 'Retomar', en: 'Resume' } satisfies T,
+
   items: [
     {
       name: 'Ricardo Filho',

@@ -20,28 +20,155 @@
   max-width: 20ch;
 }
 
-/* The heading carries the rule on its own now; the standfirst came out at João's request. */
-.heading {
-  padding-bottom: clamp(28px, 4vh, 48px);
-  border-bottom: 1px solid var(--hairline);
-}
+/* The rule belongs to the head now, which holds the title and the pause control together. */
 
 /*
- * Columns, not a grid.
+ * Two rows, travelling in opposite directions.
  *
- * The recommendations run from four lines to twenty. A grid would stretch the short ones to the
- * height of the tallest in their row and leave a ragged edge under every one; columns let each
- * card keep its own height and the wall stay dense, which is what a letters page looks like.
+ * The argument in this section is the volume: eight people, across four disciplines, saying the
+ * same kinds of things without being asked. A carousel that shows one card at a time hides
+ * exactly that. Opposite directions also stop the wall reading as a single conveyor belt, which
+ * is what one row always looks like.
+ *
+ * Each row holds its content twice and slides by half its own width, so the second copy arrives
+ * where the first leaves. There is no seam to hide because nothing ever ends.
  */
 .wall {
   margin-top: clamp(28px, 4vh, 48px);
-  columns: 3;
-  column-gap: clamp(20px, 2vw, 34px);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 28px);
+
+  /* The rows are wider than the page; this is what keeps the page itself from scrolling. */
+  overflow: hidden;
+
+  /* Faded at both edges, so a card enters and leaves rather than being cut by the viewport. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 5%, #000 95%, transparent);
+}
+
+.row {
+  display: flex;
+  width: max-content;
+  gap: clamp(16px, 2vw, 28px);
+  animation: marchLeft 64s linear infinite;
+}
+
+.rowBack {
+  animation-name: marchRight;
+  animation-duration: 78s;
+}
+
+/* Paused by the control, and by a pointer resting on the row. */
+.row[data-running='false'],
+.row:hover,
+.row:focus-within {
+  animation-play-state: paused;
+}
+
+.track {
+  display: flex;
+  gap: clamp(16px, 2vw, 28px);
+  flex: none;
+}
+
+@keyframes marchLeft {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    /* Half the track plus the gap that sits between the two copies. */
+    transform: translate3d(calc(-50% - clamp(8px, 1vw, 14px)), 0, 0);
+  }
+}
+
+@keyframes marchRight {
+  from {
+    transform: translate3d(calc(-50% - clamp(8px, 1vw, 14px)), 0, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/*
+ * Still under reduced motion, and reachable: with the animation off the rows would simply sit
+ * with half their content off screen, so the wall becomes something the reader can drag.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .row {
+    animation: none;
+  }
+
+  .wall {
+    overflow-x: auto;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+}
+
+/* ---- the head, with its control ---- */
+
+.head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  padding-bottom: clamp(24px, 3.4vh, 40px);
+  border-bottom: 1px solid var(--hairline);
+}
+
+.toggle {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 38px;
+  padding: 0 18px;
+
+  border: 1px solid var(--hairline-mid);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+
+  transition: background-color 0.35s var(--ease), border-color 0.35s var(--ease),
+    color 0.35s var(--ease);
+}
+
+.toggle:hover,
+.toggle:focus-visible {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+.iconPlay,
+.iconPause {
+  width: 9px;
+  height: 10px;
+  flex: none;
+  background: currentColor;
+}
+
+.iconPlay {
+  clip-path: polygon(0 0, 100% 50%, 0 100%);
+}
+
+.iconPause {
+  clip-path: polygon(0 0, 34% 0, 34% 100%, 0 100%, 0 0, 66% 0, 100% 0, 100% 100%, 66% 100%, 66% 0);
 }
 
 .card {
-  break-inside: avoid;
-  margin: 0 0 clamp(20px, 2vw, 34px);
+  /* A fixed measure: in a moving row a card cannot size itself off its own text. */
+  flex: none;
+  width: clamp(290px, 27vw, 400px);
+  align-self: flex-start;
+  margin: 0;
   padding: clamp(20px, 1.8vw, 30px);
 
   background: color-mix(in srgb, var(--ink) 3%, var(--paper));

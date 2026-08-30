@@ -25,7 +25,13 @@ export function History() {
       <Reveal on={revealed} order={2} className={styles.list}>
         {copy.companies.map((c) => (
           <div key={c.name} className={styles.row}>
-            <h3 className={styles.name}>{c.name}</h3>
+            <div className={styles.head}>
+              <h3 className={styles.name}>{c.name}</h3>
+              {/* A plain year range reads the same in both languages; a phrase gets translated. */}
+              <span className={styles.period}>
+                {typeof c.period === 'string' ? c.period : t(c.period)}
+              </span>
+            </div>
             <p className={styles.description}>{t(c.description)}</p>
           </div>
         ))}

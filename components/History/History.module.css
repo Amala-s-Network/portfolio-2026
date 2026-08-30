@@ -182,3 +182,53 @@
     font-size: 17.5px;
   }
 }
+
+/* ------------------------------------------------------------ periods */
+
+/*
+ * The name and its years on one line, the years pushed to the far side of the column.
+ *
+ * A history without dates is a list of logos: the reader cannot tell one year from four, or spot
+ * that two of these ran at the same time. Canva overlapped both ZEMA and INK, and that is the
+ * kind of thing dates say and prose does not.
+ */
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.period {
+  flex: none;
+  font-size: 12.5px;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-light);
+  white-space: nowrap;
+}
+
+/* The one that is a sentence rather than a range needs room to wrap. */
+.period:not(:only-child) {
+  max-width: 34ch;
+  white-space: normal;
+  text-align: right;
+}
+
+@media (min-width: 1600px) {
+  .period {
+    font-size: 13.5px;
+  }
+}
+
+@media (max-width: 768px) {
+  .head {
+    gap: 4px;
+  }
+
+  .period {
+    font-size: 12px;
+    text-align: left;
+  }
+}
