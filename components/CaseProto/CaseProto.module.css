@@ -39,18 +39,25 @@
 
 /* ------------------------------------------------------------- stage */
 
+/*
+ * The screen over the whole width, with its controls under it.
+ *
+ * The rail used to sit beside the screen, which was right when this was one spread of a
+ * horizontal reader: height was the scarce thing and width was free. On a vertical page it is
+ * the other way round, and a 260px column of controls was taking a third of the width off the
+ * one thing on this page the reader actually came to look at — 487px of a 790px column. Under
+ * it, the screen gets all 790.
+ */
 .stage {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 260px);
-  gap: clamp(24px, 3vw, 56px);
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
   margin-top: clamp(22px, 3vh, 40px);
 }
 
 .screen {
   position: relative;
   aspect-ratio: 16 / 10;
-  max-height: min(42vh, 470px);
+  max-height: min(64vh, 620px);
   overflow: hidden;
 
   background: color-mix(in srgb, var(--ink) 4%, var(--paper));
@@ -96,18 +103,26 @@
 
 .rail {
   min-width: 0;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(14px, 1.8vw, 26px);
+
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--hairline);
 }
 
+/* The name of the screen on show. Takes whatever width the controls beside it leave. */
 .stepName {
+  flex: 1 1 240px;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 5px;
   font-size: 15px;
   line-height: 1.4;
   color: var(--ink);
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--hairline);
-  min-height: 62px;
 }
 
 .stepNum {
@@ -117,10 +132,20 @@
   color: var(--muted-light);
 }
 
+/*
+ * The step markers, allowed to shrink.
+ *
+ * `flex: none` sized this row to its own content, which on a phone is eight 44px targets — the
+ * global coarse-pointer floor — coming to 394px inside a 327px column. Nothing wrapped, because
+ * a track at max-content width never has a reason to. Letting it shrink is what lets its own
+ * flex-wrap do its job.
+ */
 .dots {
   list-style: none;
-  margin: 16px 0 0;
+  margin: 0;
   padding: 0;
+  flex: 0 1 auto;
+  min-width: 0;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -165,7 +190,8 @@
 .controls {
   display: flex;
   gap: 8px;
-  margin-top: 18px;
+  flex: none;
+  margin: 0;
 }
 
 .ctl {
@@ -212,7 +238,8 @@
 
 /* The whole board, small. It says how much there is behind the eight frames above it. */
 .map {
-  margin: clamp(16px, 2.2vh, 26px) 0 0;
+  flex: 1 0 100%;
+  margin: 4px 0 0;
   padding-top: clamp(14px, 1.8vh, 20px);
   border-top: 1px solid var(--hairline);
 }
@@ -221,7 +248,7 @@
   width: 100%;
   height: auto;
   display: block;
-  max-height: clamp(70px, 12vh, 130px);
+  max-height: clamp(90px, 15vh, 170px);
   object-fit: cover;
   object-position: top left;
   border: 1px solid var(--hairline);
@@ -233,16 +260,6 @@
   color: var(--muted-light);
 }
 
-@media (max-width: 1099px) {
-  .stage {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .screen {
-    max-height: none;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .frame {
     transition: opacity 0.2s linear;
@@ -252,59 +269,5 @@
   .dotMark,
   .ctl {
     transition: none;
-  }
-}
-
-/*
- * Short screens.
- *
- * The player is the last spread and the busiest: a heading, a screen, a rail of eight steps and
- * the whole board underneath. At 1366x768 that ran 87px past the bottom, and this spread cannot
- * scroll — it is a page you turn. The board is the first thing to give ground, because it is
- * context rather than content.
- */
-@media (max-height: 820px) {
-  .heading {
-    font-size: clamp(20px, 1.8vw, 28px);
-  }
-
-  .note {
-    font-size: 13px;
-    margin-top: 8px;
-  }
-
-  .stage {
-    margin-top: 16px;
-  }
-
-  .screen {
-    max-height: min(36vh, 340px);
-  }
-
-  .map {
-    margin-top: 16px;
-    padding-top: 12px;
-  }
-
-  .map img {
-    max-height: 80px;
-  }
-
-  .map figcaption {
-    margin-top: 6px;
-    font-size: 11.5px;
-  }
-
-  .stepName {
-    min-height: 0;
-    padding-bottom: 12px;
-  }
-
-  .dots {
-    margin-top: 10px;
-  }
-
-  .controls {
-    margin-top: 12px;
   }
 }

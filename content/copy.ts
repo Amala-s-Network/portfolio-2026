@@ -2340,10 +2340,26 @@ export const casePage = {
     pause: { pt: 'Pausar', en: 'Pause' } satisfies T,
   },
 
+  /**
+   * The masthead line under the title: year, role, how long it took, how long it takes to read.
+   *
+   * Set as a definition list rather than four spans, because that is what it is — four labels
+   * and their values. A screen reader then reads "Ano, 2023-2024" instead of eight loose words.
+   */
+  meta: {
+    year: { pt: 'Ano', en: 'Year' } satisfies T,
+    role: { pt: 'Papel', en: 'Role' } satisfies T,
+    duration: { pt: 'Duração', en: 'Duration' } satisfies T,
+    reading: { pt: 'Leitura', en: 'Reading' } satisfies T,
+  },
+
   headings: {
-    conflict: { pt: 'O PROBLEMA', en: 'THE PROBLEM' } satisfies T,
-    tradeoff: { pt: 'O QUE ABRI MÃO', en: 'WHAT I GAVE UP' } satisfies T,
-    decision: { pt: 'O QUE EU DECIDI', en: 'WHAT I DECIDED' } satisfies T,
+    context: { pt: 'Contexto', en: 'Context' } satisfies T,
+    /* Named for what the box answers, not for the field it comes from. */
+    howMeasured: { pt: 'Como medimos', en: 'How we measured it' } satisfies T,
+    conflict: { pt: 'O problema', en: 'The problem' } satisfies T,
+    tradeoff: { pt: 'O que abri mão', en: 'What I gave up' } satisfies T,
+    decision: { pt: 'O que eu decidi', en: 'What I decided' } satisfies T,
     challenge: { pt: 'A parte mais difícil', en: 'The hardest part' } satisfies T,
     contribution: { pt: 'O que eu fiz', en: 'What I did' } satisfies T,
     gameChanger: { pt: 'O que isso destravou', en: 'What this unlocked' } satisfies T,

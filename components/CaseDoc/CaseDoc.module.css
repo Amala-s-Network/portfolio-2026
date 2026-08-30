@@ -1,0 +1,462 @@
+/*
+ * The frame of a case, read vertically.
+ *
+ * Three columns and a rule. The margin carries the running number of the part, the column carries
+ * the type at a measure that never grows, and the third column carries nothing at all — that
+ * emptiness is the design. A page that fills its width with text is a web page; a page that holds
+ * a 620px measure on a 1920px screen is a printed one.
+ */
+
+.root {
+  position: relative;
+  background: var(--paper);
+}
+
+/* ------------------------------------------------------------ the sheet */
+
+.doc {
+  /*
+   * The grid, in tokens so the case's own blocks can measure against the same numbers.
+   *
+   *   --rail     the margin that holds "001 — CONTEXTO"
+   *   --measure  the column of type. 623px of Archivo at 17px is about 64 characters, which is
+   *              inside the 45-75 that typography has agreed on for a century.
+   *   --wide     what a figure may take. Wider than the type, narrower than the page.
+   */
+  --rail: 205px;
+  --railGap: 62px;
+  --measure: 623px;
+  --wide: 790px;
+
+  max-width: 1920px;
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.part {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, var(--rail)) minmax(0, 1fr);
+  column-gap: var(--railGap);
+  padding: clamp(52px, 7.5vh, 96px) 0;
+}
+
+/* The opening clears the nav rather than starting under it. */
+.part:first-child {
+  padding-top: calc(var(--navH) + clamp(38px, 7vh, 84px));
+}
+
+.part:last-child {
+  padding-bottom: clamp(90px, 14vh, 180px);
+}
+
+/*
+ * The rule between parts, edge to edge of the sheet.
+ *
+ * Absolute rather than a border on the section, so it spans the whole grid including the empty
+ * third column. A rule that stops where the text stops is a divider; one that crosses the page is
+ * a page.
+ */
+.rule {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--hairline);
+}
+
+/* ------------------------------------------------------------- the rail */
+
+.rail {
+  grid-column: 1;
+  /*
+   * Stays with the reader through a long part, and stops at the part's own foot — so the margin
+   * always says which section the paragraph on screen belongs to.
+   */
+  position: sticky;
+  top: calc(var(--navH) + 26px);
+  align-self: start;
+}
+
+.railLabel {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+
+  margin: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline-mid);
+
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.railNum {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+
+.railDash {
+  opacity: 0.5;
+}
+
+/* How far through the piece this part is, under the rule. The second line of a printed folio. */
+.railOf {
+  display: block;
+  margin-top: 10px;
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-light);
+  opacity: 0.62;
+}
+
+/* ------------------------------------------------------------- the body */
+
+.body {
+  grid-column: 2;
+  min-width: 0;
+}
+
+/* --------------------------------------------------------- register mark */
+
+/*
+ * A crop mark in the empty third column.
+ *
+ * The right-hand side of this page is deliberately empty, and empty is not the same as unused:
+ * one 16px mark per part says the whitespace was measured. It moves down the margin on a
+ * three-beat so it never becomes a column of its own.
+ */
+.reg {
+  position: absolute;
+  right: clamp(60px, 10vw, 240px);
+  color: var(--ink);
+  opacity: 0.32;
+  pointer-events: none;
+}
+
+.part[data-beat='0'] .reg {
+  top: 22%;
+}
+
+.part[data-beat='1'] .reg {
+  top: 58%;
+}
+
+.part[data-beat='2'] .reg {
+  top: 38%;
+}
+
+/* --------------------------------------------------- corners of the sheet */
+
+/*
+ * Below the nav, not behind it. At inset 16 the top pair sat under the nav's own background and
+ * simply never appeared; dropping them past it puts them on the corners of the sheet, which is
+ * where a register mark belongs anyway.
+ */
+.corners {
+  position: fixed;
+  top: calc(var(--navH) + 16px);
+  right: 16px;
+  bottom: 16px;
+  left: 16px;
+  z-index: 5;
+  pointer-events: none;
+  color: var(--ink);
+  opacity: 0.34;
+}
+
+.corners svg {
+  position: absolute;
+}
+
+.corners svg:nth-child(1) {
+  top: 0;
+  left: 0;
+}
+
+.corners svg:nth-child(2) {
+  top: 0;
+  right: 0;
+}
+
+.corners svg:nth-child(3) {
+  bottom: 0;
+  left: 0;
+}
+
+.corners svg:nth-child(4) {
+  bottom: 0;
+  right: 0;
+}
+
+/* ------------------------------------------------------------- the dock */
+
+/*
+ * The two controls that follow the reader: the way out and the index.
+ *
+ * At the foot rather than the head. The top-left of this page is where the case announces itself
+ * — the company, then the title — and a floating "back" sitting on top of that is the one place
+ * it must not be. The nav's own wordmark is still the way home.
+ */
+.dock {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 26px;
+  z-index: 55;
+
+  display: flex;
+  align-items: stretch;
+
+  background: var(--paper);
+  border: 1px solid var(--hairline-mid);
+}
+
+.back,
+.tocButton {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  /* WCAG 2.5.8, to João's 32px floor. */
+  min-height: 42px;
+  padding: 0 16px;
+
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
+}
+
+.tocButton {
+  border-left: 1px solid var(--hairline);
+}
+
+.back:hover,
+.back:focus-visible,
+.tocButton:hover,
+.tocButton:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.backArrow {
+  font-size: 15px;
+  line-height: 1;
+  transition: transform 0.4s var(--ease);
+}
+
+.back:hover .backArrow {
+  transform: translateX(-4px);
+}
+
+/* Three rules, which is what an index is. */
+.tocBars {
+  width: 14px;
+  height: 9px;
+  flex: none;
+  background: linear-gradient(
+    to bottom,
+    currentColor 0 1px,
+    transparent 1px 4px,
+    currentColor 4px 5px,
+    transparent 5px 8px,
+    currentColor 8px 9px
+  );
+}
+
+/* ------------------------------------------------------------- the index */
+
+.toc {
+  position: fixed;
+  left: var(--gutter);
+  bottom: 82px;
+  z-index: 56;
+
+  width: min(380px, calc(100vw - 2 * var(--gutter)));
+  max-height: 58vh;
+  overflow-y: auto;
+  padding: 22px 20px 16px;
+
+  background: var(--paper);
+  border: 1px solid var(--ink);
+
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease), transform 0.5s var(--ease);
+}
+
+.tocOn {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+.tocHead {
+  margin: 0 0 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.tocList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  counter-reset: none;
+}
+
+.tocLink {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+
+  min-height: 38px;
+  padding: 7px 6px;
+  margin-left: -6px;
+
+  color: var(--body);
+  text-decoration: none;
+  font-size: 14px;
+  line-height: 1.35;
+
+  transition: color 0.3s var(--ease), background-color 0.3s var(--ease);
+}
+
+.tocLink:hover,
+.tocLink:focus-visible {
+  background: color-mix(in srgb, var(--ink) 6%, transparent);
+  color: var(--ink);
+}
+
+.tocNum {
+  flex: none;
+  width: 22px;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-light);
+}
+
+.tocOnItem {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.tocOnItem .tocNum {
+  color: var(--ink);
+}
+
+.tocLabel {
+  min-width: 0;
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 54;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: default;
+}
+
+/* --------------------------------------------------------- narrow pages */
+
+/*
+ * Below 1200 there is no third column to keep empty, so the mark goes. Below 1000 the margin
+ * itself goes: the rail label sits above the column, which is what a printed page does when the
+ * paper narrows.
+ */
+@media (max-width: 1199px) {
+  .reg {
+    display: none;
+  }
+
+  /*
+   * --wide gives up first, --measure never does: the measure is the one number on this page that
+   * is a typographic decision rather than a layout one, and letting it stretch to the viewport
+   * is how a 64-character line quietly becomes an 86-character one.
+   */
+  .doc {
+    --wide: 100%;
+  }
+}
+
+@media (max-width: 999px) {
+  .part {
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 22px;
+  }
+
+  .rail,
+  .body {
+    grid-column: 1;
+  }
+
+  .rail {
+    position: static;
+  }
+
+  .railOf {
+    display: none;
+  }
+
+  .corners {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .doc {
+    padding: 0 24px;
+  }
+
+  .part {
+    padding: clamp(38px, 6vh, 56px) 0;
+  }
+
+  .dock {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+  }
+
+  .back,
+  .tocButton {
+    flex: 1;
+    justify-content: center;
+    min-height: var(--tap);
+  }
+
+  .toc {
+    left: 16px;
+    right: 16px;
+    width: auto;
+    bottom: 74px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toc,
+  .backArrow,
+  .back,
+  .tocButton {
+    transition: none;
+  }
+}

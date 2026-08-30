@@ -140,11 +140,10 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
           </div>
 
           {/*
-            * The whole board, in the rail rather than under the player.
+            * The whole board, small, at the foot of the controls.
             *
-            * Below the stage it added 230px to a spread that has 584px of content height at
-            * 1440x900, and this spread cannot scroll — it is a page you turn. Beside the
-            * controls it costs nothing: the rail was the shorter of the two columns anyway.
+            * It says how much there is behind the eight frames above it: sixty screens across
+            * twenty-one thousand pixels, of which this player shows the path a seller walks.
             */}
           {spec.map && (
             <figure className={styles.map}>
