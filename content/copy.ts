@@ -624,10 +624,17 @@ export const hiddenCases = ['itau-escrituracao'] as const;
 export const isHidden = (slug: string) => (hiddenCases as readonly string[]).includes(slug);
 export const inProductionCases = ['itau-cartoes-pj', 'ems-simulador-visitas'] as const;
 
-/** The cases the home page argues with, minus whatever is still hidden. */
+/**
+ * The cases the home page argues with, minus whatever is still hidden.
+ *
+ * Three, at João's instruction (2026-08-30). It was four, and with Escrituração hidden the
+ * fourth slot had fallen to Cartão Adicional — a case whose page is still scaffolding. Three
+ * finished panels say more than four where the last one has nothing to show. The case keeps its
+ * page and its place in the projects index; it is out of the home page's set, not off the site.
+ */
 export const featuredCases = cases
   .filter((c) => !hiddenCases.includes(c.slug as (typeof hiddenCases)[number]))
-  .slice(0, 4);
+  .slice(0, 3);
 
 /* ----------------------------------------------------------- carousel */
 
@@ -2477,12 +2484,19 @@ export const casePage = {
  * that helps — come back — and gets out of the way.
  */
 export const inProduction = {
-  heading: { pt: 'Case em produção', en: 'Case in production' } satisfies T,
+  heading: { pt: 'Case protegido por NDA', en: 'Case under NDA' } satisfies T,
   body: {
-    pt: 'Este case está sendo montado agora. Aguarde mais um pouco que ele entra completo, com as telas e os números.',
-    en: 'This case is being put together right now. Give it a little longer and it goes up in full, with the screens and the numbers.',
+    pt: 'Este case é protegido por NDA. Para saber mais, entre em contato para marcarmos uma apresentação e mostrar os resultados.',
+    en: 'This case is covered by an NDA. Get in touch and we can set up a walkthrough of the work and the results.',
   } satisfies T,
-  confirm: { pt: 'Entendi', en: 'Got it' } satisfies T,
+  /*
+   * The primary action opens the contact modal rather than closing this one.
+   *
+   * The sentence asks the reader to get in touch; a button that only says "got it" would make
+   * them go and find the way to do it themselves, which is the point at which most of them
+   * don't. The X and the scrim are still the way out for anyone who was only curious.
+   */
+  confirm: { pt: 'Entrar em contato', en: 'Get in touch' } satisfies T,
   close: { pt: 'Fechar', en: 'Close' } satisfies T,
 };
 

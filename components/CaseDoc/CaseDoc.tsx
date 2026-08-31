@@ -47,14 +47,18 @@ export function CaseDoc({
   sections,
   backHref,
   backLabel,
+  folio,
 }: {
   sections: DocSection[];
   backHref: string;
   backLabel: string;
+  /** Company, role, year, reading time — the running head of the piece. */
+  folio?: React.ReactNode;
 }) {
   const { t } = useLanguage();
   const [tocOpen, setTocOpen] = useState(false);
   const [active, setActive] = useState(sections[0]?.id ?? '');
+  const [folioOn, setFolioOn] = useState(false);
 
   /*
    * Which part the reader is in.
@@ -81,6 +85,15 @@ export function CaseDoc({
         if (el && el.getBoundingClientRect().top <= line) current = id;
       }
       setActive(current);
+
+      /*
+       * The running head comes up as the opening goes out.
+       *
+       * Not before: while the masthead is still on screen the strip would only be saying the
+       * same four things a second time, six inches above itself.
+       */
+      const opening = document.getElementById(ids[0]);
+      setFolioOn(opening ? opening.getBoundingClientRect().bottom <= 0 : false);
     };
 
     sync();
@@ -137,6 +150,21 @@ export function CaseDoc({
           {t(copy.toc.label)}
         </button>
       </div>
+
+      {/*
+       * The running head: what the masthead said, kept.
+       *
+       * João's note was that the header information does not need to disappear on the scroll, and
+       * it is what a newspaper does anyway — the piece keeps saying whose work it is and when,
+       * on every page after the first.
+       *
+       * aria-hidden because it is a repeat. It is worth seeing twice and not worth hearing twice.
+       */}
+      {folio && (
+        <div className={styles.folio} data-on={folioOn ? 'true' : undefined} aria-hidden="true">
+          {folio}
+        </div>
+      )}
 
       <article className={styles.doc}>
         {sections.map((s, i) => (

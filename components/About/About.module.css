@@ -65,12 +65,22 @@
 }
 
 /* Wrapper for the portrait. It also held the mascot, which is switched off — see About.tsx. */
+/*
+ * The frame around the portrait.
+ *
+ * ⚠️ This box used to belong to .portraitLink — the button that opened the story modal. João
+ * asked for that modal to come out, the button went with it, and the sizing and the clipping
+ * stayed behind on a class nothing renders any more. What was left was a stage with no shape and
+ * no overflow rule around a next/image at its intrinsic 470px: fine at desktop, where the column
+ * is wider than the photograph, and 143px over the edge of a 375px phone.
+ */
 .portraitStage {
   position: relative;
   display: block;
   width: 100%;
   max-width: 470px;
-  overflow: visible;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
 }
 
 .portraitLink {
@@ -271,10 +281,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .veil,
-  .portraitGrain,
-  .portraitLabel,
-  .portraitLink img {
+  .portraitStage img {
     transition: none;
   }
 }
@@ -289,7 +296,7 @@
  * Same overhang as the carousel frames, sized to the portrait's larger 46px of parallax —
  * without it the photo slides off its own frame and leaves a bare strip along one edge.
  */
-.portraitLink img {
+.portraitStage img {
   width: 100%;
   height: calc(100% + 92px);
   margin-top: -46px;
@@ -459,8 +466,7 @@
     align-items: stretch;
   }
 
-  .portraitStage,
-  .portraitLink {
+  .portraitStage {
     max-width: none;
   }
 

@@ -10,6 +10,9 @@
 .root {
   position: relative;
   background: var(--paper);
+
+  /* The running head reserves its height whether it is showing or not. */
+  --folioH: 38px;
 }
 
 /* ------------------------------------------------------------ the sheet */
@@ -48,6 +51,7 @@
 .part:first-child {
   padding-top: calc(var(--navH) + clamp(38px, 7vh, 84px));
 }
+
 
 .part:last-child {
   padding-bottom: clamp(90px, 14vh, 180px);
@@ -114,6 +118,46 @@
   display: none;
 }
 
+/* ------------------------------------------------------ the running head */
+
+/*
+ * Company, role, year, reading time — the masthead line, kept once the masthead scrolls out.
+ *
+ * It fades rather than sliding, and its 38px of height is reserved whether it is showing or not
+ * (see --folioH below): a strip that pushes the sticky margin labels down as it arrives would
+ * make the whole left column twitch once per case.
+ */
+.folio {
+  position: fixed;
+  top: var(--navH);
+  left: 0;
+  right: 0;
+  z-index: 44;
+  height: var(--folioH);
+
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2vw, 30px);
+  padding: 0 var(--gutter);
+
+  background: var(--paper);
+  border-bottom: 1px solid var(--hairline);
+
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  color: var(--muted-light);
+  white-space: nowrap;
+  overflow: hidden;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s var(--ease);
+}
+
+.folio[data-on] {
+  opacity: 1;
+}
+
 /* ------------------------------------------------------------- the rail */
 
 .rail {
@@ -121,9 +165,12 @@
   /*
    * Stays with the reader through a long part, and stops at the part's own foot — so the margin
    * always says which section the paragraph on screen belongs to.
+   *
+   * Cleared past the running head, and by its full height at all times: the strip fades in and
+   * out, and a sticky offset that moved with it would shift every margin label on the page.
    */
   position: sticky;
-  top: calc(var(--navH) + 26px);
+  top: calc(var(--navH) + var(--folioH) + 26px);
   align-self: start;
 }
 
@@ -257,7 +304,7 @@
   z-index: 56;
   width: min(420px, 86vw);
 
-  padding: calc(var(--navH) + 24px) clamp(24px, 3vw, 40px) 40px;
+  padding: calc(var(--navH) + var(--folioH) + 24px) clamp(24px, 3vw, 40px) 40px;
   background: var(--paper);
   border-left: 1px solid var(--hairline);
   overflow-y: auto;
@@ -387,6 +434,20 @@
 }
 
 @media (max-width: 768px) {
+  /*
+   * No running head on a phone.
+   *
+   * A second fixed bar under the nav costs 38px of a 812px screen for information the reader can
+   * reach by scrolling up, and on a phone that trade goes the other way.
+   */
+  .root {
+    --folioH: 0px;
+  }
+
+  .folio {
+    display: none;
+  }
+
   .doc {
     padding: 0 24px;
   }

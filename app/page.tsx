@@ -110,7 +110,11 @@ export default function Page() {
       <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
       <ContactModal open={contactOpen} onClose={closeContact} />
       <CraftGate open={gateOpen} onClose={closeGate} />
-      <InProduction open={productionOpen} onClose={() => setProductionOpen(false)} />
+      <InProduction
+        open={productionOpen}
+        onClose={() => setProductionOpen(false)}
+        onContact={openContact}
+      />
     </>
   );
 }

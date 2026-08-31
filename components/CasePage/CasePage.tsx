@@ -509,6 +509,17 @@ export function CasePage({ slug }: { slug: string }) {
       sections={sections}
       backHref={fromHome ? '/' : '/projetos'}
       backLabel={fromHome ? t(copy.backHome) : t(copy.back)}
+      /* The masthead again, small, once the masthead itself has gone up the page. */
+      folio={
+        <>
+          <span>{t(summary.company)}</span>
+          <span>{t(data.role)}</span>
+          <span>{data.year}</span>
+          <span>
+            {minutes} {t(minutes === 1 ? copy.readingTimeOne : copy.readingTime)}
+          </span>
+        </>
+      }
     />
   );
 }
