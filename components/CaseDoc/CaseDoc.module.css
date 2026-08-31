@@ -19,13 +19,21 @@
    * The grid, in tokens so the case's own blocks can measure against the same numbers.
    *
    *   --rail     the margin that holds "01 CONTEXTO"
-   *   --measure  the column of type, at about 64 characters
-   *   --wide     what a figure may take. Wider than the type, narrower than the page.
+   *   --measure  the column of type
+   *   --wide     what a figure may take
+   *
+   * Both run the full width of the column at João's instruction: nothing on this page stops
+   * short of the rule any more. They stay as tokens because they are the one place a cap could
+   * ever come back, and because every block on the case page measures against them.
+   *
+   * What holds the line length in check is the type, which now scales with the column instead of
+   * sitting at 17px inside it — about ninety characters a line at every width, at 22px on a
+   * laptop and 30px on a 1920 screen.
    */
   --rail: 205px;
   --railGap: 62px;
-  --measure: 623px;
-  --wide: 790px;
+  --measure: 100%;
+  --wide: 100%;
 
   max-width: 1920px;
   margin: 0 auto;
@@ -143,7 +151,7 @@
   padding-bottom: 14px;
   border-bottom: 1px solid var(--hairline);
 
-  font-size: 11.5px;
+  font-size: clamp(12px, 1vw, 18px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-light);
@@ -159,7 +167,7 @@
 .railOf {
   display: block;
   margin-top: 10px;
-  font-size: 11px;
+  font-size: clamp(11px, 0.9vw, 16px);
   letter-spacing: 0.1em;
   font-variant-numeric: tabular-nums;
   color: var(--muted-light);
@@ -350,17 +358,6 @@
 }
 
 /* --------------------------------------------------------- narrow pages */
-
-@media (max-width: 1199px) {
-  /*
-   * --wide gives up first, --measure never does: the measure is the one number on this page that
-   * is a typographic decision rather than a layout one, and letting it stretch to the viewport
-   * is how a 64-character line quietly becomes an 86-character one.
-   */
-  .doc {
-    --wide: 100%;
-  }
-}
 
 @media (max-width: 999px) {
   .part {

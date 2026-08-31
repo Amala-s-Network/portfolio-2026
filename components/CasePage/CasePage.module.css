@@ -47,7 +47,7 @@
 
 .metaLabel {
   margin: 0;
-  font-size: 11.5px;
+  font-size: clamp(12px, 1vw, 18px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-light);
@@ -55,7 +55,7 @@
 
 .metaValue {
   margin: 9px 0 0;
-  font-size: 15px;
+  font-size: clamp(15px, 1.3vw, 25px);
   line-height: var(--lh-body);
   color: var(--ink);
   font-variant-numeric: tabular-nums;
@@ -68,28 +68,31 @@
 }
 
 /*
- * The body size is set from the measure, not carried over from the spread.
+ * The body size scales with the column.
  *
- * The old page ran 15.5px because it flowed down two 300px columns. One 623px column at that
- * size is a 78-character line, which is outside the range typography has agreed on. Same face,
- * same colour, same leading — the size is the one thing the new layout gets to decide.
+ * The column runs the full width of the sheet now, so a fixed 17px would be a 130-character line
+ * on a wide screen and would read as small type stranded in a big space — João's word for it was
+ * ridiculous, and he is right. Tying the size to the viewport holds the line at about ninety
+ * characters at every width instead: 22px on a laptop, 30px on a 1920 screen.
+ *
+ * The leading comes down as the size goes up, because 1.68 at 30px is a gap, not a rhythm.
  */
 .flow p {
   margin: 0;
-  font-size: clamp(16px, 1.15vw, 17.5px);
-  line-height: 1.68;
+  font-size: clamp(17px, 1.95vw, 40px);
+  line-height: 1.5;
   color: var(--body);
 }
 
 .flow p + p {
-  margin-top: 17px;
+  margin-top: 0.9em;
 }
 
 /* The line under a heading, in the newspaper sense: what the part is about, in one breath. */
 .flowLead p {
-  font-size: clamp(17px, 1.35vw, 23px);
+  font-size: clamp(20px, 2.45vw, 50px);
   font-weight: 300;
-  line-height: 1.55;
+  line-height: 1.34;
   color: var(--body);
 }
 
@@ -120,9 +123,9 @@
   max-width: var(--measure);
 
   font-family: var(--font-playfair), Georgia, serif;
-  font-size: clamp(19px, 1.5vw, 27px);
+  font-size: clamp(23px, 2.75vw, 56px);
   font-weight: 400;
-  line-height: 1.28;
+  line-height: 1.18;
   letter-spacing: -0.015em;
   color: var(--ink);
 
@@ -154,7 +157,7 @@
   padding-bottom: 18px;
   border-bottom: 1px solid var(--hairline);
 
-  font-size: 11.5px;
+  font-size: clamp(12px, 1vw, 18px);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--muted-light);
@@ -162,13 +165,9 @@
 
 .noteBody p {
   margin: 0;
-  font-size: clamp(15.5px, 1.05vw, 17px);
-  line-height: 1.68;
+  font-size: clamp(17px, 1.95vw, 40px);
+  line-height: 1.5;
   color: var(--body);
-}
-
-.noteBody .flow p + p {
-  margin-top: 17px;
 }
 
 /* What was his, on the site's own diamond. */
@@ -180,9 +179,9 @@
 
 .contribution li {
   position: relative;
-  padding-left: 24px;
-  font-size: clamp(15.5px, 1.05vw, 17px);
-  line-height: 1.6;
+  padding-left: clamp(24px, 2.2vw, 46px);
+  font-size: clamp(17px, 1.95vw, 40px);
+  line-height: 1.45;
   color: var(--body);
 }
 
@@ -194,9 +193,9 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 10px;
-  width: 8px;
-  height: 8px;
+  top: 0.55em;
+  width: clamp(8px, 0.75vw, 15px);
+  height: clamp(8px, 0.75vw, 15px);
   background: var(--accent);
   transform: rotate(45deg);
 }
@@ -215,7 +214,7 @@
   max-width: var(--measure);
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
   gap: 1px;
   background: var(--hairline);
   border: 1px solid var(--hairline);
@@ -224,27 +223,27 @@
 .cards .point {
   display: flex;
   flex-direction: column;
-  gap: 7px;
-  padding: 18px 18px 20px;
+  gap: 9px;
+  padding: clamp(18px, 1.6vw, 30px) clamp(18px, 1.6vw, 30px) clamp(20px, 1.8vw, 34px);
   background: var(--paper);
 }
 
 .pointNum {
-  font-size: 11px;
+  font-size: clamp(11px, 0.82vw, 14px);
   letter-spacing: 0.14em;
   font-variant-numeric: tabular-nums;
   color: var(--muted-light);
 }
 
 .pointTitle {
-  font-size: 15px;
+  font-size: clamp(17px, 1.5vw, 30px);
   font-weight: 600;
   line-height: 1.3;
   color: var(--ink);
 }
 
 .pointBody {
-  font-size: 13.5px;
+  font-size: clamp(15px, 1.3vw, 26px);
   line-height: 1.5;
   color: var(--body);
 }
@@ -261,14 +260,14 @@
 .principles .point {
   display: flex;
   align-items: baseline;
-  gap: 14px;
-  padding: 11px 0;
+  gap: clamp(14px, 1.2vw, 22px);
+  padding: clamp(11px, 1vw, 18px) 0;
   border-bottom: 1px solid var(--hairline);
 }
 
 .principles .pointTitle {
   font-weight: 400;
-  font-size: 16px;
+  font-size: clamp(18px, 1.65vw, 32px);
   color: var(--ink);
 }
 
@@ -299,7 +298,7 @@
   gap: 14px;
   margin: 0 0 14px;
 
-  font-size: 11.5px;
+  font-size: clamp(12px, 1vw, 18px);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--muted-light);
@@ -319,9 +318,9 @@
  */
 .numbers {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
-  column-gap: 34px;
-  row-gap: 26px;
+  grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr));
+  column-gap: clamp(34px, 3vw, 64px);
+  row-gap: clamp(26px, 3vh, 44px);
   margin-top: clamp(24px, 4vh, 48px);
   max-width: var(--wide);
 }
@@ -333,7 +332,7 @@
 /* The light weight the metrics band uses. A figure this size does not need to be bold as well. */
 .numberValue {
   display: block;
-  font-size: clamp(32px, 3.2vw, 52px);
+  font-size: clamp(36px, 4vw, 76px);
   font-weight: 300;
   line-height: 1;
   letter-spacing: -0.03em;
@@ -343,8 +342,8 @@
 
 .numberLabel {
   display: block;
-  margin-top: 12px;
-  font-size: 11.5px;
+  margin-top: clamp(12px, 1.2vh, 18px);
+  font-size: clamp(12px, 1vw, 18px);
   letter-spacing: 0.12em;
   color: var(--muted-light);
 }
@@ -352,7 +351,7 @@
 .numberNote {
   display: block;
   margin-top: 9px;
-  font-size: 13.5px;
+  font-size: clamp(14px, 1.25vw, 24px);
   line-height: var(--lh-body);
   color: var(--body);
   padding-right: 18px;
@@ -376,8 +375,8 @@
 
 .gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
-  gap: clamp(20px, 2.4vw, 36px);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+  gap: clamp(20px, 2.4vw, 44px);
   max-width: var(--wide);
 }
 
@@ -397,10 +396,9 @@
 
 .fullLine {
   margin: 0;
-  font-size: 14px;
+  font-size: clamp(15px, 1.35vw, 26px);
   line-height: var(--lh-body);
   color: var(--muted-light);
-  max-width: 46ch;
   flex: 1 1 260px;
 }
 
@@ -411,12 +409,12 @@
   gap: 12px;
 
   min-height: 42px;
-  padding: 11px 20px;
+  padding: clamp(11px, 1vw, 16px) clamp(20px, 1.8vw, 32px);
 
   border: 1px solid var(--ink);
   background: var(--ink);
   color: var(--paper);
-  font-size: 14.5px;
+  font-size: clamp(14.5px, 1.25vw, 22px);
   text-decoration: none;
 
   transition: background-color 0.35s var(--ease), color 0.35s var(--ease);
@@ -429,7 +427,7 @@
 }
 
 .fullWeight {
-  font-size: 11.5px;
+  font-size: clamp(11.5px, 0.95vw, 16px);
   letter-spacing: 0.08em;
   opacity: 0.72;
 }
