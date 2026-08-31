@@ -138,7 +138,21 @@ export function CasePage({ slug }: { slug: string }) {
   const fullStudy = data.pdf ? (
     <div className={styles.full}>
       <p className={styles.fullLine}>{t(caseFull.line)}</p>
-      <a className={styles.fullAction} href={data.pdf} download>
+      {/*
+       * Opened, not downloaded.
+       *
+       * The `download` attribute committed the reader to a 20MB file before they had seen a page
+       * of it. The study lives on Drive now, so this opens the viewer and leaves the download to
+       * them. New tab because it is another site, `noopener noreferrer` because any link that
+       * opens one should carry it, and the destination is named in the link itself rather than
+       * left as a surprise.
+       */}
+      <a
+        className={styles.fullAction}
+        href={data.pdf}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         {t(caseFull.action)}
         <span className={styles.fullWeight}>{t(caseFull.weight)}</span>
       </a>

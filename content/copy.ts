@@ -1098,7 +1098,17 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'reserva-ink-aparencia-de-loja': {
     slug: 'reserva-ink-aparencia-de-loja',
-    pdf: '/cases/reserva-ink-aparencia-de-loja/case-completo.pdf',
+    /*
+     * The full study, on João's Drive rather than served from here.
+     *
+     * It used to be a 20MB file in public/ behind a `download` attribute, which committed the
+     * reader to a 20MB download before they had seen a page of it. On Drive the link opens the
+     * viewer and the download is their choice, which is the whole point of the change.
+     *
+     * ⚠️ public/cases/reserva-ink-aparencia-de-loja/case-completo.pdf is now unreferenced and
+     * still ships in the build at 20MB. It is left in place for João to say whether it goes.
+     */
+    pdf: 'https://drive.google.com/file/d/1LnH4X2oZ_dpIhVL7gWHmBSAzsijqugtx/view?usp=drive_link',
     proto: {
       heading: {
         pt: 'O fluxo, do jeito que o lojista percorre',
@@ -2436,12 +2446,19 @@ export const inProduction = {
  */
 export const caseFull = {
   line: {
-    pt: 'Esta é uma versão resumida deste case. Para ver o estudo completo, baixe o arquivo em PDF.',
-    en: 'This is a short version of the case. For the full study, download the PDF.',
+    pt: 'Esta é uma versão resumida deste case. O estudo completo abre para leitura, e você baixa só se quiser.',
+    en: 'This is a short version of the case. The full study opens for reading, and you download it only if you want to.',
   } satisfies T,
-  action: { pt: 'Baixar o case em PDF', en: 'Download the case as a PDF' } satisfies T,
-  /** Stated because a 20MB download that starts without warning is a rude surprise. */
-  weight: { pt: 'PDF · 20 MB', en: 'PDF · 20 MB' } satisfies T,
+  action: { pt: 'Ver o case completo', en: 'Read the full case' } satisfies T,
+  /**
+   * Where the link goes, said before it is followed.
+   *
+   * It replaces the file weight. The study is on Drive now, so nothing downloads on the click —
+   * the reader gets the viewer and decides for themselves, which is what João asked for. What
+   * they still deserve to know is that this leaves the site (WCAG 3.2.5), and that is what this
+   * line is for.
+   */
+  weight: { pt: 'Abre no Google Drive', en: 'Opens in Google Drive' } satisfies T,
 };
 
 export const caseProto = {
