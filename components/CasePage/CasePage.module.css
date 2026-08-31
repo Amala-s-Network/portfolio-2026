@@ -74,9 +74,10 @@
  * size is a 78-character line, which is outside the range typography has agreed on. Same face,
  * same colour, same leading — the size is the one thing the new layout gets to decide.
  */
+/* 18px, o numero do Joao, na caixa de 1000px. Flat, nao fluido: ele pediu um tamanho. */
 .flow p {
   margin: 0;
-  font-size: clamp(16px, 1.15vw, 17.5px);
+  font-size: 18px;
   line-height: 1.68;
   color: var(--body);
 }
@@ -91,23 +92,6 @@
   font-weight: 300;
   line-height: 1.55;
   color: var(--body);
-}
-
-/*
- * The dropped capital.
- *
- * The oldest trick in the trade and still the one that most reliably says "this is an article and
- * it starts here". Three lines deep, serif, tight against the text — and only on the first
- * paragraph of a chapter, because a page with several is a page with none.
- */
-.flowDrop > p:first-child::first-letter {
-  float: left;
-  font-family: var(--font-playfair), Georgia, serif;
-  font-weight: 700;
-  font-size: 3.1em;
-  line-height: 0.82;
-  padding: 0.06em 0.1em 0 0;
-  color: var(--ink);
 }
 
 /*
@@ -160,9 +144,10 @@
   color: var(--muted-light);
 }
 
+/* The same 18px. It is the same kind of text, and the box is the same width now. */
 .noteBody p {
   margin: 0;
-  font-size: clamp(15.5px, 1.05vw, 17px);
+  font-size: 18px;
   line-height: 1.68;
   color: var(--body);
 }
@@ -181,7 +166,7 @@
 .contribution li {
   position: relative;
   padding-left: 24px;
-  font-size: clamp(15.5px, 1.05vw, 17px);
+  font-size: 18px;
   line-height: 1.6;
   color: var(--body);
 }

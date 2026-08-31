@@ -51,13 +51,9 @@ function readingMinutes(words: number) {
 }
 
 /** A paragraph run, split on blank lines the way the copy is written. */
-function Flow({ text, lead, drop }: { text: string; lead?: boolean; drop?: boolean }) {
+function Flow({ text, lead }: { text: string; lead?: boolean }) {
   return (
-    <div
-      className={[styles.flow, lead ? styles.flowLead : '', drop ? styles.flowDrop : '']
-        .filter(Boolean)
-        .join(' ')}
-    >
+    <div className={[styles.flow, lead ? styles.flowLead : ''].filter(Boolean).join(' ')}>
       {text.split(/\n{2,}/).map((para, i) => (
         <p key={i}>{para}</p>
       ))}
@@ -287,7 +283,7 @@ export function CasePage({ slug }: { slug: string }) {
       label: heading,
       node: (
         <>
-          <Flow drop text={t(d.body)} />
+          <Flow text={t(d.body)} />
 
           {d.quote && <p className={styles.pull}>{t(d.quote)}</p>}
 

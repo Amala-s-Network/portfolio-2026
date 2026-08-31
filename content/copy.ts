@@ -1120,10 +1120,20 @@ export const caseDetails: Record<string, CaseDetail> = {
         { src: '/cases/reserva-ink-aparencia-de-loja/proto/08.webp', label: { pt: 'A loja pronta, salva e publicada', en: 'The store finished, saved and published' } },
       ],
     },
-    year: '2023-2024',
+    year: '2024-2025',
     role: { pt: 'Product Designer', en: 'Product Designer' },
-    /* The project, not the tenure. He was at INK for a year and four months; this took four weeks. */
-    duration: { pt: '4 semanas', en: '4 weeks' },
+    /*
+     * The project, not the tenure — the tenure is what the history section carries.
+     *
+     * ⚠️ Both corrected by João on 2026-08-30. Two things now disagree with him and he has to
+     * say which way they go:
+     *   the narrative still says four weeks, in the trade-off, the hardest part, "o que mudou"
+     *   and what it unlocked (and in all four English twins)
+     *   the history section still has Reserva INK at 2023-2024
+     */
+    duration: { pt: '2 semanas', en: '2 weeks' },
+    /* Stated rather than counted from the words on the page. João's number. */
+    readTime: 5,
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
 
     /*

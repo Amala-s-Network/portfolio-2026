@@ -19,13 +19,17 @@
    * The grid, in tokens so the case's own blocks can measure against the same numbers.
    *
    *   --rail     the margin that holds "01 CONTEXTO"
-   *   --measure  the column of type, at about 64 characters
-   *   --wide     what a figure may take. Wider than the type, narrower than the page.
+   *   --measure  the column of type
+   *   --wide     what a figure may take
+   *
+   * Both are 1000px at João's instruction, and both are the SAME 1000px on purpose: his note on
+   * the chapters was to line the pictures up with the text box rather than leave them at a
+   * width of their own. One number, one right edge, every block on the page.
    */
   --rail: 205px;
   --railGap: 62px;
-  --measure: 623px;
-  --wide: 790px;
+  --measure: 1000px;
+  --wide: 1000px;
 
   max-width: 1920px;
   margin: 0 auto;
