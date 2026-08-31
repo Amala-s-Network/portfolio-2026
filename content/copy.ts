@@ -77,14 +77,14 @@ export const hero = {
   paragraph: {
     pt: [
       'Oi! Eu sou o João. Trabalho com design há 9 anos, sendo 6 deles em produtos',
-      'digitais. Já passei por grandes bancos, varejo de alto volume, consultoria',
-      'global e startups. Hoje meu foco está em craft, métricas e IA. Atuo em',
-      'nível senior e acompanho o projeto do começo ao fim, sempre perto dos',
-      'times de produto e engenharia, usando IA para acelerar pesquisa e protótipo.',
+      'digitais. Já passei pelo segmento de banking, varejo de alto volume,',
+      'consultoria global e startups. Hoje meu foco está em craft, métricas e IA.',
+      'Atuo em nível senior e acompanho o projeto do começo ao fim, sempre perto',
+      'dos times de produto e engenharia, usando IA para acelerar pesquisa e protótipo.',
     ],
     en: [
       'Hi! I’m João. I have worked in design for 9 years, 6 of them on digital',
-      'products. I have been through big banks, high-volume retail, a global',
+      'products. I have been through banking, high-volume retail, a global',
       'consultancy and startups. These days my focus is craft, metrics and AI.',
       'I work at senior level and stay with a project from start to finish,',
       'always close to the product and engineering teams, using AI to speed up',
@@ -109,14 +109,14 @@ export const hero = {
       'projeto aqui teve uma escolha complicada no meio do caminho: um prazo',
       'curto, uma regra do sistema que não cabia no caso real, ou o negócio',
       'pedindo uma coisa diferente do que as pessoas faziam. Nas páginas a',
-      'seguir eu conto o que decidi, o que ficou de fora e no que deu.',
+      'seguir eu conto o que decidi, o que ficou de fora e quais foram os resultados.',
     ],
     en: [
       'I like showing the whole process, difficult parts included. Every project',
       'here had a hard call somewhere along the way: a short deadline, a system',
       'rule that did not fit the real case, or the business asking for one thing',
       'while people were doing something else entirely. On the pages that follow',
-      'I say what I decided, what got left out, and how it turned out. The',
+      'I say what I decided, what got left out, and what the results were. The',
       'numbers are all there to check.',
     ],
   } satisfies Record<Lang, string[]>,
@@ -1196,9 +1196,14 @@ export const caseDetails: Record<string, CaseDetail> = {
         en: 'From 70 to 80 a week down to around 8 or 9, an estimated saving of R$3,000 a month.',
       },
     },
-    /* João's own wording, 2026-08-30. */
+    /*
+     * João's own wording, 2026-08-30, with one correction he asked for on 2026-08-31:
+     * "Haviam lojistas" → "Havia lojistas". In this sense haver does not agree with what follows.
+     *
+     * "senior" stays unaccented in the About text, also his call. It is not a slip there.
+     */
     context: {
-      pt: 'Configurar a aparência da loja era uma das maiores fontes de reclamação do produto. Haviam lojistas que passavam o Dia dos Namorados com o tema de Natal no ar pois não entendiam o sentido da ferramenta.',
+      pt: 'Configurar a aparência da loja era uma das maiores fontes de reclamação do produto. Havia lojistas que passavam o Dia dos Namorados com o tema de Natal no ar pois não entendiam o sentido da ferramenta.',
       en: 'Setting up a store’s appearance was one of the product’s biggest sources of complaints. There were sellers who spent Valentine’s Day with a Christmas theme still live, because the point of the tool never landed for them.',
     },
 
@@ -1981,20 +1986,21 @@ export const about = {
   heading: { pt: 'Sobre mim', en: 'About me' } satisfies T,
 
   /*
-   * João's own words, verbatim (2026-08-31). Not paraphrased and not tidied.
+   * NOT the self-introduction. That one lives in the hero, at the top of the same page.
    *
-   * The second paragraph is the one that earns the section: it says the cases have a hard choice
-   * in the middle and that he will name what got left out. Every case page then has to deliver
-   * on that — which is exactly what `tradeoff` and `decision` are for.
+   * The text João sent on 2026-08-31 turned out to be a revision of the hero's two columns, and
+   * it went in here by mistake first — which put "Oi! Eu sou o João" twice on the one-pager,
+   * three thousand pixels apart. His edits went to the hero, where that paragraph belongs, and
+   * this section kept what it had: the part of the story the hero has no room for.
    */
   paragraphs: {
     pt: [
-      'Oi! Eu sou o João. Trabalho com design há 9 anos, sendo 6 deles em produtos digitais. Já passei pelo segmento de banking, varejo de alto volume, consultoria global e startups. Hoje meu foco está em craft, métricas e IA. Atuo em nível senior e acompanho o projeto do começo ao fim, sempre perto dos times de produto e engenharia, usando IA para acelerar pesquisa e protótipo.',
-      'Gosto de mostrar o processo inteiro, com as partes difíceis junto. Todo projeto aqui teve uma escolha complicada no meio do caminho: um prazo curto, uma regra do sistema que não cabia no caso real, ou o negócio pedindo uma coisa diferente do que as pessoas faziam. Nas páginas a seguir eu conto o que decidi, o que ficou de fora e quais foram os resultados.',
+      'Minha carreira começou no branding, desenhando identidade e campanha, e eu fui levando esse repertório visual para dentro do produto digital. Hoje combino Continuous Discovery com processos ágeis para chegar em soluções que equilibram experiência, viabilidade técnica e resultado de negócio, desde MVPs até jornadas complexas em larga escala.',
+      'Ao longo do caminho passei por grandes bancos, varejo de alto volume, consultoria global e startups, tanto early-stage quanto scale-up. Uso inteligência artificial para acelerar etapas do processo, como síntese de pesquisa, geração de wireframes, testes de usabilidade e verificação de acessibilidade.',
     ],
     en: [
-      'Hi! I am João. I have worked in design for 9 years, 6 of them in digital products. I have been through banking, high-volume retail, a global consultancy and startups. These days my focus is craft, metrics and AI. I work at a senior level and stay with a project from beginning to end, always close to the product and engineering teams, using AI to speed up research and prototyping.',
-      'I like showing the whole process, with the difficult parts left in. Every project here had an awkward choice somewhere in the middle: a short deadline, a system rule that did not fit the real case, or the business asking for one thing while people did another. In the pages that follow I tell you what I decided, what got left out, and what the results were.',
+      'My career started in branding, designing identities and campaigns, and I carried that visual repertoire with me into digital product. These days I combine Continuous Discovery with agile process to reach solutions that balance experience, technical feasibility and business outcome, from MVPs through to complex journeys at scale.',
+      'Along the way I have worked in big banks, high-volume retail, a global consultancy, and startups both early-stage and scale-up. I use AI to speed up parts of the process, things like research synthesis, wireframe generation, usability testing and accessibility checks.',
     ],
   } satisfies Record<Lang, string[]>,
 
