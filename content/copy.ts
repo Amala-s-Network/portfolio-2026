@@ -1980,14 +1980,21 @@ export const about = {
 
   heading: { pt: 'Sobre mim', en: 'About me' } satisfies T,
 
+  /*
+   * João's own words, verbatim (2026-08-31). Not paraphrased and not tidied.
+   *
+   * The second paragraph is the one that earns the section: it says the cases have a hard choice
+   * in the middle and that he will name what got left out. Every case page then has to deliver
+   * on that — which is exactly what `tradeoff` and `decision` are for.
+   */
   paragraphs: {
     pt: [
-      'Minha carreira começou no branding, desenhando identidade e campanha, e eu fui levando esse repertório visual para dentro do produto digital. Hoje combino Continuous Discovery com processos ágeis para chegar em soluções que equilibram experiência, viabilidade técnica e resultado de negócio, desde MVPs até jornadas complexas em larga escala.',
-      'Ao longo do caminho passei por grandes bancos, varejo de alto volume, consultoria global e startups, tanto early-stage quanto scale-up. Uso inteligência artificial para acelerar etapas do processo, como síntese de pesquisa, geração de wireframes, testes de usabilidade e verificação de acessibilidade.',
+      'Oi! Eu sou o João. Trabalho com design há 9 anos, sendo 6 deles em produtos digitais. Já passei pelo segmento de banking, varejo de alto volume, consultoria global e startups. Hoje meu foco está em craft, métricas e IA. Atuo em nível senior e acompanho o projeto do começo ao fim, sempre perto dos times de produto e engenharia, usando IA para acelerar pesquisa e protótipo.',
+      'Gosto de mostrar o processo inteiro, com as partes difíceis junto. Todo projeto aqui teve uma escolha complicada no meio do caminho: um prazo curto, uma regra do sistema que não cabia no caso real, ou o negócio pedindo uma coisa diferente do que as pessoas faziam. Nas páginas a seguir eu conto o que decidi, o que ficou de fora e quais foram os resultados.',
     ],
     en: [
-      'My career started in branding, designing identities and campaigns, and I carried that visual repertoire with me into digital product. These days I combine Continuous Discovery with agile process to reach solutions that balance experience, technical feasibility and business outcome, from MVPs through to complex journeys at scale.',
-      'Along the way I have worked in big banks, high-volume retail, a global consultancy, and startups both early-stage and scale-up. I use AI to speed up parts of the process, things like research synthesis, wireframe generation, usability testing and accessibility checks.',
+      'Hi! I am João. I have worked in design for 9 years, 6 of them in digital products. I have been through banking, high-volume retail, a global consultancy and startups. These days my focus is craft, metrics and AI. I work at a senior level and stay with a project from beginning to end, always close to the product and engineering teams, using AI to speed up research and prototyping.',
+      'I like showing the whole process, with the difficult parts left in. Every project here had an awkward choice somewhere in the middle: a short deadline, a system rule that did not fit the real case, or the business asking for one thing while people did another. In the pages that follow I tell you what I decided, what got left out, and what the results were.',
     ],
   } satisfies Record<Lang, string[]>,
 
