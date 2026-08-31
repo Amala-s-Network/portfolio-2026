@@ -1135,11 +1135,15 @@ export const caseDetails: Record<string, CaseDetail> = {
     /*
      * The project, not the tenure — the tenure is what the history section carries.
      *
-     * ⚠️ Both corrected by João on 2026-08-30. Two things now disagree with him and he has to
-     * say which way they go:
-     *   the narrative still says four weeks, in the trade-off, the hardest part, "o que mudou"
-     *   and what it unlocked (and in all four English twins)
-     *   the history section still has Reserva INK at 2023-2024
+     * Both corrected by João on 2026-08-30, and he settled what to do about the fallout:
+     *
+     *   the narrative still says four weeks in four places — the trade-off, the hardest part,
+     *   "o que mudou" and what it unlocked, plus the English twins. LEFT AS IS, his call. Do not
+     *   "fix" it to match this field.
+     *   the one week he spent building the prototype is in `contribution`, not here: this field
+     *   is the project's duration and that was his part of it.
+     *
+     * ⚠️ Still open: the history section has Reserva INK at 2023-2024 while this says 2024-2025.
      */
     duration: { pt: '2 semanas', en: '2 weeks' },
     /* Stated rather than counted from the words on the page. João's number. */
@@ -1292,6 +1296,15 @@ export const caseDetails: Record<string, CaseDetail> = {
     },
 
     contribution: [
+      /*
+       * His hands-on time, at his instruction (2026-08-30): the project ran two weeks and the
+       * prototype was one of them, his. It lives here rather than in `duration` because the
+       * duration field is the project's and this is the part that was his.
+       */
+      {
+        pt: 'Construí o protótipo do fluxo novo em 1 semana.',
+        en: 'Built the prototype of the new flow in one week.',
+      },
       {
         pt: 'Reescrevi o fluxo de configuração de aparência em cima de clareza, agilidade e controle.',
         en: 'Rewrote the appearance configuration flow around clarity, speed and control.',
