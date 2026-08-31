@@ -43,3 +43,12 @@ next-env.d.ts
 .vercel
 .env*
 .source-images/
+
+# The drop folder's originals.
+#
+# imagens/ is where João leaves raw files for me to convert; what ships is the optimised copy in
+# public/. Versioning both would put the same 5MB video in the repo twice and add 3MB of source
+# PNGs that nothing reads. The folder itself and its LEIA-ME stay tracked.
+imagens/*
+!imagens/.gitkeep
+!imagens/LEIA-ME.md

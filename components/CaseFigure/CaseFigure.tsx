@@ -57,7 +57,14 @@ export function CaseFigure({ media, slug }: { media: CaseMedia; slug: string }) 
 
   return (
     <figure className={styles.figure}>
-      <div className={styles.frame}>
+      {/*
+       * The frame is the picture's own shape, declared in the copy.
+       *
+       * It is a reserved box either way — a video needs somewhere to sit before its metadata
+       * arrives, and a page that jumps as images land is worse than one that waits — but the box
+       * is now the right one, and nothing inside it is cropped to fit.
+       */}
+      <div className={styles.frame} data-ratio={media.ratio}>
         {kind === 'video' && media.src ? (
           <video
             ref={video}

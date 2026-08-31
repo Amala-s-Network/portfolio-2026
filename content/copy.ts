@@ -691,6 +691,13 @@ export type CaseMedia = {
    * WCAG 2.2.2 both require of anything that moves for more than five seconds.
    */
   kind?: 'still' | 'video' | 'frames';
+  /**
+   * The picture's own shape, so the frame is the right box before the file arrives.
+   *
+   * Without it the frame guessed 16:9 and cropped whatever did not fit. Declared, the box is
+   * the picture's own and nothing is cut — and the page does not jump when the image loads.
+   */
+  ratio?: '16:9' | '4:3' | '5:4' | '3:4' | '1:1';
   /** For kind: 'video' — the still shown before it plays, and under reduced motion. */
   poster?: string;
   /** For kind: 'frames' — the stills, in order. */
@@ -733,7 +740,7 @@ export type CaseMarkSpec = {
 export type CasePlateSpec = {
   /** null until the real artwork exists; the case's generated placeholder stands in. */
   src: string | null;
-  ratio?: '4:3' | '16:9' | '3:4' | '1:1';
+  ratio?: '4:3' | '5:4' | '16:9' | '3:4' | '1:1';
   caption: T;
   /** DEV ONLY. What picture goes here, in enough detail to go and take it. */
   brief?: T;
@@ -751,9 +758,24 @@ export type CasePlateSpec = {
 export type CaseProtoSpec = {
   heading: T;
   note: T;
+  /**
+   * A screen recording of the prototype being used.
+   *
+   * When it is here, it plays instead of the exported frames — a recording shows the thing
+   * moving, which is what a prototype is, and eight stills of it never quite do. The frames stay
+   * in `steps` because they are still the list of what the flow covers, and because a reader who
+   * has asked for reduced motion gets the first of them instead of a video that will not play.
+   */
+  video?: { src: string; width: number; height: number };
   steps: { src: string; label: T }[];
-  /** The whole board, small, under the player: how much there is behind the frames above. */
-  map?: string;
+  /**
+   * The whole board under the player: how much there is behind the frames above.
+   *
+   * Carried with its dimensions because it is shown whole now. An image with no declared size
+   * and  is two pixels tall until it loads and six hundred after, which is a jump
+   * at the foot of the page rather than a picture arriving.
+   */
+  map?: { src: string; width: number; height: number };
 };
 
 export type CaseSection = {
@@ -1118,7 +1140,13 @@ export const caseDetails: Record<string, CaseDetail> = {
         pt: 'Oito telas do protótipo navegável, exportadas do Figma. O fluxo roda sozinho e para assim que você toca nele.',
         en: 'Eight screens from the navigable prototype, exported from Figma. It plays on its own and stops the moment you touch it.',
       },
-      map: '/cases/reserva-ink-aparencia-de-loja/proto/mapa.webp',
+      /* João's own OBS capture of the flow, 37 seconds, 1920x1080. */
+      video: {
+        src: '/cases/reserva-ink-aparencia-de-loja/proto/fluxo.mp4',
+        width: 1920,
+        height: 1080,
+      },
+      map: { src: '/cases/reserva-ink-aparencia-de-loja/proto/mapa.webp', width: 2200, height: 1357 },
       steps: [
         { src: '/cases/reserva-ink-aparencia-de-loja/proto/01.webp', label: { pt: 'Aparência de Loja, como o lojista encontra', en: 'Store Appearance, as a seller finds it' } },
         { src: '/cases/reserva-ink-aparencia-de-loja/proto/02.webp', label: { pt: 'Cores da marca e página inicial', en: 'Brand colours and home page' } },
@@ -1130,22 +1158,19 @@ export const caseDetails: Record<string, CaseDetail> = {
         { src: '/cases/reserva-ink-aparencia-de-loja/proto/08.webp', label: { pt: 'A loja pronta, salva e publicada', en: 'The store finished, saved and published' } },
       ],
     },
-    year: '2024-2025',
+    year: '2023-2024',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     /*
      * The project, not the tenure — the tenure is what the history section carries.
      *
-     * Both corrected by João on 2026-08-30, and he settled what to do about the fallout:
+     * Settled by João on 2026-08-30, after a detour through 2 weeks and 2024-2025 and back:
+     * four weeks end to end, of which one was design and the rest was development. The one week
+     * that was his is in `contribution`, where it belongs; this field is the project's.
      *
-     *   the narrative still says four weeks in four places — the trade-off, the hardest part,
-     *   "o que mudou" and what it unlocked, plus the English twins. LEFT AS IS, his call. Do not
-     *   "fix" it to match this field.
-     *   the one week he spent building the prototype is in `contribution`, not here: this field
-     *   is the project's duration and that was his part of it.
-     *
-     * ⚠️ Still open: the history section has Reserva INK at 2023-2024 while this says 2024-2025.
+     * That also puts this back in agreement with the four mentions of four weeks in the
+     * narrative, and with Reserva INK at 2023-2024 in the history section.
      */
-    duration: { pt: '2 semanas', en: '2 weeks' },
+    duration: { pt: '4 semanas', en: '4 weeks' },
     /* Stated rather than counted from the words on the page. João's number. */
     readTime: 5,
     team: { pt: 'Reserva INK · grupo AZZAS 2154', en: 'Reserva INK · AZZAS 2154 group' },
@@ -1164,22 +1189,31 @@ export const caseDetails: Record<string, CaseDetail> = {
         en: 'From 70 to 80 a week down to around 8 or 9, an estimated saving of R$3,000 a month.',
       },
     },
+    /* João's own wording, 2026-08-30. */
     context: {
-      pt: 'Configurar a aparência da loja era a maior fonte de reclamação do produto. Teve lojista que passou o Dia dos Namorados com o tema de Natal no ar porque não conseguia trocar.',
-      en: 'Setting up a store’s appearance was the product’s biggest source of complaints. Some sellers spent Valentine’s Day with a Christmas theme still live, because they could not work out how to change it.',
+      pt: 'Configurar a aparência da loja era uma das maiores fontes de reclamação do produto. Haviam lojistas que passavam o Dia dos Namorados com o tema de Natal no ar pois não entendiam o sentido da ferramenta.',
+      en: 'Setting up a store’s appearance was one of the product’s biggest sources of complaints. There were sellers who spent Valentine’s Day with a Christmas theme still live, because the point of the tool never landed for them.',
     },
 
+    /*
+     * Trimmed where it repeated the chapter it now sits inside.
+     *
+     * "O produto e o problema" already says the tool is where a seller sets colour, typeface and
+     * banner; this said it a second time, in almost the same words, and João's note was that the
+     * two were redundant. The sentence that defined the tool is gone. Nothing else changed —
+     * the origin as an MVP and the closing line are the part the chapter did not have.
+     */
     conflict: {
-      pt: 'A INK nasceu como startup early stage, chamada Touts, e cresceu rápido. Para ganhar tração, boa parte das funcionalidades foi construída em formato de MVP, e a Aparência de Loja foi uma delas. O problema é que ela não era um canto qualquer do produto: era onde o lojista define cor, fonte, banner e tudo que comunica quem ele é. A velocidade que fez a plataforma existir foi a mesma que deixou a área mais estratégica dela confusa.',
-      en: 'INK started life as an early-stage startup called Touts, and it grew fast. To gain traction, a good part of the product was built as an MVP, and Store Appearance was one of those parts. The trouble is that it was not just any corner of the product: it is where a seller sets colour, typeface, banner and everything that says who they are. The speed that made the platform exist is the same speed that left its most strategic area confusing.',
+      pt: 'A INK nasceu como startup early stage, chamada Touts, e cresceu rápido. Para ganhar tração, boa parte das funcionalidades foi construída em formato de MVP, e a Aparência de Loja foi uma delas. A velocidade que fez a plataforma existir foi a mesma que deixou a área mais estratégica dela confusa.',
+      en: 'INK started life as an early-stage startup called Touts, and it grew fast. To gain traction, a good part of the product was built as an MVP, and Store Appearance was one of those parts. The speed that made the platform exist is the same speed that left its most strategic area confusing.',
     },
     tradeoff: {
       pt: 'Abri mão de reconstruir a ferramenta inteira. Dava para argumentar por uma refatoração completa, e teria sido a resposta bonita, mas eram 4 semanas e mais de 60 mil lojistas já usando aquilo todo dia. Trabalhei dentro da estrutura que existia e concentrei o esforço na clareza do fluxo, na previsibilidade do resultado e no controle que faltava.',
       en: 'I gave up rebuilding the whole tool. There was a case to be made for a full refactor, and it would have been the pretty answer, but we had four weeks and more than 60,000 sellers already using it every day. I worked inside the structure that was there and put the effort into clarity of flow, predictability of the result, and the control that was missing.',
     },
     decision: {
-      pt: 'Deixei o suporte escolher o que arrumar primeiro. Os tickets de reclamação diziam, com nome e sobrenome, onde o fluxo quebrava, então a fila de prioridade veio deles e não da minha opinião sobre o que estava feio. Depois de meses de discovery, a proposta nova ficou em cima de três coisas: clareza, agilidade e controle.',
-      en: 'I let support decide what to fix first. The complaint tickets said, in plain words, where the flow was breaking, so the priority queue came from them rather than from my opinion about what looked bad. After months of discovery, the new proposal stood on three things: clarity, speed and control.',
+      pt: 'Permiti que o suporte e os dados direcionassem nossa estratégia. Os tickets de reclamação diziam, com nome e sobrenome, onde o fluxo quebrava, então a fila de prioridade veio deles e não da minha opinião sobre o que estava feio. Depois de meses de discovery, a proposta nova ficou em cima de três coisas: clareza, agilidade e controle.',
+      en: 'I let support and the data steer our strategy. The complaint tickets said, in plain words, where the flow was breaking, so the priority queue came from them rather than from my opinion about what looked bad. After months of discovery, the new proposal stood on three things: clarity, speed and control.',
     },
     evidence: [
       {
@@ -1244,7 +1278,7 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
         plate: {
           src: '/cases/reserva-ink-aparencia-de-loja/antes.webp',
-          ratio: '4:3',
+          ratio: '5:4',
           caption: {
             pt: 'A tela de Aparência de Loja antes do redesenho, com os campos como o lojista os encontrava.',
             en: 'The Store Appearance screen before the redesign, with the fields as a seller found them.',
@@ -1267,7 +1301,7 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
         plate: {
           src: '/cases/reserva-ink-aparencia-de-loja/discovery.webp',
-          ratio: '4:3',
+          ratio: '5:4',
           caption: {
             pt: 'O quadro do discovery: benchmarks, fluxos e as anotações que saíram dos tickets.',
             en: 'The discovery board: benchmarks, flows and the notes that came out of the tickets.',
@@ -1282,7 +1316,7 @@ export const caseDetails: Record<string, CaseDetail> = {
         },
         plate: {
           src: '/cases/reserva-ink-aparencia-de-loja/wireframe.webp',
-          ratio: '4:3',
+          ratio: '5:4',
           caption: {
             pt: 'O fluxo novo em wireframe, desenhado dentro da estrutura que já existia.',
             en: 'The new flow in wireframe, drawn inside the structure that was already there.',
@@ -1321,6 +1355,7 @@ export const caseDetails: Record<string, CaseDetail> = {
     gallery: [
       {
         src: '/cases/reserva-ink-aparencia-de-loja/device.webp',
+        ratio: '5:4',
         caption: {
           pt: 'A loja publicada, montada no fluxo novo.',
           en: 'A published store, built in the new flow.',
@@ -1328,6 +1363,7 @@ export const caseDetails: Record<string, CaseDetail> = {
       },
       {
         src: '/cases/reserva-ink-aparencia-de-loja/loja-final.webp',
+        ratio: '5:4',
         caption: {
           pt: 'A vitrine que o lojista monta a partir das opções de aparência.',
           en: 'The storefront a seller builds out of the appearance options.',
@@ -1462,7 +1498,7 @@ export const caseDetails: Record<string, CaseDetail> = {
 
   'bricker-amelie': {
     slug: 'bricker-amelie',
-    year: '2024-2025',
+    year: '2023-2024',
     role: { pt: 'Product Designer', en: 'Product Designer' },
     duration: { pt: '4 meses', en: '4 months' },
     team: { pt: 'Bricker · startup early-stage', en: 'Bricker · early-stage startup' },
@@ -2471,7 +2507,7 @@ export const caseFull = {
    * they still deserve to know is that this leaves the site (WCAG 3.2.5), and that is what this
    * line is for.
    */
-  weight: { pt: 'Abre no Google Drive', en: 'Opens in Google Drive' } satisfies T,
+  weight: { pt: 'via Google Drive', en: 'via Google Drive' } satisfies T,
 };
 
 export const caseProto = {

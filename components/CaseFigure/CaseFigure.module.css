@@ -10,17 +10,40 @@
   margin: 0;
 }
 
+/*
+ * The frame takes the picture's declared shape, and never cuts to reach it.
+ *
+ * It forced 16:9 on everything and cropped with `cover`, which took a third off every one of
+ * João's 5:4 screens — his note was simply that they were cut. The shape is data now, and
+ * `contain` means a figure whose ratio nobody declared letterboxes rather than losing its edges.
+ */
 .frame {
   position: relative;
-  aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #f1f1f1;
+  aspect-ratio: 16 / 9;
+}
+
+.frame[data-ratio='5:4'] {
+  aspect-ratio: 5 / 4;
+}
+
+.frame[data-ratio='4:3'] {
+  aspect-ratio: 4 / 3;
+}
+
+.frame[data-ratio='3:4'] {
+  aspect-ratio: 3 / 4;
+}
+
+.frame[data-ratio='1:1'] {
+  aspect-ratio: 1 / 1;
 }
 
 .media {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

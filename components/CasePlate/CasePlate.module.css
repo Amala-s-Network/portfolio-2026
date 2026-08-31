@@ -15,12 +15,14 @@
   position: relative;
   overflow: hidden;
   /*
-   * Capped against the height it is given, generously: the page scrolls now, so a plate no longer
-   * has to fit inside whatever a spread had left. The old cap was 46vh, set when it did, and it
-   * crops a 4:3 plate in a 790px column by a third. The crop is `cover`, so what it loses is edge
-   * rather than subject.
+   * The box holds its shape; the picture is never cut to fit it.
+   *
+   * The crop was `cover` against a ratio the picture did not have — Joao's screens are 5:4 and
+   * every frame said 4:3, so each one lost a strip. The fix is both halves: the ratio is declared
+   * correctly in the copy now, and `contain` means a future mismatch letterboxes instead of
+   * cutting. The box itself stays, because an image with no reserved space is a page that jumps
+   * when it loads.
    */
-  max-height: min(74vh, 720px);
   background: color-mix(in srgb, currentColor 5%, transparent);
   border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
   padding: clamp(8px, 0.9vw, 16px);
@@ -28,6 +30,10 @@
 
 .frame[data-ratio='4:3'] {
   aspect-ratio: 4 / 3;
+}
+
+.frame[data-ratio='5:4'] {
+  aspect-ratio: 5 / 4;
 }
 
 .frame[data-ratio='16:9'] {
@@ -45,8 +51,13 @@
 .img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+}
+
+/* The placeholder has no subject to protect, so it may fill its reserved frame. */
+.pending .img {
+  object-fit: cover;
 }
 
 /*

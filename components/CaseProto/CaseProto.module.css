@@ -54,6 +54,13 @@
   margin-top: clamp(22px, 3vh, 40px);
 }
 
+/*
+ * The stage.
+ *
+ * The frame stack needs a box to stack inside, so it keeps the ratio. The recording brings its
+ * own — width and height are on the element — so the box gets out of its way, and nothing is
+ * cropped to fit a shape it never had.
+ */
 .screen {
   position: relative;
   aspect-ratio: 16 / 10;
@@ -62,6 +69,18 @@
 
   background: color-mix(in srgb, var(--ink) 4%, var(--paper));
   border: 1px solid var(--hairline-mid);
+}
+
+/* With the recording in it the box takes the video's shape instead of imposing one. */
+.screen[data-clip] {
+  aspect-ratio: auto;
+  max-height: none;
+}
+
+.clip {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 /*
@@ -187,6 +206,34 @@
   transform: rotate(45deg) scale(1.25);
 }
 
+/*
+ * What the recording walks through, when the recording is what is playing.
+ *
+ * The eight labels were the dots' accessible names. With nothing to step they would have gone
+ * with the dots, so they come back as a list — the same content, now readable rather than only
+ * announceable.
+ */
+.legend {
+  flex: 1 1 320px;
+  min-width: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(230px, 100%), 1fr));
+  gap: 4px clamp(16px, 2vw, 32px);
+}
+
+.legend li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--body);
+}
+
 .controls {
   display: flex;
   gap: 8px;
@@ -244,13 +291,17 @@
   border-top: 1px solid var(--hairline);
 }
 
+/*
+ * Whole, at Joao's instruction.
+ *
+ * It was capped at 170px tall and cropped from the top left, which showed a corner of the board
+ * and called it a map. At its own 2200x1357 it is 617px tall in this column, and a map you can
+ * actually read is the only kind worth printing.
+ */
 .map img {
   width: 100%;
   height: auto;
   display: block;
-  max-height: clamp(90px, 15vh, 170px);
-  object-fit: cover;
-  object-position: top left;
   border: 1px solid var(--hairline);
 }
 

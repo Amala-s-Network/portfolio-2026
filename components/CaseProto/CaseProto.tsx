@@ -24,6 +24,7 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
   const [i, setI] = useState(0);
   const [playing, setPlaying] = useState(true);
   const root = useRef<HTMLElement>(null);
+  const video = useRef<HTMLVideoElement>(null);
 
   const steps = spec.steps;
   const count = steps.length;
@@ -33,12 +34,32 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
    * in a section nobody has scrolled to is work done for no one, on every device that has to do
    * it. Both are read here rather than in CSS because both decide whether a timer starts at all.
    */
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) setPlaying(false);
-  }, []);
+  const [reduced, setReduced] = useState(false);
 
   useEffect(() => {
-    if (!playing || count < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setReduced(true);
+      setPlaying(false);
+    }
+  }, []);
+
+  /*
+   * The recording, when there is one: it plays instead of the frames, and the same control that
+   * stepped them now starts and stops it. Under reduced motion the video is never mounted at all
+   * and the frames stand in, because a still is the honest fallback for someone who asked for
+   * less movement — not a video sitting there paused.
+   */
+  const clip = reduced ? undefined : spec.video;
+
+  useEffect(() => {
+    const el = video.current;
+    if (!el) return;
+    if (playing) el.play().catch(() => setPlaying(false));
+    else el.pause();
+  }, [playing, clip]);
+
+  useEffect(() => {
+    if (clip || !playing || count < 2) return;
     const el = root.current;
 
     const tick = () => {
@@ -48,7 +69,7 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
 
     const id = window.setInterval(tick, STEP_MS);
     return () => window.clearInterval(id);
-  }, [playing, count]);
+  }, [clip, playing, count]);
 
   const go = (n: number) => {
     setPlaying(false);
@@ -71,54 +92,90 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
           * src would flash white on each step while the next image decodes — cross-fading between
           * two already-decoded layers is the difference between a prototype and a slideshow.
           */}
-        <div className={styles.screen}>
-          {steps.map((s, n) => (
-            /* eslint-disable-next-line @next/next/no-img-element */
-            <img
-              key={s.src}
-              className={`${styles.frame} ${n === i ? styles.frameOn : ''}`}
-              src={s.src}
-              alt=""
-              aria-hidden="true"
-              loading={n === 0 ? 'eager' : 'lazy'}
+        <div className={styles.screen} data-clip={clip ? 'true' : undefined}>
+          {clip ? (
+            <video
+              ref={video}
+              className={styles.clip}
+              src={clip.src}
+              width={clip.width}
+              height={clip.height}
+              muted
+              loop
+              playsInline
+              /* Metadata only: 5MB should not be fetched for a section nobody has reached. */
+              preload="metadata"
+              aria-label={t(spec.heading)}
             />
-          ))}
+          ) : (
+            steps.map((s, n) => (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                key={s.src}
+                className={`${styles.frame} ${n === i ? styles.frameOn : ''}`}
+                src={s.src}
+                alt=""
+                aria-hidden="true"
+                loading={n === 0 ? 'eager' : 'lazy'}
+              />
+            ))
+          )}
           <span className={styles.grain} aria-hidden="true" />
         </div>
 
         <div className={styles.rail}>
-          <p className={styles.stepName} aria-live="polite">
-            <span className={styles.stepNum}>
-              {String(i + 1).padStart(2, '0')}/{String(count).padStart(2, '0')}
-            </span>
-            {t(current.label)}
-          </p>
+          {/*
+           * Stepping controls only make sense over the frames. With the recording playing there
+           * is nothing to step, so the dots and the arrows go and the eight labels stay as what
+           * they always were underneath: the list of what the flow walks through.
+           */}
+          {clip ? (
+            <ol className={styles.legend}>
+              {steps.map((s, n) => (
+                <li key={s.src}>
+                  <span className={styles.stepNum}>{String(n + 1).padStart(2, '0')}</span>
+                  {t(s.label)}
+                </li>
+              ))}
+            </ol>
+          ) : (
+            <>
+              <p className={styles.stepName} aria-live="polite">
+                <span className={styles.stepNum}>
+                  {String(i + 1).padStart(2, '0')}/{String(count).padStart(2, '0')}
+                </span>
+                {t(current.label)}
+              </p>
 
-          <ol className={styles.dots}>
-            {steps.map((s, n) => (
-              <li key={s.src}>
-                <button
-                  type="button"
-                  className={`${styles.dot} ${n === i ? styles.dotOn : ''}`}
-                  onClick={() => go(n)}
-                  aria-current={n === i ? 'true' : undefined}
-                  aria-label={`${n + 1}. ${t(s.label)}`}
-                >
-                  <span className={styles.dotMark} aria-hidden="true" />
-                </button>
-              </li>
-            ))}
-          </ol>
+              <ol className={styles.dots}>
+                {steps.map((s, n) => (
+                  <li key={s.src}>
+                    <button
+                      type="button"
+                      className={`${styles.dot} ${n === i ? styles.dotOn : ''}`}
+                      onClick={() => go(n)}
+                      aria-current={n === i ? 'true' : undefined}
+                      aria-label={`${n + 1}. ${t(s.label)}`}
+                    >
+                      <span className={styles.dotMark} aria-hidden="true" />
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
 
           <div className={styles.controls}>
-            <button
-              type="button"
-              className={styles.ctl}
-              onClick={() => go(i - 1)}
-              aria-label={t(copy.previous)}
-            >
-              <span aria-hidden="true">←</span>
-            </button>
+            {!clip && (
+              <button
+                type="button"
+                className={styles.ctl}
+                onClick={() => go(i - 1)}
+                aria-label={t(copy.previous)}
+              >
+                <span aria-hidden="true">←</span>
+              </button>
+            )}
 
             <button
               type="button"
@@ -129,14 +186,16 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
               <span className={playing ? styles.iconPause : styles.iconPlay} aria-hidden="true" />
             </button>
 
-            <button
-              type="button"
-              className={styles.ctl}
-              onClick={() => go(i + 1)}
-              aria-label={t(copy.next)}
-            >
-              <span aria-hidden="true">→</span>
-            </button>
+            {!clip && (
+              <button
+                type="button"
+                className={styles.ctl}
+                onClick={() => go(i + 1)}
+                aria-label={t(copy.next)}
+              >
+                <span aria-hidden="true">→</span>
+              </button>
+            )}
           </div>
 
           {/*
@@ -148,7 +207,14 @@ export function CaseProto({ spec }: { spec: CaseProtoSpec }) {
           {spec.map && (
             <figure className={styles.map}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={spec.map} alt="" aria-hidden="true" loading="lazy" />
+              <img
+                src={spec.map.src}
+                width={spec.map.width}
+                height={spec.map.height}
+                alt=""
+                aria-hidden="true"
+                loading="lazy"
+              />
               <figcaption>{t(copy.mapCaption)}</figcaption>
             </figure>
           )}

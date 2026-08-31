@@ -250,14 +250,15 @@ export function CasePage({ slug }: { slug: string }) {
     node: <Flow lead text={t(data.context)} />,
   });
 
+  /*
+   * The conflict is no longer a part of its own.
+   *
+   * João: "O produto e o problema (mescle com o problema, é redundante)". He is right — the
+   * first chapter describes the product and where it broke, and the conflict said the same
+   * thing again one section earlier. It now closes that chapter instead of preceding it, which
+   * also puts the trade-off and the decision AFTER the problem they answer rather than before.
+   */
   const argument: { id: string; head: T; body: string | null; what: string; ask: string }[] = [
-    {
-      id: 'problema',
-      head: copy.headings.conflict,
-      body: line(data.conflict),
-      what: 'o conflito',
-      ask: 'Quais duas forças não podiam vencer ao mesmo tempo?',
-    },
     {
       id: 'trade-off',
       head: copy.headings.tradeoff,
@@ -274,30 +275,24 @@ export function CasePage({ slug }: { slug: string }) {
     },
   ];
 
-  argument.forEach((part) => {
-    if (!part.body && !SHOW_PROMPTS) return;
-    sections.push({
-      id: part.id,
-      label: t(part.head),
-      node: part.body ? (
-        <Flow text={part.body} />
-      ) : (
-        <Missing what={part.what} ask={part.ask} />
-      ),
-    });
-  });
-
   /* ---- the chapters, one part each ---- */
 
-  data.detail.forEach((d, i) => {
+  const chapter = (d: (typeof data.detail)[number], i: number): DocSection => {
     const heading = t(d.title);
+    /* The first chapter carries the conflict, at the foot of its own prose. */
+    const conflict = i === 0 ? line(data.conflict) : null;
 
-    sections.push({
+    return {
       id: `parte-${i + 1}`,
       label: heading,
       node: (
         <>
-          <Flow text={t(d.body)} />
+          {/* One flow, not two stacked: joined here so the paragraphs space like paragraphs. */}
+          <Flow text={conflict ? `${t(d.body)}\n\n${conflict}` : t(d.body)} />
+
+          {i === 0 && !conflict && (
+            <Missing what="o conflito" ask="Quais duas forças não podiam vencer ao mesmo tempo?" />
+          )}
 
           {d.quote && <p className={styles.pull}>{t(d.quote)}</p>}
 
@@ -346,8 +341,43 @@ export function CasePage({ slug }: { slug: string }) {
           )}
         </>
       ),
+    };
+  };
+
+  /*
+   * The running order, at João's instruction:
+   *
+   *   contexto → o produto e o problema → o que abri mão → o que decidi → o discovery → o que mudou
+   *
+   * The first chapter comes before the argument now. It reads better: the trade-off and the
+   * decision are answers, and answers land after the reader knows the question. A case with no
+   * chapters written yet falls back to the conflict standing on its own, so the argument never
+   * goes missing along with the chapter that was supposed to carry it.
+   */
+  if (data.detail.length > 0) {
+    sections.push(chapter(data.detail[0], 0));
+  } else if (line(data.conflict) || SHOW_PROMPTS) {
+    sections.push({
+      id: 'problema',
+      label: t(copy.headings.conflict),
+      node: line(data.conflict) ? (
+        <Flow text={line(data.conflict)!} />
+      ) : (
+        <Missing what="o conflito" ask="Quais duas forças não podiam vencer ao mesmo tempo?" />
+      ),
+    });
+  }
+
+  argument.forEach((part) => {
+    if (!part.body && !SHOW_PROMPTS) return;
+    sections.push({
+      id: part.id,
+      label: t(part.head),
+      node: part.body ? <Flow text={part.body} /> : <Missing what={part.what} ask={part.ask} />,
     });
   });
+
+  data.detail.slice(1).forEach((d, i) => sections.push(chapter(d, i + 1)));
 
   /* ---- the proof ---- */
 
