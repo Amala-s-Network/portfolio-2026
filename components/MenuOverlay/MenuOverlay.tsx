@@ -95,6 +95,29 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
                   if (s.href === '#') {
                     e.preventDefault();
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    return;
+                  }
+                  /*
+                   * The same explicit scroll the nav does, for the same two reasons: it travels
+                   * instead of jumping, like everything else here, and it keeps working on the
+                   * second press. Deferred a tick because onClose() above hands focus back and
+                   * releases the scroll lock, and a scroll started inside that is a scroll that
+                   * may not survive it.
+                   */
+                  if (home && s.href.startsWith('#')) {
+                    e.preventDefault();
+                    const href = s.href;
+                    window.setTimeout(() => {
+                      const target = document.querySelector(href);
+                      if (!target) return;
+                      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                      target.scrollIntoView({ behavior: reduced ? 'auto' : 'smooth', block: 'start' });
+                      try {
+                        window.history.replaceState(null, '', href);
+                      } catch {
+                        /* Some embedded contexts refuse replaceState. */
+                      }
+                    }, 0);
                   }
                 }}
               >

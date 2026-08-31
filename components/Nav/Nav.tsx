@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { scrollToHash } from '@/lib/hashScroll';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
@@ -92,7 +93,10 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
               if (item.href === '#') {
                 e.preventDefault();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                return;
               }
+              /* Every click after the first, which next/link would otherwise drop. */
+              scrollToHash(e, item.href, home);
             }}
           >
             {t(item.label)}
