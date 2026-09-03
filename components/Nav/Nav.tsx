@@ -7,7 +7,7 @@ import { scrollToHash } from '@/lib/hashScroll';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
-import { nav as copy, menu as menuCopy, playground as playgroundCopy } from '@/content/copy';
+import { nav as copy, menu as menuCopy } from '@/content/copy';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { SHOW_PROJECTS } from '@/app/page';
 import styles from './Nav.module.css';
@@ -104,21 +104,13 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
         ))}
 
         {/*
-          * The playground, and only from here.
+          * The playground link is out of the bar.
           *
-          * João's instruction: one button in the bar, nothing on the home page and nothing in the
-          * menu overlay until he says otherwise. It is marked so it reads as a door out of the
-          * portfolio rather than another section of it.
+          * João: 'esqueça, por enquanto'. The room did not come out anywhere near the reference he
+          * sent, so it should not be sitting on his live site behind a button. Nothing was deleted
+          * — /playground and its two pages are still in the repo, still build, and putting the
+          * link back is this block again.
           */}
-        <Link
-          href="/playground"
-          className={`${styles.link} ${styles.playground}`}
-          aria-current={pathname.startsWith('/playground') ? 'page' : undefined}
-        >
-          <span className={styles.playgroundMark} aria-hidden="true" />
-          {t(playgroundCopy.label)}
-        </Link>
-
         <button type="button" className={styles.link} onClick={onContact}>
           {t(menuCopy.links[3])}
         </button>
