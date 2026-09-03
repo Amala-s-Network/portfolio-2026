@@ -293,3 +293,37 @@
     font-size: 14px;
   }
 }
+
+/*
+ * The playground door.
+ *
+ * Same link as its neighbours in size and behaviour, with the site's accent diamond in front of
+ * it. That mark is the only thing that separates them, and it is enough: everything else in this
+ * bar goes to another part of the portfolio, and this one goes somewhere the portfolio stops.
+ */
+.playground {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+.playgroundMark {
+  width: 7px;
+  height: 7px;
+  flex: none;
+  background: var(--accent);
+  transform: rotate(45deg);
+  transition: transform 0.5s var(--ease);
+}
+
+.playground:hover .playgroundMark,
+.playground:focus-visible .playgroundMark {
+  transform: rotate(135deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playgroundMark {
+    transition: none;
+  }
+}

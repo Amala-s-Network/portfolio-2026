@@ -1,0 +1,230 @@
+/*
+ * The component bench.
+ *
+ * Laid out as a list of specimens rather than a gallery of cards: each one gets its name, the
+ * file it comes from, and room to be poked at. The file path is the useful part — a bench that
+ * shows you a button but not where the button lives sends you looking for it.
+ */
+
+.root {
+  background: var(--paper);
+  padding: calc(var(--navH) + clamp(32px, 6vh, 72px)) var(--gutter) clamp(72px, 12vh, 140px);
+  max-width: 1180px;
+}
+
+.head {
+  max-width: 62ch;
+}
+
+.back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 32px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  text-decoration: none;
+  transition: color 0.3s var(--ease);
+}
+
+.back:hover,
+.back:focus-visible {
+  color: var(--ink);
+}
+
+.title {
+  margin: 14px 0 0;
+  font-size: clamp(34px, 4.2vw, 62px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.intro {
+  margin: 16px 0 0;
+  font-size: clamp(16px, 1.15vw, 19px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--body);
+  max-width: 58ch;
+}
+
+/* ---------------------------------------------------------- a specimen */
+
+.bench {
+  margin-top: clamp(36px, 5vh, 64px);
+  padding-top: clamp(20px, 2.6vh, 30px);
+  border-top: 1px solid var(--hairline);
+}
+
+.benchHead {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.benchName {
+  margin: 0;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.benchNote {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--muted-light);
+}
+
+.benchBody {
+  margin-top: clamp(20px, 2.6vh, 30px);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.row + .row {
+  margin-top: 20px;
+}
+
+.rowLabel {
+  flex: none;
+  width: 68px;
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.rowItems {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.readout {
+  margin: 22px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------- specimens */
+
+.marks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+  gap: clamp(24px, 3vw, 44px);
+}
+
+.note {
+  max-width: 620px;
+  padding: clamp(20px, 2.2vw, 30px);
+  border: 1px solid var(--hairline);
+}
+
+.noteLabel {
+  margin: 0 0 20px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.noteBody {
+  margin: 0;
+  font-size: 17px;
+  line-height: 1.65;
+  color: var(--body);
+}
+
+.cards {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 780px;
+
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(200px, 100%), 1fr));
+  gap: 1px;
+  background: var(--hairline);
+  border: 1px solid var(--hairline);
+}
+
+.point {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 20px;
+  background: var(--paper);
+}
+
+.pointNum {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted-light);
+}
+
+.pointTitle {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.pointBody {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--body);
+}
+
+.tokens {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 28px;
+}
+
+.token {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  color: var(--body);
+}
+
+.swatch {
+  width: 26px;
+  height: 26px;
+  flex: none;
+  /* An outline, because --paper on paper is otherwise an invisible swatch. */
+  border: 1px solid var(--hairline-mid);
+}
+
+@media (max-width: 768px) {
+  .root {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .rowLabel {
+    width: auto;
+  }
+}

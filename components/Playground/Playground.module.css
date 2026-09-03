@@ -1,0 +1,270 @@
+/*
+ * The playground: one room, drawn in code.
+ *
+ * It runs on the site's own ink and paper — aliased to --pg-* so the whole scene can be recoloured
+ * from one place, and so nothing inside the drawing reaches for a token it should not know about.
+ */
+
+.root {
+  --pg-ink: var(--ink);
+  --pg-paper: var(--paper);
+
+  background: var(--paper);
+  padding: calc(var(--navH) + clamp(32px, 6vh, 72px)) var(--gutter) clamp(60px, 10vh, 120px);
+}
+
+/* ------------------------------------------------------------- the head */
+
+.head {
+  max-width: 62ch;
+}
+
+.kicker {
+  margin: 0;
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.title {
+  margin: 12px 0 0;
+  font-size: clamp(38px, 5vw, 76px);
+  font-weight: 700;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
+
+.intro {
+  margin: clamp(16px, 2.4vh, 26px) 0 0;
+  font-size: clamp(16px, 1.2vw, 19px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: var(--body);
+  max-width: 58ch;
+}
+
+/* ------------------------------------------------------------ the stage */
+
+/*
+ * The drawing and its hotspots share one box, so a percentage in the overlay lands on the same
+ * spot as a coordinate in the viewBox. `aspect-ratio` rather than a padding hack because the
+ * whole point is that the two layers cannot drift apart.
+ */
+.stage {
+  position: relative;
+  margin-top: clamp(28px, 4.4vh, 56px);
+  aspect-ratio: 1000 / 760;
+  max-width: 1280px;
+  border: 1px solid var(--hairline);
+  background: var(--paper);
+  overflow: hidden;
+}
+
+.scene {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- type inside the drawing ---- */
+
+.frameLabel {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  fill: var(--pg-ink);
+}
+
+.marquee {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  fill: var(--pg-ink);
+}
+
+.arcadeScreen {
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  fill: var(--pg-paper);
+}
+
+.arcadeSub {
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  fill: var(--pg-paper);
+  opacity: 0.75;
+}
+
+.screenLabel {
+  font-size: 8.5px;
+  letter-spacing: 0.18em;
+  fill: var(--pg-paper);
+  opacity: 0.6;
+}
+
+.screenTrack {
+  font-size: 13px;
+  font-weight: 600;
+  fill: var(--pg-paper);
+}
+
+.screenArtist {
+  font-size: 10px;
+  fill: var(--pg-paper);
+  opacity: 0.7;
+}
+
+.question {
+  font-size: 62px;
+  font-weight: 700;
+  fill: var(--pg-ink);
+}
+
+/* --------------------------------------------------------- the hotspots */
+
+/*
+ * Real controls, laid over the drawing.
+ *
+ * The scene itself is aria-hidden: it is a picture of the doors, and these are the doors. Drawing
+ * them into the SVG would have been fewer nodes and worse — a <g> with an onClick is not a
+ * button, does not focus, and has no name.
+ */
+.hotspots {
+  position: absolute;
+  inset: 0;
+}
+
+.hotspot {
+  position: absolute;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  /* The mark inside is what shows; the box itself only catches the pointer. */
+  color: var(--ink);
+}
+
+.hotspotMark {
+  position: absolute;
+  inset: -6px;
+  border: 2px solid currentColor;
+  opacity: 0;
+  transform: scale(0.985);
+  transition: opacity 0.28s var(--ease), transform 0.4s var(--ease);
+}
+
+.hotspot:hover .hotspotMark,
+.hotspot:focus-visible .hotspotMark {
+  opacity: 1;
+  transform: none;
+}
+
+/* The corner ticks, so a hovered object reads as selected rather than merely outlined. */
+.hotspotMark::before,
+.hotspotMark::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border: 2px solid currentColor;
+}
+
+.hotspotMark::before {
+  top: -6px;
+  left: -6px;
+  border-right: 0;
+  border-bottom: 0;
+}
+
+.hotspotMark::after {
+  right: -6px;
+  bottom: -6px;
+  border-left: 0;
+  border-top: 0;
+}
+
+/* --------------------------------------------------------- the shortcuts */
+
+.shortcuts {
+  display: flex;
+  align-items: center;
+  gap: clamp(10px, 1.4vw, 18px);
+  flex-wrap: wrap;
+  margin-top: clamp(24px, 3.4vh, 40px);
+  padding-top: clamp(18px, 2.4vh, 26px);
+  border-top: 1px solid var(--hairline);
+  max-width: 1280px;
+}
+
+.shortcutsLabel {
+  font-size: 11.5px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted-light);
+}
+
+.shortcut {
+  display: inline-flex;
+  align-items: center;
+
+  /* WCAG 2.5.8, to João's 32px floor. */
+  min-height: 38px;
+  padding: 0 16px;
+
+  border: 1px solid var(--hairline-mid);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13.5px;
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: background-color 0.35s var(--ease), border-color 0.35s var(--ease),
+    color 0.35s var(--ease);
+}
+
+.shortcut:hover,
+.shortcut:focus-visible {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--paper);
+}
+
+/* ------------------------------------------------------------- narrower */
+
+@media (max-width: 768px) {
+  .root {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /*
+   * The room stays, and stops being the only way in.
+   *
+   * At 375px the cats are twelve pixels tall and the arcade screen is unreadable, but the drawing
+   * is still the point of the page — so it is kept and the shortcuts below it carry the actual
+   * navigation, which is what they are for at every size anyway.
+   */
+  .stage {
+    aspect-ratio: 1000 / 900;
+  }
+
+  .scene {
+    /* Cropped rather than shrunk: better to see part of a room than all of a postage stamp. */
+    width: 168%;
+    height: 100%;
+    margin-left: -34%;
+  }
+
+  .hotspots {
+    display: none;
+  }
+
+  .shortcut {
+    min-height: var(--tap);
+  }
+}

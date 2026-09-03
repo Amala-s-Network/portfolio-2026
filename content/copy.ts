@@ -2575,3 +2575,94 @@ export const modal = {
     linkedin: { pt: 'LinkedIn', en: 'LinkedIn' } satisfies T,
   },
 };
+
+/* ------------------------------------------------------------ playground */
+
+/**
+ * The playground: a room, drawn in code, that you can walk around with a cursor.
+ *
+ * It is the one place on this site that is not arguing anything. The portfolio proper is a
+ * newspaper — measured, ruled, quiet — and a designer who only ever shows that is a designer you
+ * cannot picture having fun. So this is the basement: three pictures on the wall, an arcade
+ * cabinet that actually runs, a machine playing something, and three cats who do not care about
+ * any of it.
+ *
+ * Reachable only from the nav button for now, at João's instruction. No card on the home page and
+ * no entry in the menu until he says so.
+ */
+export const playground = {
+  label: { pt: 'Playground', en: 'Playground' } satisfies T,
+  title: { pt: 'A sala dos fundos', en: 'The back room' } satisfies T,
+  intro: {
+    pt: 'Tudo aqui é desenhado em código, nada é imagem. Clique nos quadros, no fliperama e no computador. Os gatos não obedecem ninguém.',
+    en: 'Everything here is drawn in code, nothing is an image. Click the frames, the arcade cabinet and the computer. The cats answer to no one.',
+  } satisfies T,
+
+  /* The three frames on the wall, in the order they hang. */
+  frames: {
+    projects: { pt: 'PROJETOS', en: 'PROJECTS' } satisfies T,
+    interfaces: { pt: 'INTERFACES', en: 'INTERFACES' } satisfies T,
+    components: { pt: 'COMPONENTES', en: 'COMPONENTS' } satisfies T,
+  },
+
+  arcade: {
+    marquee: { pt: 'GAME ROOM', en: 'GAME ROOM' } satisfies T,
+    screen: { pt: 'START', en: 'START' } satisfies T,
+    action: { pt: 'Jogar no fliperama', en: 'Play the arcade cabinet' } satisfies T,
+  },
+
+  /* What the machine is doing while nobody is looking. */
+  desk: {
+    label: { pt: 'TOCANDO AGORA', en: 'NOW PLAYING' } satisfies T,
+    tracks: [
+      { title: 'Weight of the World', artist: 'Keiichi Okabe' },
+      { title: 'Vague Hope', artist: 'Keiichi Okabe' },
+      { title: 'Kaine / Salvation', artist: 'Keiichi Okabe' },
+      { title: 'Amusement Park', artist: 'Keiichi Okabe' },
+      { title: 'A Beautiful Song', artist: 'Keiichi Okabe' },
+    ],
+  },
+
+  /* The cats have names because of course they do. */
+  cats: {
+    tabby: { pt: 'gato tigrado', en: 'tabby cat' } satisfies T,
+    white: { pt: 'gato branco', en: 'white cat' } satisfies T,
+    black: { pt: 'gato preto', en: 'black cat' } satisfies T,
+  },
+
+  /*
+   * The same four destinations as plain links, under the scene.
+   *
+   * A room you click is a lovely thing and a terrible only route: it asks for a pointer, a
+   * viewport wide enough to draw it, and eyes. This row is the same set of doors with none of
+   * those requirements, and it is not a fallback hidden behind a media query — it is always
+   * there, for anyone who would rather just read the list.
+   */
+  shortcuts: { pt: 'Ou vá direto:', en: 'Or go straight there:' } satisfies T,
+  back: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
+};
+
+/* --------------------------------------------------------- interfaces */
+
+export const interfacesPage = {
+  title: { pt: 'Interfaces', en: 'Interfaces' } satisfies T,
+  intro: {
+    pt: 'Telas que eu desenhei e que podem ser mostradas. O resto está sob NDA e vive numa apresentação, não aqui.',
+    en: 'Screens I designed that I am allowed to show. The rest is under NDA and lives in a presentation, not here.',
+  } satisfies T,
+  empty: {
+    pt: 'Ainda não há telas liberadas para esta seção.',
+    en: 'No screens have been cleared for this section yet.',
+  } satisfies T,
+};
+
+/* --------------------------------------------------------- components */
+
+export const componentsPage = {
+  title: { pt: 'Componentes', en: 'Components' } satisfies T,
+  intro: {
+    pt: 'As peças que montam este site, soltas da página, para clicar e testar. Cada uma é o componente real, não uma imitação para a vitrine.',
+    en: 'The parts this site is built from, off the page, to click and test. Each one is the real component, not a showroom copy of it.',
+  } satisfies T,
+  states: { pt: 'Estados', en: 'States' } satisfies T,
+};
