@@ -40,14 +40,15 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
      * #projetos, which put the reader beside six cards and a button to the very index they had
      * just asked for. It goes straight there.
      */
-    { href: '/projetos', label: copy.links[1] },
-    { href: home ? '#sobre' : '/#sobre', label: copy.links[2] },
     /*
-     * The escritório is in the overlay as well as in the bar, because on a phone the bar collapses
-     * into this. The room itself is not drawn below 1200px — but the page there is every door in
-     * it as a plain row, so the link goes somewhere real at every width.
+     * Same order as the bar, and here for the same reason it is there: on a phone the bar
+     * collapses into this overlay, and the escritório would otherwise need the URL typed. The room
+     * is not drawn below 1200px, but that page is every door in it as a plain row, so the link
+     * goes somewhere real at every width.
      */
     { href: '/escritorio', label: escritorioCopy.label },
+    { href: '/projetos', label: copy.links[1] },
+    { href: home ? '#sobre' : '/#sobre', label: copy.links[2] },
   ];
 
   return (

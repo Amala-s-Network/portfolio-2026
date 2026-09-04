@@ -65,13 +65,34 @@
   margin-left: 34px;
 }
 
+/*
+ * One class for two elements, which is where the bug was.
+ *
+ * "Contato" is a <button> because it opens the modal rather than going anywhere; its neighbours
+ * are <a>. Same class, same padding, same size — and the button's text still sat 2.5px lower than
+ * theirs, because a button lays its content out in an anonymous box the UA centres, while an
+ * anchor puts its glyphs on the line box. With `line-height: normal` the two resolve to slightly
+ * different content heights and the centring has somewhere to move.
+ *
+ * An explicit line-height removes the difference: both get the same content box, so there is
+ * nothing left for the button to centre differently. `display: block` keeps the button out of the
+ * UA's inline-block sizing entirely.
+ *
+ * Worth recording that I checked this once and cleared it: the ELEMENT boxes are identical — top
+ * 20, bottom 52 for all four — so measuring the boxes says there is no problem. The glyphs are
+ * what is misaligned, and they only show up if you measure a Range over the text or look at the
+ * bar with your eyes.
+ */
 .link {
   position: relative;
+  display: block;
   padding: 6px 0;
   border: 0;
   background: none;
+  font-family: inherit;
   font-size: 13.5px;
   font-weight: 400;
+  line-height: 20px;
   letter-spacing: 0.01em;
   color: var(--navMuted);
   cursor: pointer;
