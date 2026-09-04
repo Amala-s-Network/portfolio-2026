@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { Button } from '@/components/Button/Button';
 import { CaseMark } from '@/components/CaseMark/CaseMark';
 import { useLanguage } from '@/lib/language';
-import { componentsPage as copy, playground } from '@/content/copy';
+import { componentsPage as copy, escritorio } from '@/content/copy';
 import styles from './ComponentsPage.module.css';
 
 /**
@@ -22,8 +22,8 @@ export function ComponentsPage() {
   return (
     <div className={styles.root}>
       <header className={styles.head}>
-        <Link className={styles.back} href="/playground">
-          <span aria-hidden="true">&#8672;</span> {t(playground.label)}
+        <Link className={styles.back} href="/escritorio">
+          <span aria-hidden="true">&#8672;</span> {t(escritorio.label)}
         </Link>
         <h1 className={styles.title}>{t(copy.title)}</h1>
         <p className={styles.intro}>{t(copy.intro)}</p>

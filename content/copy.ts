@@ -2582,10 +2582,10 @@ export const modal = {
   },
 };
 
-/* ------------------------------------------------------------ playground */
+/* ------------------------------------------------------------ escritório */
 
 /**
- * The playground: a room, drawn in code, that you can walk around with a cursor.
+ * The escritório: a room, drawn in code, that you can walk around with a cursor.
  *
  * It is the one place on this site that is not arguing anything. The portfolio proper is a
  * newspaper — measured, ruled, quiet — and a designer who only ever shows that is a designer you
@@ -2596,16 +2596,21 @@ export const modal = {
  * Reachable only from the nav button for now, at João's instruction. No card on the home page and
  * no entry in the menu until he says so.
  */
-export const playground = {
+export const escritorio = {
   label: { pt: 'Meu escritório', en: 'My office' } satisfies T,
   /*
-   * The handoff README writes this as 'Playground · escritório 01'; the reference frame João sent
-   * has 'JOÃO V. MELO · PLAYGROUND'. Going with the picture, and it earns its place twice: this
-   * page carries no site nav — the HUD is the whole chrome — so the wordmark half of the line is
-   * also the only way back out of the room.
+   * The line above the title, and it has now been three different things.
+   *
+   * The handoff README writes it as 'Playground · escritório 01'; the reference frame João sent
+   * reads 'JOÃO V. MELO · PLAYGROUND', and while this page carried no nav that was right — the
+   * wordmark half was also the only way out of the room. The nav is back and the word "playground"
+   * is gone, so both halves lost their job at once: the bar carries the wordmark thirty pixels
+   * above this line, and repeating it there is just saying it twice.
+   *
+   * What is left is the one thing neither the nav nor the h1 says: WHICH room. The handoff's own
+   * '01' is kept, because it is the part that admits there could be a second one.
    */
-  eyebrowName: { pt: 'João V. Melo', en: 'João V. Melo' } satisfies T,
-  eyebrowHere: { pt: 'Playground', en: 'Playground' } satisfies T,
+  eyebrow: { pt: 'Sala 01', en: 'Room 01' } satisfies T,
   title: { pt: 'Escritório', en: 'Office' } satisfies T,
 
   /*
@@ -2620,7 +2625,7 @@ export const playground = {
   /*
    * The three captions painted under the frames are NOT here, and cannot be: they are baked into
    * canvas textures inside the 3D scene, which has no i18n. They stay Portuguese in both
-   * languages — see FRAMES in components/Playground/room/playground-room.js.
+   * languages — see FRAMES in components/Escritorio/room/playground-room.js.
    */
   shortcuts: { pt: 'Ou vá direto:', en: 'Or go straight there:' } satisfies T,
   doors: {

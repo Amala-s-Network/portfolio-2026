@@ -1,10 +1,14 @@
 /*
- * The room fills one viewport and does not scroll — the frame IS the design. Everything that
- * would scroll (a case study, a component bench) is a route or an overlay, never this page
- * growing taller.
+ * The room fills its frame and does not scroll — the frame IS the design. Everything that would
+ * scroll (a case study, a component bench) is a route or an overlay, never this page growing
+ * taller.
+ *
+ * ABSOLUTE, not fixed. The fixed box is now CaseShell's noScroll main, which starts at the bottom
+ * of the nav; fixed here would re-anchor this to the viewport instead and put the room back under
+ * the bar, which is the exact collision that made me drop the bar in the first place.
  */
 .page {
-  position: fixed;
+  position: absolute;
   inset: 0;
   overflow: hidden;
   background: var(--paper);
@@ -236,26 +240,6 @@
 .back:hover {
   color: var(--ink);
 }
-
-/*
- * The wordmark half of the eyebrow, and the only way out of the room on a wide screen: this page
- * carries no site nav, by design. The corner it sits in is pointer-events: none, so the link has
- * to switch them back on for itself.
- */
-.eyebrowLink {
-  pointer-events: auto;
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
-}
-
-.eyebrowLink:hover,
-.eyebrowLink:focus-visible {
-  color: var(--ink);
-  border-bottom-color: var(--hairline-mid);
-}
-
 .bottomRight {
   bottom: var(--inset-y);
   right: var(--inset-x);

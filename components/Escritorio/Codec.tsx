@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
-import { playground as copy } from '@/content/copy';
+import { escritorio as copy } from '@/content/copy';
 import styles from './Codec.module.css';
 
 type ContactKey = (typeof copy.codec.order)[number];
@@ -102,7 +102,7 @@ function Portrait({
 }
 
 /*
- * Mounted only while the call is up — see Playground.tsx. That is not a detail: it is what lets
+ * Mounted only while the call is up — see Escritorio.tsx. That is not a detail: it is what lets
  * every "start from the beginning again" be the initial state of a fresh component instead of an
  * effect that reaches in and resets four values after the fact.
  */

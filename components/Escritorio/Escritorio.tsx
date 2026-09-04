@@ -5,12 +5,12 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Hacking } from '@/components/Hacking/Hacking';
 import { useLanguage } from '@/lib/language';
-import { playground as copy } from '@/content/copy';
+import { escritorio as copy } from '@/content/copy';
 import { Room, type CatVariant, type DoorId } from './Room';
 import { Codec } from './Codec';
 import { Battle } from './Battle';
 import { CatFile } from './CatFile';
-import styles from './Playground.module.css';
+import styles from './Escritorio.module.css';
 
 /*
  * The width below which the room is not drawn AT ALL — not hidden, not rendered.
@@ -25,13 +25,13 @@ const WIDE = 1200;
 /* The three pictures on the wall are routes; everything else in the room is an overlay. */
 const ROUTES: Partial<Record<DoorId, string>> = {
   projetos: '/projetos',
-  interfaces: '/playground/interfaces',
-  componentes: '/playground/componentes',
+  interfaces: '/escritorio/interfaces',
+  componentes: '/escritorio/componentes',
 };
 
 type Overlay = 'arcade' | 'codec' | 'rpg' | null;
 
-export function Playground() {
+export function Escritorio() {
   const { t } = useLanguage();
   const router = useRouter();
 
@@ -77,8 +77,8 @@ export function Playground() {
   /* The three pictures, as links — so they can be opened in a tab, copied, and read as links. */
   const links = [
     { id: 'projetos', href: '/projetos', label: copy.doors.projetos },
-    { id: 'interfaces', href: '/playground/interfaces', label: copy.doors.interfaces },
-    { id: 'componentes', href: '/playground/componentes', label: copy.doors.componentes },
+    { id: 'interfaces', href: '/escritorio/interfaces', label: copy.doors.interfaces },
+    { id: 'componentes', href: '/escritorio/componentes', label: copy.doors.componentes },
   ];
 
   /* The three that open in place. Fliperama ships inverted: it is the loudest thing in the room. */
@@ -91,7 +91,7 @@ export function Playground() {
   const cats: CatVariant[] = ['tabby', 'white', 'black'];
 
   return (
-    <main className={styles.page}>
+    <div className={styles.page}>
       {wide === true && (
         <>
           <Room onDoor={onDoor} onCat={openCat} />
@@ -107,13 +107,7 @@ export function Playground() {
           <div className={styles.hud}>
             {/* pointer-events: none, so the type never eats a click meant for the room. */}
             <div className={`${styles.corner} ${styles.topLeft}`}>
-              <p className={styles.eyebrow}>
-                <Link href="/" className={styles.eyebrowLink}>
-                  {t(copy.eyebrowName)}
-                </Link>
-                <span aria-hidden="true"> · </span>
-                {t(copy.eyebrowHere)}
-              </p>
+              <p className={styles.eyebrow}>{t(copy.eyebrow)}</p>
               <h1 className={styles.title}>{t(copy.title)}</h1>
             </div>
 
@@ -162,11 +156,7 @@ export function Playground() {
       {wide === false && (
         <div className={styles.narrow}>
           <div className={styles.narrowInner}>
-            <p className={styles.eyebrow}>
-              {t(copy.eyebrowName)}
-              <span aria-hidden="true"> · </span>
-              {t(copy.eyebrowHere)}
-            </p>
+            <p className={styles.eyebrow}>{t(copy.eyebrow)}</p>
             <h1 className={styles.narrowTitle}>{t(copy.title)}</h1>
             <p className={styles.narrowNote}>{t(copy.narrow.note)}</p>
 
@@ -221,6 +211,6 @@ export function Playground() {
       {cat && (
         <CatFile key={cat} variant={cat} onClose={() => setCat(null)} withPortrait={wide === true} />
       )}
-    </main>
+    </div>
   );
 }

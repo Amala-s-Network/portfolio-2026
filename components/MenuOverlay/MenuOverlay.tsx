@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
-import { menu as copy, hero, nav as navCopy, links, playground as playgroundCopy } from '@/content/copy';
+import { menu as copy, hero, nav as navCopy, links, escritorio as escritorioCopy } from '@/content/copy';
 import styles from './MenuOverlay.module.css';
 
 type MenuOverlayProps = {
@@ -47,7 +47,7 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
      * into this. The room itself is not drawn below 1200px — but the page there is every door in
      * it as a plain row, so the link goes somewhere real at every width.
      */
-    { href: '/playground', label: playgroundCopy.label },
+    { href: '/escritorio', label: escritorioCopy.label },
   ];
 
   return (

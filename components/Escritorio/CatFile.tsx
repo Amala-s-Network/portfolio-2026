@@ -3,7 +3,7 @@
 import { useRef, useState } from 'react';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
-import { playground as copy } from '@/content/copy';
+import { escritorio as copy } from '@/content/copy';
 import type { CatVariant } from './Room';
 import styles from './CatFile.module.css';
 
