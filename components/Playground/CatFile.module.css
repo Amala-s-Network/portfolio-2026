@@ -90,6 +90,29 @@
   min-height: 0;
 }
 
+/*
+ * The photograph has not landed yet: the portrait takes the room rather than sharing it.
+ *
+ * And it goes square while it does. 3:4 is the right frame for a pane that is half a column wide;
+ * given the whole column it becomes tall enough to push the name plate past the bottom of the
+ * card, which is how I first shipped it — the plate was there, and clipped.
+ */
+.panesOne {
+  grid-template-columns: 1fr;
+}
+
+.panesOne .portrait {
+  aspect-ratio: 1 / 1;
+}
+
+/*
+ * A hidden pane must be gone from the grid, not merely invisible: [hidden] loses to the
+ * `display: grid`-child layout otherwise, and the column would still be reserved.
+ */
+.photo[hidden] {
+  display: none;
+}
+
 .photo,
 .portrait {
   position: relative;

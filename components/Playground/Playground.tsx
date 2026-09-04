@@ -209,7 +209,7 @@ export function Playground() {
         * render too late. Hacking keeps its `open` prop because it is shared with the rest of the
         * site and owns its own show/hide transition.
         */}
-      <Hacking open={overlay === 'arcade'} onClose={() => setOverlay(null)} />
+      <Hacking open={overlay === 'arcade'} onClose={() => setOverlay(null)} windowed />
       {overlay === 'codec' && <Codec onClose={() => setOverlay(null)} />}
       {overlay === 'rpg' && <Battle onClose={() => setOverlay(null)} />}
       {/*

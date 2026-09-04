@@ -67,8 +67,17 @@ export function CatFile({ variant, onClose, withPortrait = true }: CatFileProps)
         </header>
 
         <div className={styles.body}>
-          <div className={styles.panes}>
-            <div className={styles.photo}>
+          {/*
+            * One pane or two.
+            *
+            * The photographs are the only thing in this room that is not procedural, so they are
+            * the only thing that can be absent. When one is, the pane does not stay behind as an
+            * empty tinted box waiting to be filled — the live portrait takes the whole width and
+            * the file simply has one picture instead of two. An empty frame reads as something
+            * broken; one portrait reads as the design.
+            */}
+          <div className={`${styles.panes} ${noPhoto ? styles.panesOne : ''}`}>
+            <div className={styles.photo} hidden={noPhoto}>
               {!noPhoto && (
                 /*
                  * A plain <img>, not next/image: the pane is a fixed 3:4 box inside an overlay

@@ -13,8 +13,6 @@
   z-index: 360;
 
   display: flex;
-  flex-direction: column;
-  padding: 18px clamp(16px, 4vw, 48px) 14px;
 
   background: var(--nier-bg);
   color: var(--nier-ink);
@@ -23,6 +21,21 @@
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.3s var(--ease), visibility 0s linear 0.3s;
+}
+
+/*
+ * The panel holds the three parts — head, arena, credit — and owns the column. It exists so the
+ * root can be two different things: the whole screen on /craft, and a scrim around a card in the
+ * escritório. Without it the root would have to be both the surface AND the thing centred on the
+ * surface, and the focus trap is bound to the root, so splitting them in JS instead would mean
+ * moving the trap too.
+ */
+.panel {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: 18px clamp(16px, 4vw, 48px) 14px;
 }
 
 .open {
@@ -226,4 +239,58 @@
   .legend {
     gap: 14px;
   }
+}
+
+/* -------------------------------------------------------------------- lives */
+
+.livesBlock {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pips {
+  display: inline-flex;
+  gap: 5px;
+}
+
+/*
+ * Triangles, cut from a square — the same shape as the hull they stand for. A spent life leaves
+ * its outline behind rather than disappearing, so the row keeps its length and reads as "one of
+ * three gone" instead of as a row that got shorter.
+ */
+.pip {
+  width: 9px;
+  height: 10px;
+  background: currentColor;
+  opacity: 0.22;
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+  transition: opacity 0.2s var(--ease);
+}
+
+.pipOn {
+  opacity: 1;
+}
+
+/* ------------------------------------------------------------- windowed mode */
+
+/*
+ * The escritório opens the game as a card over the room; /craft still gives it the screen. The
+ * root becomes the scrim and the panel becomes the card — which is why the column lives on the
+ * panel and not on the root.
+ */
+.windowed {
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vh, 46px);
+  background: rgba(6, 6, 4, 0.88);
+}
+
+.windowed .panel {
+  flex: none;
+  width: min(1120px, 100%);
+  height: min(780px, 100%);
+  border: 1px solid var(--nier-rule);
+  background: var(--nier-bg);
+  box-shadow: 0 40px 90px -40px #000;
 }
