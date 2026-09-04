@@ -1579,3 +1579,10 @@
   if (!customElements.get('playground-room')) customElements.define('playground-room', PlaygroundRoom);
   if (!customElements.get('cat-portrait')) customElements.define('cat-portrait', CatPortrait);
 })();
+
+/*
+ * A side-effect module: everything above registers itself with customElements and there is
+ * nothing to hand back. The empty export is what makes TypeScript agree it is a module at all,
+ * so `import('./room/playground-room.js')` typechecks in Room.tsx.
+ */
+export {};

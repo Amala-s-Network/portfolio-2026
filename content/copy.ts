@@ -2591,54 +2591,60 @@ export const modal = {
  * no entry in the menu until he says so.
  */
 export const playground = {
-  label: { pt: 'Playground', en: 'Playground' } satisfies T,
-  title: { pt: 'A sala dos fundos', en: 'The back room' } satisfies T,
+  label: { pt: 'Meu escritório', en: 'My office' } satisfies T,
+  /*
+   * The handoff README writes this as 'Playground · escritório 01'; the reference frame João sent
+   * has 'JOÃO V. MELO · PLAYGROUND'. Going with the picture, and it earns its place twice: this
+   * page carries no site nav — the HUD is the whole chrome — so the wordmark half of the line is
+   * also the only way back out of the room.
+   */
+  eyebrowName: { pt: 'João V. Melo', en: 'João V. Melo' } satisfies T,
+  eyebrowHere: { pt: 'Playground', en: 'Playground' } satisfies T,
+  title: { pt: 'Escritório', en: 'Office' } satisfies T,
+
+  /*
+   * The instruction sits in the top right at 30ch, and it is the only place the room explains
+   * itself. Everything else it says, it says by being hoverable.
+   */
   intro: {
-    pt: 'Tudo aqui é desenhado em código, nada é imagem. Clique nos quadros, no fliperama e no computador. Os gatos não obedecem ninguém.',
-    en: 'Everything here is drawn in code, nothing is an image. Click the frames, the arcade cabinet and the computer. The cats answer to no one.',
+    pt: 'Clique nos quadros, nas TVs, no fliperama — ou em um gato, para abrir a ficha dele.',
+    en: 'Click the pictures, the TVs, the arcade cabinet — or a cat, to open its file.',
   } satisfies T,
 
-  /* The three frames on the wall, in the order they hang. */
-  frames: {
-    projects: { pt: 'PROJETOS', en: 'PROJECTS' } satisfies T,
-    interfaces: { pt: 'INTERFACES', en: 'INTERFACES' } satisfies T,
-    components: { pt: 'COMPONENTES', en: 'COMPONENTS' } satisfies T,
-  },
-
-  arcade: {
-    marquee: { pt: 'GAME ROOM', en: 'GAME ROOM' } satisfies T,
-    screen: { pt: 'START', en: 'START' } satisfies T,
-    action: { pt: 'Jogar no fliperama', en: 'Play the arcade cabinet' } satisfies T,
-  },
-
-  /* What the machine is doing while nobody is looking. */
-  desk: {
-    label: { pt: 'TOCANDO AGORA', en: 'NOW PLAYING' } satisfies T,
-    tracks: [
-      { title: 'Weight of the World', artist: 'Keiichi Okabe' },
-      { title: 'Vague Hope', artist: 'Keiichi Okabe' },
-      { title: 'Kaine / Salvation', artist: 'Keiichi Okabe' },
-      { title: 'Amusement Park', artist: 'Keiichi Okabe' },
-      { title: 'A Beautiful Song', artist: 'Keiichi Okabe' },
-    ],
+  /*
+   * The three captions painted under the frames are NOT here, and cannot be: they are baked into
+   * canvas textures inside the 3D scene, which has no i18n. They stay Portuguese in both
+   * languages — see FRAMES in components/Playground/room/playground-room.js.
+   */
+  shortcuts: { pt: 'Ou vá direto:', en: 'Or go straight there:' } satisfies T,
+  doors: {
+    projetos: { pt: 'Projetos', en: 'Projects' } satisfies T,
+    interfaces: { pt: 'Interfaces', en: 'Interfaces' } satisfies T,
+    componentes: { pt: 'Componentes', en: 'Components' } satisfies T,
+    arcade: { pt: 'Fliperama', en: 'Arcade' } satisfies T,
   },
 
   /* The cats have names because of course they do. */
+  catsLabel: { pt: 'Gatos', en: 'Cats' } satisfies T,
   cats: {
-    tabby: { pt: 'gato tigrado', en: 'tabby cat' } satisfies T,
-    white: { pt: 'gato branco', en: 'white cat' } satisfies T,
-    black: { pt: 'gato preto', en: 'black cat' } satisfies T,
+    tabby: { name: 'BAYLE', code: 'FEL-02' },
+    white: { name: 'MEL', code: 'FEL-01' },
+    black: { name: 'ROCKY', code: 'FEL-03' },
   },
 
   /*
-   * The same four destinations as plain links, under the scene.
-   *
-   * A room you click is a lovely thing and a terrible only route: it asks for a pointer, a
-   * viewport wide enough to draw it, and eyes. This row is the same set of doors with none of
-   * those requirements, and it is not a fallback hidden behind a media query — it is always
-   * there, for anyone who would rather just read the list.
+   * Under 1200px the room is not drawn at all — the camera is framed against 16:9 and a phone is
+   * not that shape, and a scene of a few hundred outlined volumes is not a thing to hand a
+   * phone's GPU either. What replaces it is not an apology: it is every destination in the room
+   * as a plain row. Nothing behind the drawing is reachable only by clicking the drawing.
    */
-  shortcuts: { pt: 'Ou vá direto:', en: 'Or go straight there:' } satisfies T,
+  narrow: {
+    note: {
+      pt: 'A sala é desenhada em tempo real e precisa de uma tela larga para caber inteira. As portas dela, não — estão todas aqui.',
+      en: 'The room is drawn in real time and needs a wide screen to fit. Its doors do not — they are all here.',
+    } satisfies T,
+  },
+
   back: { pt: 'Voltar para o início', en: 'Back to the start' } satisfies T,
 };
 
