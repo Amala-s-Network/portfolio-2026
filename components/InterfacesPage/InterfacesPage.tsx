@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useLanguage } from '@/lib/language';
-import { caseDetails, interfacesPage as copy, playground, type T } from '@/content/copy';
+import { caseDetails, interfacesPage as copy, escritorio, type T } from '@/content/copy';
 import styles from './InterfacesPage.module.css';
 
 type Shot = { src: string; caption: T };
@@ -41,8 +41,8 @@ export function InterfacesPage() {
   return (
     <div className={styles.root}>
       <header className={styles.head}>
-        <Link className={styles.back} href="/playground">
-          <span aria-hidden="true">&#8672;</span> {t(playground.label)}
+        <Link className={styles.back} href="/escritorio">
+          <span aria-hidden="true">&#8672;</span> {t(escritorio.label)}
         </Link>
         <h1 className={styles.title}>{t(copy.title)}</h1>
         <p className={styles.intro}>{t(copy.intro)}</p>

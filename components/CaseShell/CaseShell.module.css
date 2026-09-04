@@ -1,0 +1,16 @@
+/*
+ * The fixed variant, for a page that is exactly one viewport and never scrolls.
+ *
+ * `--navH` is published at runtime by the Nav, measured rather than hard-coded because the
+ * wordmark's font swap changes its height — the same reason the hero offsets by it. Starting the
+ * box at the bottom of the bar is what lets the room and the nav stop arguing over the same 72px:
+ * the first version of this page dropped the bar entirely because the h1 was landing behind the
+ * wordmark, and the fix was never "no bar", it was "measure from under it".
+ *
+ * The fallback matters: --navH is set in an effect, so the very first paint has no value for it.
+ */
+.fixedMain {
+  position: fixed;
+  inset: var(--navH, 72px) 0 0 0;
+  overflow: hidden;
+}

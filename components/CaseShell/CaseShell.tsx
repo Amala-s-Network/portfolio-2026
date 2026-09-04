@@ -6,6 +6,7 @@ import { MenuOverlay } from '@/components/MenuOverlay/MenuOverlay';
 import { ContactModal } from '@/components/ContactModal/ContactModal';
 import { BackToTop } from '@/components/BackToTop/BackToTop';
 import { Footer } from '@/components/Footer/Footer';
+import styles from './CaseShell.module.css';
 
 /**
  * The chrome around a case page: nav, menu, contact modal, back-to-top.
@@ -24,9 +25,19 @@ export function CaseShell({
   children,
   /** The projects index closes with the same panel the one-pager does; a case page does not. */
   withFooter = false,
+  /**
+   * A page that fills the viewport exactly once and never scrolls — the escritório.
+   *
+   * It changes two things. The main becomes a fixed box that starts under the bar, so the room
+   * is measured from the bottom of the nav rather than from the top of the window and the two
+   * stop fighting over the same 72px. And back-to-top goes: a control that scrolls you to a top
+   * you are already at is not a affordance, it is a button that does nothing.
+   */
+  noScroll = false,
 }: {
   children: React.ReactNode;
   withFooter?: boolean;
+  noScroll?: boolean;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
@@ -46,13 +57,13 @@ export function CaseShell({
 
       <Nav menuOpen={menuOpen} onToggleMenu={toggleMenu} onContact={openContact} />
 
-      <main id="conteudo">
+      <main id="conteudo" className={noScroll ? styles.fixedMain : undefined}>
         {children}
         {withFooter && <Footer onContact={openContact} onRiseChange={setFooterUp} />}
       </main>
 
       {/* Suppressed while the footer panel is up, exactly as on the one-pager. */}
-      <BackToTop suppressed={footerUp} />
+      {!noScroll && <BackToTop suppressed={footerUp} />}
 
       <MenuOverlay open={menuOpen} onClose={closeMenu} onContact={openContact} />
       <ContactModal open={contactOpen} onClose={closeContact} />

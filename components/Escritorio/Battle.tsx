@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
-import { playground as copy } from '@/content/copy';
+import { escritorio as copy } from '@/content/copy';
 import { drawFoe, type FoeClock } from './foe';
 import styles from './Battle.module.css';
 
@@ -17,7 +17,7 @@ const fill = (template: string, n: number) => template.replace('{n}', String(n))
 
 const MAGIC_COST = 12;
 
-/* Mounted only while the fight is up — see Playground.tsx. A fresh encounter is a fresh mount. */
+/* Mounted only while the fight is up — see Escritorio.tsx. A fresh encounter is a fresh mount. */
 export function Battle({ onClose }: { onClose: () => void }) {
   const { t } = useLanguage();
   const ref = useRef<HTMLDivElement>(null);

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import styles from './Playground.module.css';
+import styles from './Escritorio.module.css';
 
 export type DoorId = 'projetos' | 'interfaces' | 'componentes' | 'arcade' | 'codec' | 'rpg';
 export type CatVariant = 'tabby' | 'white' | 'black';

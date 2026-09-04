@@ -7,7 +7,7 @@ import { scrollToHash } from '@/lib/hashScroll';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
-import { nav as copy, menu as menuCopy, playground as playgroundCopy } from '@/content/copy';
+import { nav as copy, menu as menuCopy, escritorio as escritorioCopy } from '@/content/copy';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { SHOW_PROJECTS } from '@/app/page';
 import styles from './Nav.module.css';
@@ -46,7 +46,7 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
      * in it now answers: the three pictures go somewhere, both TVs open, the cabinet plays, and
      * each cat has a file. A door in this bar has to lead to a finished room.
      */
-    { id: 'escritorio', href: '/playground', label: playgroundCopy.label },
+    { id: 'escritorio', href: '/escritorio', label: escritorioCopy.label },
   ];
 
   // README §1: the bar inverts when a dark surface passes under it.

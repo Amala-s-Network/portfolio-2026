@@ -45,6 +45,22 @@ const nextConfig: NextConfig = {
   async headers() {
     return [{ source: '/:path*', headers: securityHeaders }];
   },
+
+  /*
+   * /playground moved to /escritorio, and the old paths keep working.
+   *
+   * Permanent rather than temporary: the room is not coming back to the old address, so a 308
+   * lets browsers and anything that has already crawled the site stop asking. The wildcard covers
+   * the two pages behind the frames — /playground/interfaces and /playground/componentes — in one
+   * rule instead of three, and it is a redirect rather than a rewrite so the address bar actually
+   * changes: a rewrite would leave people copying a URL that no longer names the page.
+   */
+  async redirects() {
+    return [
+      { source: '/playground', destination: '/escritorio', permanent: true },
+      { source: '/playground/:path*', destination: '/escritorio/:path*', permanent: true },
+    ];
+  },
 };
 
 export default nextConfig;

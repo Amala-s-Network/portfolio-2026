@@ -16,22 +16,8 @@ import { usePathname } from 'next/navigation';
  * the resulting mark jitters between two links while the reader is doing nothing unusual.
  */
 export function useActiveSection(): string {
-  const [active, setActive] = useState('home');
+  const [scrolled, setScrolled] = useState('home');
   const pathname = usePathname();
-
-  /*
-   * OFF THE HOME ROUTE, the answer comes from the URL and not from the scroll.
-   *
-   * This was a real bug: the mark was read purely from the geometry of the one-pager, so on
-   * /projetos and on a case page there was no #projetos or #sobre in the document to measure and
-   * every link went unmarked. The reader clicked "Projetos", arrived on the projects page, and
-   * the bar said they were nowhere.
-   *
-   * A case page counts as "Projetos" too — it is reached from that index and belongs to it.
-   */
-  useEffect(() => {
-    if (pathname === '/projetos' || pathname.startsWith('/cases/')) setActive('projetos');
-  }, [pathname]);
 
   useEffect(() => {
     /* The scroll test only means anything where the sections it measures exist. */
@@ -44,7 +30,7 @@ export function useActiveSection(): string {
       if (sobre) {
         const r = sobre.getBoundingClientRect();
         if (r.top <= line && r.bottom > line) {
-          setActive('sobre');
+          setScrolled('sobre');
           return;
         }
       }
@@ -54,7 +40,7 @@ export function useActiveSection(): string {
       if (projetos) {
         const r = projetos.getBoundingClientRect();
         if (r.top <= line && r.bottom > line) {
-          setActive('projetos');
+          setScrolled('projetos');
           return;
         }
       }
@@ -72,7 +58,7 @@ export function useActiveSection(): string {
        */
       const boundary = projetos ?? document.querySelector('#sobre');
       const boundaryTop = boundary ? boundary.getBoundingClientRect().top : Infinity;
-      setActive(boundaryTop > line ? 'home' : '');
+      setScrolled(boundaryTop > line ? 'home' : '');
     };
 
     check();
@@ -84,5 +70,23 @@ export function useActiveSection(): string {
     };
   }, [pathname]);
 
-  return active;
+  /*
+   * OFF THE HOME ROUTE, the answer comes from the URL — and it is DERIVED, not stored.
+   *
+   * The URL answer used to be written into the same state by an effect, and that state started at
+   * 'home'. So the escritório's first paint marked "Página inicial" and corrected itself a frame
+   * later; the bar told the reader they were somewhere they had just left. Reading the pathname
+   * during the render has the right answer before anything is painted, and there is no second
+   * source of truth to fall out of step with the first.
+   *
+   * A case page counts as "Projetos": it is reached from that index and belongs to it. The two
+   * pages behind the frames count as the escritório for the same reason, which is what the prefix
+   * match buys over an equality check.
+   */
+  if (pathname === '/projetos' || pathname.startsWith('/cases/')) return 'projetos';
+  if (pathname.startsWith('/escritorio')) return 'escritorio';
+  /* Any other route has no entry in the bar, and marking one of them would be a guess. */
+  if (pathname !== '/') return '';
+
+  return scrolled;
 }
