@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useOverlay } from '@/hooks/useOverlay';
 import { useLanguage } from '@/lib/language';
-import { menu as copy, hero, nav as navCopy, links } from '@/content/copy';
+import { menu as copy, hero, nav as navCopy, links, playground as playgroundCopy } from '@/content/copy';
 import styles from './MenuOverlay.module.css';
 
 type MenuOverlayProps = {
@@ -42,6 +42,12 @@ export function MenuOverlay({ open, onClose, onContact }: MenuOverlayProps) {
      */
     { href: '/projetos', label: copy.links[1] },
     { href: home ? '#sobre' : '/#sobre', label: copy.links[2] },
+    /*
+     * The escritório is in the overlay as well as in the bar, because on a phone the bar collapses
+     * into this. The room itself is not drawn below 1200px — but the page there is every door in
+     * it as a plain row, so the link goes somewhere real at every width.
+     */
+    { href: '/playground', label: playgroundCopy.label },
   ];
 
   return (

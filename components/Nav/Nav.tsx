@@ -7,7 +7,7 @@ import { scrollToHash } from '@/lib/hashScroll';
 import { useScrollProgress } from '@/hooks/useScrollProgress';
 import { useSurfaceInversion } from '@/hooks/useSurfaceInversion';
 import { useLanguage } from '@/lib/language';
-import { nav as copy, menu as menuCopy } from '@/content/copy';
+import { nav as copy, menu as menuCopy, playground as playgroundCopy } from '@/content/copy';
 import { useActiveSection } from '@/hooks/useActiveSection';
 import { SHOW_PROJECTS } from '@/app/page';
 import styles from './Nav.module.css';
@@ -38,6 +38,15 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
     /* Dropped with the section it points at — see SHOW_PROJECTS in app/page.tsx. */
     ...(SHOW_PROJECTS ? [{ id: 'projetos', href: '/projetos', label: menuCopy.links[1] }] : []),
     { id: 'sobre', href: home ? '#sobre' : '/#sobre', label: menuCopy.links[2] },
+    /*
+     * The escritório, back in the bar — and this time it earns the button.
+     *
+     * The last one came out of here because the room did not look like the reference and half of
+     * it did nothing. This is João's own design, ported from the handoff he sent, and every object
+     * in it now answers: the three pictures go somewhere, both TVs open, the cabinet plays, and
+     * each cat has a file. A door in this bar has to lead to a finished room.
+     */
+    { id: 'escritorio', href: '/playground', label: playgroundCopy.label },
   ];
 
   // README §1: the bar inverts when a dark surface passes under it.
@@ -103,14 +112,6 @@ export function Nav({ menuOpen = false, onToggleMenu, onContact }: NavProps) {
           </Link>
         ))}
 
-        {/*
-          * The playground link is out of the bar.
-          *
-          * João: 'esqueça, por enquanto'. The room did not come out anywhere near the reference he
-          * sent, so it should not be sitting on his live site behind a button. Nothing was deleted
-          * — /playground and its two pages are still in the repo, still build, and putting the
-          * link back is this block again.
-          */}
         <button type="button" className={styles.link} onClick={onContact}>
           {t(menuCopy.links[3])}
         </button>
