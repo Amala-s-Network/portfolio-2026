@@ -1,270 +1,257 @@
 /*
- * The playground: one room, drawn in code.
- *
- * It runs on the site's own ink and paper — aliased to --pg-* so the whole scene can be recoloured
- * from one place, and so nothing inside the drawing reaches for a token it should not know about.
+ * The room fills one viewport and does not scroll — the frame IS the design. Everything that
+ * would scroll (a case study, a component bench) is a route or an overlay, never this page
+ * growing taller.
  */
-
-.root {
-  --pg-ink: var(--ink);
-  --pg-paper: var(--paper);
-
+.page {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
   background: var(--paper);
-  padding: calc(var(--navH) + clamp(32px, 6vh, 72px)) var(--gutter) clamp(60px, 10vh, 120px);
 }
 
-/* ------------------------------------------------------------- the head */
-
-.head {
-  max-width: 62ch;
+.stage {
+  position: absolute;
+  inset: 0;
 }
 
-.kicker {
+/*
+ * The print grade, in two inert layers.
+ *
+ * The halftone in multiply puts a dot screen over the whole render; the inset shadow closes the
+ * corners down. Neither is decoration bolted on afterwards — a flat WebGL render of flat colours
+ * reads as a 3D editor viewport, and these two are what make it read as ink on paper instead.
+ */
+.grade {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(#14120f 0.6px, transparent 0.7px);
+  background-size: 5px 5px;
+  opacity: 0.22;
+  mix-blend-mode: multiply;
+  box-shadow: inset 0 0 160px rgba(20, 18, 15, 0.12);
+}
+
+/* ------------------------------------------------------------------ the HUD */
+
+.hud {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.corner {
+  position: absolute;
+  --inset-y: clamp(18px, 2.6vh, 30px);
+  --inset-x: clamp(20px, 2.4vw, 40px);
+}
+
+.topLeft {
+  top: var(--inset-y);
+  left: var(--inset-x);
+}
+
+.topRight {
+  top: var(--inset-y);
+  right: var(--inset-x);
+}
+
+.bottomLeft {
+  bottom: var(--inset-y);
+  left: var(--inset-x);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.eyebrow {
   margin: 0;
-  font-size: 11.5px;
-  letter-spacing: 0.16em;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted-light);
 }
 
 .title {
-  margin: 12px 0 0;
-  font-size: clamp(38px, 5vw, 76px);
+  margin: 2px 0 0;
+  font-family: var(--font-playfair), serif;
   font-weight: 700;
-  line-height: 1.02;
+  font-size: clamp(30px, 3.4vw, 46px);
+  line-height: 1;
   letter-spacing: -0.03em;
   color: var(--ink);
 }
 
 .intro {
-  margin: clamp(16px, 2.4vh, 26px) 0 0;
-  font-size: clamp(16px, 1.2vw, 19px);
+  margin: 0;
+  max-width: 30ch;
+  text-align: right;
+  font-family: var(--font-archivo), sans-serif;
   font-weight: 300;
-  line-height: 1.55;
-  color: var(--body);
-  max-width: 58ch;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #3d3d3d;
 }
 
-/* ------------------------------------------------------------ the stage */
-
-/*
- * The drawing and its hotspots share one box, so a percentage in the overlay lands on the same
- * spot as a coordinate in the viewBox. `aspect-ratio` rather than a padding hack because the
- * whole point is that the two layers cannot drift apart.
- */
-.stage {
-  position: relative;
-  margin-top: clamp(28px, 4.4vh, 56px);
-  aspect-ratio: 1000 / 760;
-  max-width: 1280px;
-  border: 1px solid var(--hairline);
-  background: var(--paper);
-  overflow: hidden;
-}
-
-.scene {
-  display: block;
-  width: 100%;
-  height: 100%;
-}
-
-/* ---- type inside the drawing ---- */
-
-.frameLabel {
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  fill: var(--pg-ink);
-}
-
-.marquee {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  fill: var(--pg-ink);
-}
-
-.arcadeScreen {
-  font-size: 30px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  fill: var(--pg-paper);
-}
-
-.arcadeSub {
-  font-size: 9px;
-  letter-spacing: 0.18em;
-  fill: var(--pg-paper);
-  opacity: 0.75;
-}
-
-.screenLabel {
-  font-size: 8.5px;
-  letter-spacing: 0.18em;
-  fill: var(--pg-paper);
-  opacity: 0.6;
-}
-
-.screenTrack {
-  font-size: 13px;
-  font-weight: 600;
-  fill: var(--pg-paper);
-}
-
-.screenArtist {
-  font-size: 10px;
-  fill: var(--pg-paper);
-  opacity: 0.7;
-}
-
-.question {
-  font-size: 62px;
-  font-weight: 700;
-  fill: var(--pg-ink);
-}
-
-/* --------------------------------------------------------- the hotspots */
-
-/*
- * Real controls, laid over the drawing.
- *
- * The scene itself is aria-hidden: it is a picture of the doors, and these are the doors. Drawing
- * them into the SVG would have been fewer nodes and worse — a <g> with an onClick is not a
- * button, does not focus, and has no name.
- */
-.hotspots {
-  position: absolute;
-  inset: 0;
-}
-
-.hotspot {
-  position: absolute;
-  display: block;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  cursor: pointer;
-  /* The mark inside is what shows; the box itself only catches the pointer. */
-  color: var(--ink);
-}
-
-.hotspotMark {
-  position: absolute;
-  inset: -6px;
-  border: 2px solid currentColor;
-  opacity: 0;
-  transform: scale(0.985);
-  transition: opacity 0.28s var(--ease), transform 0.4s var(--ease);
-}
-
-.hotspot:hover .hotspotMark,
-.hotspot:focus-visible .hotspotMark {
-  opacity: 1;
-  transform: none;
-}
-
-/* The corner ticks, so a hovered object reads as selected rather than merely outlined. */
-.hotspotMark::before,
-.hotspotMark::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border: 2px solid currentColor;
-}
-
-.hotspotMark::before {
-  top: -6px;
-  left: -6px;
-  border-right: 0;
-  border-bottom: 0;
-}
-
-.hotspotMark::after {
-  right: -6px;
-  bottom: -6px;
-  border-left: 0;
-  border-top: 0;
-}
-
-/* --------------------------------------------------------- the shortcuts */
-
-.shortcuts {
-  display: flex;
-  align-items: center;
-  gap: clamp(10px, 1.4vw, 18px);
-  flex-wrap: wrap;
-  margin-top: clamp(24px, 3.4vh, 40px);
-  padding-top: clamp(18px, 2.4vh, 26px);
-  border-top: 1px solid var(--hairline);
-  max-width: 1280px;
-}
-
-.shortcutsLabel {
-  font-size: 11.5px;
-  letter-spacing: 0.12em;
+.hudLabel {
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 500;
+  font-size: 10.5px;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--muted-light);
 }
 
-.shortcut {
+.buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  /* The label above is inert; these are not. */
+  pointer-events: auto;
+}
+
+.button {
   display: inline-flex;
   align-items: center;
-
-  /* WCAG 2.5.8, to João's 32px floor. */
-  min-height: 38px;
+  min-height: 40px;
   padding: 0 16px;
-
   border: 1px solid var(--hairline-mid);
   background: var(--paper);
   color: var(--ink);
-  font: inherit;
-  font-size: 13.5px;
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12.5px;
   text-decoration: none;
   cursor: pointer;
-
-  transition: background-color 0.35s var(--ease), border-color 0.35s var(--ease),
-    color 0.35s var(--ease);
+  transition:
+    background 0.18s var(--ease),
+    color 0.18s var(--ease);
 }
 
-.shortcut:hover,
-.shortcut:focus-visible {
+.button:hover,
+.button:focus-visible {
   background: var(--ink);
-  border-color: var(--ink);
   color: var(--paper);
 }
 
-/* ------------------------------------------------------------- narrower */
+.buttonOn {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
 
-@media (max-width: 768px) {
-  .root {
-    padding-left: 24px;
-    padding-right: 24px;
-  }
+.buttonOn:hover,
+.buttonOn:focus-visible {
+  background: var(--paper);
+  color: var(--ink);
+}
 
+/* ------------------------------------------------------- the narrow fallback */
+
+/*
+ * Not a dead end and not an apology. Every door in the room is a row here, which is the whole
+ * point: the drawing is one way in, never the only one.
+ */
+.narrow {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
   /*
-   * The room stays, and stops being the only way in.
-   *
-   * At 375px the cats are twelve pixels tall and the arcade screen is unreadable, but the drawing
-   * is still the point of the page — so it is kept and the shortcuts below it carry the actual
-   * navigation, which is what they are for at every size anyway.
+   * flex-start with an auto margin, NOT center: `center` plus a scroll container puts the top of
+   * an overflowing block above the scrollable area, where it cannot be reached at all.
    */
-  .stage {
-    aspect-ratio: 1000 / 900;
-  }
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  padding: 32px var(--gutter);
+}
 
-  .scene {
-    /* Cropped rather than shrunk: better to see part of a room than all of a postage stamp. */
-    width: 168%;
-    height: 100%;
-    margin-left: -34%;
-  }
+.narrowInner {
+  margin: auto 0;
+  width: 100%;
+  max-width: 460px;
+}
 
-  .hotspots {
-    display: none;
-  }
+.narrowTitle {
+  margin: 4px 0 0;
+  font-family: var(--font-playfair), serif;
+  font-weight: 700;
+  font-size: clamp(34px, 12vw, 46px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--ink);
+}
 
-  .shortcut {
-    min-height: var(--tap);
-  }
+.narrowNote {
+  margin: 14px 0 26px;
+  font-family: var(--font-archivo), sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #3d3d3d;
+}
+
+.rows {
+  list-style: none;
+  margin: 0 0 26px;
+  padding: 0;
+  border-top: 1px solid var(--hairline);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 52px;
+  padding: 0 4px;
+  border: 0;
+  border-bottom: 1px solid var(--hairline);
+  background: none;
+  color: var(--ink);
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 15px;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.row:hover,
+.row:focus-visible {
+  padding-left: 10px;
+  transition: padding 0.18s var(--ease);
+}
+
+.back {
+  font-family: var(--font-archivo), sans-serif;
+  font-size: 12.5px;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  text-decoration: none;
+  border-bottom: 1px solid var(--hairline-mid);
+  padding-bottom: 2px;
+}
+
+.back:hover {
+  color: var(--ink);
+}
+
+/*
+ * The wordmark half of the eyebrow, and the only way out of the room on a wide screen: this page
+ * carries no site nav, by design. The corner it sits in is pointer-events: none, so the link has
+ * to switch them back on for itself.
+ */
+.eyebrowLink {
+  pointer-events: auto;
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.18s var(--ease), border-color 0.18s var(--ease);
+}
+
+.eyebrowLink:hover,
+.eyebrowLink:focus-visible {
+  color: var(--ink);
+  border-bottom-color: var(--hairline-mid);
 }

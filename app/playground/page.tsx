@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { CaseShell } from '@/components/CaseShell/CaseShell';
 import { Playground } from '@/components/Playground/Playground';
 
 const TITLE = 'Playground · João V. Melo';
@@ -17,10 +16,14 @@ export const metadata: Metadata = {
   openGraph: { title: TITLE, description: DESCRIPTION, type: 'website' },
 };
 
+/*
+ * No CaseShell here, and that is the design rather than an omission.
+ *
+ * The room fills one viewport and carries its own chrome: the wordmark and the title in one
+ * corner, the instruction in another, the doors along the bottom. Dropping the site nav on top of
+ * that gives the reader two headers arguing over the same 60px — which is exactly what it did,
+ * with the h1 sitting behind the wordmark. The way back is the wordmark in the HUD.
+ */
 export default function Page() {
-  return (
-    <CaseShell>
-      <Playground />
-    </CaseShell>
-  );
+  return <Playground />;
 }
