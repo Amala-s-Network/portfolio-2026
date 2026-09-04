@@ -7,6 +7,9 @@ import { Hacking } from '@/components/Hacking/Hacking';
 import { useLanguage } from '@/lib/language';
 import { playground as copy } from '@/content/copy';
 import { Room, type CatVariant, type DoorId } from './Room';
+import { Codec } from './Codec';
+import { Battle } from './Battle';
+import { CatFile } from './CatFile';
 import styles from './Playground.module.css';
 
 /*
@@ -19,12 +22,14 @@ import styles from './Playground.module.css';
  */
 const WIDE = 1200;
 
-/* Where the three pictures on the wall lead. The other three doors are overlays. */
+/* The three pictures on the wall are routes; everything else in the room is an overlay. */
 const ROUTES: Partial<Record<DoorId, string>> = {
   projetos: '/projetos',
   interfaces: '/playground/interfaces',
   componentes: '/playground/componentes',
 };
+
+type Overlay = 'arcade' | 'codec' | 'rpg' | null;
 
 export function Playground() {
   const { t } = useLanguage();
@@ -36,7 +41,8 @@ export function Playground() {
    * fallback at a desktop before replacing it.
    */
   const [wide, setWide] = useState<boolean | null>(null);
-  const [arcade, setArcade] = useState(false);
+  const [overlay, setOverlay] = useState<Overlay>(null);
+  const [cat, setCat] = useState<CatVariant | null>(null);
 
   useEffect(() => {
     const measure = () => setWide(window.innerWidth >= WIDE);
@@ -45,39 +51,50 @@ export function Playground() {
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  const onDoor = useCallback(
-    (id: DoorId) => {
-      if (id === 'arcade') {
-        setArcade(true);
-        return;
-      }
-      const href = ROUTES[id];
-      if (href) router.push(href);
-      /*
-       * 'codec' and 'rpg' fall through on purpose: the two tube TVs are in the scene and emit
-       * their events, but the codec call and the minotaur battle are not built yet. Which is
-       * also why there is no nav link to this page — see Nav.tsx. Both land next.
-       */
-    },
-    [router],
-  );
-
-  const onCat = useCallback((variant: CatVariant) => {
-    /* The cat files land with the two TVs. Until then a cat is only something that walks. */
-    void variant;
+  /* One overlay at a time: opening a cat file closes the codec, and the other way round. */
+  const openOverlay = useCallback((next: Overlay) => {
+    setCat(null);
+    setOverlay(next);
   }, []);
 
-  const doors = [
-    { id: 'projetos' as const, href: '/projetos', label: copy.doors.projetos },
-    { id: 'interfaces' as const, href: '/playground/interfaces', label: copy.doors.interfaces },
-    { id: 'componentes' as const, href: '/playground/componentes', label: copy.doors.componentes },
+  const openCat = useCallback((variant: CatVariant) => {
+    setOverlay(null);
+    setCat(variant);
+  }, []);
+
+  const onDoor = useCallback(
+    (id: DoorId) => {
+      const href = ROUTES[id];
+      if (href) {
+        router.push(href);
+        return;
+      }
+      openOverlay(id as Overlay);
+    },
+    [router, openOverlay],
+  );
+
+  /* The three pictures, as links — so they can be opened in a tab, copied, and read as links. */
+  const links = [
+    { id: 'projetos', href: '/projetos', label: copy.doors.projetos },
+    { id: 'interfaces', href: '/playground/interfaces', label: copy.doors.interfaces },
+    { id: 'componentes', href: '/playground/componentes', label: copy.doors.componentes },
   ];
+
+  /* The three that open in place. Fliperama ships inverted: it is the loudest thing in the room. */
+  const buttons: { id: Overlay; label: (typeof copy.doors)['codec']; loud?: boolean }[] = [
+    { id: 'codec', label: copy.doors.codec },
+    { id: 'rpg', label: copy.doors.rpg },
+    { id: 'arcade', label: copy.doors.arcade, loud: true },
+  ];
+
+  const cats: CatVariant[] = ['tabby', 'white', 'black'];
 
   return (
     <main className={styles.page}>
       {wide === true && (
         <>
-          <Room onDoor={onDoor} onCat={onCat} />
+          <Room onDoor={onDoor} onCat={openCat} />
 
           {/*
             * The grade. A halftone in multiply and an inset vignette, both inert, both over the
@@ -105,22 +122,37 @@ export function Playground() {
             <div className={`${styles.corner} ${styles.bottomLeft}`}>
               <span className={styles.hudLabel}>{t(copy.shortcuts)}</span>
               <div className={styles.buttons}>
-                {doors.map((d) => (
+                {links.map((d) => (
                   <Link key={d.id} href={d.href} className={styles.button}>
                     {t(d.label)}
                   </Link>
                 ))}
-                {/*
-                  * The loudest thing in the room, and the only one that opens rather than goes —
-                  * so it ships inverted, the way the design has it.
-                  */}
-                <button
-                  type="button"
-                  className={`${styles.button} ${styles.buttonOn}`}
-                  onClick={() => setArcade(true)}
-                >
-                  {t(copy.doors.arcade)}
-                </button>
+                {buttons.map((b) => (
+                  <button
+                    key={b.id}
+                    type="button"
+                    className={`${styles.button} ${b.loud ? styles.buttonOn : ''}`}
+                    onClick={() => openOverlay(b.id)}
+                  >
+                    {t(b.label)}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className={`${styles.corner} ${styles.bottomRight}`}>
+              <span className={styles.hudLabel}>{t(copy.catsLabel)}</span>
+              <div className={styles.buttons}>
+                {cats.map((variant) => (
+                  <button
+                    key={variant}
+                    type="button"
+                    className={`${styles.button} ${styles.buttonCat}`}
+                    onClick={() => openCat(variant)}
+                  >
+                    {copy.cats[variant].name}
+                  </button>
+                ))}
               </div>
             </div>
           </div>
@@ -139,18 +171,27 @@ export function Playground() {
             <p className={styles.narrowNote}>{t(copy.narrow.note)}</p>
 
             <ul className={styles.rows}>
-              {doors.map((d) => (
+              {links.map((d) => (
                 <li key={d.id}>
                   <Link href={d.href} className={styles.row}>
                     {t(d.label)}
                   </Link>
                 </li>
               ))}
-              <li>
-                <button type="button" className={styles.row} onClick={() => setArcade(true)}>
-                  {t(copy.doors.arcade)}
-                </button>
-              </li>
+              {buttons.map((b) => (
+                <li key={b.id}>
+                  <button type="button" className={styles.row} onClick={() => openOverlay(b.id)}>
+                    {t(b.label)}
+                  </button>
+                </li>
+              ))}
+              {cats.map((variant) => (
+                <li key={variant}>
+                  <button type="button" className={styles.row} onClick={() => openCat(variant)}>
+                    {copy.cats[variant].name}
+                  </button>
+                </li>
+              ))}
             </ul>
 
             <Link href="/" className={styles.back}>
@@ -160,7 +201,26 @@ export function Playground() {
         </div>
       )}
 
-      <Hacking open={arcade} onClose={() => setArcade(false)} />
+      {/*
+        * The three new overlays are MOUNTED only while they are open, rather than kept in the
+        * tree with an `open` prop. Reopening one is then a fresh instance whose initial state is
+        * already the state the design wants — the codec back on tuning, the encounter back at
+        * full health — instead of an effect that reaches in and resets half a dozen values one
+        * render too late. Hacking keeps its `open` prop because it is shared with the rest of the
+        * site and owns its own show/hide transition.
+        */}
+      <Hacking open={overlay === 'arcade'} onClose={() => setOverlay(null)} />
+      {overlay === 'codec' && <Codec onClose={() => setOverlay(null)} />}
+      {overlay === 'rpg' && <Battle onClose={() => setOverlay(null)} />}
+      {/*
+        * Keyed by variant, so moving from one cat to another is a new file rather than the old
+        * one with its fields swapped. The live portrait is three.js, and the narrow branch exists
+        * precisely to not download that: on a phone the file keeps the photograph and the
+        * writing, and the turntable is the one thing that cannot follow.
+        */}
+      {cat && (
+        <CatFile key={cat} variant={cat} onClose={() => setCat(null)} withPortrait={wide === true} />
+      )}
     </main>
   );
 }

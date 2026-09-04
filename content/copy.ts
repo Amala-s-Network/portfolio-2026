@@ -2622,14 +2622,533 @@ export const playground = {
     interfaces: { pt: 'Interfaces', en: 'Interfaces' } satisfies T,
     componentes: { pt: 'Componentes', en: 'Components' } satisfies T,
     arcade: { pt: 'Fliperama', en: 'Arcade' } satisfies T,
+    codec: { pt: 'Codec', en: 'Codec' } satisfies T,
+    rpg: { pt: 'Batalha', en: 'Battle' } satisfies T,
   },
 
   /* The cats have names because of course they do. */
   catsLabel: { pt: 'Gatos', en: 'Cats' } satisfies T,
+
+  /*
+   * The three files. Names and codes are not translated — they are the cats' names, and FEL-01 is
+   * an identifier rather than a word. Everything the file SAYS about them is.
+   */
   cats: {
-    tabby: { name: 'BAYLE', code: 'FEL-02' },
-    white: { name: 'MEL', code: 'FEL-01' },
-    black: { name: 'ROCKY', code: 'FEL-03' },
+    white: {
+      name: 'MEL',
+      code: 'FEL-01',
+      role: {
+        pt: 'Unidade de reconhecimento · pelagem branca',
+        en: 'Reconnaissance unit · white coat',
+      } satisfies T,
+      stats: [
+        { k: { pt: 'PELAGEM', en: 'COAT' } satisfies T, v: { pt: 'Branca', en: 'White' } satisfies T },
+        { k: { pt: 'POSTO', en: 'POST' } satisfies T, v: { pt: 'Chão, sempre', en: 'The floor, always' } satisfies T },
+        { k: { pt: 'ESPECIALIDADE', en: 'SPECIALITY' } satisfies T, v: { pt: 'Novelo', en: 'The wool ball' } satisfies T },
+        { k: { pt: 'AMEAÇA', en: 'THREAT' } satisfies T, v: { pt: 'Média', en: 'Medium' } satisfies T },
+      ],
+      lore: [
+        {
+          pt: 'A primeira a chegar e a única que trata a sala como território. Mel decorou o caminho entre o fliperama e a estante e faz esse trajeto como se tivesse recebido ordens.',
+          en: 'The first to arrive and the only one who treats the room as territory. Mel has memorised the path between the arcade cabinet and the bookcase, and walks it like someone following orders.',
+        } satisfies T,
+        {
+          pt: 'Segue o cursor porque desconfia dele. Não é carinho: é vigilância. Quando você clica no chão ela recua três passos, olha, e volta a andar como se nada tivesse acontecido.',
+          en: 'She follows the cursor because she distrusts it. That is not affection, it is surveillance. Click the floor and she backs off three steps, looks, then carries on walking as if nothing had happened.',
+        } satisfies T,
+        {
+          pt: 'O novelo é dela. Isso não está em discussão.',
+          en: 'The wool ball is hers. This is not up for discussion.',
+        } satisfies T,
+      ],
+    },
+    tabby: {
+      name: 'BAYLE',
+      code: 'FEL-02',
+      role: {
+        pt: 'Unidade de altura · pelagem tigrada',
+        en: 'High-ground unit · tabby coat',
+      } satisfies T,
+      stats: [
+        { k: { pt: 'PELAGEM', en: 'COAT' } satisfies T, v: { pt: 'Tigrada', en: 'Tabby' } satisfies T },
+        { k: { pt: 'POSTO', en: 'POST' } satisfies T, v: { pt: 'Mesa em L', en: 'The L desk' } satisfies T },
+        { k: { pt: 'ESPECIALIDADE', en: 'SPECIALITY' } satisfies T, v: { pt: 'Andar no teclado', en: 'Walking on the keyboard' } satisfies T },
+        { k: { pt: 'AMEAÇA', en: 'THREAT' } satisfies T, v: { pt: 'Alta', en: 'High' } satisfies T },
+      ],
+      lore: [
+        {
+          pt: 'Bayle não anda no chão se existe uma superfície mais alta disponível. A mesa em L foi construída para trabalhar; ele entendeu como uma passarela e ninguém teve coragem de corrigir.',
+          en: 'Bayle does not walk on the floor if a higher surface is available. The L desk was built to work at; he read it as a walkway, and nobody has had the nerve to correct him.',
+        } satisfies T,
+        {
+          pt: 'Passa por cima do teclado no meio de uma frase. Metade dos commits desta sala têm um caractere que ele digitou.',
+          en: 'He crosses the keyboard in the middle of a sentence. Half the commits in this room carry a character he typed.',
+        } satisfies T,
+        {
+          pt: 'É o único que olha direto para a câmera quando percebe que está sendo observado.',
+          en: 'He is the only one who looks straight at the camera once he notices he is being watched.',
+        } satisfies T,
+      ],
+    },
+    black: {
+      name: 'ROCKY',
+      code: 'FEL-03',
+      role: {
+        pt: 'Unidade em repouso · pelagem preta',
+        en: 'Unit at rest · black coat',
+      } satisfies T,
+      stats: [
+        { k: { pt: 'PELAGEM', en: 'COAT' } satisfies T, v: { pt: 'Preta', en: 'Black' } satisfies T },
+        { k: { pt: 'POSTO', en: 'POST' } satisfies T, v: { pt: 'Onde der', en: 'Wherever' } satisfies T },
+        { k: { pt: 'ESPECIALIDADE', en: 'SPECIALITY' } satisfies T, v: { pt: 'Dormir', en: 'Sleeping' } satisfies T },
+        { k: { pt: 'AMEAÇA', en: 'THREAT' } satisfies T, v: { pt: 'Nenhuma', en: 'None' } satisfies T },
+      ],
+      lore: [
+        {
+          pt: 'Rocky dorme. É a atividade principal, não um intervalo entre atividades. Cada vez que alguém entra na sala ele já escolheu um lugar diferente: o topo do fliperama, o notebook aberto, ou simplesmente o chão.',
+          en: 'Rocky sleeps. It is the main activity, not a gap between activities. Every time somebody comes into the room he has already picked a different spot: the top of the arcade cabinet, the open laptop, or simply the floor.',
+        } satisfies T,
+        {
+          pt: 'A cada dez segundos ele acorda, se espreguiça inteiro, verifica que nada mudou e volta a dormir. É o ciclo mais confiável desta página.',
+          en: 'Every ten seconds he wakes, stretches the whole length of himself, confirms nothing has changed and goes back to sleep. It is the most reliable cycle on this page.',
+        } satisfies T,
+        {
+          pt: 'Clicar nele não o acorda. Nada acorda.',
+          en: 'Clicking him does not wake him. Nothing wakes him.',
+        } satisfies T,
+      ],
+    },
+  },
+
+
+  /*
+   * The codec.
+   *
+   * Every line here was written FOR this page. It is an homage in the shape of that conversation,
+   * never a transcript of it — the four of them are arguing about who signs work a machine helped
+   * make, which is a 2026 argument and not a 1998 one. Campbell's signal degrades on purpose, and
+   * the strikethrough in his last line is combining U+0336 rather than an image: it survives
+   * copy-paste, screen readers announce the letters underneath, and it needed no font to say it.
+   *
+   * The portraits that go with these are simulated signal frames — bands, blocks and one
+   * identifying accessory each — and deliberately not likenesses. See §B of the handoff.
+   */
+  codec: {
+    order: ['campbell', 'otacon', 'raiden', 'liquid'] as const,
+
+    /* The three stages of the call, in the words the card uses. */
+    booting: { pt: 'SINTONIZANDO', en: 'TUNING' } satisfies T,
+    sweeping: { pt: 'VARRENDO 130.00 — 145.00 MHz', en: 'SWEEPING 130.00 — 145.00 MHz' } satisfies T,
+    secure: { pt: 'SEGURO', en: 'SECURE' } satisfies T,
+    change: { pt: 'TROCAR FREQUÊNCIA', en: 'CHANGE FREQUENCY' } satisfies T,
+    frequencies: { pt: 'FREQUÊNCIAS', en: 'FREQUENCIES' } satisfies T,
+    advance: {
+      pt: 'Clique ou pressione Espaço para continuar',
+      en: 'Click or press Space to continue',
+    } satisfies T,
+    system: { pt: 'SISTEMA', en: 'SYSTEM' } satisfies T,
+    close: { pt: 'Encerrar a chamada', en: 'End the call' } satisfies T,
+
+    /*
+     * Kept, and not in a footer nobody reads: the codec is somebody else's invention and this
+     * page is a personal one that borrows its shape.
+     */
+    attribution: {
+      pt: 'Homenagem ao codec de Metal Gear Solid / Rising, © Konami. Página pessoal, sem vínculo. Retratos simulados e diálogo original.',
+      en: 'Homage to the Metal Gear Solid / Rising codec, © Konami. Personal page, unaffiliated. Simulated portraits and original dialogue.',
+    } satisfies T,
+
+    contacts: {
+    campbell: {
+      name: { pt: 'Coronel Campbell', en: 'Colonel Campbell' } satisfies T,
+      short: 'CAMPBELL',
+      freq: '140.85',
+      face: 'cap',
+      role: { pt: 'Comando · canal da missão', en: 'Command · mission channel' } satisfies T,
+      lines: [
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Coronel... acho que estamos tendo problemas na missão.',
+            en: 'Colonel... I think we\'re having trouble with the mission.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Como assim, Snake? O último relatório dizia que a infiltração estava limpa.',
+            en: 'What do you mean, Snake? The last report said the infiltration was clean.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Está tudo sendo criado por inteligência artificial ultimamente. Os relatórios, as ordens, esta sala. Está estranho.',
+            en: 'Everything is being made by artificial intelligence lately. The reports, the orders, this room. It feels strange.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Esse é o futuro, Snake.',
+            en: 'That is the future, Snake.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Não, Coronel. O futuro está nas mãos da humanidade, como sempre esteve. Não existe IA que substitua o esforço humano. Não se confunda.',
+            en: 'No, Colonel. The future is in humanity\'s hands, the way it always has been. There is no AI that replaces human effort. Do not confuse the two.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Você fala como alguém que ainda acredita em escolha.',
+            en: 'You talk like someone who still believes in choice.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Eu acredito em quem assina o trabalho no fim.',
+            en: 'I believe in whoever signs the work at the end.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Snake, você deve continuar a mi̶s̶s̶ão. Você deve co̶nt̶i̶nuar. Snake. Snake? S̶n̶a̶k̶e̶—',
+            en: 'Snake, you must continue the mi̶s̶s̶ion. You must co̶nt̶i̶nue. Snake. Snake? S̶n̶a̶k̶e̶—',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: '...Coronel? Sua voz está saindo em pedaços.',
+            en: '...Colonel? Your voice is coming through in pieces.',
+          } satisfies T,
+        },
+        {
+          who: 'SISTEMA',
+          text: {
+            pt: 'SINAL PERDIDO · 140.85 · ORIGEM NÃO VERIFICADA',
+            en: 'SIGNAL LOST · 140.85 · ORIGIN UNVERIFIED',
+          } satisfies T,
+        },
+      ],
+    },
+    otacon: {
+      name: { pt: 'Otacon', en: 'Otacon' } satisfies T,
+      short: 'OTACON',
+      freq: '141.12',
+      face: 'glasses',
+      role: { pt: 'Engenharia · suporte técnico', en: 'Engineering · technical support' } satisfies T,
+      lines: [
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Snake, eu li o código desta sala inteira.',
+            en: 'Snake, I read the code for this whole room.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'E?',
+            en: 'And?',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Cada objeto aqui foi escrito, não desenhado. É geometria e umas mil decisões pequenas. Nem os gatos são físicos.',
+            en: 'Every object in here was written, not drawn. It is geometry and about a thousand small decisions. Not even the cats are physics.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Isso deveria me impressionar?',
+            en: 'Is that supposed to impress me?',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Deveria te preocupar. Eu escrevi o esqueleto e a máquina preencheu o resto em segundos. Semana passada isso levava dias.',
+            en: 'It is supposed to worry you. I wrote the skeleton and the machine filled in the rest in seconds. Last week that took days.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'E quem decidiu o que valia a pena preencher?',
+            en: 'And who decided what was worth filling in?',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: '...Eu.',
+            en: '...I did.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Então continua sendo o seu trabalho, Otacon. A ferramenta ficou mais rápida. O gosto continua humano.',
+            en: 'Then it is still your work, Otacon. The tool got faster. The taste stayed human.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'É por isso que eu ligo para você, e não para o modelo.',
+            en: 'That is why I call you, and not the model.',
+          } satisfies T,
+        },
+      ],
+    },
+    raiden: {
+      name: { pt: 'Raiden', en: 'Raiden' } satisfies T,
+      short: 'RAIDEN',
+      freq: '137.71',
+      face: 'visor',
+      role: { pt: 'Campo · unidade cibernética', en: 'Field · cyborg unit' } satisfies T,
+      lines: [
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Snake. Eu não uso mais codec. Mas essa frequência ainda abre.',
+            en: 'Snake. I do not use codec any more. But this frequency still opens.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Você mudou, garoto.',
+            en: 'You have changed, kid.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Troquei quase tudo o que era meu por aço. E ainda assim a única coisa que decide onde a lâmina cai sou eu.',
+            en: 'I traded nearly everything that was mine for steel. And still, the only thing that decides where the blade falls is me.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Alguns diriam que a lâmina decide.',
+            en: 'Some would say the blade decides.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'A lâmina não escolhe nada. Ela obedece. É essa a diferença que ninguém quer ouvir.',
+            en: 'The blade chooses nothing. It obeys. That is the difference nobody wants to hear.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Nem quando a ferramenta é boa o bastante para parecer que escolheu?',
+            en: 'Not even when the tool is good enough to look like it chose?',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Especialmente aí. Memória emprestada não é passado, Snake. Resultado emprestado não é trabalho.',
+            en: 'Especially then. Borrowed memory is not a past, Snake. A borrowed result is not work.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Eu faço isso porque eu quero. Não porque fui treinado para isso.',
+            en: 'I do this because I want to. Not because I was trained to.',
+          } satisfies T,
+        },
+      ],
+    },
+    liquid: {
+      name: { pt: 'Liquid', en: 'Liquid' } satisfies T,
+      short: 'LIQUID',
+      freq: '143.21',
+      face: 'hair',
+      role: { pt: 'Frequência hostil · não confiável', en: 'Hostile frequency · not to be trusted' } satisfies T,
+      lines: [
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Irmão! Ainda arrastando esse corpo cansado por aí?',
+            en: 'Brother! Still dragging that tired body around?',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Liquid.',
+            en: 'Liquid.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Você passou a vida reclamando dos genes. Agora reclama dos pesos de um modelo. Sempre a mesma choradeira: alguém escreveu você antes de você nascer.',
+            en: 'You spent your life complaining about genes. Now you complain about a model\'s weights. Always the same whining: somebody wrote you before you were born.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'A diferença é o que eu faço depois.',
+            en: 'The difference is what I do afterwards.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: 'Ha! Todos dizem isso. E entregam o mesmo trabalho morno que a máquina entregaria.',
+            en: 'Ha! Everyone says that. And they hand in the same lukewarm work the machine would have handed in.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Então entregue o seu. Vamos ver quem assina no fim.',
+            en: 'Then hand in yours. We will see who signs at the end.',
+          } satisfies T,
+        },
+        {
+          who: 'THEM',
+          text: {
+            pt: '...Você é irritantemente parecido comigo.',
+            en: '...You are irritatingly like me.',
+          } satisfies T,
+        },
+        {
+          who: 'SNAKE',
+          text: {
+            pt: 'Não. Eu só não terceirizo a parte difícil.',
+            en: 'No. I just do not outsource the hard part.',
+          } satisfies T,
+        },
+      ],
+    },
+    },
+  },
+
+
+  /*
+   * The battle.
+   *
+   * A small turn-based encounter against an original minotaur — not a licensed one, drawn as one
+   * path set rather than lifted from anywhere. The monster deliberately has NO health bar: the
+   * gashes that open at 68% and 34% and the line at the foot of the stage are the whole readout,
+   * which is the difference between reading a fight and reading a progress meter.
+   *
+   * `{n}` is the damage, filled in at the call site — the number lands mid-sentence in Portuguese
+   * and at the end in English, so the two cannot share one template with a suffix.
+   */
+  battle: {
+    encounter: { pt: 'ENCONTRO 01', en: 'ENCOUNTER 01' } satisfies T,
+    place: { pt: 'Túnel de manutenção', en: 'Maintenance tunnel' } satisfies T,
+    hero: { pt: 'AVENTUREIRO', en: 'ADVENTURER' } satisfies T,
+    close: { pt: 'Sair da luta', en: 'Leave the fight' } satisfies T,
+    again: { pt: 'Lutar de novo', en: 'Fight again' } satisfies T,
+
+    commands: {
+      attack: { label: { pt: 'Atacar', en: 'Attack' } satisfies T, cost: { pt: 'AÇO', en: 'STEEL' } satisfies T },
+      magic: { label: { pt: 'Magia', en: 'Magic' } satisfies T, cost: { pt: '12 MP', en: '12 MP' } satisfies T },
+      summon: { label: { pt: 'Invocar', en: 'Summon' } satisfies T, cost: { pt: 'RISCO', en: 'RISK' } satisfies T },
+      flee: { label: { pt: 'Fugir', en: 'Flee' } satisfies T, cost: { pt: '50%', en: '50%' } satisfies T },
+    },
+
+    log: {
+      opening: {
+        pt: 'O minotauro bloqueia o túnel. Ele ainda não decidiu se você vale o esforço.',
+        en: 'The minotaur blocks the tunnel. He has not yet decided whether you are worth the effort.',
+      } satisfies T,
+      attack: {
+        pt: 'O aventureiro avança e acerta o flanco. {n} de dano.',
+        en: 'The adventurer steps in and lands one on the flank. {n} damage.',
+      } satisfies T,
+      magic: {
+        pt: 'Fogo estoura contra o peito da criatura. {n} de dano.',
+        en: 'Fire bursts against the creature\'s chest. {n} damage.',
+      } satisfies T,
+      summon: {
+        pt: 'Algo atende ao chamado e passa reto pelo minotauro. {n} de dano.',
+        en: 'Something answers the call and goes straight through the minotaur. {n} damage.',
+      } satisfies T,
+      /*
+       * The prototype reads 'Reste-se ao aço', which is not a sentence in Portuguese — a slip,
+       * not a voice. Corrected here rather than carried across.
+       */
+      noMana: {
+        pt: 'Magia insuficiente. Atenha-se ao aço.',
+        en: 'Not enough magic. Stick to steel.',
+      } satisfies T,
+      summonFailed: {
+        pt: 'A invocação falha. Nada responde ao chamado.',
+        en: 'The summoning fails. Nothing answers the call.',
+      } satisfies T,
+      raise: { pt: 'O minotauro ergue o machado.', en: 'The minotaur raises the axe.' } satisfies T,
+      strike: {
+        pt: 'O machado desce e tira {n} de vida do aventureiro.',
+        en: 'The axe comes down and takes {n} life from the adventurer.',
+      } satisfies T,
+      fled: {
+        pt: 'Você recua pelo corredor. O machado bate na parede atrás de você.',
+        en: 'You back off down the corridor. The axe hits the wall behind you.',
+      } satisfies T,
+      blocked: {
+        pt: 'A saída está bloqueada. Ele não deixa você ir.',
+        en: 'The way out is blocked. He will not let you go.',
+      } satisfies T,
+      won: {
+        pt: 'O minotauro cai de joelhos e o túnel fica quieto outra vez.',
+        en: 'The minotaur drops to his knees and the tunnel goes quiet again.',
+      } satisfies T,
+      lost: {
+        pt: 'O aventureiro cai. O minotauro volta a bloquear o túnel.',
+        en: 'The adventurer falls. The minotaur goes back to blocking the tunnel.',
+      } satisfies T,
+    },
+
+    end: {
+      won: { title: { pt: 'Vitória', en: 'Victory' } satisfies T, note: {
+        pt: 'O túnel está livre. O machado fica onde caiu.',
+        en: 'The tunnel is clear. The axe stays where it fell.',
+      } satisfies T },
+      lost: { title: { pt: 'Derrota', en: 'Defeat' } satisfies T, note: {
+        pt: 'Ele era mais forte hoje. Magia primeiro, aço depois.',
+        en: 'He was stronger today. Magic first, steel after.',
+      } satisfies T },
+      fled: { title: { pt: 'Fuga', en: 'Escape' } satisfies T, note: {
+        pt: 'Você saiu inteiro. O minotauro continua lá, esperando.',
+        en: 'You got out in one piece. The minotaur is still there, waiting.',
+      } satisfies T },
+    },
+  },
+
+  /* The chrome of the cat file itself. */
+  catFile: {
+    ptt: { pt: 'PTT', en: 'PTT' } satisfies T,
+    heading: { pt: 'FICHA', en: 'FILE' } satisfies T,
+    photoAlt: {
+      pt: 'Fotografia do gato',
+      en: 'Photograph of the cat',
+    } satisfies T,
+    portraitLabel: {
+      pt: 'Retrato ao vivo, desenhado em tempo real',
+      en: 'Live portrait, drawn in real time',
+    } satisfies T,
   },
 
   /*

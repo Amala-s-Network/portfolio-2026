@@ -1,0 +1,313 @@
+/*
+ * The tunnel. Amber and ember on near-black, and a stage that is mostly empty on purpose — the
+ * monster needs the room to swing.
+ */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(16px, 3vh, 46px);
+  background: rgba(8, 4, 3, 0.93);
+  animation: pgFade 0.28s var(--ease) both;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(920px, 100%);
+  max-height: 100%;
+  overflow: hidden;
+  background: var(--pit-bg);
+  border: 1px solid var(--pit-line);
+  box-shadow:
+    0 0 0 1px rgba(224, 85, 44, 0.16),
+    0 40px 90px -40px #000;
+  font-family: var(--font-jost), sans-serif;
+  animation: pgCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--pit-line);
+}
+
+.encounter,
+.place {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.encounter {
+  color: var(--amber);
+}
+
+.place {
+  color: rgba(246, 230, 200, 0.5);
+}
+
+.close {
+  margin-left: auto;
+  min-width: 32px;
+  min-height: 32px;
+  border: 1px solid var(--pit-line);
+  background: none;
+  color: var(--amber);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.close:hover,
+.close:focus-visible {
+  background: var(--amber);
+  color: var(--pit-bg);
+}
+
+.stage {
+  position: relative;
+  flex: 1;
+  min-height: 300px;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 108%, #2a1512, var(--pit-bg) 62%);
+}
+
+/*
+ * Absolute and inset: 0. A percentage height against a min-height flex item resolves to auto,
+ * the box falls back to the bitmap's intrinsic ratio, and drawFoe rewrites that ratio every
+ * frame — the figure then walks off the stage and over the controls.
+ */
+.canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+ * The damage number, and two fixes the reference frame does not have.
+ *
+ * FIRST, it has to survive the flash. The number is bone and the struck body flashes bone for the
+ * first 0.18s — which is exactly the window where the number is at full opacity, so it was
+ * landing white-on-white and could not be read at all; by the time the flash cleared it had
+ * already faded. The ember glow it carried does nothing against white. A dark halo underneath
+ * fixes it in both directions: it reads over the flash AND over the dark stage.
+ *
+ * SECOND, it has to be centred. `left: 50%` alone starts the number at the middle and hangs it
+ * off to the right. The correction cannot go in a `transform` property, because the rise
+ * animation owns transform for the whole 0.85s and would drop it on the first frame — so the
+ * horizontal shift lives inside the keyframes instead.
+ */
+.dmg {
+  position: absolute;
+  left: 50%;
+  top: 26%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 30px;
+  letter-spacing: 0.04em;
+  /*
+   * Ember, not bone. Bone was the prototype's choice and it cannot work: the struck body flashes
+   * bone underneath it for exactly the window where the number is fully opaque. Ember is already
+   * the outline colour of everything in this tunnel, so it is in palette, and it is the one value
+   * that reads against BOTH the white flash and the near-black stage. The dark halo carries the
+   * rest.
+   */
+  color: var(--ember);
+  text-shadow:
+    0 0 5px var(--pit-bg),
+    0 0 12px var(--pit-bg),
+    0 0 20px rgba(11, 7, 8, 0.9);
+  pointer-events: none;
+  animation: dmgRise 0.85s var(--ease) both;
+}
+
+@keyframes dmgRise {
+  from {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, -26px);
+  }
+}
+
+.log {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  bottom: 16px;
+  margin: 0;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: rgba(246, 230, 200, 0.88);
+  pointer-events: none;
+}
+
+.end {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 24px;
+  text-align: center;
+  background: rgba(11, 7, 8, 0.86);
+  animation: pgFade 0.35s var(--ease) both;
+}
+
+.endTitle {
+  margin: 0;
+  font-size: clamp(26px, 3vw, 36px);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+
+.endNote {
+  margin: 0 0 12px;
+  max-width: 34ch;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(246, 230, 200, 0.72);
+}
+
+.again {
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid var(--pit-line);
+  background: var(--pit-panel);
+  color: var(--bone);
+  font-family: inherit;
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.again:hover,
+.again:focus-visible {
+  background: var(--amber);
+  color: var(--pit-bg);
+}
+
+/* ------------------------------------------------------------------- footer */
+
+.foot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 22px;
+  padding: 16px 22px 20px;
+  border-top: 1px solid var(--pit-line);
+}
+
+.vitals {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  justify-content: center;
+  min-width: 0;
+}
+
+.heroName {
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: rgba(246, 230, 200, 0.6);
+}
+
+.hpTrack,
+.mpTrack {
+  border: 1px solid var(--pit-line);
+  background: var(--pit-bg);
+}
+
+.hpTrack {
+  height: 14px;
+}
+
+.mpTrack {
+  height: 8px;
+}
+
+.hpFill,
+.mpFill {
+  display: block;
+  height: 100%;
+  transition: width 0.4s ease;
+}
+
+.mpFill {
+  background: var(--mana);
+}
+
+.numbers {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: rgba(246, 230, 200, 0.45);
+}
+
+.commands {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.command {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 2px;
+  min-width: 128px;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--pit-line);
+  background: var(--pit-panel);
+  color: var(--bone);
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.command:hover:not(:disabled),
+.command:focus-visible:not(:disabled) {
+  background: var(--ember);
+  color: var(--pit-bg);
+}
+
+.command:disabled {
+  background: #120b0a;
+  color: rgba(246, 230, 200, 0.32);
+  cursor: not-allowed;
+}
+
+.commandLabel {
+  font-size: 14px;
+  letter-spacing: 0.04em;
+}
+
+.commandCost {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  opacity: 0.7;
+}
+
+@media (max-width: 720px) {
+  .foot {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

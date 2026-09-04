@@ -614,3 +614,117 @@ html.nierPreview [class*='Hero-module'][class*='avatar'] img {
     transition: none;
   }
 }
+
+/*
+ * The two CRT surfaces of the escritório: the codec card and the minotaur's tunnel.
+ *
+ * Scoped token blocks rather than hex scattered through the modules, for the same reason the NieR
+ * block above exists. These two screens each have a palette of about a dozen values that must
+ * agree with each other across four files; written inline they drift within a week and then lie
+ * about it. The names say what the value IS on that screen, not what colour it happens to be.
+ *
+ * They are deliberately NOT theme-aware: a codec is a green phosphor tube in every light.
+ */
+.codecSurface {
+  --crt-bg: #060f0a;
+  --crt-panel: #0a1a11;
+  --crt-screen: #071c11;
+  --crt-line: #1f4630;
+  --crt-deep: #04120a;
+  --phosphor: #8df3a6;
+  --phosphor-bright: #d8ffe4;
+}
+
+.battleSurface {
+  --pit-bg: #0b0708;
+  --pit-panel: #1a0f0d;
+  --pit-line: #43241c;
+  --amber: #f0d27a;
+  --ember: #e0552c;
+  --bone: #f6e6c8;
+  --hide: #2b1613;
+  --hide-dark: #3a1e19;
+  --mana: #7ea6d8;
+}
+
+/*
+ * The overlay motion of the escritório, shared by the codec, the battle and the cat file.
+ *
+ * Named here rather than per-module because three modules animate the same card in the same way,
+ * and a keyframe defined three times is a keyframe that will eventually differ in one of them.
+ */
+@keyframes pgCard {
+  from {
+    opacity: 0;
+    transform: scale(0.965);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pgFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pgTalk {
+  from {
+    transform: scaleY(0.4);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes pgBlip {
+  from {
+    opacity: 0.25;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pgRise {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-26px);
+  }
+}
+
+@keyframes pgSweep {
+  from {
+    transform: translateY(-100%);
+  }
+  to {
+    transform: translateY(100%);
+  }
+}
+
+/*
+ * CLAUDE.md item 9: the prototype ignores prefers-reduced-motion and this is where that is paid
+ * for. The cards still arrive — an overlay that appears with no transition at all is harder to
+ * follow, not easier — but they arrive by fading, with no scale and no ambient loop underneath.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .codecSurface *,
+  .battleSurface * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+
+  .codecSurface [data-pg-card],
+  .battleSurface [data-pg-card] {
+    animation: pgFade 0.2s linear both !important;
+  }
+}

@@ -255,3 +255,19 @@
   color: var(--ink);
   border-bottom-color: var(--hairline-mid);
 }
+
+.bottomRight {
+  bottom: var(--inset-y);
+  right: var(--inset-x);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/*
+ * The cats' names are names, so they are set as names: no case transform, the tracking the
+ * design asks for, and never translated.
+ */
+.buttonCat {
+  letter-spacing: 0.14em;
+}
