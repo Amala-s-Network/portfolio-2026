@@ -326,6 +326,12 @@ export const hacking = {
 
   score: { pt: 'PONTOS', en: 'SCORE' } satisfies T,
   wave: { pt: 'ONDA', en: 'WAVE' } satisfies T,
+  /*
+   * The lives readout. The triangles beside it are the same number said twice, which is the point
+   * — the wing of escort ships flying with you IS the count, and a player watching the field
+   * rather than the header should still know what a collision just cost them.
+   */
+  lives: { pt: 'VIDAS', en: 'LIVES' } satisfies T,
 
   over: { pt: 'NAVE DESTRUÍDA', en: 'SHIP DESTROYED' } satisfies T,
   /* Shown once, under the game-over line — the reference never lets a loss be only a loss. */
