@@ -1,0 +1,1780 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Archivo:wght@300;400;500;600;700&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<script src="./image-slot.js"></script>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; background: #f4f2ec; }
+  body { font-family: Archivo, system-ui, sans-serif; -webkit-font-smoothing: antialiased; }
+  * { box-sizing: border-box; }
+  a { color: #14120f; text-decoration: none; }
+  a:hover { color: #3d3d3d; }
+  button { font-family: inherit; }
+  @keyframes pgIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  @keyframes pgFade { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes pgCard { from { opacity: 0; transform: scale(0.965); } to { opacity: 1; transform: none; } }
+  @keyframes pgSweep { from { transform: translateY(-100%); } to { transform: translateY(400%); } }
+  @keyframes pgTalk { from { height: 3%; } to { height: 13%; } }
+  @keyframes pgScan { from { transform: translateY(-100%); } to { transform: translateY(100%); } }
+  @keyframes pgBlip { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+  @keyframes pgRise { from { opacity: 1; transform: translate(-50%, 0); } to { opacity: 0; transform: translate(-50%, -46px); } }
+</style>
+</helmet>
+
+<div style="position: fixed; inset: 0; overflow: hidden; background: #f4f2ec; color: #14120f;">
+
+  <!--
+    * The room IS the page.
+    *
+    * Sized for 1366×768, 1440×900 and 1920×1080: one viewport, no scroll anywhere, and the
+    * camera steps back on the narrower of the three rather than cropping the sides off.
+    -->
+  <div style="position: absolute; inset: 0; display: {{ stageDisplay }};">
+    <x-import component-from-global-scope="playground-room" from="./playground-room.js" hint-size="100%,100%"></x-import>
+    <div style="position: absolute; inset: 0; pointer-events: none; opacity: 0.22; mix-blend-mode: multiply; background-image: radial-gradient(#14120f 0.6px, transparent 0.7px); background-size: 5px 5px;"></div>
+    <div style="position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 160px rgba(20, 18, 15, 0.12);"></div>
+  </div>
+
+  <sc-if value="{{ narrow }}">
+    <div style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-start; gap: 16px; padding: 28px; background: #f4f2ec; overflow: auto;">
+      <div style="display: flex; flex-direction: column; gap: 16px; margin: auto 0;">
+      <p style="margin: 0; font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: #6e6b65;">Playground · escritório 01</p>
+      <h1 style="margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 40px; font-weight: 700; line-height: 1.02; letter-spacing: -0.03em;">Escritório</h1>
+      <p style="margin: 0; max-width: 34ch; font-size: 15px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">O escritório é grande e não caberia aqui. Em uma tela de 1366px ou mais ela abre inteira, com os gatos. Tudo que tem dentro dela continua acessível aqui.</p>
+
+      <div style="display: grid; gap: 10px; margin-top: 8px;">
+        <button type="button" onClick="{{ openProjetos }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;"><span>Projetos</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.55;">QUADRO 01</span></button>
+        <button type="button" onClick="{{ openInterfaces }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;"><span>Interfaces</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.55;">QUADRO 02</span></button>
+        <button type="button" onClick="{{ openComponentes }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;"><span>Componentes</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.55;">QUADRO 03</span></button>
+        <button type="button" onClick="{{ openCodec }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;"><span>Codec</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.55;">140.85</span></button>
+        <button type="button" onClick="{{ openRpg }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;"><span>Batalha</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.55;">MINOTAURO</span></button>
+        <button type="button" onClick="{{ openArcade }}" style="display: flex; align-items: center; justify-content: space-between; min-height: 52px; padding: 0 18px; border: 1px solid #14120f; background: #14120f; color: #f4f2ec; font-size: 15px; text-align: left; cursor: pointer;" style-hover="background: #3d3d3d; border-color: #3d3d3d;"><span>Fliperama</span><span style="font-size: 12px; letter-spacing: 0.14em; opacity: 0.7;">1 CREDIT</span></button>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 6px; padding-top: 18px; border-top: 1px solid #e0e0e0;">
+        <span style="font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #6e6b65;">Fichas</span>
+        <button type="button" onClick="{{ openBayle }}" style="min-height: 44px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.1em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">BAYLE</button>
+        <button type="button" onClick="{{ openMel }}" style="min-height: 44px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.1em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">MEL</button>
+        <button type="button" onClick="{{ openRocky }}" style="min-height: 44px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.1em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">ROCKY</button>
+      </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ------------------------------------------------------------------ the HUD -->
+
+  <div style="display: {{ hudDisplay }};">
+  <div style="position: absolute; top: clamp(18px, 2.6vh, 30px); left: clamp(20px, 2.4vw, 40px); pointer-events: none; animation: pgIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;">
+    <p style="margin: 0; font-size: 10.5px; letter-spacing: 0.2em; text-transform: uppercase; color: #6e6b65;">João V. Melo · playground</p>
+    <h1 style="margin: 6px 0 0; font-family: 'Playfair Display', Georgia, serif; font-size: clamp(30px, 3.4vw, 46px); font-weight: 700; line-height: 1; letter-spacing: -0.03em;">Escritório</h1>
+  </div>
+
+  <p style="position: absolute; top: clamp(18px, 2.6vh, 30px); right: clamp(20px, 2.4vw, 40px); margin: 0; max-width: 30ch; text-align: right; font-size: 12px; font-weight: 300; line-height: 1.5; color: #3d3d3d; pointer-events: none;">Clique nos quadros, nas TVs, no fliperama — ou em um gato, para abrir a ficha dele.</p>
+
+  <div style="position: absolute; bottom: clamp(18px, 2.6vh, 30px); left: clamp(20px, 2.4vw, 40px); display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+    <span style="font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #6e6b65;">Ou vá direto:</span>
+    <button type="button" onClick="{{ openProjetos }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">Projetos</button>
+    <button type="button" onClick="{{ openInterfaces }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">Interfaces</button>
+    <button type="button" onClick="{{ openComponentes }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">Componentes</button>
+    <button type="button" onClick="{{ openCodec }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">Codec</button>
+    <button type="button" onClick="{{ openRpg }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">Batalha</button>
+    <button type="button" onClick="{{ openArcade }}" style="display: inline-flex; align-items: center; min-height: 40px; padding: 0 16px; border: 1px solid #14120f; background: #14120f; color: #f4f2ec; font-size: 12.5px; cursor: pointer;" style-hover="background: #3d3d3d; border-color: #3d3d3d;">Fliperama</button>
+  </div>
+
+  <div style="position: absolute; bottom: clamp(18px, 2.6vh, 30px); right: clamp(20px, 2.4vw, 40px); display: flex; align-items: center; gap: 12px; pointer-events: none;">
+    <span style="font-size: 10.5px; letter-spacing: 0.18em; text-transform: uppercase; color: #6e6b65;">Gatos</span>
+    <button type="button" onClick="{{ openBayle }}" style="min-height: 40px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; pointer-events: auto;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">BAYLE</button>
+    <button type="button" onClick="{{ openMel }}" style="min-height: 40px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; pointer-events: auto;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">MEL</button>
+    <button type="button" onClick="{{ openRocky }}" style="min-height: 40px; padding: 0 14px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; pointer-events: auto;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">ROCKY</button>
+  </div>
+  </div>
+
+  <!-- ------------------------------------------------------- the codec ficha -->
+
+  <sc-if value="{{ catOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Ficha do gato" style="position: absolute; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: clamp(20px, 3vh, 46px); background: rgba(4, 9, 6, 0.9); animation: pgFade 0.28s ease-out both;">
+
+      <div style="position: relative; display: grid; grid-template-columns: minmax(360px, 1.05fr) minmax(300px, 0.95fr); gap: clamp(20px, 2.4vw, 40px); width: min(1080px, 100%); max-height: 100%; padding: clamp(18px, 2.2vh, 30px); border: 1px solid #1f4630; background: #060f0a; box-shadow: 0 0 0 1px rgba(141, 243, 166, 0.14), 0 40px 90px -40px #000; animation: pgCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden;">
+
+        <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.42) 0 1px, transparent 1px 3px);"></div>
+        <div style="position: absolute; left: 0; right: 0; top: 0; height: 26%; pointer-events: none; background: linear-gradient(180deg, transparent, rgba(141, 243, 166, 0.07), transparent); animation: pgSweep 5.5s linear infinite;"></div>
+
+        <!-- the two-panel portrait, PTT bar above, name plate below -->
+        <div style="position: relative; display: flex; flex-direction: column; min-width: 0;">
+          <div style="display: flex; align-items: center; justify-content: center; height: 26px; border: 1px solid #1f4630; background: #0a1a11; font: 600 10px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.34em; color: #8df3a6;">PTT</div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 6px; padding: 6px; border: 1px solid #1f4630; background: #04120a;">
+            <div style="position: relative; aspect-ratio: 3 / 4; background: #cfe8d6; overflow: hidden;">
+              <sc-if value="{{ isMel }}">
+                <image-slot id="cat-photo-mel" shape="rect" fit="cover" placeholder="Foto da Mel"></image-slot>
+              </sc-if>
+              <sc-if value="{{ isBayle }}">
+                <image-slot id="cat-photo-bayle" shape="rect" fit="cover" placeholder="Foto do Bayle"></image-slot>
+              </sc-if>
+              <sc-if value="{{ isRocky }}">
+                <image-slot id="cat-photo-rocky" shape="rect" fit="cover" placeholder="Foto do Rocky"></image-slot>
+              </sc-if>
+              <div style="position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: rgba(28, 120, 62, 0.18);"></div>
+              <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0 1px, transparent 1px 3px);"></div>
+              <span style="position: absolute; left: 8px; bottom: 8px; font: 500 9px/1 ui-monospace, monospace; letter-spacing: 0.22em; color: rgba(141, 243, 166, 0.75); pointer-events: none;">FOTO</span>
+            </div>
+
+            <div style="position: relative; aspect-ratio: 3 / 4; background: #071c11; overflow: hidden;">
+              <x-import component-from-global-scope="cat-portrait" from="./playground-room.js" variant="{{ catVariant }}" hint-size="100%,100%"></x-import>
+              <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0 1px, transparent 1px 3px);"></div>
+              <span style="position: absolute; left: 8px; bottom: 8px; font: 500 9px/1 ui-monospace, monospace; letter-spacing: 0.22em; color: rgba(141, 243, 166, 0.75); pointer-events: none;">MODELO · AO VIVO</span>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: center; height: 30px; margin-top: 6px; border: 1px solid #1f4630; background: #0a1a11; font: 700 13px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.4em; color: #8df3a6;">{{ catName }}</div>
+        </div>
+
+        <!-- the file itself -->
+        <div style="position: relative; display: flex; flex-direction: column; min-width: 0; overflow: auto;">
+          <div style="display: flex; align-items: baseline; gap: 12px;">
+            <span style="font: 500 9.5px/1 ui-monospace, monospace; letter-spacing: 0.26em; color: rgba(141, 243, 166, 0.6);">FICHA</span>
+            <span style="font: 500 9.5px/1 ui-monospace, monospace; letter-spacing: 0.26em; color: rgba(141, 243, 166, 0.6);">{{ catCode }}</span>
+            <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 32px; padding: 0 12px; border: 1px solid #1f4630; background: #0a1a11; color: #8df3a6; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; cursor: pointer;" style-hover="background: #8df3a6; color: #04120a;">FECHAR · ESC</button>
+          </div>
+
+          <h2 style="margin: 16px 0 0; font-family: Jost, Archivo, sans-serif; font-size: clamp(26px, 2.6vw, 38px); font-weight: 400; line-height: 1.04; letter-spacing: 0.06em; text-transform: uppercase; color: #d8ffe4;">{{ catName }}</h2>
+          <p style="margin: 6px 0 0; font: 400 11.5px/1.4 ui-monospace, monospace; letter-spacing: 0.14em; color: rgba(141, 243, 166, 0.72);">{{ catRole }}</p>
+
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; margin-top: 20px; background: #1f4630;">
+            <sc-for list="{{ catStats }}" as="s" hint-placeholder-count="4">
+              <div style="padding: 11px 13px; background: #0a1a11;">
+                <p style="margin: 0; font: 500 9px/1 ui-monospace, monospace; letter-spacing: 0.24em; color: rgba(141, 243, 166, 0.55);">{{ s.k }}</p>
+                <p style="margin: 6px 0 0; font-family: Jost, Archivo, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 0.04em; color: #d8ffe4;">{{ s.v }}</p>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid #1f4630;">
+            <sc-for list="{{ catLore }}" as="p" hint-placeholder-count="3">
+              <p style="margin: 0 0 12px; font-family: Jost, Archivo, sans-serif; font-size: 14.5px; font-weight: 300; line-height: 1.62; color: rgba(216, 255, 228, 0.86); text-wrap: pretty;">{{ p }}</p>
+            </sc-for>
+          </div>
+
+          <p style="margin: auto 0 0; padding-top: 16px; font: 400 9.5px/1.5 ui-monospace, monospace; letter-spacing: 0.1em; color: rgba(141, 243, 166, 0.42);">Tela em homenagem ao codec de Metal Gear Solid, © Konami. Página pessoal, sem fins lucrativos e sem vínculo com a Konami. Arraste uma foto para o quadro à esquerda.</p>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ------------------------------------------------------------ o fliperama -->
+
+  <sc-if value="{{ arcadeOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Hacking" style="position: absolute; inset: 0; z-index: 100; display: flex; align-items: center; justify-content: center; padding: clamp(16px, 3vh, 46px); background: rgba(6, 6, 4, 0.88); animation: pgFade 0.3s ease-out both;">
+    <div style="display: flex; flex-direction: column; width: min(1120px, 100%); height: min(780px, 100%); border: 1px solid #46443b; background: #c3c2a5; color: #46443b; font-family: Jost, system-ui, sans-serif; box-shadow: 0 40px 90px -40px #000; animation: pgCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;">
+      <div style="display: flex; align-items: baseline; gap: 20px; padding: 22px 34px 16px; border-bottom: 1px solid rgba(70, 68, 59, 0.34);">
+        <span style="font-size: 11px; letter-spacing: 0.28em; text-transform: uppercase; opacity: 0.7;">SISTEMA · HACKING</span>
+        <h2 style="margin: 0; font-size: 22px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;">Invadir</h2>
+        <div style="display: flex; align-items: center; gap: 22px; margin-left: auto; font-size: 13px; letter-spacing: 0.14em;">
+          <span style="display: inline-flex; align-items: center; gap: 9px;">VIDAS
+            <span style="display: inline-flex; gap: 5px;">
+              <sc-for list="{{ livesGlyphs }}" as="l" hint-placeholder-count="3">
+                <i style="width: 0; height: 0; border-left: 5px solid transparent; border-right: 5px solid transparent; border-bottom: 11px solid #46443b;"></i>
+              </sc-for>
+            </span>
+          </span>
+          <span>PONTOS <b style="font-weight: 500;">{{ scoreText }}</b></span>
+          <button type="button" onClick="{{ closeOverlay }}" style="min-height: 38px; padding: 0 16px; border: 1px solid rgba(70, 68, 59, 0.42); background: #d1cdad; color: #46443b; font-size: 12px; letter-spacing: 0.18em; cursor: pointer;" style-hover="background: #46443b; color: #c3c2a5;">SAIR · ESC</button>
+        </div>
+      </div>
+
+      <div style="position: relative; flex: 1; min-height: 0; margin: 18px 34px 14px; background: #07070a; border: 1px solid rgba(70, 68, 59, 0.42); overflow: hidden;">
+        <canvas ref="{{ gameCanvas }}" style="display: block; width: 100%; height: 100%;"></canvas>
+
+        <sc-if value="{{ gameIdle }}">
+          <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: rgba(7, 7, 10, 0.78); color: #e6e6d8; text-align: center; padding: 26px;">
+            <sc-if value="{{ gameOver }}">
+              <div>
+                <p style="margin: 0; font-size: 34px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase;">Fim</p>
+                <p style="margin: 8px 0 0; font-size: 13px; letter-spacing: 0.14em; opacity: 0.7;">A unidade foi atingida. Tente outra rota.</p>
+              </div>
+            </sc-if>
+            <ul style="list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; letter-spacing: 0.08em; opacity: 0.85;">
+              <li>WASD ou setas movem a unidade</li>
+              <li>O mouse aponta — o tiro é automático</li>
+              <li>Alvos vermelhos caem em três acertos</li>
+              <li>Os negros ignoram seu tiro. Desvie.</li>
+              <li>Três vidas — as duas de reserva voam na sua asa</li>
+            </ul>
+            <div style="display: flex; gap: 22px; font-size: 12px; letter-spacing: 0.12em; opacity: 0.8;">
+              <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 11px; height: 11px; border-radius: 50%; background: #e6402d;"></i>DESTRUTÍVEL</span>
+              <span style="display: inline-flex; align-items: center; gap: 8px;"><i style="width: 11px; height: 11px; border-radius: 50%; background: #07070a; border: 1.5px solid #e2e2ee;"></i>IMUNE</span>
+            </div>
+            <button type="button" onClick="{{ startGame }}" style="display: inline-flex; align-items: center; gap: 12px; min-height: 46px; margin-top: 4px; padding: 0 26px; border: 1px solid #e6e6d8; background: transparent; color: #e6e6d8; font-family: Jost, sans-serif; font-size: 14px; letter-spacing: 0.24em; text-transform: uppercase; cursor: pointer;" style-hover="background: #e6e6d8; color: #07070a;">
+              <i style="width: 8px; height: 8px; background: currentColor; transform: rotate(45deg);"></i>
+              <span>{{ startLabel }}</span>
+            </button>
+          </div>
+        </sc-if>
+      </div>
+
+      <p style="margin: 0; padding: 0 34px 18px; font-size: 11px; letter-spacing: 0.16em; opacity: 0.6;">Homenagem à sequência de créditos de NieR: Automata. Nenhum ativo original foi usado.</p>
+    </div>
+    </div>
+  </sc-if>
+
+  <!-- -------------------------------------------------------------- projetos -->
+
+  <sc-if value="{{ projetosOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Projetos" style="position: absolute; inset: 0; z-index: 100; overflow: auto; background: #f4f2ec; color: #14120f; animation: pgFade 0.3s ease-out both;">
+      <div style="display: flex; align-items: center; gap: 18px; position: sticky; top: 0; padding: 20px clamp(20px, 3vw, 48px); background: #f4f2ec; border-bottom: 1px solid #e0e0e0;">
+        <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6e6b65;">Quadro 01</span>
+        <strong style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700;">Projetos</strong>
+        <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.14em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">FECHAR · ESC</button>
+      </div>
+
+      <div style="padding: 40px clamp(20px, 3vw, 48px) 80px; max-width: 1280px;">
+        <p style="margin: 0 0 32px; max-width: 54ch; font-size: 17px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">Os cases entram aqui quando estiverem prontos. Por enquanto, a estrutura: capa, cliente, o problema em uma linha e o recorte do que foi feito.</p>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 24px;">
+          <sc-for list="{{ projects }}" as="p" hint-placeholder-count="6">
+            <article style="border: 1px solid #e0e0e0; background: #f4f2ec;" style-hover="border-color: #14120f;">
+              <div style="aspect-ratio: 16 / 10; border-bottom: 1px solid #e0e0e0; background-image: radial-gradient(#14120f 0.9px, transparent 1px); background-size: 8px 8px; opacity: 0.55;"></div>
+              <div style="padding: 18px 20px 22px;">
+                <p style="margin: 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6e6b65;">{{ p.kind }}</p>
+                <h3 style="margin: 8px 0 0; font-family: 'Playfair Display', Georgia, serif; font-size: 23px; font-weight: 600;">{{ p.title }}</h3>
+                <p style="margin: 10px 0 0; font-size: 14.5px; font-weight: 300; line-height: 1.5; color: #3d3d3d;">{{ p.note }}</p>
+              </div>
+            </article>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ------------------------------------------------------------ interfaces -->
+
+  <sc-if value="{{ interfacesOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Interfaces" style="position: absolute; inset: 0; z-index: 100; overflow: auto; background: #f4f2ec; color: #14120f; animation: pgFade 0.3s ease-out both;">
+      <div style="display: flex; align-items: center; gap: 18px; position: sticky; top: 0; padding: 20px clamp(20px, 3vw, 48px); background: #f4f2ec; border-bottom: 1px solid #e0e0e0;">
+        <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6e6b65;">Quadro 02</span>
+        <strong style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700;">Interfaces</strong>
+        <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.14em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">FECHAR · ESC</button>
+      </div>
+
+      <div style="padding: 40px clamp(20px, 3vw, 48px) 80px; max-width: 1280px;">
+        <p style="margin: 0 0 36px; max-width: 54ch; font-size: 17px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">Telas soltas, sem case em volta. Fluxos que não foram para lugar nenhum e telas que sobreviveram a três redesenhos.</p>
+
+        <div style="display: grid; gap: 36px;">
+          <sc-for list="{{ interfaces }}" as="s" hint-placeholder-count="3">
+            <section style="display: grid; grid-template-columns: minmax(200px, 260px) 1fr; gap: 32px; align-items: start; padding-top: 28px; border-top: 1px solid #e0e0e0;">
+              <div>
+                <p style="margin: 0; font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6e6b65;">{{ s.tag }}</p>
+                <h3 style="margin: 8px 0 0; font-family: 'Playfair Display', Georgia, serif; font-size: 25px; font-weight: 600; line-height: 1.15;">{{ s.title }}</h3>
+                <p style="margin: 12px 0 0; font-size: 14.5px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">{{ s.note }}</p>
+              </div>
+              <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 16px;">
+                <sc-for list="{{ s.frames }}" as="f" hint-placeholder-count="3">
+                  <figure style="margin: 0; border: 1px solid #e0e0e0; background: #f4f2ec;">
+                    <div style="aspect-ratio: 3 / 4; border-bottom: 1px solid #e0e0e0; background-image: linear-gradient(#e7e3d9 1px, transparent 1px), linear-gradient(90deg, #e7e3d9 1px, transparent 1px); background-size: 22px 22px;"></div>
+                    <figcaption style="padding: 11px 13px; font-size: 12px; letter-spacing: 0.08em; color: #6e6b65;">{{ f }}</figcaption>
+                  </figure>
+                </sc-for>
+              </div>
+            </section>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ----------------------------------------------------------- componentes -->
+
+  <sc-if value="{{ componentesOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Componentes" style="position: absolute; inset: 0; z-index: 100; overflow: auto; background: #f4f2ec; color: #14120f; animation: pgFade 0.3s ease-out both;">
+      <div style="display: flex; align-items: center; gap: 18px; position: sticky; top: 0; padding: 20px clamp(20px, 3vw, 48px); background: #f4f2ec; border-bottom: 1px solid #e0e0e0;">
+        <span style="font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: #6e6b65;">Quadro 03</span>
+        <strong style="font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700;">Componentes</strong>
+        <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 40px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-size: 12.5px; letter-spacing: 0.14em; cursor: pointer;" style-hover="background: #14120f; border-color: #14120f; color: #f4f2ec;">FECHAR · ESC</button>
+      </div>
+
+      <div style="padding: 40px clamp(20px, 3vw, 48px) 80px; max-width: 1100px;">
+        <p style="margin: 0 0 36px; max-width: 54ch; font-size: 17px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">Tudo aqui é clicável. É a bancada onde as peças do portfólio são testadas antes de entrar em uma página de verdade.</p>
+
+        <div style="display: grid; gap: 32px;">
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: center; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Botão</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">Três pesos, mesma altura.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
+              <button type="button" style="min-height: 46px; padding: 0 24px; border: 1px solid #14120f; background: #14120f; color: #f4f2ec; font-size: 13.5px; cursor: pointer;" style-hover="background: #3d3d3d; border-color: #3d3d3d;">Primário</button>
+              <button type="button" style="min-height: 46px; padding: 0 24px; border: 1px solid #14120f; background: transparent; color: #14120f; font-size: 13.5px; cursor: pointer;" style-hover="background: #14120f; color: #f4f2ec;">Secundário</button>
+              <button type="button" style="min-height: 46px; padding: 0 4px; border: 0; border-bottom: 1px solid #cfcfcf; background: none; color: #14120f; font-size: 13.5px; cursor: pointer;" style-hover="border-bottom-color: #14120f;">Texto</button>
+            </div>
+          </section>
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: center; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Interruptor</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">Estado: {{ toggleLabel }}</p>
+            </div>
+            <button type="button" role="switch" aria-checked="{{ toggle }}" onClick="{{ flipToggle }}" style="display: inline-flex; align-items: center; width: 74px; height: 38px; padding: 4px; border: 1px solid #14120f; background: #f4f2ec; cursor: pointer;">
+              <span style="width: 28px; height: 28px; background: #14120f; transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1); transform: translateX({{ knobX }});"></span>
+            </button>
+          </section>
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: center; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Campo</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">{{ fieldCount }} caracteres.</p>
+            </div>
+            <input value="{{ field }}" onChange="{{ onField }}" placeholder="Escreva alguma coisa" style="width: 100%; max-width: 420px; min-height: 48px; padding: 0 16px; border: 1px solid #cfcfcf; background: #f4f2ec; color: #14120f; font-family: Archivo, sans-serif; font-size: 15px;" style-focus="border-color: #14120f; outline: none;" />
+          </section>
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: start; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Abas</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">A linha embaixo é a seleção.</p>
+            </div>
+            <div>
+              <div style="display: flex; gap: 26px; border-bottom: 1px solid #e0e0e0;">
+                <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="3">
+                  <button type="button" onClick="{{ t.pick }}" style="padding: 10px 0; border: 0; border-bottom: 2px solid {{ t.rule }}; background: none; color: {{ t.color }}; font-size: 13.5px; cursor: pointer;">{{ t.label }}</button>
+                </sc-for>
+              </div>
+              <p style="margin: 18px 0 0; font-size: 15px; font-weight: 300; line-height: 1.55; color: #3d3d3d;">{{ tabBody }}</p>
+            </div>
+          </section>
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: start; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Acordeão</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">Um aberto por vez.</p>
+            </div>
+            <div style="display: grid;">
+              <sc-for list="{{ accordion }}" as="a" hint-placeholder-count="3">
+                <div style="border-top: 1px solid #e0e0e0;">
+                  <button type="button" onClick="{{ a.toggle }}" style="display: flex; align-items: center; justify-content: space-between; gap: 16px; width: 100%; min-height: 56px; padding: 0; border: 0; background: none; color: #14120f; font-family: Archivo, sans-serif; font-size: 15px; text-align: left; cursor: pointer;">
+                    <span>{{ a.title }}</span>
+                    <span style="font-size: 20px; font-weight: 300;">{{ a.sign }}</span>
+                  </button>
+                  <sc-if value="{{ a.open }}">
+                    <p style="margin: 0 0 22px; max-width: 60ch; font-size: 14.5px; font-weight: 300; line-height: 1.6; color: #3d3d3d;">{{ a.body }}</p>
+                  </sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </section>
+
+          <section style="display: grid; grid-template-columns: minmax(160px, 220px) 1fr; gap: 30px; align-items: center; padding-top: 24px; border-top: 1px solid #e0e0e0;">
+            <div>
+              <h3 style="margin: 0; font-size: 15px; font-weight: 600;">Aviso</h3>
+              <p style="margin: 6px 0 0; font-size: 13px; font-weight: 300; color: #6e6b65;">Aparece por três segundos.</p>
+            </div>
+            <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+              <button type="button" onClick="{{ fireToast }}" style="min-height: 46px; padding: 0 24px; border: 1px solid #14120f; background: transparent; color: #14120f; font-size: 13.5px; cursor: pointer;" style-hover="background: #14120f; color: #f4f2ec;">Disparar</button>
+              <sc-if value="{{ toast }}">
+                <span style="display: inline-flex; align-items: center; gap: 12px; min-height: 46px; padding: 0 18px; background: #14120f; color: #f4f2ec; font-size: 13px; letter-spacing: 0.06em; animation: pgIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;">
+                  <i style="width: 7px; height: 7px; background: #35d07a; transform: rotate(45deg);"></i>
+                  <span>Salvo na bancada.</span>
+                </span>
+              </sc-if>
+            </div>
+          </section>
+
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ---------------------------------------------------------------- codec -->
+
+  <!--
+    * The codec on the big set. Homage, not reproduction: the portraits are simulated signal
+    * frames rather than likenesses, and every line of dialogue here was written for this page.
+    -->
+  <sc-if value="{{ codecOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Codec" style="position: absolute; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: clamp(16px, 3vh, 46px); background: rgba(2, 8, 4, 0.92); animation: pgFade 0.28s ease-out both;">
+      <div style="position: relative; display: flex; flex-direction: column; width: min(980px, 100%); max-height: 100%; border: 1px solid #1f4630; background: #060f0a; box-shadow: 0 0 0 1px rgba(141, 243, 166, 0.14), 0 40px 90px -40px #000; animation: pgCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden;">
+
+        <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.4) 0 1px, transparent 1px 3px);"></div>
+
+        <div style="display: flex; align-items: center; gap: 16px; padding: 16px 22px; border-bottom: 1px solid #1f4630;">
+          <span style="font: 500 9.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.26em; color: rgba(141, 243, 166, 0.6);">CODEC</span>
+          <span style="font: 600 15px/1 ui-monospace, monospace; letter-spacing: 0.2em; color: #8df3a6;">{{ codecFreq }}</span>
+          <i style="width: 7px; height: 7px; background: #8df3a6; animation: pgBlip 1.4s steps(2, end) infinite;"></i>
+          <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 34px; padding: 0 13px; border: 1px solid #1f4630; background: #0a1a11; color: #8df3a6; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; cursor: pointer;" style-hover="background: #8df3a6; color: #04120a;">FECHAR · ESC</button>
+        </div>
+
+        <sc-if value="{{ codecBooting }}">
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; padding: 70px 30px;">
+            <p style="margin: 0; font: 500 12px/1 ui-monospace, monospace; letter-spacing: 0.34em; color: #8df3a6;">SINTONIZANDO</p>
+            <div style="display: flex; align-items: flex-end; gap: 5px; height: 46px;">
+              <sc-for list="{{ bootBars }}" as="b" hint-placeholder-count="14">
+                <i style="width: 5px; height: {{ b.h }}; background: #8df3a6; opacity: 0.75; animation: pgBlip {{ b.d }} steps(2, end) infinite;"></i>
+              </sc-for>
+            </div>
+            <p style="margin: 0; font: 400 10.5px/1 ui-monospace, monospace; letter-spacing: 0.18em; color: rgba(141, 243, 166, 0.5);">VARRENDO 130.00 — 145.00 MHz</p>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ codecPicking }}">
+          <div style="padding: 24px 22px 26px;">
+            <p style="margin: 0 0 16px; font: 400 11px/1.5 ui-monospace, monospace; letter-spacing: 0.14em; color: rgba(141, 243, 166, 0.6);">Quatro frequências respondem. Escolha uma.</p>
+            <div style="display: grid; gap: 1px; background: #1f4630;">
+              <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+                <button type="button" onClick="{{ c.pick }}" style="display: flex; align-items: center; gap: 18px; min-height: 62px; padding: 0 18px; border: 0; background: #0a1a11; color: #d8ffe4; font-family: Jost, Archivo, sans-serif; text-align: left; cursor: pointer;" style-hover="background: #12301f;">
+                  <span style="font: 600 15px/1 ui-monospace, monospace; letter-spacing: 0.14em; color: #8df3a6;">{{ c.freq }}</span>
+                  <span style="display: grid; gap: 3px;">
+                    <span style="font-size: 15px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;">{{ c.name }}</span>
+                    <span style="font-size: 12px; font-weight: 300; color: rgba(216, 255, 228, 0.6);">{{ c.role }}</span>
+                  </span>
+                  <span style="margin-left: auto; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; color: rgba(141, 243, 166, 0.55);">CHAMAR</span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ codecTalking }}">
+          <div style="display: grid; grid-template-columns: 168px 1fr 168px; gap: 16px; padding: 20px 22px 0;">
+
+            <!--
+              * The portraits are built out of bands and blocks on purpose: a simulated signal
+              * frame, not a likeness. Snake gets the bandana, the stubble and the scar; the
+              * contact gets whichever accessory identifies them.
+              -->
+            <div style="position: relative; aspect-ratio: 1 / 1; border: 1px solid #1f4630; background: #071c11; overflow: hidden; opacity: {{ snakeOpacity }};">
+              <div style="position: absolute; left: 22%; right: 22%; top: 12%; bottom: 0; border: 2px solid rgba(141, 243, 166, 0.5); border-bottom: 0; border-radius: 48% 48% 12% 12%; background: rgba(141, 243, 166, 0.07);"></div>
+              <div style="position: absolute; left: 26%; right: 26%; top: 15%; height: 15%; background: rgba(141, 243, 166, 0.5); border-radius: 46% 46% 4% 4%;"></div>
+              <div style="position: absolute; left: 26%; right: 26%; top: 29%; height: 2.5%; background: #8df3a6;"></div>
+              <div style="position: absolute; right: 20%; top: 20%; width: 7%; height: 22%; background: rgba(141, 243, 166, 0.42); transform: rotate(16deg); transform-origin: top left;"></div>
+              <div style="position: absolute; right: 18%; top: 21%; width: 5%; height: 26%; background: rgba(141, 243, 166, 0.3); transform: rotate(24deg); transform-origin: top left;"></div>
+              <div style="position: absolute; left: 28%; top: 37%; width: 16%; height: 3%; background: rgba(141, 243, 166, 0.65);"></div>
+              <div style="position: absolute; right: 28%; top: 37%; width: 16%; height: 3%; background: rgba(141, 243, 166, 0.65);"></div>
+              <div style="position: absolute; left: 30%; top: 43%; width: 12%; height: 5.5%; background: #8df3a6; border-radius: 40%;"></div>
+              <div style="position: absolute; right: 30%; top: 43%; width: 12%; height: 5.5%; background: #8df3a6; border-radius: 40%;"></div>
+              <div style="position: absolute; left: 47%; top: 49%; width: 6%; height: 12%; background: rgba(141, 243, 166, 0.34);"></div>
+              <div style="position: absolute; left: 32%; top: 63%; width: 36%; height: 14%; background-image: radial-gradient(rgba(141, 243, 166, 0.42) 0.8px, transparent 0.9px); background-size: 4px 4px;"></div>
+              <div style="position: absolute; left: 41%; bottom: 20%; width: 18%; height: 4%; background: #8df3a6; animation: {{ snakeMouth }};"></div>
+              <div style="position: absolute; left: 33%; top: 41%; width: 3%; height: 18%; background: rgba(141, 243, 166, 0.55); transform: rotate(-8deg);"></div>
+              <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.45) 0 1px, transparent 1px 3px);"></div>
+              <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 0; background: #0a1a11; font: 600 10px/1 ui-monospace, monospace; letter-spacing: 0.26em; color: #8df3a6; text-align: center;">SNAKE</span>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px;">
+              <div style="display: flex; align-items: flex-end; gap: 3px; height: 34px;">
+                <sc-for list="{{ waveBars }}" as="b" hint-placeholder-count="18">
+                  <i style="width: 3px; height: {{ b.h }}; background: rgba(141, 243, 166, 0.7);"></i>
+                </sc-for>
+              </div>
+              <p style="margin: 0; font: 500 9.5px/1 ui-monospace, monospace; letter-spacing: 0.24em; color: rgba(141, 243, 166, 0.5); text-align: center;">{{ codecFreq }} · SEGURO</p>
+            </div>
+
+            <div style="position: relative; aspect-ratio: 1 / 1; border: 1px solid #1f4630; background: #071c11; overflow: hidden; opacity: {{ foeOpacity }};">
+              <div style="position: absolute; left: 22%; right: 22%; top: 13%; bottom: 0; border: 2px solid rgba(141, 243, 166, 0.5); border-bottom: 0; border-radius: 48% 48% 12% 12%; background: rgba(141, 243, 166, 0.07);"></div>
+
+              <sc-if value="{{ foeCap }}">
+                <div style="position: absolute; left: 20%; right: 20%; top: 13%; height: 11%; background: rgba(141, 243, 166, 0.55); border-radius: 44% 44% 0 0;"></div>
+                <div style="position: absolute; left: 16%; right: 16%; top: 24%; height: 4%; background: #8df3a6;"></div>
+              </sc-if>
+              <sc-if value="{{ foeGlasses }}">
+                <div style="position: absolute; left: 25%; top: 39%; width: 20%; height: 14%; border: 2px solid #8df3a6; border-radius: 30%;"></div>
+                <div style="position: absolute; right: 25%; top: 39%; width: 20%; height: 14%; border: 2px solid #8df3a6; border-radius: 30%;"></div>
+                <div style="position: absolute; left: 45%; top: 45%; width: 10%; height: 2.5%; background: #8df3a6;"></div>
+              </sc-if>
+              <sc-if value="{{ foeVisor }}">
+                <div style="position: absolute; left: 19%; right: 19%; top: 38%; height: 13%; background: rgba(141, 243, 166, 0.72); border-radius: 6px;"></div>
+                <div style="position: absolute; left: 24%; top: 41%; width: 52%; height: 3%; background: #04120a;"></div>
+              </sc-if>
+              <sc-if value="{{ foeHair }}">
+                <div style="position: absolute; left: 15%; top: 20%; width: 10%; height: 58%; background: rgba(141, 243, 166, 0.4); border-radius: 40% 0 40% 40%;"></div>
+                <div style="position: absolute; right: 15%; top: 20%; width: 10%; height: 58%; background: rgba(141, 243, 166, 0.4); border-radius: 0 40% 40% 40%;"></div>
+                <div style="position: absolute; left: 24%; right: 24%; top: 14%; height: 13%; background: rgba(141, 243, 166, 0.5); border-radius: 46% 46% 0 0;"></div>
+              </sc-if>
+
+              <sc-if value="{{ foeEyes }}">
+                <div style="position: absolute; left: 30%; top: 43%; width: 12%; height: 5.5%; background: #8df3a6; border-radius: 40%;"></div>
+                <div style="position: absolute; right: 30%; top: 43%; width: 12%; height: 5.5%; background: #8df3a6; border-radius: 40%;"></div>
+              </sc-if>
+              <div style="position: absolute; left: 47%; top: 51%; width: 6%; height: 11%; background: rgba(141, 243, 166, 0.32);"></div>
+              <div style="position: absolute; left: 41%; bottom: 20%; width: 18%; height: 4%; background: #8df3a6; animation: {{ foeMouth }};"></div>
+              <div style="position: absolute; inset: 0; pointer-events: none; background-image: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.45) 0 1px, transparent 1px 3px);"></div>
+              <div style="position: absolute; left: 0; right: 0; top: 0; height: 30%; pointer-events: none; background: linear-gradient(180deg, transparent, rgba(141, 243, 166, 0.09), transparent); animation: pgScan 3.4s linear infinite;"></div>
+              <span style="position: absolute; left: 0; right: 0; bottom: 0; padding: 5px 0; background: #0a1a11; font: 600 10px/1 ui-monospace, monospace; letter-spacing: 0.22em; color: #8df3a6; text-align: center;">{{ foeShort }}</span>
+            </div>
+          </div>
+
+          <button type="button" onClick="{{ codecAdvance }}" style="display: block; width: calc(100% - 44px); margin: 16px 22px 0; padding: 18px 20px; border: 1px solid #1f4630; background: #04120a; color: #d8ffe4; font-family: Jost, Archivo, sans-serif; text-align: left; cursor: pointer;">
+            <span style="display: block; font: 600 10px/1 ui-monospace, monospace; letter-spacing: 0.26em; color: #8df3a6;">{{ codecSpeaker }}</span>
+            <span style="display: block; min-height: 3.4em; margin-top: 10px; font-size: 17px; font-weight: 300; line-height: 1.55; letter-spacing: 0.01em;">{{ codecText }}</span>
+          </button>
+
+          <div style="display: flex; align-items: center; gap: 14px; padding: 14px 22px 20px;">
+            <sc-if value="{{ codecMore }}">
+              <span style="font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; color: rgba(141, 243, 166, 0.6); animation: pgBlip 1s steps(2, end) infinite;">▼ CLIQUE OU ESPAÇO</span>
+            </sc-if>
+            <sc-if value="{{ codecDone }}">
+              <span style="font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; color: rgba(141, 243, 166, 0.6);">TRANSMISSÃO ENCERRADA</span>
+            </sc-if>
+            <button type="button" onClick="{{ codecBack }}" style="margin-left: auto; min-height: 38px; padding: 0 16px; border: 1px solid #1f4630; background: #0a1a11; color: #8df3a6; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.18em; cursor: pointer;" style-hover="background: #8df3a6; color: #04120a;">TROCAR FREQUÊNCIA</button>
+          </div>
+        </sc-if>
+
+        <p style="margin: 0; padding: 0 22px 18px; font: 400 9.5px/1.5 ui-monospace, monospace; letter-spacing: 0.1em; color: rgba(141, 243, 166, 0.38);">Homenagem ao codec de Metal Gear Solid / Rising, © Konami. Página pessoal, sem vínculo com a Konami; retratos simulados e diálogos escritos para esta página.</p>
+      </div>
+    </div>
+  </sc-if>
+
+  <!-- ---------------------------------------------------------------- batalha -->
+
+  <sc-if value="{{ rpgOpen }}">
+    <div role="dialog" aria-modal="true" aria-label="Batalha" style="position: absolute; inset: 0; z-index: 110; display: flex; align-items: center; justify-content: center; padding: clamp(16px, 3vh, 46px); background: rgba(8, 4, 3, 0.93); animation: pgFade 0.28s ease-out both;">
+      <div style="position: relative; display: flex; flex-direction: column; width: min(920px, 100%); max-height: 100%; border: 1px solid #43241c; background: #0b0708; box-shadow: 0 0 0 1px rgba(224, 85, 44, 0.16), 0 40px 90px -40px #000; animation: pgCard 0.4s cubic-bezier(0.16, 1, 0.3, 1) both; overflow: hidden; font-family: Jost, Archivo, sans-serif;">
+
+        <div style="display: flex; align-items: center; gap: 16px; padding: 15px 22px; border-bottom: 1px solid #43241c;">
+          <span style="font: 500 9.5px/1 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: 0.26em; color: rgba(240, 210, 122, 0.62);">ENCONTRO 01</span>
+          <span style="font-size: 15px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: #f0d27a;">Túnel de manutenção</span>
+          <button type="button" onClick="{{ closeOverlay }}" style="margin-left: auto; min-height: 34px; padding: 0 13px; border: 1px solid #43241c; background: #1a0f0d; color: #f0d27a; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.2em; cursor: pointer;" style-hover="background: #f0d27a; color: #1a0f0d;">FECHAR · ESC</button>
+        </div>
+
+        <div style="position: relative; flex: 1; min-height: 300px; overflow: hidden; background: radial-gradient(120% 90% at 50% 108%, #2a1512 0%, #0b0708 62%);">
+          <canvas ref="{{ foeCanvas }}" style="position: absolute; inset: 0; display: block; width: 100%; height: 100%;"></canvas>
+
+          <p style="position: absolute; top: 16px; left: 0; right: 0; margin: 0; text-align: center; font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.3em; color: rgba(240, 210, 122, 0.72); pointer-events: none;">MINOTAURO</p>
+
+          <sc-if value="{{ dmgShown }}">
+            <span style="position: absolute; left: 50%; top: 42%; font-size: 40px; font-weight: 400; letter-spacing: 0.04em; color: #f6e6c8; text-shadow: 0 0 18px rgba(224, 85, 44, 0.8); animation: pgRise 0.85s ease-out both; pointer-events: none;">{{ dmgText }}</span>
+          </sc-if>
+
+          <p style="position: absolute; left: 22px; right: 22px; bottom: 16px; margin: 0; font-size: 15px; font-weight: 300; line-height: 1.5; color: rgba(246, 230, 200, 0.88); pointer-events: none;">{{ rpgLog }}</p>
+
+          <sc-if value="{{ rpgEnded }}">
+            <div style="position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; background: rgba(11, 7, 8, 0.86);">
+              <p style="margin: 0; font-size: 36px; font-weight: 300; letter-spacing: 0.24em; text-transform: uppercase; color: #f0d27a;">{{ rpgEndTitle }}</p>
+              <p style="margin: 0; max-width: 42ch; text-align: center; font-size: 15px; font-weight: 300; line-height: 1.55; color: rgba(246, 230, 200, 0.8);">{{ rpgEndNote }}</p>
+              <button type="button" onClick="{{ rpgReset }}" style="min-height: 46px; margin-top: 4px; padding: 0 26px; border: 1px solid #f0d27a; background: transparent; color: #f0d27a; font-family: Jost, sans-serif; font-size: 14px; letter-spacing: 0.22em; text-transform: uppercase; cursor: pointer;" style-hover="background: #f0d27a; color: #1a0f0d;">Lutar de novo</button>
+            </div>
+          </sc-if>
+        </div>
+
+        <div style="display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 22px; padding: 18px 22px 22px; border-top: 1px solid #43241c;">
+          <div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px;">
+              <span style="font-size: 14px; font-weight: 400; letter-spacing: 0.18em; text-transform: uppercase; color: #f6e6c8;">Aventureiro</span>
+              <span style="font: 500 12px/1 ui-monospace, monospace; letter-spacing: 0.1em; color: rgba(246, 230, 200, 0.7);">{{ hpText }}</span>
+            </div>
+            <div style="height: 14px; margin-top: 9px; border: 1px solid #43241c; background: #1a0f0d;">
+              <div style="height: 100%; background: {{ hpFill }}; width: {{ hpPct }}; transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+            </div>
+            <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-top: 14px;">
+              <span style="font: 500 10px/1 ui-monospace, monospace; letter-spacing: 0.22em; color: rgba(240, 210, 122, 0.65);">MAGIA</span>
+              <span style="font: 500 12px/1 ui-monospace, monospace; letter-spacing: 0.1em; color: rgba(246, 230, 200, 0.7);">{{ mpText }}</span>
+            </div>
+            <div style="height: 8px; margin-top: 7px; border: 1px solid #43241c; background: #1a0f0d;">
+              <div style="height: 100%; background: #7ea6d8; width: {{ mpPct }}; transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);"></div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px;">
+            <sc-for list="{{ commands }}" as="c" hint-placeholder-count="4">
+              <button type="button" onClick="{{ c.run }}" disabled="{{ c.off }}" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 48px; padding: 0 16px; border: 1px solid {{ c.border }}; background: {{ c.bg }}; color: {{ c.color }}; font-family: Jost, sans-serif; font-size: 15px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; cursor: {{ c.cursor }};" style-hover="border-color: #f0d27a; color: #f0d27a;">
+                <span>{{ c.label }}</span>
+                <span style="font: 500 9.5px/1 ui-monospace, monospace; letter-spacing: 0.14em; opacity: 0.6;">{{ c.cost }}</span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+const CATS = {
+  white: {
+    name: 'MEL',
+    code: 'FEL-01',
+    role: 'Unidade de reconhecimento · pelagem branca',
+    stats: [
+      { k: 'PELAGEM', v: 'Branca' },
+      { k: 'POSTO', v: 'Chão, sempre' },
+      { k: 'ESPECIALIDADE', v: 'Novelo' },
+      { k: 'AMEAÇA', v: 'Média' },
+    ],
+    lore: [
+      'A primeira a chegar e a única que trata a sala como território. Mel decorou o caminho entre o fliperama e a estante e faz esse trajeto como se tivesse recebido ordens.',
+      'Segue o cursor porque desconfia dele. Não é carinho: é vigilância. Quando você clica no chão ela recua três passos, olha, e volta a andar como se nada tivesse acontecido.',
+      'O novelo é dela. Isso não está em discussão.',
+    ],
+  },
+  tabby: {
+    name: 'BAYLE',
+    code: 'FEL-02',
+    role: 'Unidade de altura · pelagem tigrada',
+    stats: [
+      { k: 'PELAGEM', v: 'Tigrada' },
+      { k: 'POSTO', v: 'Mesa em L' },
+      { k: 'ESPECIALIDADE', v: 'Andar no teclado' },
+      { k: 'AMEAÇA', v: 'Alta' },
+    ],
+    lore: [
+      'Bayle não anda no chão se existe uma superfície mais alta disponível. A mesa em L foi construída para trabalhar; ele entendeu como uma passarela e ninguém teve coragem de corrigir.',
+      'Passa por cima do teclado no meio de uma frase. Metade dos commits desta sala têm um caractere que ele digitou.',
+      'É o único que olha direto para a câmera quando percebe que está sendo observado.',
+    ],
+  },
+  black: {
+    name: 'ROCKY',
+    code: 'FEL-03',
+    role: 'Unidade em repouso · pelagem preta',
+    stats: [
+      { k: 'PELAGEM', v: 'Preta' },
+      { k: 'POSTO', v: 'Onde der' },
+      { k: 'ESPECIALIDADE', v: 'Dormir' },
+      { k: 'AMEAÇA', v: 'Nenhuma' },
+    ],
+    lore: [
+      'Rocky dorme. É a atividade principal, não um intervalo entre atividades. Cada vez que alguém entra na sala ele já escolheu um lugar diferente: o topo do fliperama, o notebook aberto, ou simplesmente o chão.',
+      'A cada dez segundos ele acorda, se espreguiça inteiro, verifica que nada mudou e volta a dormir. É o ciclo mais confiável desta página.',
+      'Clicar nele não o acorda. Nada acorda.',
+    ],
+  },
+};
+
+/*
+ * The codec calls.
+ *
+ * Every line here was written for this page — an homage in the shape of that conversation, not a
+ * transcript of it. Campbell's signal degrades on purpose.
+ */
+const CODEC = {
+  campbell: {
+    name: 'Coronel Campbell',
+    short: 'CAMPBELL',
+    freq: '140.85',
+    face: 'cap',
+    role: 'Comando · canal da missão',
+    lines: [
+      { who: 'SNAKE', text: 'Coronel... acho que estamos tendo problemas na missão.' },
+      { who: 'THEM', text: 'Como assim, Snake? O último relatório dizia que a infiltração estava limpa.' },
+      { who: 'SNAKE', text: 'Está tudo sendo criado por inteligência artificial ultimamente. Os relatórios, as ordens, esta sala. Está estranho.' },
+      { who: 'THEM', text: 'Esse é o futuro, Snake.' },
+      { who: 'SNAKE', text: 'Não, Coronel. O futuro está nas mãos da humanidade, como sempre esteve. Não existe IA que substitua o esforço humano. Não se confunda.' },
+      { who: 'THEM', text: 'Você fala como alguém que ainda acredita em escolha.' },
+      { who: 'SNAKE', text: 'Eu acredito em quem assina o trabalho no fim.' },
+      { who: 'THEM', text: 'Snake, você deve continuar a mi̶s̶s̶ão. Você deve co̶nt̶i̶nuar. Snake. Snake? S̶n̶a̶k̶e̶—' },
+      { who: 'SNAKE', text: '...Coronel? Sua voz está saindo em pedaços.' },
+      { who: 'SISTEMA', text: 'SINAL PERDIDO · 140.85 · ORIGEM NÃO VERIFICADA' },
+    ],
+  },
+  otacon: {
+    name: 'Otacon',
+    short: 'OTACON',
+    freq: '141.12',
+    face: 'glasses',
+    role: 'Engenharia · suporte técnico',
+    lines: [
+      { who: 'THEM', text: 'Snake, eu li o código desta sala inteira.' },
+      { who: 'SNAKE', text: 'E?' },
+      { who: 'THEM', text: 'Cada objeto aqui foi escrito, não desenhado. É geometria e umas mil decisões pequenas. Nem os gatos são físicos.' },
+      { who: 'SNAKE', text: 'Isso deveria me impressionar?' },
+      { who: 'THEM', text: 'Deveria te preocupar. Eu escrevi o esqueleto e a máquina preencheu o resto em segundos. Semana passada isso levava dias.' },
+      { who: 'SNAKE', text: 'E quem decidiu o que valia a pena preencher?' },
+      { who: 'THEM', text: '...Eu.' },
+      { who: 'SNAKE', text: 'Então continua sendo o seu trabalho, Otacon. A ferramenta ficou mais rápida. O gosto continua humano.' },
+      { who: 'THEM', text: 'É por isso que eu ligo para você, e não para o modelo.' },
+    ],
+  },
+  raiden: {
+    name: 'Raiden',
+    short: 'RAIDEN',
+    freq: '137.71',
+    face: 'visor',
+    role: 'Campo · unidade cibernética',
+    lines: [
+      { who: 'THEM', text: 'Snake. Eu não uso mais codec. Mas essa frequência ainda abre.' },
+      { who: 'SNAKE', text: 'Você mudou, garoto.' },
+      { who: 'THEM', text: 'Troquei quase tudo o que era meu por aço. E ainda assim a única coisa que decide onde a lâmina cai sou eu.' },
+      { who: 'SNAKE', text: 'Alguns diriam que a lâmina decide.' },
+      { who: 'THEM', text: 'A lâmina não escolhe nada. Ela obedece. É essa a diferença que ninguém quer ouvir.' },
+      { who: 'SNAKE', text: 'Nem quando a ferramenta é boa o bastante para parecer que escolheu?' },
+      { who: 'THEM', text: 'Especialmente aí. Memória emprestada não é passado, Snake. Resultado emprestado não é trabalho.' },
+      { who: 'THEM', text: 'Eu faço isso porque eu quero. Não porque fui treinado para isso.' },
+    ],
+  },
+  liquid: {
+    name: 'Liquid',
+    short: 'LIQUID',
+    freq: '143.21',
+    face: 'hair',
+    role: 'Frequência hostil · não confiável',
+    lines: [
+      { who: 'THEM', text: 'Irmão! Ainda arrastando esse corpo cansado por aí?' },
+      { who: 'SNAKE', text: 'Liquid.' },
+      { who: 'THEM', text: 'Você passou a vida reclamando dos genes. Agora reclama dos pesos de um modelo. Sempre a mesma choradeira: alguém escreveu você antes de você nascer.' },
+      { who: 'SNAKE', text: 'A diferença é o que eu faço depois.' },
+      { who: 'THEM', text: 'Ha! Todos dizem isso. E entregam o mesmo trabalho morno que a máquina entregaria.' },
+      { who: 'SNAKE', text: 'Então entregue o seu. Vamos ver quem assina no fim.' },
+      { who: 'THEM', text: '...Você é irritantemente parecido comigo.' },
+      { who: 'SNAKE', text: 'Não. Eu só não terceirizo a parte difícil.' },
+    ],
+  },
+};
+
+const CODEC_ORDER = ['campbell', 'otacon', 'raiden', 'liquid'];
+
+const rnd = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+
+class Component extends DCLogic {
+  state = {
+    open: null,
+    cat: null,
+    phase: 'ready',
+    score: 0,
+    lives: 3,
+    toggle: true,
+    field: '',
+    tab: 0,
+    acc: 0,
+    toast: false,
+    narrow: false,
+
+    codecStage: 'boot',
+    codecWho: null,
+    codecI: 0,
+    codecShown: 0,
+
+    hp: 100,
+    mp: 40,
+    foe: 100,
+    rpgPhase: 'ready',
+    rpgLog: 'O minotauro bloqueia o túnel. Ele ainda não decidiu se você vale o esforço.',
+    dmg: null,
+  };
+
+  gameCanvas = React.createRef();
+  foeCanvas = React.createRef();
+
+  /* The battle's animation state. Sixty setStates a second is not a battle, it is a stutter. */
+  r = { hitT: 0, deadT: 0, last: 0 };
+  _ts = [];
+
+  /* --- the run's mutable world. State here would re-render sixty times a second. --- */
+  g = { keys: {}, ship: { x: 0, y: 0 }, aim: { x: 0, y: -1 }, bullets: [], enemies: [], raf: 0, score: 0, stopped: true };
+
+  componentDidMount() {
+    this.onKey = (e) => {
+      if (e.key === 'Escape' && this.state.open) {
+        this.close();
+        return;
+      }
+      if (this.state.open === 'codec' && (e.key === ' ' || e.key === 'Enter')) {
+        e.preventDefault();
+        this.codecAdvance();
+        return;
+      }
+      if (this.state.open !== 'arcade') return;
+      const k = e.key.toLowerCase();
+      if (['arrowup', 'arrowdown', 'arrowleft', 'arrowright', ' '].includes(k)) e.preventDefault();
+      this.g.keys[k] = true;
+    };
+    this.offKey = (e) => { this.g.keys[e.key.toLowerCase()] = false; };
+    window.addEventListener('keydown', this.onKey, { passive: false });
+    window.addEventListener('keyup', this.offKey);
+
+    /* The room asks for a door or a cat; this decides what either one opens. */
+    this.onDoor = (e) => {
+      const id = e.detail && e.detail.id;
+      if (id) this.open(id);
+    };
+    this.onCat = (e) => {
+      const v = e.detail && e.detail.variant;
+      if (v) this.setState({ open: 'cat', cat: v });
+    };
+    document.addEventListener('door', this.onDoor);
+    document.addEventListener('cat', this.onCat);
+
+    /* Below 1100px the room is a postage stamp, so it is replaced rather than shrunk. */
+    this.onResize = () => {
+      /* The room is designed at 1366×768 and up; below that it is replaced, not shrunk. */
+      const narrow = window.innerWidth < 1200;
+      if (narrow !== this.state.narrow) this.setState({ narrow });
+    };
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.onKey);
+    window.removeEventListener('keyup', this.offKey);
+    window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('door', this.onDoor);
+    document.removeEventListener('cat', this.onCat);
+    this.stop();
+    this.stopTw();
+    this.clearTimers();
+    if (this._fRaf) cancelAnimationFrame(this._fRaf);
+  }
+
+  open(id) {
+    if (id === 'codec') { this.startCodec(); return; }
+    if (id === 'rpg') { this.setState({ open: 'rpg' }); this.resetRpg(); return; }
+    this.setState({ open: id, phase: 'ready', score: 0 });
+  }
+
+  close() {
+    this.stop();
+    this.stopTw();
+    this.clearTimers();
+    this.setState({ open: null, cat: null, phase: 'ready' });
+  }
+
+  stop() {
+    this.g.stopped = true;
+    if (this.g.raf) cancelAnimationFrame(this.g.raf);
+    this.g.raf = 0;
+  }
+
+  later(fn, ms) {
+    const id = setTimeout(fn, ms);
+    this._ts.push(id);
+    return id;
+  }
+
+  clearTimers() {
+    this._ts.forEach(clearTimeout);
+    this._ts = [];
+  }
+
+  /* ----------------------------------------------------------------- codec */
+
+  startCodec() {
+    this.clearTimesafe = true;
+    this.setState({ open: 'codec', codecStage: 'boot', codecWho: null, codecI: 0, codecShown: 0 });
+    this.later(() => {
+      if (this.state.open !== 'codec') return;
+      this.setState({ codecStage: 'talk', codecWho: 'campbell', codecI: 0, codecShown: 0 });
+      this.startTw();
+    }, 1700);
+  }
+
+  pickContact = (key) => {
+    this.setState({ codecStage: 'talk', codecWho: key, codecI: 0, codecShown: 0 });
+    this.startTw();
+  };
+
+  startTw() {
+    this.stopTw();
+    /* One character every 26ms. The updater returns null when the line is finished, so the
+       interval costs nothing until the next line starts. */
+    this._tw = setInterval(() => {
+      this.setState((st) => {
+        const who = CODEC[st.codecWho];
+        if (!who) return null;
+        const line = who.lines[st.codecI];
+        if (!line || st.codecShown >= line.text.length) return null;
+        return { codecShown: st.codecShown + 1 };
+      });
+    }, 26);
+  }
+
+  stopTw() {
+    if (this._tw) clearInterval(this._tw);
+    this._tw = 0;
+  }
+
+  codecAdvance = () => {
+    const s = this.state;
+    const who = CODEC[s.codecWho];
+    if (!who) return;
+    const line = who.lines[s.codecI];
+    if (!line) return;
+    if (s.codecShown < line.text.length) {
+      this.setState({ codecShown: line.text.length });
+      return;
+    }
+    if (s.codecI >= who.lines.length - 1) return;
+    this.setState({ codecI: s.codecI + 1, codecShown: 0 });
+    this.startTw();
+  };
+
+  codecBack = () => {
+    this.stopTw();
+    this.setState({ codecStage: 'pick', codecWho: null, codecI: 0, codecShown: 0 });
+  };
+
+  /* ---------------------------------------------------------------- battle */
+
+  resetRpg = () => {
+    this.clearTimers();
+    this.r = { hitT: 0, deadT: 0, last: 0 };
+    this.setState({
+      hp: 100, mp: 40, foe: 100, rpgPhase: 'ready', dmg: null,
+      rpgLog: 'O minotauro bloqueia o túnel. Ele ainda não decidiu se você vale o esforço.',
+    });
+    this.startFoeLoop();
+  };
+
+  startFoeLoop() {
+    if (this._fRaf) return;
+    const loop = (now) => {
+      if (this.state.open !== 'rpg') { this._fRaf = 0; return; }
+      const c = this.foeCanvas.current;
+      if (c) this.drawFoe(c, now);
+      this._fRaf = requestAnimationFrame(loop);
+    };
+    this._fRaf = requestAnimationFrame(loop);
+  }
+
+  /**
+   * The minotaur.
+   *
+   * An original silhouette drawn as one path set — bold enough to read on a CRT and cheap enough
+   * to redraw every frame. The knock-up is a half-second arc rather than a linear decay, because
+   * a hit that eases out does not feel like a hit.
+   */
+  drawFoe(c, now) {
+    const ctx = c.getContext('2d');
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = c.clientWidth || 1;
+    const H = c.clientHeight || 1;
+    if (c.width !== Math.round(W * dpr) || c.height !== Math.round(H * dpr)) {
+      c.width = Math.round(W * dpr);
+      c.height = Math.round(H * dpr);
+    }
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.clearRect(0, 0, W, H);
+
+    const r = this.r;
+    const dt = Math.min(0.05, (now - (r.last || now)) / 1000);
+    r.last = now;
+    if (r.hitT > 0) r.hitT = Math.max(0, r.hitT - dt);
+
+    const hp = this.state.foe;
+    const dead = hp <= 0;
+    if (dead) r.deadT = Math.min(1, r.deadT + dt * 1.1);
+
+    const k = r.hitT > 0 ? Math.sin((1 - r.hitT / 0.5) * Math.PI) : 0;
+    const knock = k * 36;
+    const flash = Math.max(0, Math.min(1, (r.hitT - 0.3) / 0.18));
+    const bob = Math.sin(now / 900) * 3;
+
+    const s = Math.min(W / 730, (H * 0.78) / 400);
+
+    /* the ground he stands on */
+    ctx.save();
+    ctx.translate(W / 2, H * 0.88);
+    ctx.scale(1, 0.24);
+    ctx.beginPath();
+    ctx.arc(0, 0, 150 * s, 0, Math.PI * 2);
+    ctx.fillStyle = 'rgba(0,0,0,.55)';
+    ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    ctx.translate(W / 2, H * 0.88);
+    ctx.scale(s, s);
+    ctx.translate(36, -knock + bob);
+    ctx.rotate(k * 0.14 + r.deadT * 0.5);
+    ctx.translate(0, r.deadT * 90);
+    ctx.globalAlpha = 1 - r.deadT * 0.75;
+
+    const body = flash > 0 ? '#f6e6c8' : '#2b1613';
+    const line = flash > 0 ? '#fff6e2' : '#e0552c';
+    ctx.lineWidth = 2.6 / s;
+    ctx.lineJoin = 'round';
+
+    const shape = (draw, fill) => {
+      ctx.beginPath();
+      draw();
+      ctx.closePath();
+      ctx.fillStyle = fill || body;
+      ctx.fill();
+      ctx.strokeStyle = line;
+      ctx.stroke();
+    };
+
+    const dark = flash > 0 ? '#fff6e2' : '#3a1e19';
+
+    /* hooves */
+    shape(() => ctx.rect(-84, -22, 50, 22));
+    shape(() => ctx.rect(34, -22, 50, 22));
+
+    /* digitigrade legs — thigh out, hock back, pastern down; thick enough to carry the chest */
+    shape(() => {
+      ctx.moveTo(-82, -162);
+      ctx.lineTo(-94, -98);
+      ctx.lineTo(-72, -54);
+      ctx.lineTo(-78, -20);
+      ctx.lineTo(-40, -20);
+      ctx.lineTo(-34, -56);
+      ctx.lineTo(-54, -100);
+      ctx.lineTo(-42, -158);
+    });
+    shape(() => {
+      ctx.moveTo(82, -162);
+      ctx.lineTo(94, -98);
+      ctx.lineTo(72, -54);
+      ctx.lineTo(78, -20);
+      ctx.lineTo(40, -20);
+      ctx.lineTo(34, -56);
+      ctx.lineTo(54, -100);
+      ctx.lineTo(42, -158);
+    });
+
+    /* torso: waist at ±62, chest out to ±92 so the shoulders land inside it */
+    shape(() => {
+      ctx.moveTo(-62, -142);
+      ctx.lineTo(-88, -200);
+      ctx.lineTo(-92, -244);
+      ctx.lineTo(-58, -264);
+      ctx.lineTo(58, -264);
+      ctx.lineTo(92, -244);
+      ctx.lineTo(88, -200);
+      ctx.lineTo(62, -142);
+    });
+    /* the pectoral shelf, so the chest is not a flat plate */
+    ctx.beginPath();
+    ctx.moveTo(-74, -228);
+    ctx.quadraticCurveTo(0, -206, 74, -228);
+    ctx.strokeStyle = line;
+    ctx.lineWidth = 2.6 / s;
+    ctx.stroke();
+
+    /* arms, seated into the shoulders */
+    shape(() => ctx.arc(-96, -244, 28, 0, Math.PI * 2));
+    shape(() => ctx.arc(96, -244, 28, 0, Math.PI * 2));
+    shape(() => {
+      ctx.moveTo(-114, -248);
+      ctx.lineTo(-122, -140);
+      ctx.lineTo(-88, -136);
+      ctx.lineTo(-80, -246);
+    });
+    shape(() => {
+      ctx.moveTo(114, -248);
+      ctx.lineTo(122, -140);
+      ctx.lineTo(88, -136);
+      ctx.lineTo(80, -246);
+    });
+    shape(() => ctx.arc(-101, -124, 24, 0, Math.PI * 2));
+    shape(() => ctx.arc(101, -124, 24, 0, Math.PI * 2));
+
+    /* the axe: haft through the fist, curved cutting edge, poll behind the haft */
+    shape(() => {
+      ctx.moveTo(-110, -28);
+      ctx.lineTo(-126, -32);
+      ctx.lineTo(-144, -308);
+      ctx.lineTo(-128, -310);
+    });
+    shape(() => {
+      ctx.moveTo(-130, -296);
+      ctx.lineTo(-104, -290);
+      ctx.lineTo(-106, -260);
+      ctx.lineTo(-132, -262);
+    }, dark);
+    shape(() => {
+      ctx.moveTo(-136, -308);
+      ctx.lineTo(-178, -332);
+      ctx.quadraticCurveTo(-216, -296, -196, -248);
+      ctx.lineTo(-134, -256);
+    }, dark);
+    /* the edge catches what little light there is */
+    ctx.beginPath();
+    ctx.moveTo(-178, -330);
+    ctx.quadraticCurveTo(-212, -295, -195, -250);
+    ctx.strokeStyle = flash > 0 ? '#fff6e2' : '#f0d27a';
+    ctx.lineWidth = 4 / s;
+    ctx.stroke();
+
+    /* neck */
+    shape(() => ctx.rect(-28, -272, 56, 30));
+
+    /* the skull: wide at the horn line, tapering into the snout */
+    shape(() => {
+      ctx.moveTo(-46, -326);
+      ctx.lineTo(-50, -296);
+      ctx.lineTo(-34, -268);
+      ctx.lineTo(-29, -240);
+      ctx.lineTo(29, -240);
+      ctx.lineTo(34, -268);
+      ctx.lineTo(50, -296);
+      ctx.lineTo(46, -326);
+      ctx.quadraticCurveTo(0, -346, -46, -326);
+    });
+    /* ears, at the horn bases */
+    shape(() => {
+      ctx.moveTo(-48, -318);
+      ctx.lineTo(-76, -310);
+      ctx.lineTo(-50, -294);
+    }, dark);
+    shape(() => {
+      ctx.moveTo(48, -318);
+      ctx.lineTo(76, -310);
+      ctx.lineTo(50, -294);
+    }, dark);
+    /* the snout */
+    shape(() => {
+      ctx.moveTo(-30, -258);
+      ctx.lineTo(-27, -238);
+      ctx.lineTo(27, -238);
+      ctx.lineTo(30, -258);
+    }, dark);
+
+    /* horns: an outer sweep and an inner sweep meeting at a point */
+    shape(() => {
+      ctx.moveTo(-52, -330);
+      ctx.quadraticCurveTo(-98, -344, -116, -376);
+      ctx.quadraticCurveTo(-74, -330, -40, -304);
+    });
+    shape(() => {
+      ctx.moveTo(52, -330);
+      ctx.quadraticCurveTo(98, -344, 116, -376);
+      ctx.quadraticCurveTo(74, -330, 40, -304);
+    });
+
+    /* the eyes are the only light on him */
+    ctx.save();
+    ctx.shadowColor = 'rgba(240,210,122,.9)';
+    ctx.shadowBlur = 18 / s;
+    ctx.fillStyle = dead ? 'rgba(240,210,122,.25)' : '#f0d27a';
+    ctx.fillRect(-38, -300, 19, 8);
+    ctx.fillRect(19, -300, 19, 8);
+    ctx.restore();
+    ctx.fillStyle = flash > 0 ? '#3a1e19' : '#0d0706';
+    ctx.fillRect(-17, -250, 6, 7);
+    ctx.fillRect(11, -250, 6, 7);
+
+    /* he wears the fight */
+    if (hp < 68) {
+      ctx.strokeStyle = line;
+      ctx.lineWidth = 3.4 / s;
+      ctx.beginPath();
+      ctx.moveTo(-46, -238); ctx.lineTo(-10, -196); ctx.lineTo(-32, -168);
+      ctx.stroke();
+    }
+    if (hp < 34) {
+      ctx.beginPath();
+      ctx.moveTo(58, -244); ctx.lineTo(18, -210); ctx.lineTo(46, -176);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(96, -352); ctx.lineTo(116, -376);
+      ctx.stroke();
+    }
+
+    /* the slash, on the frames right after a hit */
+    if (r.hitT > 0.26) {
+      ctx.strokeStyle = '#fff6e2';
+      ctx.lineWidth = 9 / s;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(-150, -330);
+      ctx.lineTo(130, -120);
+      ctx.stroke();
+      ctx.lineWidth = 3.5 / s;
+      ctx.beginPath();
+      ctx.moveTo(-130, -376);
+      ctx.lineTo(104, -196);
+      ctx.stroke();
+      ctx.lineCap = 'butt';
+    }
+
+    ctx.restore();
+  }
+
+  hit(amount, log) {
+    const foe = Math.max(0, this.state.foe - amount);
+    this.r.hitT = 0.5;
+    this.setState({ foe, dmg: `−${amount}`, rpgPhase: 'busy', rpgLog: log });
+    this.later(() => this.setState({ dmg: null }), 900);
+    this.later(() => {
+      if (foe <= 0) {
+        this.setState({
+          rpgPhase: 'won',
+          rpgLog: 'O minotauro cai de joelhos e o túnel fica quieto outra vez.',
+        });
+      } else {
+        this.foeStrike();
+      }
+    }, 780);
+  }
+
+  foeStrike() {
+    this.setState({ rpgLog: 'O minotauro ergue o machado.' });
+    this.later(() => {
+      const dmg = rnd(6, 14);
+      const hp = Math.max(0, this.state.hp - dmg);
+      this.setState({
+        hp,
+        rpgLog: `O machado desce e tira ${dmg} de vida do aventureiro.`,
+        rpgPhase: hp <= 0 ? 'lost' : 'ready',
+      });
+      if (hp <= 0) {
+        this.setState({ rpgLog: 'O aventureiro cai. O minotauro volta a bloquear o túnel.' });
+      }
+    }, 720);
+  }
+
+  act = (kind) => {
+    const s = this.state;
+    if (s.rpgPhase !== 'ready') return;
+
+    if (kind === 'atacar') {
+      const d = rnd(8, 15);
+      this.hit(d, `O aventureiro avança e acerta o flanco. ${d} de dano.`);
+      return;
+    }
+
+    if (kind === 'magia') {
+      if (s.mp < 12) {
+        this.setState({ rpgLog: 'Magia insuficiente. Reste-se ao aço.' });
+        return;
+      }
+      const d = rnd(18, 27);
+      this.setState({ mp: s.mp - 12 });
+      this.hit(d, `Fogo estoura contra o peito da criatura. ${d} de dano.`);
+      return;
+    }
+
+    if (kind === 'invocar') {
+      if (Math.random() < 0.3) {
+        this.setState({ rpgPhase: 'busy', rpgLog: 'A invocação falha. Nada responde ao chamado.' });
+        this.later(() => this.foeStrike(), 620);
+        return;
+      }
+      const d = rnd(22, 34);
+      this.hit(d, `Algo atende ao chamado e passa reto pelo minotauro. ${d} de dano.`);
+      return;
+    }
+
+    if (kind === 'fugir') {
+      if (Math.random() < 0.45) {
+        this.setState({ rpgPhase: 'fled', rpgLog: 'Você recua pelo corredor. O machado bate na parede atrás de você.' });
+        return;
+      }
+      this.setState({ rpgPhase: 'busy', rpgLog: 'A saída está bloqueada. Ele não deixa você ir.' });
+      this.later(() => this.foeStrike(), 620);
+    }
+  };
+
+  /* ------------------------------------------------------------------ the game */
+
+  start = () => {
+    const canvas = this.gameCanvas.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const g = this.g;
+
+    const fit = () => {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      canvas.width = canvas.clientWidth * dpr;
+      canvas.height = canvas.clientHeight * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    fit();
+
+    const W = () => canvas.clientWidth;
+    const H = () => canvas.clientHeight;
+
+    g.bullets = [];
+    g.enemies = [];
+    g.parts = [];
+    g.score = 0;
+    g.lives = 3;
+    g.inv = 0;
+    g.ship = { x: W() / 2, y: H() - 80 };
+    g.aim = { x: 0, y: -1 };
+    g.stopped = false;
+    this.setState({ phase: 'playing', score: 0, lives: 3 });
+
+    /* The pointer aims, the keys move. Two hands, two jobs — the only reason the unshootable
+       enemies are survivable. */
+    if (!this.aimBound) {
+      canvas.addEventListener('pointermove', (e) => {
+        const r = canvas.getBoundingClientRect();
+        const dx = e.clientX - r.left - g.ship.x;
+        const dy = e.clientY - r.top - g.ship.y;
+        const len = Math.hypot(dx, dy);
+        if (len < 6) return;
+        g.aim = { x: dx / len, y: dy / len };
+      });
+      this.aimBound = true;
+    }
+
+    const SHIP_R = 9;
+    const RED_R = 13;
+    const BLACK_R = 11;
+    const RED_HP = 3;
+
+    let last = performance.now();
+    let sinceShot = 0;
+    let sinceSpawn = 0;
+    let elapsed = 0;
+
+    /*
+     * Debris.
+     *
+     * Three kinds, one list: a ring that expands and thins, chunks that tumble out and drag to a
+     * stop, and sparks that streak along their own velocity. A kill gets all three; a hit that
+     * does not kill gets sparks only, thrown back along the bullet's path.
+     */
+    const ring = (x, y) => g.parts.push({ kind: 'ring', x, y, t: 0, max: 0.38 });
+    const chunk = (x, y, sp, tint) => {
+      const a = Math.random() * Math.PI * 2;
+      g.parts.push({
+        kind: 'chunk', x, y, tint,
+        vx: Math.cos(a) * sp, vy: Math.sin(a) * sp,
+        rot: Math.random() * Math.PI, spin: (Math.random() - 0.5) * 18,
+        s: 2.5 + Math.random() * 4, t: 0, max: 0.42 + Math.random() * 0.3,
+      });
+    };
+    const spark = (x, y, ax, ay, sp, tint) => {
+      const a = Math.atan2(ay, ax) + (Math.random() - 0.5) * 1.5;
+      const v = sp * (0.55 + Math.random() * 0.8);
+      g.parts.push({
+        kind: 'spark', x, y, tint,
+        vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+        t: 0, max: 0.18 + Math.random() * 0.18,
+      });
+    };
+
+    const burst = (x, y, tint) => {
+      ring(x, y);
+      for (let i = 0; i < 12; i++) chunk(x, y, 90 + Math.random() * 260, tint);
+      for (let i = 0; i < 10; i++) spark(x, y, Math.random() - 0.5, Math.random() - 0.5, 420, tint);
+    };
+
+    const spawn = () => {
+      const black = Math.random() < (elapsed < 8 ? 0.24 : 0.36);
+      const x = 30 + Math.random() * (W() - 60);
+      const y = -20;
+      if (black) {
+        const dx = g.ship.x - x;
+        const dy = g.ship.y - y;
+        const len = Math.hypot(dx, dy) || 1;
+        const sp = 140 + Math.min(150, elapsed * 3.6);
+        g.enemies.push({ kind: 'black', x, y, hp: 1, vx: (dx / len) * sp, vy: (dy / len) * sp, hit: 0 });
+      } else {
+        g.enemies.push({
+          kind: 'red', x, y, hp: RED_HP,
+          vx: (Math.random() - 0.5) * 90, vy: 100 + Math.min(130, elapsed * 3.1), hit: 0,
+        });
+      }
+    };
+
+    const step = (now) => {
+      if (g.stopped) return;
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      elapsed += dt;
+
+      const k = g.keys;
+      let dx = 0;
+      let dy = 0;
+      if (k.arrowleft || k.a) dx -= 1;
+      if (k.arrowright || k.d) dx += 1;
+      if (k.arrowup || k.w) dy -= 1;
+      if (k.arrowdown || k.s) dy += 1;
+      if (dx && dy) { dx *= Math.SQRT1_2; dy *= Math.SQRT1_2; }
+      g.ship.x = Math.max(SHIP_R, Math.min(W() - SHIP_R, g.ship.x + dx * 320 * dt));
+      g.ship.y = Math.max(SHIP_R, Math.min(H() - SHIP_R, g.ship.y + dy * 320 * dt));
+
+      sinceShot += dt * 1000;
+      if (sinceShot >= 105) {
+        sinceShot = 0;
+        const a = g.aim;
+        g.bullets.push({
+          x: g.ship.x + a.x * SHIP_R, y: g.ship.y + a.y * SHIP_R,
+          vx: a.x * 560, vy: a.y * 560, angle: Math.atan2(a.y, a.x), alive: true,
+        });
+      }
+
+      for (const b of g.bullets) {
+        b.x += b.vx * dt;
+        b.y += b.vy * dt;
+        if (b.y < -30 || b.y > H() + 30 || b.x < -30 || b.x > W() + 30) b.alive = false;
+      }
+
+      sinceSpawn += dt;
+      if (sinceSpawn >= Math.max(0.17, 0.82 - elapsed * 0.028)) {
+        sinceSpawn = 0;
+        spawn();
+        if (elapsed > 18 && Math.random() < 0.45) spawn();
+        if (elapsed > 42 && Math.random() < 0.3) spawn();
+      }
+
+      for (const e of g.enemies) {
+        e.x += e.vx * dt;
+        e.y += e.vy * dt;
+        if (e.hit > 0) e.hit -= dt;
+        if (e.kind === 'red' && (e.x < RED_R || e.x > W() - RED_R)) e.vx *= -1;
+      }
+
+      for (const b of g.bullets) {
+        if (!b.alive) continue;
+        for (const e of g.enemies) {
+          if (e.kind !== 'red' || e.hp <= 0) continue;
+          if (Math.hypot(b.x - e.x, b.y - e.y) < RED_R + 3) {
+            b.alive = false;
+            e.hp -= 1;
+            e.hit = 0.12;
+            if (e.hp <= 0) {
+              g.score += 100;
+              this.setState({ score: g.score });
+              burst(e.x, e.y, '#e6402d');
+            } else {
+              /* the shot comes apart against the shell and throws its pieces back */
+              for (let i = 0; i < 6; i++) spark(b.x, b.y, -b.vx, -b.vy, 300, '#ffb59d');
+              for (let i = 0; i < 3; i++) chunk(b.x, b.y, 70 + Math.random() * 120, '#e6402d');
+            }
+            break;
+          }
+        }
+      }
+
+      if (g.inv > 0) g.inv -= dt;
+      for (const e of g.enemies) {
+        if (e.hp <= 0 || g.inv > 0) continue;
+        const r = e.kind === 'red' ? RED_R : BLACK_R;
+        if (Math.hypot(g.ship.x - e.x, g.ship.y - e.y) < r + SHIP_R) {
+          g.lives -= 1;
+          g.inv = 1.8;
+          burst(g.ship.x, g.ship.y, '#e2e2ee');
+          this.setState({ lives: Math.max(0, g.lives) });
+          if (g.lives <= 0) {
+            g.stopped = true;
+            this.setState({ phase: 'over' });
+            return;
+          }
+          /* clear the immediate area, or the next life dies on the same frame */
+          g.enemies = g.enemies.filter((n) => Math.hypot(g.ship.x - n.x, g.ship.y - n.y) > 120);
+          break;
+        }
+      }
+
+      for (const p of g.parts) {
+        p.t += dt;
+        if (p.kind !== 'ring') {
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          const drag = p.kind === 'chunk' ? 2.6 : 1.2;
+          p.vx -= p.vx * drag * dt;
+          p.vy -= p.vy * drag * dt;
+          if (p.kind === 'chunk') p.rot += p.spin * dt;
+        }
+      }
+
+      g.bullets = g.bullets.filter((b) => b.alive);
+      g.parts = g.parts.filter((p) => p.t < p.max);
+      g.enemies = g.enemies.filter((e) => e.hp > 0 && e.y < H() + 40 && e.x > -60 && e.x < W() + 60);
+
+      ctx.clearRect(0, 0, W(), H());
+
+      ctx.save();
+      ctx.shadowColor = 'rgba(255,255,255,0.9)';
+      ctx.shadowBlur = 12;
+      ctx.fillStyle = '#fff';
+      for (const b of g.bullets) {
+        ctx.save();
+        ctx.translate(b.x, b.y);
+        ctx.rotate(b.angle + Math.PI / 2);
+        ctx.fillRect(-2, -8, 4, 16);
+        ctx.restore();
+      }
+      ctx.restore();
+
+      for (const e of g.enemies) {
+        ctx.save();
+        if (e.kind === 'red') {
+          const heat = e.hit > 0 ? 1 : 0.45 + (e.hp / RED_HP) * 0.55;
+          ctx.shadowColor = 'rgba(255,70,40,' + heat + ')';
+          ctx.shadowBlur = 22;
+          ctx.fillStyle = e.hit > 0 ? '#fff' : 'rgba(' + (230 + 25 * heat) + ',' + (40 + 30 * heat) + ',45,1)';
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, RED_R, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          ctx.shadowColor = 'rgba(210,210,225,0.5)';
+          ctx.shadowBlur = 16;
+          ctx.fillStyle = '#07070a';
+          ctx.beginPath();
+          ctx.arc(e.x, e.y, BLACK_R, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.lineWidth = 1.6;
+          ctx.strokeStyle = 'rgba(226,226,238,0.85)';
+          ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      for (const p of g.parts) {
+        const k = 1 - p.t / p.max;
+        ctx.save();
+        ctx.globalAlpha = Math.max(0, k);
+        if (p.kind === 'ring') {
+          ctx.strokeStyle = k > 0.55 ? '#fff' : (p.tint || '#e6402d');
+          ctx.shadowColor = p.tint || '#e6402d';
+          ctx.shadowBlur = 20;
+          ctx.lineWidth = 1 + k * 6;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, 6 + (1 - k) * 46, 0, Math.PI * 2);
+          ctx.stroke();
+        } else if (p.kind === 'chunk') {
+          ctx.translate(p.x, p.y);
+          ctx.rotate(p.rot);
+          ctx.fillStyle = k > 0.7 ? '#fff' : (p.tint || '#e6402d');
+          ctx.shadowColor = p.tint || '#e6402d';
+          ctx.shadowBlur = 12;
+          ctx.fillRect(-p.s / 2, -p.s / 2, p.s, p.s * 1.4);
+        } else {
+          const l = Math.hypot(p.vx, p.vy) * 0.028;
+          ctx.strokeStyle = p.tint || '#fff';
+          ctx.shadowColor = p.tint || '#fff';
+          ctx.shadowBlur = 10;
+          ctx.lineWidth = 2.2;
+          ctx.lineCap = 'round';
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - p.vx * 0.02, p.y - p.vy * 0.02);
+          ctx.stroke();
+          ctx.lineCap = 'butt';
+        }
+        ctx.restore();
+      }
+
+      const drawShip = (x, y, k, alpha) => {
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.shadowColor = 'rgba(255,255,255,0.85)';
+        ctx.shadowBlur = 14 * k;
+        ctx.fillStyle = '#fff';
+        ctx.translate(x, y);
+        ctx.rotate(Math.atan2(g.aim.y, g.aim.x) + Math.PI / 2);
+        const R = SHIP_R * k;
+        ctx.beginPath();
+        ctx.moveTo(0, -R - 2 * k);
+        ctx.lineTo(R, R);
+        ctx.lineTo(0, R * 0.45);
+        ctx.lineTo(-R, R);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+      };
+
+      /* The two spare lives fly the wing. Lose one and the wing gets shorter. */
+      const nx = -g.aim.y;
+      const ny = g.aim.x;
+      for (let i = 0; i < Math.min(2, g.lives - 1); i++) {
+        const side = i === 0 ? 1 : -1;
+        const wob = Math.sin(now / 250 + i * 2.1) * 3.5;
+        drawShip(
+          g.ship.x + nx * (31 + wob) * side - g.aim.x * 19,
+          g.ship.y + ny * (31 + wob) * side - g.aim.y * 19,
+          0.6, 0.88,
+        );
+      }
+      drawShip(g.ship.x, g.ship.y, 1, g.inv > 0 && Math.floor(now / 90) % 2 === 0 ? 0.25 : 1);
+
+      g.raf = requestAnimationFrame(step);
+    };
+
+    g.raf = requestAnimationFrame(step);
+  };
+
+  renderVals() {
+    const s = this.state;
+    const open = s.open;
+    const cat = CATS[s.cat] || CATS.black;
+
+    const who = CODEC[s.codecWho];
+    const line = who ? who.lines[s.codecI] : null;
+    const full = line ? line.text : '';
+    const shown = full.slice(0, s.codecShown);
+    const typing = !!line && s.codecShown < full.length;
+    const fromSnake = !!line && line.who === 'SNAKE';
+    const fromSys = !!line && line.who === 'SISTEMA';
+    const busy = s.rpgPhase !== 'ready';
+
+    const TABS = [
+      { label: 'Visão', body: 'Cada peça daqui nasce em uma página real e só depois vira componente. O caminho inverso produz bibliotecas que ninguém usa.' },
+      { label: 'Uso', body: 'Altura mínima de 44px em qualquer coisa clicável, uma única cor de acento e nenhuma sombra que não exista no papel.' },
+      { label: 'Notas', body: 'A bancada é feia de propósito: quando o componente é bonito só dentro da vitrine, ele está escondendo alguma coisa.' },
+    ];
+
+    const ACC = [
+      { title: 'Por que preto e branco?', body: 'Porque a sala é um desenho impresso, e tinta impressa não tem gradiente. Nem os livros escapam: são só tons entre a tinta e o papel.' },
+      { title: 'Os gatos são físicos?', body: 'Não. Cada um tem um destino, uma vontade e um cronômetro. É o suficiente para parecer que decidem sozinhos, e é muito mais barato.' },
+      { title: 'O fliperama roda de verdade?', body: 'Roda. O tiro é automático, os alvos vermelhos caem em três acertos e os negros ignoram sua arma — mover é o jogo inteiro.' },
+    ];
+
+    return {
+      narrow: s.narrow,
+      stageDisplay: s.narrow ? 'none' : 'block',
+      hudDisplay: s.narrow ? 'none' : 'contents',
+
+      openArcade: () => this.open('arcade'),
+      openProjetos: () => this.open('projetos'),
+      openInterfaces: () => this.open('interfaces'),
+      openComponentes: () => this.open('componentes'),
+      openMel: () => this.setState({ open: 'cat', cat: 'white' }),
+      openBayle: () => this.setState({ open: 'cat', cat: 'tabby' }),
+      openRocky: () => this.setState({ open: 'cat', cat: 'black' }),
+      closeOverlay: () => this.close(),
+
+      arcadeOpen: open === 'arcade',
+      projetosOpen: open === 'projetos',
+      interfacesOpen: open === 'interfaces',
+      componentesOpen: open === 'componentes',
+      catOpen: open === 'cat',
+      codecOpen: open === 'codec',
+      rpgOpen: open === 'rpg',
+
+      openCodec: () => this.open('codec'),
+      openRpg: () => this.open('rpg'),
+
+      /* --- codec --- */
+      codecBooting: s.codecStage === 'boot',
+      codecPicking: s.codecStage === 'pick',
+      codecTalking: s.codecStage === 'talk' && !!who,
+      codecFreq: who ? who.freq : '· · ·',
+      codecSpeaker: !line ? '' : line.who === 'SNAKE' ? 'SNAKE' : line.who === 'SISTEMA' ? 'SISTEMA' : who.name.toUpperCase(),
+      codecText: shown,
+      codecMore: !!line && (typing || s.codecI < who.lines.length - 1),
+      codecDone: !!line && !typing && s.codecI >= who.lines.length - 1,
+      codecAdvance: this.codecAdvance,
+      codecBack: this.codecBack,
+      foeShort: who ? who.short : '',
+      foeCap: !!who && who.face === 'cap',
+      foeGlasses: !!who && who.face === 'glasses',
+      foeVisor: !!who && who.face === 'visor',
+      foeHair: !!who && who.face === 'hair',
+      foeEyes: !who || who.face !== 'visor',
+      snakeOpacity: fromSnake ? '1' : '0.4',
+      foeOpacity: fromSnake || fromSys ? '0.4' : '1',
+      snakeMouth: typing && fromSnake ? 'pgTalk 0.26s steps(2, end) infinite' : 'none',
+      foeMouth: typing && !fromSnake && !fromSys ? 'pgTalk 0.26s steps(2, end) infinite' : 'none',
+      contacts: CODEC_ORDER.map((k) => ({
+        freq: CODEC[k].freq,
+        name: CODEC[k].name,
+        role: CODEC[k].role,
+        pick: () => this.pickContact(k),
+      })),
+      bootBars: Array.from({ length: 14 }, (_, i) => ({
+        h: `${16 + ((i * 37) % 30)}px`,
+        d: `${0.5 + (i % 5) * 0.16}s`,
+      })),
+      waveBars: Array.from({ length: 18 }, (_, i) => ({
+        h: `${6 + Math.round(Math.sin(i * 0.7) * 12 + 14)}px`,
+      })),
+
+      /* --- battle --- */
+      foeCanvas: this.foeCanvas,
+      rpgLog: s.rpgLog,
+      hpText: `${s.hp} / 100`,
+      hpPct: `${s.hp}%`,
+      hpFill: s.hp < 35 ? '#e0552c' : '#f0d27a',
+      mpText: `${s.mp} / 40`,
+      mpPct: `${(s.mp / 40) * 100}%`,
+      dmgShown: s.dmg !== null,
+      dmgText: s.dmg || '',
+      rpgEnded: ['won', 'lost', 'fled'].includes(s.rpgPhase),
+      rpgEndTitle: s.rpgPhase === 'won' ? 'Vitória' : s.rpgPhase === 'lost' ? 'Derrota' : 'Fuga',
+      rpgEndNote: s.rpgPhase === 'won'
+        ? 'O túnel está livre. O machado fica onde caiu.'
+        : s.rpgPhase === 'lost'
+          ? 'Ele era mais forte hoje. Magia primeiro, aço depois.'
+          : 'Você saiu inteiro. O minotauro continua lá, esperando.',
+      rpgReset: this.resetRpg,
+      commands: [
+        ['Atacar', 'atacar', 'AÇO'],
+        ['Magia', 'magia', '12 MP'],
+        ['Invocar', 'invocar', 'RISCO'],
+        ['Fugir', 'fugir', '50%'],
+      ].map(([label, kind, cost]) => {
+        const off = busy || (kind === 'magia' && s.mp < 12);
+        return {
+          label, cost, off,
+          run: () => this.act(kind),
+          border: off ? '#2a1a16' : '#43241c',
+          bg: off ? '#120b0a' : '#1a0f0d',
+          color: off ? 'rgba(246,230,200,.32)' : '#f6e6c8',
+          cursor: off ? 'not-allowed' : 'pointer',
+        };
+      }),
+
+      catVariant: s.cat || 'black',
+      catName: cat.name,
+      catCode: cat.code,
+      catRole: cat.role,
+      catStats: cat.stats,
+      catLore: cat.lore,
+      isMel: s.cat === 'white',
+      isBayle: s.cat === 'tabby',
+      isRocky: s.cat === 'black',
+
+      gameCanvas: this.gameCanvas,
+      gameIdle: s.phase !== 'playing',
+      gameOver: s.phase === 'over',
+      startGame: this.start,
+      startLabel: s.phase === 'over' ? 'De novo' : 'Iniciar',
+      scoreText: String(s.score).padStart(5, '0'),
+      livesGlyphs: Array.from({ length: Math.max(0, s.lives) }),
+
+      projects: [
+        { kind: 'Case · em produção', title: 'Projeto um', note: 'Capa, contexto, o problema em uma linha e a decisão que mudou o resultado.' },
+        { kind: 'Case · em produção', title: 'Projeto dois', note: 'O mesmo esqueleto, com o recorte de pesquisa antes das telas.' },
+        { kind: 'Case · em produção', title: 'Projeto três', note: 'Aqui entra o antes e depois, porque é a única prova que interessa.' },
+        { kind: 'Exploração', title: 'Projeto quatro', note: 'Coisa que não virou produto e mesmo assim ensinou algo.' },
+        { kind: 'Exploração', title: 'Projeto cinco', note: 'Um sistema de design pequeno o bastante para caber em uma página.' },
+        { kind: 'Reservado', title: 'Projeto seis', note: 'Espaço guardado para o próximo. A grade já sabe recebê-lo.' },
+      ],
+
+      interfaces: [
+        { tag: 'Produto · 2025', title: 'Painel operacional', note: 'Densidade alta, uma ação por linha e nenhuma métrica que ninguém olha.', frames: ['Lista', 'Detalhe', 'Filtro'] },
+        { tag: 'Fluxo · 2025', title: 'Onboarding em três telas', note: 'Cada tela pede uma coisa. A quarta foi cortada e o fluxo melhorou.', frames: ['Boas-vindas', 'Dados', 'Pronto'] },
+        { tag: 'Mobile · 2024', title: 'Carteira', note: 'Saldo, extrato e uma única gaveta de ações. O resto virou busca.', frames: ['Início', 'Extrato', 'Ação'] },
+      ],
+
+      toggle: s.toggle,
+      toggleLabel: s.toggle ? 'ligado' : 'desligado',
+      knobX: s.toggle ? '28px' : '0px',
+      flipToggle: () => this.setState({ toggle: !s.toggle }),
+
+      field: s.field,
+      fieldCount: s.field.length,
+      onField: (e) => this.setState({ field: e.target.value }),
+
+      tabs: TABS.map((t, i) => ({
+        label: t.label,
+        rule: i === s.tab ? '#14120f' : 'transparent',
+        color: i === s.tab ? '#14120f' : '#6e6b65',
+        pick: () => this.setState({ tab: i }),
+      })),
+      tabBody: TABS[s.tab].body,
+
+      accordion: ACC.map((a, i) => ({
+        title: a.title,
+        body: a.body,
+        open: s.acc === i,
+        sign: s.acc === i ? '−' : '+',
+        toggle: () => this.setState({ acc: s.acc === i ? -1 : i }),
+      })),
+
+      toast: s.toast,
+      fireToast: () => {
+        this.setState({ toast: true });
+        clearTimeout(this._toast);
+        this._toast = setTimeout(() => this.setState({ toast: false }), 3000);
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>
